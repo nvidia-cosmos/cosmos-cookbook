@@ -1,0 +1,19 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/nuscenes/cam_front/test/",
+        "output_clip_path": "s3://lha-datasets/uber/nuscenes/MCQ_caption/vq1_0",
+        "generate_embeddings": true,
+        "generate_previews": false,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "generate-cosmos-predict-dataset": "predict2",
+        "captioning_prompt_text": "You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.\n\nQuestion: \"Did the ego vehicle change lanes in the video?\"\nChoose from: [\"Yes\", \"No\"]\n\nInstructions:\n- Analyze the video content carefully\n- Focus specifically on whether the ego vehicle (the vehicle from whose perspective the video is recorded) changes lanes during the video\n- A lane change occurs when the vehicle moves from one lane to another, typically involving crossing lane markings\n- Provide your response in the following format:\n\n<question> Did the ego vehicle change lanes in the video? </question>\n<think> your reasoning for whether a lane change occurred </think> \n<answer> your answer: either \"Yes\" or \"No\" </answer>\n\nRestrict your output to less than 100 tokens.",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}

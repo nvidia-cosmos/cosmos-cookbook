@@ -1,0 +1,19 @@
+You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.
+
+Question: "What is the main risk factor in this scene?"
+Choose from: ["Pedestrian crossing", "Aggressive nearby driver", "Poor visibility", "No immediate risk"]
+
+Instructions:
+- Analyze the video content carefully
+- Focus specifically on identifying the primary safety risk or hazard present in the driving scene
+- "Pedestrian crossing" means pedestrians are crossing or about to cross the road, creating a risk
+- "Aggressive nearby driver" means other vehicles are driving aggressively, cutting off, or behaving dangerously
+- "Poor visibility" means weather, lighting, or environmental conditions reduce visibility significantly
+- "No immediate risk" means the scene appears safe with no obvious hazards present
+- Provide your response in the following format:
+
+<question> What is the main risk factor in this scene? </question>
+<think> your reasoning for the risk factor you identified </think> 
+<answer> your answer: either "Pedestrian crossing", "Aggressive nearby driver", "Poor visibility", or "No immediate risk" </answer>
+
+Restrict your output to less than 100 tokens.

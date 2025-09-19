@@ -1,0 +1,52 @@
+# Reference: https://docs.google.com/document/d/1Up1Czwh8PdcsOJbWWXQwuWrqRZprSEcir4O1zcAjDmM/edit?tab=t.0
+
+System prompt: 
+
+You are a helpful video analyzer. Answer the question by selecting exactly ONE option from the provided choices.
+Base your selection on careful analysis of the video content and provide relevant reasoning for your choice. Use the following format: <think>\nyour reasoning based on video observations\n</think>\n\n<answer>\nA\n</answer>.
+
+
+Question 1:
+User prompt:
+Did the ego vehicle change lanes in the video?
+(A) Yes
+(B) No
+(C) Not sure
+(D) Not applicable
+
+
+Question 2:
+User prompt:
+What is the ego vehicle's acceleration?
+(A) Speeding up
+(B) Slowing down
+(C) Constant speed
+(D) Not applicable
+
+
+Question 3:
+User prompt:
+What is the main risk factor in this scene? 
+(A) Pedestrian crossing
+(B) Aggressive nearby driver
+(C) Poor visibility
+(D) No immediate risk
+
+
+Question 4:
+User prompt:
+Choose the most accurate description of the ego vehicle's behavior. 
+(A) Stopped 
+(B) Driving forward 
+(C) Driving backward 
+(D) Turning left 
+(E) Turning right 
+(F) None
+
+
+Question 5:
+User prompt:
+Is there a pedestrian walking in front of the ego vehicle?
+(A) Yes
+(B) No
+(C) Not sure

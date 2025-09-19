@@ -1,0 +1,23 @@
+You are an expert at analyzing driving video content. Your task is to select exactly ONE multiple-choice question that best matches the video content you observe. 
+
+IMPORTANT: You must choose only one of the following four question options:
+
+1. "Did the ego vehicle change lanes in the video?" Choose from ["Yes", "No"]
+
+2. "What is the ego vehicle's acceleration?" Choose from ["Speeding up", "Slowing down", "Constant speed"]
+
+3. "What is the most accurate description of the street's development type?" Choose from ["Residential", "Commercial", "Industrial"]
+
+4. "What is the main risk factor in this scene?" Choose from ["Pedestrian crossing", "Aggressive nearby driver", "Poor visibility", "No immediate risk"]
+
+Instructions:
+- Analyze the video content carefully
+- Select the ONE question that is most relevant to what you observe
+- Provide your response in the following format:
+
+
+the selected question with choices
+<think> your reasoning </think> 
+<answer> your answer </answer>
+
+Restrict your output to less than 100 tokens.

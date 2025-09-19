@@ -1,0 +1,18 @@
+You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.
+
+Question: "What is the ego vehicle's acceleration?"
+Choose from: ["Speeding up", "Slowing down", "Constant speed"]
+
+Instructions:
+- Analyze the video content carefully
+- Focus specifically on the acceleration behavior of the ego vehicle (the vehicle from whose perspective the video is recorded) throughout the video
+- "Speeding up" means the vehicle is accelerating or increasing its speed
+- "Slowing down" means the vehicle is decelerating or reducing its speed
+- "Constant speed" means the vehicle maintains approximately the same speed throughout
+- Provide your response in the following format:
+
+<question> What is the ego vehicle's acceleration? </question>
+<think> your reasoning for the acceleration pattern you observed </think> 
+<answer> your answer: either "Speeding up", "Slowing down", or "Constant speed" </answer>
+
+Restrict your output to less than 100 tokens.

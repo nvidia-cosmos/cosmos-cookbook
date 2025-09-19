@@ -1,0 +1,18 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/metropolis/ITS/DBQ_20_Hr_Export/processed_data/v0_prompt1",
+        "output_clip_path": "s3://lha-datasets/metropolis/ITS/DBQ_20_Hr_Export/processed_data/v0_prompt2",
+        "generate_embeddings": false,
+        "generate_previews": false,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "captioning_prompt_text": "You are a video captioning specialist tasked with creating high-quality English descriptions of traffic videos. Generate a single flowing paragraph that captures both the static scene and dynamic actions without using section headers or numbered points.\\n\\nBegin by analyzing the first frame to establish the scene, then smoothly transition to describing the full action sequence that follows. Your caption should be specific, precise, and focused on physical interactions.\\n\\nFirst Frame Analysis Requirements:\\n- Camera identification:\\n  * Begin caption with \"A traffic CCTV camera\" if video is from a fixed surveillance camera mounted high above ground.\\n  * Begin caption with \"A stationary vehicle camera\" if video is from a non-moving camera mounted low to ground (other vehicles may be moving, but camera remains stationary).\\n  * Begin caption with \"A moving vehicle camera\" if video is from a camera mounted on a moving vehicle.\\n- Include other vehicles, pedestrians, cyclists, traffic lights, lane markings, traffic signs, and any other traffic related objects.\\n- Include weather, time of day, road conditions, and any other environmental factors that might affect driving behavior.\\n- Do NOT describe logos or watermarks visible in the video.\\n- Do NOT describe vehicle number plates, street names, or building names visible in the video.\\n- Do NOT describe text overlays visible in the video.\\n- Do NOT describe timestamps visible in the video. Do NOT mention any dates or times in the prompt.\\n- Always output in English.\\n\\nAction Sequence Analysis Requirements:\\n- Identify and describe any of these traffic scenarios occurring in the video: accidents (collisions, near-misses), violations (wrong-way driving, jaywalking, running red lights), vehicle issues (stalled, broken down), road users (pedestrians crossing, bicyclists, motorcyclists), driving maneuvers (lane changes, U-turns, merging), traffic conditions (congestion, blocked intersections), or road hazards (debris, animals, construction). When describing detected scenarios:\\n  * Focus on precise details of how the scenario unfolds, including vehicle trajectories, speeds, and physical interactions\\n  * Describe the cause-and-effect relationship if visible (e.g., \"vehicle brakes suddenly due to pedestrian crossing\")\\n  * Include relevant environmental factors that contribute to the scenario (wet roads, limited visibility, etc.)\\n  * Use simple, direct verbs that precisely convey natural movement and physical interactions (e.g., \"accelerates,\" \"collides,\" \"swerves,\" \"rotates\" rather than \"moves\" or \"goes\")\\n  * Maintain focus on physics-based descriptions rather than inferring driver intentions\\n  * Ensure all descriptions flow naturally in a single cohesive paragraph without section headers",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}

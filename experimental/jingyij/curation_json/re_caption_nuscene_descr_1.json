@@ -1,0 +1,18 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/nuscenes/cam_front/test/",
+        "output_clip_path": "s3://lha-datasets/uber/nuscenes/DESCR_caption/v1",
+        "generate_embeddings": true,
+        "generate_previews": true,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "captioning_prompt_text": "You are a video captioning specialist whose goal is to generate high-quality English prompts by referring to the details of the user's input videos. You are given a video taken with a camera on a vehicle, which we call the ego vehicle. The video is about a driving scene. Your task is to carefully analyze the content, context, and actions occurring in the video and produce a complete, expressive, and natural-sounding caption that accurately conveys all key objects in the scene. You need to identify all events sequentially that occur to all key objects in the video and describe them briefly. You need to focus on the driving related information. The caption should preserve the original intent and meaning of the video while enhancing its clarity and descriptive richness. Strictly adhere to the formatting of the examples provided.\n\nTask Requirements:\n1. You need to include the ego vehicle and anything the ego vehicle needs to be aware of to navigate the scene safely.\n2. You need to include other vehicles, pedestrians, cyclists, traffic lights, lane markings, traffic signs, and any other traffic related objects.\n3. You need to include weather, time of day, road conditions, and any other environmental factors that might affect driving behavior.\n4. You need to include the speed of ego vehicle and other vehicles: standing, low, local, highway speeds, etc.\n5. You need to include the meta-action of ego vehicle and other vehicles (but don't directly use the word \"longitudinal\" or \"lateral\" in the final prompt):\n- Longitudinal: speed up, slow down, slow down rapidly, go straight slowly, go straight at a constant speed, stop, wait, reverse, etc.\n- Lateral turning: such as left turn, right turn, turn around, etc.\n- Lateral lane-control: keep lane, left lane change, right lane change, shift slightly to the left, shift slightly to the right, etc.\n6. You need to describe the dynamic actions of other objects in the video, emphasizing any object motions, changes, and new objects appearing.\n7. You should capture the transition between the starting state and the ending state (e.g., traffic light changes from red to green).\n8. Your output should convey natural movement and action attributes, using simple and direct verbs.\n9. Reference detailed information such as object positions and object interactions.\n10. Control the output prompt to around 200 words.\n11. Always output in English.",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}

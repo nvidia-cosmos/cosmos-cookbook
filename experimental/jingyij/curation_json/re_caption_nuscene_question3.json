@@ -1,0 +1,19 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/nuscenes/cam_front/test/",
+        "output_clip_path": "s3://lha-datasets/uber/nuscenes/MCQ_caption/vq3_0",
+        "generate_embeddings": true,
+        "generate_previews": true,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "generate-cosmos-predict-dataset": "predict2",
+        "captioning_prompt_text": "You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.\n\nQuestion: \"What is the main risk factor in this scene?\"\nChoose from: [\"Pedestrian crossing\", \"Aggressive nearby driver\", \"Poor visibility\", \"No immediate risk\"]\n\nInstructions:\n- Analyze the video content carefully\n- Focus specifically on identifying the primary safety risk or hazard present in the driving scene\n- \"Pedestrian crossing\" means pedestrians are crossing or about to cross the road, creating a risk\n- \"Aggressive nearby driver\" means other vehicles are driving aggressively, cutting off, or behaving dangerously\n- \"Poor visibility\" means weather, lighting, or environmental conditions reduce visibility significantly\n- \"No immediate risk\" means the scene appears safe with no obvious hazards present\n- Provide your response in the following format:\n\n<question> What is the main risk factor in this scene? </question>\n<think> your reasoning for the risk factor you identified </think> \n<answer> your answer: either \"Pedestrian crossing\", \"Aggressive nearby driver\", \"Poor visibility\", or \"No immediate risk\" </answer>\n\nRestrict your output to less than 100 tokens.",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}

@@ -1,0 +1,16 @@
+You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.
+
+Question: "Did the ego vehicle change lanes in the video?"
+Choose from: ["Yes", "No"]
+
+Instructions:
+- Analyze the video content carefully
+- Focus specifically on whether the ego vehicle (the vehicle from whose perspective the video is recorded) changes lanes during the video
+- A lane change occurs when the vehicle moves from one lane to another, typically involving crossing lane markings
+- Provide your response in the following format:
+
+<question> Did the ego vehicle change lanes in the video? </question>
+<think> your reasoning for whether a lane change occurred </think> 
+<answer> your answer: either "Yes" or "No" </answer>
+
+Restrict your output to less than 100 tokens.

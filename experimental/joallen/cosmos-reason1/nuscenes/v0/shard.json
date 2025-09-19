@@ -1,0 +1,28 @@
+{
+    "pipeline": "shard",
+    "args": {
+        "input_clip_path": "s3://lha-datasets/debug/joallen/nuscenes/v0/split_0",
+        "output_dataset_path": "s3://lha-datasets/debug/joallen/nuscenes/v0/shard",
+        "annotation_version": "v0",
+        "verbose": true,
+        "perf_profile": false
+    },
+    "pipeline_config": {
+        "stages": [
+            {
+                "class": "nemo_curator.video.pipelines.video.captioning.captioning_stages.T5Stage",
+                "params": {
+                    "caption_fields": [
+                        "qwen_caption"
+                    ]
+                }
+            },
+            {
+                "class": "nemo_curator.video.pipelines.video.io.download_stages.DownloadPackUpload",
+                "stage_spec": {
+                    "num_workers_per_node": 4
+                }
+            }
+        ]
+    }
+}

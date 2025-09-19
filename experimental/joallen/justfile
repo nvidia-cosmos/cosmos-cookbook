@@ -1,0 +1,6 @@
+default:
+    just --list
+
+pre-commit:
+    pre-commit run --config .pre-commit-config.yaml --all-files || \
+        pre-commit run --config .pre-commit-config.yaml --all-files

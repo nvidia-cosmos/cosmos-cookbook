@@ -1,0 +1,58 @@
+{
+    "#comment": "# to remove commented attributes, except for this line",
+    "envs": [
+        {
+            "key": "REQUESTS_CA_BUNDLE",
+            "value": "/etc/ssl/certs/ca-certificates.crt"
+        }
+    ],
+    "#resources": [
+        {
+            "name": "r1",
+            "version": "v1",
+            "uri": "/res"
+        }
+    ],
+    "#tags": [
+        "tag-vcs"
+    ],
+    "models": [
+        {
+            "name": "Sn4kehead/TransNetV2",
+            "uri": "/v2/org/ebplj5vljyh4/team/zetta/models/sn4kehead_transnetv2/0.1.0/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "google-bert/bert-large-uncased",
+            "uri": "/v2/org/ebplj5vljyh4/team/zetta/models/bert_large_uncased/0.1.0/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "OpenGVLab/InternVideo2-Stage2_1B-224p-f4",
+            "uri": "/v2/org/ebplj5vljyh4/team/zetta/models/internvideo2_stage2_1b_224p_f4/0.1.0/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "Qwen/Qwen2.5-VL-7B-Instruct",
+            "uri": "/v2/org/ebplj5vljyh4/models/qwen2_5_vl_7b_instruct/0.1.0/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "openai/clip-vit-large-patch14",
+            "uri": "/v2/org/ebplj5vljyh4/models/clip_vit_large_patch14/0.1.0/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "ttj/sac-logos-ava1-l14-linearMSE",
+            "uri": "/v2/org/ebplj5vljyh4/models/sac_logos_ava1_l14_linear_mse/0.1.1/files",
+            "version": "0.1.0"
+        },
+        {
+            "name": "google-t5/t5-11b",
+            "uri": "/v2/org/ebplj5vljyh4/models/t5_efficient_xxl_11b_encoder/0.2.0/files",
+            "version": "0.2.0"
+        }
+    ],
+    "secrets": [
+    ]
+}

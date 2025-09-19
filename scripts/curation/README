@@ -1,0 +1,92 @@
+### Add the dir config file
+
+Please place a config file at `~/.config/dir/config.yaml`. This is intended to be the place where we save miscellaneous configuration details. The most important config information is the AWS S3 info. This is used to access PBSS/PDX. In addition we use this config to store open_ai and huggingface api keys, although those are optional. The config file can be loaded using `config.load_yotta_config`
+
+The format for this config file is:
+
+```yaml
+aws:
+  s3_profiles:
+    team-dir:
+      user: "team-dir"
+      key: "xx"
+    deep-imagination-testing:
+      user: "deep-imagination-testing"
+      key: "xx"
+    team-dir-pdx:
+      user: "team-dir"
+      key: "xx"
+      endpoint: "https://pdx.s8k.io"
+postgres:
+  profiles:
+    team-vfm:
+      user: "team_vfm"
+      password: "xx"
+      endpoint: "vfm-db.cosmos.nvidia.com"
+hive:
+  profiles:
+    hive-cosmos:
+      user: "hive"
+      password: "xx"
+kratos:
+  profiles:
+    team-vfm:
+      secret: "xx"
+databricks:
+  profiles:
+    team-vfm:
+      access_token: "xx"
+open_ai:
+  user: "jhuffman_captioning"
+  api_key: "xx"
+huggingface:
+  user: "jhuffman"
+  api_key: "xx"
+```
+
+Use <https://cssportal.sre.nsv.nvidia.com:4443/> to get the S3 profile names and secrets keys for the PBSS containers you
+need to access. You can find instructions on this site for how to write these files.
+
+Note that this credentials file get automatically pushed to our NGC jobs. So, when connecting to PBSS via the
+ngc_utils client (or other tools like s5cmd), you only need to pass in the profile name (e.g.
+"deep-imagination-testing").
+
+### (Optional) Add PBSS profiles to your AWS config/credentials files
+
+Yotta also pushes the files at ~/.aws/config and ~/.aws/credentials to your job. This can be helpful if you are using s5cmd or other CLIs to manipulate files in PBSS.
+jobs.
+
+If you only have a single profile called "deep-imagination-testing". You should end up with something that looks like:
+
+~/.aws/config:
+
+```bash
+[plugins]
+endpoint = awscli_plugin_endpoint
+# You may need define plugin path, if you are using aws v2 client.
+# Find more details from http://nv/access-core-storage
+# cli_legacy_plugin_path = site-packages-path
+
+
+[profile deep-imagination-testing]
+region = us-east-1
+
+s3 =
+    endpoint_url = https://pbss.s8k.io
+    signature_version = s3v4
+    payload_signing_enabled = true
+s3api =
+    endpoint_url = https://pbss.s8k.io
+    payload_signing_enabled = true
+```
+
+~/.aws/credentials:
+
+```bash
+[deep-imagination-testing]
+aws_access_key_id = deep-imagination-testing
+aws_secret_access_key = YOUR_ACCESS_KEY
+```
+
+This doesn't match exactly what the [Nvidia core storage portal](https://cssportal.sre.nsv.nvidia.com:4443/home) tells you to do, but it also has the advantage of working with
+other open source s3 tools like s5cmd.

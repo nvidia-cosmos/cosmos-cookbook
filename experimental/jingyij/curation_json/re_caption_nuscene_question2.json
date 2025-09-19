@@ -1,0 +1,19 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/nuscenes/cam_front/test/",
+        "output_clip_path": "s3://lha-datasets/uber/nuscenes/MCQ_caption/vq2_0",
+        "generate_embeddings": true,
+        "generate_previews": true,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "generate-cosmos-predict-dataset": "predict2",
+        "captioning_prompt_text": "You are an expert at analyzing driving video content. Your task is to answer a specific question about the video content you observe.\n\nQuestion: \"What is the ego vehicle's acceleration?\"\nChoose from: [\"Speeding up\", \"Slowing down\", \"Constant speed\"]\n\nInstructions:\n- Analyze the video content carefully\n- Focus specifically on the acceleration behavior of the ego vehicle (the vehicle from whose perspective the video is recorded) throughout the video\n- \"Speeding up\" means the vehicle is accelerating or increasing its speed\n- \"Slowing down\" means the vehicle is decelerating or reducing its speed\n- \"Constant speed\" means the vehicle maintains approximately the same speed throughout\n- Provide your response in the following format:\n\n<question> What is the ego vehicle's acceleration? </question>\n<think> your reasoning for the acceleration pattern you observed </think> \n<answer> your answer: either \"Speeding up\", \"Slowing down\", or \"Constant speed\" </answer>\n\nRestrict your output to less than 100 tokens.",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}

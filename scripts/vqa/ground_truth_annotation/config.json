@@ -1,0 +1,14 @@
+{
+  "default_video_directory": "<replace_with_path_to_videos>",
+  "responses_filename": "ground_truth_annotation_responses.json",
+  "mcq_questions_file": "scripts/vqa/ground_truth_annotation/annotations_nexar_mcq_100.json",
+  "app_settings": {
+    "videos_per_page_options": [
+      5,
+      10,
+      20,
+      50
+    ],
+    "default_videos_per_page": 10
+  }
+}

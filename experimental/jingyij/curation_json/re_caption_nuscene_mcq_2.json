@@ -1,0 +1,18 @@
+{
+    "pipeline": "split",
+    "args": {
+        "input_video_path": "s3://lha-datasets/nuscenes/cam_front/test/",
+        "output_clip_path": "s3://lha-datasets/uber/nuscenes/MCQ_caption/v1",
+        "generate_embeddings": true,
+        "generate_previews": true,
+        "generate_captions": true,
+        "splitting_algorithm": "fixed-stride",
+        "fixed_stride_split_duration": 100000000,
+        "captioning_algorithm": "qwen",
+        "captioning_prompt_variant": "default",
+        "captioning_prompt_text": "You are an expert at analyzing driving video content. Generate one multiple-choice question that best matches the video content from the available question types. Choose from these question types:\n\n1. Did the ego vehicle change lanes in the video? Choose from [yes, no]\n2. What is the ego vehicle's acceleration? Choose from ['speeding up', 'slowing down', 'constant speed']\n3. Choose the most accurate description of the street's development type? Choose from ['residential', 'commercial', 'industrial']\n4. What is the main risk factor in this scene? Choose from [Pedestrian crossing, Aggressive nearby driver, Poor visibility, No immediate risk]\n\nPlease provide your response in the following format: <question> the selected question with choices </question> <think> your reasoning </think> <answer> your answer </answer>\n\nRestrict your output to less than 100 tokens.",
+        "limit": 0,
+        "limit_clips": 0,
+        "perf_profile": true
+   }
+}
