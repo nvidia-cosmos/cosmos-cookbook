@@ -6,7 +6,7 @@ This document contains comprehensive FAQ information compiled from multiple sour
 
 ### What is NVIDIA Cosmos?
 
-NVIDIA Cosmos is a world foundation model (WFM) development platform for physical AI applications. The platform includes pretrained multimodal models for generating world states as videos and physical AI reasoning, along with tokenizers, guardrails, data-processing pipelines, and post-training scripts.
+NVIDIA Cosmos is a world foundation model (WFM) development platform for physical AI applications. The platform includes pre-trained multimodal models for generating world states as videos and physical AI reasoning, along with tokenizers, guardrails, data-processing pipelines, and post-training scripts.
 
 ### What are the main components of Cosmos?
 
@@ -16,7 +16,7 @@ Cosmos world foundation models (WFMs) are pretrained generative AI models for vi
 
 - **Cosmos Predict** for generating future world states as videos
 - **Cosmos Transfer** for conditioned synthetic data
-- **Cosmos Reason** models for physical AI reasoning
+- **Cosmos Reason** for physical AI reasoning
 
 These models are fully customizable to develop specialized physical AI models.
 
@@ -30,7 +30,7 @@ To efficiently convert visual data into tokens.
 
 ### Who is Cosmos designed for?
 
-Cosmos is designed for developers and ISVs working in:
+Cosmos is designed for developers and ISVs working in the following domains:
 
 - Robotics
 - Autonomous vehicles
@@ -39,51 +39,15 @@ Cosmos is designed for developers and ISVs working in:
 
 ### What are the technical capabilities of the Cosmos platform?
 
-The Cosmos platform provides:
+The Cosmos platform provides the following capabilities:
 
-- Pretrained world foundation models for immediate deployment
+- Pre-trained world foundation models (WFMs) for immediate deployment
 - GPU-accelerated data processing and curation tools
 - Post-training frameworks for domain-specific adaptation
 - CUDA-optimized inference and training pipelines
 - Synthetic data generation for physical AI model training
 
-### What are world foundation models (WFMs)?
-
-World Foundation Models (WFMs) are neural networks that process input data such as text, images, video, and motion to generate and simulate virtual environments. They accurately model spatial relationships between objects and their physical interactions within a scene, enabling realistic and physics-aware simulations in the form of synthetic videos and images.
-
-### What are Cosmos world foundation models?
-
-Cosmos world foundation models are pretrained large multimodal models trained on 9,000 trillion tokens from autonomous driving, robotics, synthetic environments, and related domains. These models generate synthetic videos of environments and world states for training physical AI systems.
-
-### What is Cosmos Curator?
-
-Cosmos Curator is a GPU-accelerated video processing toolkit for transcoding, filtering, annotating, and embedding large-scale datasets. The toolkit provides:
-
-- GPU-accelerated processing pipelines
-- Support for petabyte-scale datasets
-- Apache 2.0 license availability
-
 ## Models
-
-### What are the different types and categories of Cosmos WFMs?
-
-#### Cosmos Predict
-
-Generates future frames from multimodal input (text, video, or image pairs). Supports post-training for specialized physical AI models.
-
-#### Cosmos Transfer
-
-Generates physics-grounded photorealistic output conditioned on structural inputs or ground truth from NVIDIA Omniverse.
-
-#### Cosmos Reason
-
-Multimodal model for chain-of-thought reasoning and planning tasks.
-
-All models are openly available on Hugging Face with inference and post-training scripts on GitHub:
-
-- **Cosmos Reason**: [GitHub](https://github.com/nvidia-cosmos/cosmos-reason1)
-- **Cosmos Predict**: [GitHub](https://github.com/nvidia-cosmos/cosmos-predict2)
-- **Cosmos Transfer**: [GitHub](https://github.com/nvidia-cosmos/cosmos-transfer1)
 
 ### What are the main use cases for Cosmos?
 
@@ -108,17 +72,17 @@ Cosmos WFMs support customization for domain-specific applications through post-
 - Output quality and style
 - Output perspective and viewpoint
 
-### What is Policy Initialization?
-
-Policy Initialization is the process of developing a policy model from the world foundation model (WFM) by modifying its output head. A Policy model maps observed states (e.g., video) to actions. It can be initialized by post-training Cosmos world foundation model with a new output head tailored for action selection (from video head → action head).
-
-### What is Policy Evaluation?
-
-Policy Evaluation is the process of assessing a trained policy model. It can be done by conditioning with/seeding specific inputs (e.g., actions or instructions) and analyzing model output. This step ensures that the model correctly maps states to actions and performs as expected in real-world or simulated environments.
-
 ### How do Cosmos models differ from other video foundation models?
 
 Cosmos world foundation models are designed specifically for physical AI applications. The models are openly available and customizable, with Cosmos Predict and Cosmos Reason supporting post-training for autonomous vehicle, robotics, and vision-action generation models.
+
+### What is Policy Initialization?
+
+Policy Initialization is the process of developing a policy model from the world foundation model (WFM) by modifying its output head. A Policy model maps observed states (e.g. video) to actions. It can be initialized by post-training a Cosmos world foundation model with a new output head tailored for action selection (from video head → action head).
+
+### What is Policy Evaluation?
+
+Policy Evaluation is the process of assessing a trained policy model. It can be done by conditioning with/seeding specific inputs (e.g. actions or instructions) and analyzing model output. This step ensures that the model correctly maps states to actions and performs as expected in real-world or simulated environments.
 
 ### Can Cosmos be used for creative content generation?
 
@@ -130,7 +94,7 @@ Multiverse simulation involves generating multiple future outcomes from a given 
 
 ### Is Cosmos Reason a VLM, VLA, or MLLM?
 
-Cosmos-Reason1 is a physical reasoning engine designed to analyze real-world scenarios through natural language explanations. It functions as a Vision Language Model (VLM) or a Multi Modal Large Language Model (MLLM) with chain-of-thought reasoning built-in. Unlike VLAs that map sensory inputs to executable actions, Cosmos-Reason1 employs hierarchical ontologies for space, time, and physics to generate text-based reasoning traces about safety, causality, and object interactions.
+Cosmos-Reason1 is a physical reasoning engine designed to analyze real-world scenarios through natural language explanations. It functions as a Vision Language Model (VLM) or a Multi-Modal Large Language Model (MLLM) with chain-of-thought reasoning built-in. Unlike Vision-Language-Action (VLA) models, which map sensory inputs to executable actions, Cosmos-Reason1 employs hierarchical ontologies for space, time, and physics to generate text-based reasoning traces about safety, causality, and object interactions.
 
 ### What does Cosmos Reason output?
 
@@ -138,32 +102,21 @@ While VLAs output motor commands, Cosmos-Reason1 produces insights in text like 
 
 ## Technical Details
 
-### What are Cosmos benchmarks?
-
-Cosmos benchmarks evaluate world foundation models for real-world physics simulation, focusing on:
-
-- **Fidelity**: Quality and realism of generated content
-- **Temporal consistency**: Coherence across time sequences
-- **3D consistency**: Spatial alignment in 3D scenes
-- **Physics alignment**: Adherence to physical laws and dynamics
-
-These benchmarks are designed to meet Physical AI requirements and ensure models perform well in real-world scenarios.
-
 ### What is 3D consistency, and how is it tested?
 
 3D consistency measures how well models maintain spatial alignment in 3D scenes. Cosmos testing methodology:
 
-**Test Setup**: Static scenes from 500 curated videos using:
+**Test Setup**: Static scenes from 500 curated videos using the following metrics:
 
-- Geometric consistency (e.g., Sampson error, pose estimation)
+- Geometric consistency (e.g. Sampson error, pose estimation)
 - View synthesis consistency (PSNR, SSIM, LPIPS)
 
 **Key Metrics**:
 
-- **Sampson error**: Lower values mean better geometric accuracy
+- **Sampson error**: Lower values indicate better geometric accuracy
 - **Pose estimation success rate**: Higher percentages reflect better camera alignment
 - **PSNR and SSIM**: Higher scores indicate higher quality in synthesized views
-- **LPIPS**: Lower values mean better perceptual similarity
+- **LPIPS**: Lower values indicate better perceptual similarity
 
 ### What is physics alignment, and how is it evaluated?
 
@@ -191,7 +144,7 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 - The repositories do not currently support FP8
 - FP8 and FP4 training capabilities are work in progress
 
-### Infrastructure Requirements
+### Infrastructure Requirements for Post-Training
 
 #### Minimum Setup
 
@@ -214,20 +167,20 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 - **Supported**: AWS EFA
 - **Essential**: High-bandwidth, low-latency connections for multi-GPU setups
 
-#### Optimization Strategies
+### Optimization Strategies
 
 **Pipeline Optimization**:
 
-- Ray-based pipeline allows specification of GPU types
-- Dynamic hardware detection supported
-- Mixed GPU types can be leveraged for different pipeline stages
-- Telemetry ensures efficient resource utilization
+- Ray-based pipeline allows specification of GPU types.
+- Dynamic hardware detection supported.
+- Mixed GPU types can be leveraged for different pipeline stages.
+- Telemetry ensures efficient resource utilization.
 
 **Memory Management**:
 
-- Requirements vary by model size and dataset characteristics
-- Prompt length and chain-of-thought length affect memory needs
-- Horizontal scaling supported for large deployments
+- Requirements vary by model size and dataset characteristics.
+- Prompt length and chain-of-thought length affect memory needs.
+- Horizontal scaling supported for large deployments.
 
 ### Performance Characteristics
 
@@ -235,22 +188,22 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 
 **Video Compression Impact**:
 
-- Higher compression rates can affect generation quality
+- Higher compression rates can affect generation quality.
 - Temporal compression with reduced tokens may lower quality
-- Optimal settings depend on specific application requirements
-- Testing recommended to find best trade-offs
+- Optimal settings depend on specific application requirements.
+- Testing recommended to find best trade-offs.
 
 #### Processing Performance
 
 **Cosmos Curator Performance**:
 
-- GPU-accelerated processing compared to CPU-based pipelines
-- Optimized for large-scale video processing workloads
+- GPU-accelerated processing compared to CPU-based pipelines.
+- Optimized for large-scale video processing workloads.
 
 **Tokenizer Performance**:
 
 - Optimized compression and processing for video data
-- Supports both training and inference workloads
+- Supports both training and inference workloads.
 
 ### Model Architecture Details
 
@@ -258,35 +211,24 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 
 **Layer Management**:
 
-- No layers are frozen during SFT and RL training
-- Full model fine-tuning approach
-- No specific attention mechanism modifications required
+- No layers are frozen during SFT and RL training.
+- Full model fine-tuning approach.
+- No specific attention mechanism modifications required.
 
 **Memory Recommendations**:
 
-- Model size determines base memory requirements
-- Dataset characteristics (video length, resolution) affect memory needs
-- Multi-GPU training recommended for larger models
+- Model size determines base memory requirements.
+- Dataset characteristics (video length, resolution) affect memory needs.
+- Multi-GPU training recommended for larger models.
 
 #### Input Specifications
 
 **Video Input Guidelines**:
 
 - **Recommended FPS**: 4 frames per second
-- **Token Budget**: Centered at 8k tokens, randomized within [6k, 10k] range
+- **Token Budget**: Centered at 8k tokens, randomized within the [6k, 10k] range
 - **Total Pixels**: Approximately 8k × 28 × 28 × 2
 - **Generalization**: Model can handle inputs outside training bounds with potential quality degradation
-
-### Architecture Comparisons
-
-#### Cosmos vs V-JEPA Models
-
-| Aspect | Cosmos Reason | Cosmos Predict | V-JEPA-2 |
-|--------|---------------|----------------|----------|
-| **Core Function** | Language instruction reasoning over visuals | Real-world simulation in videos | Goal-conditioned planning via latent rollout |
-| **Output** | Text-based reasoning responses | Physically grounded visual simulations | Latent-space action sequences |
-| **Planning** | Chain-of-thought reasoning for high-level plans | Not a planner (simulation focus) | Latent-space rollout for goal-conditioned planning |
-| **Use Case** | Instruction following, critic for SDG, captioning | Visual world simulator for synthetic data | Vision encoder for planning and VQA |
 
 ### Scalability Considerations
 
@@ -303,16 +245,16 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 
 **Dynamic Allocation**:
 
-- Ray-based pipeline supports multiple GPU types
+- Ray-based pipeline supports multiple GPU types.
 - Dynamic hardware detection and optimization
 - Efficient resource utilization through telemetry
-- Mixed hardware configurations supported
+- Mixed hardware configurations supported.
 
 ## Licensing & Availability
 
 ### What is the licensing model for Cosmos models?
 
-Cosmos world foundation models are available under the **NVIDIA Open Model License Agreement**. The license permits:
+Cosmos world foundation models are available under the **NVIDIA Open Model License Agreement**, which permits the following:
 
 - Commercial use without payment requirements
 - No company size restrictions
@@ -367,30 +309,14 @@ For enterprise deployments:
 
 #### License Terms
 
-The NVIDIA Open Model License Agreement covers:
+The [NVIDIA Open Model License Agreement](https://developer.download.nvidia.com/licenses/nvidia-open-model-license-agreement-june-2024.pdf) covers:
 
 - Commercial usage rights
 - Distribution permissions
 - Modification allowances
 - Attribution requirements
 
-#### Responsible AI
-
-Cosmos aligns with NVIDIA's Trustworthy AI Principles, emphasizing:
-
-- **Nondiscrimination**: Fair and unbiased operation
-- **Privacy**: Protection of user data
-- **Safety**: Secure model operation
-- **Security**: Robust protection against misuse
-- **Transparency**: Clear documentation of capabilities and limitations
-
-#### Safety Features
-
-- **Cosmos Guardrails**: Built-in safety tools for content filtering
-- **Watermarking**: Embedded identification of AI-generated content
-- **Customizable Safety**: Extend guardrails for specific applications
-
-### Frequently Asked Questions
+### General Questions
 
 #### Q: Do I need to pay to use Cosmos models?
 

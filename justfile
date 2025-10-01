@@ -55,5 +55,5 @@ ci-deploy-external:
   rm -rf external
   just _template -d external.yaml
   uv run mkdocs build --site-dir external/site --strict
-  mkdir -p external/cosmos-playbook
-  cp -r scripts external/cosmos-playbook/scripts
+  mkdir -p external/cosmos-cookbook
+  cp -r scripts external/cosmos-cookbook/scripts

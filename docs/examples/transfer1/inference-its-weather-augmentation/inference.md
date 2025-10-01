@@ -1,5 +1,12 @@
 # Cosmos Transfer Weather Augmentation for Intelligent Transportation System (ITS) Images
 
+> **Authors:** [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
+> **Organization:** NVIDIA
+
+| Model | Workload | Use case |
+|------|----------|----------|
+| Cosmos Transfer1 | Inference | Data augmentation |
+
 This tutorial demonstrates how to use the Cosmos Transfer model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
 - [Setup and System Requirement](setup.md)
@@ -150,7 +157,3 @@ This tutorial demonstrates how Cosmos Transfer can effectively augment ITS datas
 3. Synthetic augmentation significantly improves model performance on rare weather conditions
 
 For more details on implementation and training configurations, please refer to the accompanying setup and configuration files in this repository.
-
-## Contributors
-
-This content was contributed by Reihaneh Entezari, Charul Verma, Arihant Jain, Dharshi Devendran, and Ratnesh Kumar (the Metropolis team).

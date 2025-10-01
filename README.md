@@ -1,48 +1,141 @@
-# Cosmos Post-Training Playbook
+# Cosmos Playbook
 
-- [Documentation](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)
-- [Contributing](CONTRIBUTING.md)
+A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
-## Setup
+[![Documentation](https://img.shields.io/badge/docs-cosmos--playbook-blue)](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)
+[![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
 
-### Install system dependencies
+## Overview
 
-```shell
+This playbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
+
+- **Inference**: Quick-start examples with pre-trained models
+- **Data Curation**: Scalable data processing pipelines with Cosmos Curate
+- **Post-Training**: Custom fine-tuning for domain-specific adaptation
+- **Evaluation**: Quality control and model assessment workflows
+
+The Cosmos ecosystem includes five core repositories: **Curate**, **Predict2**, **Transfer1**, **Reason1**, and **RL**, each targeting specific capabilities in the AI development workflow.
+
+## Prerequisites
+
+Before getting started, ensure you have:
+
+- **Operating System**: Linux, macOS, or WSL on Windows
+- **Python**: Version 3.10+ (see `.python-version`)
+- **Hardware**: NVIDIA GPU recommended for training workflows
+- **Access**: Internet connection for downloading models and dependencies
+- **Permissions**: Administrator/sudo access for system installations
+
+## Quick Start
+
+### 1. Install System Dependencies
+
+```bash
+# Install uv (fast Python package manager)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
+
+# Install just (command runner)
 uv tool install -U rust-just
 
 # Optional useful tools
-uv tool install -U s5cmd
-uv tool install -U streamlit
-uv tool install -U yt-dlp
+uv tool install -U s5cmd      # High-performance S3 operations
+uv tool install -U streamlit  # Web app framework
+uv tool install -U yt-dlp     # Video downloading
 ```
 
-### Install repository
+### 2. Clone and Setup Repository
 
-```shell
+```bash
+# Clone the repository
 git clone https://github.com/nvidia-cosmos/cosmos-playbook.git
 cd cosmos-playbook
+
+# Install dependencies and setup
 just install
-source .venv/bin/activate
 ```
 
-## Jupyter
+### 3. Explore the Documentation
 
-Notebooks should be written in [Jupytext Markdown](https://jupytext.readthedocs.io/en/latest/formats-markdown.html#jupytext-markdown)
-
-Copy the header from the [example markdown](docs/post_training/post_training_predict.md).
-
-Sync notebooks:
-
-```shell
-pre-commit run --all-files jupytext
+```bash
+# Serve documentation locally
+just serve-external  # For public documentation
+# or
+just serve-internal   # For internal documentation (if applicable)
 ```
 
-Open the [example notebook](docs/post_training/post_training_predict.ipynb) in VS Code:
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
 
-```shell
-code . docs/post_training/post_training_predict.ipynb
+## Repository Structure
+
+The Cosmos Playbook is organized into two main directories:
+
+### `docs/`
+
+Contains the source documentation in markdown files:
+
+- Technical guides and workflows
+- End-to-end examples and case studies
+- API references and tutorials
+- Getting started guides
+
+### `scripts/`
+
+Contains executable scripts referenced throughout the playbook:
+
+- Data processing and curation pipelines
+- Model evaluation and quality control scripts
+- Configuration files for post-training tasks
+- Automation tools and utilities
+
+This structure separates documentation from implementation, making it easy to navigate between reading about workflows and executing the corresponding scripts.
+
+## Available Commands
+
+```bash
+# Development
+just install          # Install dependencies and setup
+just setup            # Setup pre-commit hooks
+just serve-external   # Serve public documentation locally
+just serve-internal   # Serve internal documentation locally
+
+# Quality Control
+just lint            # Run linting and formatting
+just test            # Run all tests and validation
+
+# CI/CD (used in pipelines)
+just ci-lint         # CI linting
+just ci-deploy-external   # Deploy external docs
+just ci-deploy-internal   # Deploy internal docs
 ```
 
-Run the notebook. When prompted to select a kernel, choose "Python Environments" and select `.venv`.
+## Key Features
+
+- **End-to-End Examples**: Complete workflows from data to deployment
+- **Quick Start Templates**: Get up and running in minutes
+- **Modular Scripts**: Reusable components for custom workflows
+- **Evaluation Tools**: Built-in quality assessment and metrics
+- **Production Ready**: Scalable pipelines for real-world deployment
+- **Comprehensive Docs**: Detailed guides and API references
+
+## Documentation
+
+- **[Full Documentation](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)** - Complete guides and examples
+- **[Getting Started](docs/getting_started.md)** - Environment setup and first steps
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the playbook
+- **[Examples](docs/examples/)** - Real-world use cases and workflows
+
+## Community & Support
+
+- **Share Success Stories**: We love hearing how you use Cosmos models creatively
+- **Report Issues**: Use GitHub issues for bugs and feature requests
+- **Discussions**: Join our community discussions
+- **Documentation**: Check our comprehensive guides first
+
+## License
+
+This project follows NVIDIA's open source guidelines. See individual model repositories for specific licensing terms.
+
+---
+
+**Ready to get started?** Run `just serve-internal` and explore the documentation at [http://localhost:8000](http://localhost:8000)

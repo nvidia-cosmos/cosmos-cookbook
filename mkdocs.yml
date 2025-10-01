@@ -1,18 +1,15 @@
-site_name: Cosmos Playbook
+site_name: Cosmos Cookbook
 site_author: NVIDIA Cosmos
 site_url: https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/
-repo_url: https://gitlab-master.nvidia.com/dir/nvidia-cosmos/cosmos-playbook
-repo_name: NVIDIA/cosmos-playbook
+repo_url: https://github.com/nvidia-cosmos/cosmos-cookbook
+repo_name: NVIDIA/cosmos-cookbook
 docs_dir: build/docs
 nav:
   - Home: index.md
-  - Getting Started: getting_started/
-  - Data Curation: data_curation/
-  - Post-Training: post_training/
-  - Evaluation: evaluation/
-  - Distillation: distillation/
-  - FAQ: faq/
+  - Getting Started: get_started.md
+  - Core Concepts: core_concepts/
   - Examples: examples/
+  - FAQ: faq.md
 plugins:
   - search
   - literate-nav:
@@ -70,7 +67,7 @@ extra_css:
   - assets/css/fonts.css
   - assets/css/custom-material.css
 extra:
-  github_url: https://github.com/NVIDIA/cosmos-playbook
+  github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
 copyright: |
   &copy; Copyright 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 use_directory_urls: false

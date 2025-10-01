@@ -1,7 +1,0 @@
-system_prompt: |
-  You are a helpful video analyzer. Answer the question with provided options in the following format: <think>\nyour reasoning\n</think>\n\n<answer>\nyour answer\n</answer>.
-user_prompt: |
-  At the end of the video, what is the ego vehicle's behavior?
-  (A) Speeding up
-  (B) Slowing down
-  (C) Constant speed
