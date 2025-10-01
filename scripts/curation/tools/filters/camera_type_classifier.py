@@ -50,8 +50,12 @@ Provide your analysis in the following format:
 
 def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description="Process videos for camera type classification.")
-    parser.add_argument("--input_dir", type=str, required=True, help="Input directory containing videos")
+    parser = argparse.ArgumentParser(
+        description="Process videos for camera type classification."
+    )
+    parser.add_argument(
+        "--input_dir", type=str, required=True, help="Input directory containing videos"
+    )
     parser.add_argument(
         "--output_file",
         type=str,

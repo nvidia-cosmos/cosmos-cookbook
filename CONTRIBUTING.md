@@ -39,7 +39,7 @@ All submissions, including submissions by project members, require review. We us
 
 - We require that all contributors "sign-off" on their commits. This certifies that the contribution is your original work, or you have rights to submit it under the same license, or a compatible license.
 
-    - Any contribution which contains commits that are not Signed-Off will not be accepted.
+  - Any contribution which contains commits that are not Signed-Off will not be accepted.
 
 - To sign off on a commit you simply use the `--signoff` (or `-s`) option when committing your changes:
 

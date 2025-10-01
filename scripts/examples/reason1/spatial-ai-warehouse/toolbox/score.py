@@ -1,4 +1,3 @@
-
 """
 Scoring script for evaluation results.
 
@@ -11,19 +10,22 @@ is compatible with either evaluation approach.
 """
 
 import argparse
+import functools
 import glob
 import json
 import os
-import sys
-from pathlib import Path
-from typing import Dict, Any, Callable, List
-from collections import defaultdict
-import tempfile
-import subprocess
-import functools
 import re
+import subprocess
+import sys
+import tempfile
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Callable, Dict, List
 
-def parse_from_terminal(terminal_output: str, start_with_to_key: Dict[str, str]) -> Dict[str, Any]:
+
+def parse_from_terminal(
+    terminal_output: str, start_with_to_key: Dict[str, str]
+) -> Dict[str, Any]:
     parsed_metrics = {}
     for line in terminal_output.splitlines():
         for start_with, key in start_with_to_key.items():
@@ -40,12 +42,13 @@ def parse_from_terminal(terminal_output: str, start_with_to_key: Dict[str, str])
                 break
     return parsed_metrics
 
+
 def official_compute_score_fn(
     post_processed_results: List[Dict[str, Any]],
     official_answer_path: str,
     official_evaluation_script: str,
 ) -> Dict[str, Any]:
-    temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8')
+    temp_file = tempfile.NamedTemporaryFile(mode="w", delete=False, encoding="utf-8")
     try:
         json.dump(post_processed_results, temp_file, ensure_ascii=False)
         temp_file.flush()
@@ -55,10 +58,14 @@ def official_compute_score_fn(
 
     try:
         # Validation error message
-        INVALID_SCRIPT_MSG = f"Invalid evaluation script path: {official_evaluation_script}"
+        INVALID_SCRIPT_MSG = (
+            f"Invalid evaluation script path: {official_evaluation_script}"
+        )
 
         # Validate that the evaluation script exists and is a Python file
-        if not os.path.exists(official_evaluation_script) or not official_evaluation_script.endswith('.py'):
+        if not os.path.exists(
+            official_evaluation_script
+        ) or not official_evaluation_script.endswith(".py"):
             raise ValueError(INVALID_SCRIPT_MSG)
 
         cmd = [
@@ -75,7 +82,11 @@ def official_compute_score_fn(
         output = result.stdout
         print(output)
         parsed_metrics = {}
-        evaluation_match = re.search(r"===== EVALUATION RESULTS =====\n(.*?)\n===== OVERALL SUMMARY =====\n", output, re.DOTALL)
+        evaluation_match = re.search(
+            r"===== EVALUATION RESULTS =====\n(.*?)\n===== OVERALL SUMMARY =====\n",
+            output,
+            re.DOTALL,
+        )
         if not evaluation_match:
             print("Warning: Could not find EVALUATION RESULTS section in output")
             evaluation_results_part = ""
@@ -88,7 +99,9 @@ def official_compute_score_fn(
             "left_right": "left_right",
             "mcq": "mcq",
         }
-        parsed_metrics.update(parse_from_terminal(evaluation_results_part, start_with_to_key))
+        parsed_metrics.update(
+            parse_from_terminal(evaluation_results_part, start_with_to_key)
+        )
 
         if "===== OVERALL SUMMARY =====" in output:
             overall_summary_part = output.split("===== OVERALL SUMMARY =====")[-1]
@@ -101,10 +114,13 @@ def official_compute_score_fn(
             "Qualitative": "qualitative",
             "Overall": "overall",
         }
-        parsed_metrics.update(parse_from_terminal(overall_summary_part, start_with_to_key))
+        parsed_metrics.update(
+            parse_from_terminal(overall_summary_part, start_with_to_key)
+        )
         return parsed_metrics
     finally:
         os.unlink(temp_file_path)
+
 
 def evaluate(
     raw_results_dir: str,
@@ -134,16 +150,18 @@ def evaluate(
         with open(json_file, "r") as f:
             data = json.load(f)
             for sample in data:
-                post_processed_results.append({
-                    "id": sample["video_id"],
-                    "normalized_answer": sample[eval_answer_key],
-                })
+                post_processed_results.append(
+                    {
+                        "id": sample["video_id"],
+                        "normalized_answer": sample[eval_answer_key],
+                    }
+                )
     return compute_score_fn(
         post_processed_results=post_processed_results,
     )
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--results_dir", type=str, required=True)
     parser.add_argument("--official_answer_path", type=str, required=True)
@@ -178,10 +196,7 @@ if __name__ == "__main__":
     if not results_dir_path_obj.exists():
         raise FileNotFoundError(f"Results directory not found: {results_dir}")
 
-    model_names = [
-        p.name for p in results_dir_path_obj.iterdir()
-        if p.is_dir()
-    ]
+    model_names = [p.name for p in results_dir_path_obj.iterdir() if p.is_dir()]
 
     if not model_names:
         print(f"Warning: No model directories found in {results_dir}")
@@ -202,8 +217,10 @@ if __name__ == "__main__":
                 print(f"skip {model_name} {answer_type} because it already exists")
                 continue
             eval_answer_key = (
-                "full_response" if answer_type == "naive"
-                else "answer" if answer_type == "reasoning"
+                "full_response"
+                if answer_type == "naive"
+                else "answer"
+                if answer_type == "reasoning"
                 else None
             )
             try:
@@ -212,18 +229,24 @@ if __name__ == "__main__":
                     eval_answer_key=eval_answer_key,
                     compute_score_fn=compute_score_fn,
                 )
-            except (FileNotFoundError, json.JSONDecodeError, subprocess.CalledProcessError) as e:
+            except (
+                FileNotFoundError,
+                json.JSONDecodeError,
+                subprocess.CalledProcessError,
+            ) as e:
                 print(f"Error evaluating {model_name} {answer_type}: {e}")
                 continue
-            metrics.append({
-                "model_name": model_name,
-                "answer_type": answer_type,
-                "metrics": entry_metrics,
-            })
+            metrics.append(
+                {
+                    "model_name": model_name,
+                    "answer_type": answer_type,
+                    "metrics": entry_metrics,
+                }
+            )
 
-    print("="*100)
+    print("=" * 100)
     print(metrics)
-    print("="*100)
+    print("=" * 100)
     print(f"save metrics to {os.path.join(results_dir, 'metrics.json')}")
     with open(os.path.join(results_dir, "metrics.json"), "w") as f:
         json.dump(metrics, f, ensure_ascii=False, indent=4)

@@ -4,7 +4,6 @@ from enum import Enum
 
 import numpy as np
 import torch
-
 from mvbench.utils.camera_model import FThetaCamera
 
 
@@ -43,10 +42,13 @@ class Calibration:
 
 class BaseData(ABC):
     @abstractmethod
-    def num_frames(self) -> int: ...
+    def num_frames(self) -> int:
+        ...
 
     @abstractmethod
-    def get_image(self, view: CameraView, frame_idx: int) -> torch.Tensor: ...
+    def get_image(self, view: CameraView, frame_idx: int) -> torch.Tensor:
+        ...
 
     @abstractmethod
-    def get_calibration(self) -> Calibration: ...
+    def get_calibration(self) -> Calibration:
+        ...

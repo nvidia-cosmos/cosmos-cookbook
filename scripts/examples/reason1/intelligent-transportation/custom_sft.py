@@ -26,12 +26,12 @@ import cosmos_rl.policy.config
 import pydantic
 import toml
 import torch.utils.data
-from cosmos_rl.utils.logging import logger
-
 from cosmos_reason1_utils.text import create_conversation
 from cosmos_reason1_utils.vision import VisionConfig
+from cosmos_rl.utils.logging import logger
 
 MCQ_PROMPT_SUFFIX = "\nAnswer with the option's letter from the given choices directly."
+
 
 class CustomDatasetConfig(pydantic.BaseModel):
     annotation_path: str = pydantic.Field()
@@ -41,8 +41,10 @@ class CustomDatasetConfig(pydantic.BaseModel):
     system_prompt: str = pydantic.Field(default="")
     """System prompt."""
 
+
 class CustomConfig(pydantic.BaseModel):
     """Custom config."""
+
     dataset: CustomDatasetConfig = pydantic.Field()
     """Dataset config."""
 
@@ -57,6 +59,7 @@ class CustomConfig(pydantic.BaseModel):
 
 class CustomDataset(torch.utils.data.Dataset):
     """Custom dataset."""
+
     def __init__(
         self,
         config: cosmos_rl.policy.config.Config,

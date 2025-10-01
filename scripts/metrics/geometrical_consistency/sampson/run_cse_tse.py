@@ -4,16 +4,14 @@ Direct CSE/TSE evaluation script that works with any video directory.
 This version doesn't depend on eval_list.json.
 Completely independent version - all dependencies are local.
 """
-from argparse import ArgumentParser
-from pathlib import Path
 import json
 import sys
+from argparse import ArgumentParser
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from tqdm import tqdm
-
-from baselines_data_direct import get_data_direct, get_all_videos, SimpleClip
+from baselines_data_direct import SimpleClip, get_all_videos, get_data_direct
 from mvbench.data.base import CameraView
 from mvbench.metrics.sampson import (
     CrossViewSampsonMetric,
@@ -21,6 +19,7 @@ from mvbench.metrics.sampson import (
     TemporalSampsonMetric,
 )
 from mvbench.utils.camera_model import IdealPinholeCamera
+from tqdm import tqdm
 
 
 def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = False):
@@ -59,20 +58,21 @@ def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = Fa
             # Handle torch tensors or numpy arrays
             if res_mean is not None and res_median is not None:
                 # Convert to numpy if it's a torch tensor
-                if hasattr(res_mean, 'cpu'):
+                if hasattr(res_mean, "cpu"):
                     res_mean = res_mean.cpu().numpy()
-                if hasattr(res_median, 'cpu'):
+                if hasattr(res_median, "cpu"):
                     res_median = res_median.cpu().numpy()
 
                 eval_results["T"][view.value] = {
                     "mean": float(np.nanmean(res_mean)),
                     "median": float(np.nanmedian(res_median)),
-                    "frame_values": res_median.tolist()
+                    "frame_values": res_median.tolist(),
                 }
                 visualize_results[f"T-{view.value}"] = res_median
         except Exception as e:
             if verbose:
                 import traceback
+
                 print(f"  Warning: Error computing temporal metric for {view.value}:")
                 traceback.print_exc()
             continue
@@ -88,20 +88,21 @@ def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = Fa
             # Handle torch tensors or numpy arrays
             if res_mean is not None and res_median is not None:
                 # Convert to numpy if it's a torch tensor
-                if hasattr(res_mean, 'cpu'):
+                if hasattr(res_mean, "cpu"):
                     res_mean = res_mean.cpu().numpy()
-                if hasattr(res_median, 'cpu'):
+                if hasattr(res_median, "cpu"):
                     res_median = res_median.cpu().numpy()
 
                 eval_results["C"][pair_key] = {
                     "mean": float(np.nanmean(res_mean)),
                     "median": float(np.nanmedian(res_median)),
-                    "frame_values": res_median.tolist()
+                    "frame_values": res_median.tolist(),
                 }
                 visualize_results[f"C-{pair_key}"] = res_median
         except Exception as e:
             if verbose:
                 import traceback
+
                 print(f"  Warning: Error computing cross-view metric for {view_pair}:")
                 traceback.print_exc()
             continue
@@ -118,11 +119,11 @@ def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = Fa
         for key, value in visualize_results.items():
             if value is not None:
                 if key.startswith("T"):
-                    plt.plot(value, label=key, linestyle='-', alpha=0.8)
+                    plt.plot(value, label=key, linestyle="-", alpha=0.8)
                 else:  # Cross-view
-                    plt.plot(value, label=key, linestyle='--', alpha=0.8)
+                    plt.plot(value, label=key, linestyle="--", alpha=0.8)
 
-        plt.legend(loc='upper right')
+        plt.legend(loc="upper right")
         plt.ylim(0, 10)
         plt.tight_layout()
         plt.savefig(clip_output_dir / f"{clip.clip_id}.png", dpi=100)
@@ -130,13 +131,17 @@ def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = Fa
 
     # Save numerical results
     result_path = clip_output_dir / f"{clip.clip_id}.json"
-    with open(result_path, 'w') as f:
-        json.dump({
-            "video_path": str(video_path),
-            "clip_id": clip.clip_id,
-            "chunk_id": clip.chunk_id,
-            "results": eval_results
-        }, f, indent=2)
+    with open(result_path, "w") as f:
+        json.dump(
+            {
+                "video_path": str(video_path),
+                "clip_id": clip.clip_id,
+                "chunk_id": clip.chunk_id,
+                "results": eval_results,
+            },
+            f,
+            indent=2,
+        )
 
     return eval_results
 
@@ -144,11 +149,7 @@ def evaluate_single_video(video_path: Path, output_dir: Path, verbose: bool = Fa
 def compute_aggregate_stats(all_results: dict) -> dict:
     """Compute aggregate statistics across all videos."""
 
-    stats = {
-        "num_videos": len(all_results),
-        "temporal": {},
-        "cross_view": {}
-    }
+    stats = {"num_videos": len(all_results), "temporal": {}, "cross_view": {}}
 
     # Collect all values for aggregation
     temporal_values = {view: [] for view in ["front", "cross_left", "cross_right"]}
@@ -174,7 +175,7 @@ def compute_aggregate_stats(all_results: dict) -> dict:
                 "std": float(np.std(values)),
                 "min": float(np.min(values)),
                 "max": float(np.max(values)),
-                "count": len(values)
+                "count": len(values),
             }
 
     # Compute aggregate stats for cross-view
@@ -186,7 +187,7 @@ def compute_aggregate_stats(all_results: dict) -> dict:
                 "std": float(np.std(values)),
                 "min": float(np.min(values)),
                 "max": float(np.max(values)),
-                "count": len(values)
+                "count": len(values),
             }
 
     # Overall averages
@@ -202,44 +203,42 @@ def compute_aggregate_stats(all_results: dict) -> dict:
         stats["temporal"]["overall"] = {
             "mean": float(np.mean(all_temporal)),
             "median": float(np.median(all_temporal)),
-            "std": float(np.std(all_temporal))
+            "std": float(np.std(all_temporal)),
         }
 
     if all_cross:
         stats["cross_view"]["overall"] = {
             "mean": float(np.mean(all_cross)),
             "median": float(np.median(all_cross)),
-            "std": float(np.std(all_cross))
+            "std": float(np.std(all_cross)),
         }
 
     return stats
 
 
 def main():
-    parser = ArgumentParser(description="Direct CSE/TSE evaluation for video directories")
+    parser = ArgumentParser(
+        description="Direct CSE/TSE evaluation for video directories"
+    )
     parser.add_argument(
         "--input",
         type=Path,
         required=True,
-        help="Input directory containing video files (or single video file)"
+        help="Input directory containing video files (or single video file)",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path("./eval-output"),
-        help="Output directory for results (default: ./eval-output)"
+        help="Output directory for results (default: ./eval-output)",
     )
     parser.add_argument(
         "--pattern",
         type=str,
         default="*.mp4",
-        help="File pattern for video files (default: *.mp4)"
+        help="File pattern for video files (default: *.mp4)",
     )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Enable verbose output"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
 
     # Handle single file or directory
@@ -277,13 +276,13 @@ def main():
 
         # Save aggregate stats
         stats_path = args.output / "aggregate_stats.json"
-        with open(stats_path, 'w') as f:
+        with open(stats_path, "w") as f:
             json.dump(stats, f, indent=2)
 
         # Print summary
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("EVALUATION SUMMARY")
-        print("="*60)
+        print("=" * 60)
         print(f"Successfully processed: {len(all_results)}/{len(videos)} videos")
 
         if "temporal" in stats and "overall" in stats["temporal"]:

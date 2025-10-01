@@ -1,16 +1,17 @@
-from pathlib import Path
-import gc
-import cv2
-import os
-import pycocotools.mask as mask_utils
-import json
-from PIL import Image, ImageDraw, ImageFont
-import numpy as np
-import random
 import argparse
-from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor
+import gc
 import importlib.util
+import json
+import os
+import random
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
+
+import cv2
+import numpy as np
+import pycocotools.mask as mask_utils
+from PIL import Image, ImageDraw, ImageFont
+from tqdm import tqdm
 
 # Configuration
 NUM_CHUNKS = int(os.environ.get("NUM_CHUNKS", 1))
@@ -22,25 +23,29 @@ TARGET_WIDTH = int(os.environ.get("TARGET_WIDTH", 1920))
 TARGET_HEIGHT = int(os.environ.get("TARGET_HEIGHT", 1080))
 TARGET_SIZE = (TARGET_WIDTH, TARGET_HEIGHT)
 
+
 def get_annotations(annotations_file):
-    with open(annotations_file, 'r') as f:
+    with open(annotations_file, "r") as f:
         annotations = json.load(f)
 
     # Check if annotations is a list or a dict with nested structure
     if isinstance(annotations, dict):
         # If it's a dict, look for common keys that might contain the list
-        if 'annotations' in annotations:
-            return annotations['annotations']
-        elif 'data' in annotations:
-            return annotations['data']
-        elif 'items' in annotations:
-            return annotations['items']
+        if "annotations" in annotations:
+            return annotations["annotations"]
+        elif "data" in annotations:
+            return annotations["data"]
+        elif "items" in annotations:
+            return annotations["items"]
         else:
             # If it's a dict but we don't know the structure, return as is
-            print(f"Warning: Annotations file contains a dict with keys: {list(annotations.keys())}")
+            print(
+                f"Warning: Annotations file contains a dict with keys: {list(annotations.keys())}"
+            )
             return annotations
 
     return annotations
+
 
 def split_list_to_nested_list(lst):
     split_by_chunk = np.array_split(lst, NUM_CHUNKS)[START_CHUNK:END_CHUNK]
@@ -51,8 +56,9 @@ def split_list_to_nested_list(lst):
 # <image>\n<image>\nThe first image is the original, and the second is an overlay. Bright numeric IDs are labeled at the center of certain visual objects in the second image. Is the car with numeric ID 2 in lane 4? Answer with 'yes' or 'no'. If no, please provide the correct lane.
 
 
-
-def som_overlay_and_save_iccv_show(image_path, annotation, save_path, font_path=None, font_size=None):
+def som_overlay_and_save_iccv_show(
+    image_path, annotation, save_path, font_path=None, font_size=None
+):
     image = Image.open(image_path).convert("RGBA")
     # Resize image to target size
     image = image.resize(TARGET_SIZE, Image.Resampling.LANCZOS)
@@ -76,8 +82,13 @@ def som_overlay_and_save_iccv_show(image_path, annotation, save_path, font_path=
         mask = mask_utils.decode(mask)
         # Resize mask to match the resized image
         mask = cv2.resize(mask, TARGET_SIZE, interpolation=cv2.INTER_NEAREST)
-        mask_image = Image.fromarray((mask * 255).astype(np.uint8), mode='L')
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 128)
+        mask_image = Image.fromarray((mask * 255).astype(np.uint8), mode="L")
+        color = (
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255),
+            128,
+        )
         colored_mask = Image.new("RGBA", image.size, color)
         overlay.paste(colored_mask, (0, 0), mask_image)
 
@@ -106,6 +117,7 @@ def som_overlay_and_save_iccv_show(image_path, annotation, save_path, font_path=
     som_image.save(save_path)
     return True
 
+
 def som_overlay_and_save_show(image_path, annotation, save_path, visualization):
     mask_rles = annotation["rle"]
 
@@ -117,7 +129,9 @@ def som_overlay_and_save_show(image_path, annotation, save_path, visualization):
     image = image.resize(TARGET_SIZE, Image.Resampling.LANCZOS)
 
     masks_np = [
-        cv2.resize(mask_utils.decode(mask), TARGET_SIZE, interpolation=cv2.INTER_NEAREST)
+        cv2.resize(
+            mask_utils.decode(mask), TARGET_SIZE, interpolation=cv2.INTER_NEAREST
+        )
         for mask in mask_rles
     ]
 
@@ -129,7 +143,7 @@ def som_overlay_and_save_show(image_path, annotation, save_path, visualization):
             text=str(i),
             text_color=None,
             text_bg_color=None,
-            label_mode='1',
+            label_mode="1",
             alpha=0.2,
             anno_mode=["Mask", "Mark", "Contour"],
         )
@@ -137,7 +151,16 @@ def som_overlay_and_save_show(image_path, annotation, save_path, visualization):
     som_image.save(save_path)
     return True
 
-def som_overlay(image_path, annotation, save_path, method="show", font_path=None, visualization=None, font_size=None):
+
+def som_overlay(
+    image_path,
+    annotation,
+    save_path,
+    method="show",
+    font_path=None,
+    visualization=None,
+    font_size=None,
+):
     func_map = {
         "iccv_show": som_overlay_and_save_iccv_show,
         "show": som_overlay_and_save_show,
@@ -147,14 +170,25 @@ def som_overlay(image_path, annotation, save_path, method="show", font_path=None
     else:
         return func_map[method](image_path, annotation, save_path, visualization)
 
+
 def load_visualization_module(visualization_tool_package):
     """Load the visualization module dynamically"""
-    spec = importlib.util.spec_from_file_location("visualization", visualization_tool_package)
+    spec = importlib.util.spec_from_file_location(
+        "visualization", visualization_tool_package
+    )
     visualization = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(visualization)
     return visualization
 
-def process_annotation_list(local_chunk_id, annotation_list, args, annotation_media_dir, visualization_tool_package, visualization=None):
+
+def process_annotation_list(
+    local_chunk_id,
+    annotation_list,
+    args,
+    annotation_media_dir,
+    visualization_tool_package,
+    visualization=None,
+):
     """Process a list of annotations and generate SOM overlays"""
     # Load visualization module within the worker process if not provided
     if visualization is None:
@@ -172,13 +206,17 @@ def process_annotation_list(local_chunk_id, annotation_list, args, annotation_me
 
         # Check if image field exists and is valid
         if "image" not in annotation:
-            print(f"Warning: No 'image' field in annotation {annotation.get('id', 'unknown')}")
+            print(
+                f"Warning: No 'image' field in annotation {annotation.get('id', 'unknown')}"
+            )
             continue
 
         image_filename = annotation["image"]
 
         # Check if the image filename looks like a hash (indicating a blob path)
-        if len(image_filename) > 50 and not image_filename.endswith(('.png', '.jpg', '.jpeg')):
+        if len(image_filename) > 50 and not image_filename.endswith(
+            (".png", ".jpg", ".jpeg")
+        ):
             print(f"Warning: Image field appears to be a blob path: {image_filename}")
             print(f"Annotation keys: {list(annotation.keys())}")
             continue
@@ -194,39 +232,90 @@ def process_annotation_list(local_chunk_id, annotation_list, args, annotation_me
                 print(f"  This is a broken symlink pointing to: {target}")
                 print(f"  The target file exists: {target.exists()}")
                 print("  This usually means Git LFS files weren't downloaded properly.")
-                print("  Please run: git lfs pull or re-download the dataset with proper LFS support.")
+                print(
+                    "  Please run: git lfs pull or re-download the dataset with proper LFS support."
+                )
             continue
 
-        save_path = Path(str(image_path).replace('images', 'som_images').replace('.png', f'.{annotation["id"]}.png'))
+        save_path = Path(
+            str(image_path)
+            .replace("images", "som_images")
+            .replace(".png", f'.{annotation["id"]}.png')
+        )
         save_path.parent.mkdir(parents=True, exist_ok=True)
 
-        success = som_overlay(image_path, annotation, save_path, method=args.som_method, font_path=args.font_path, visualization=visualization, font_size=args.font_size)
+        success = som_overlay(
+            image_path,
+            annotation,
+            save_path,
+            method=args.som_method,
+            font_path=args.font_path,
+            visualization=visualization,
+            font_size=args.font_size,
+        )
         if success and save_path.exists():
             processed_count += 1
 
         gc.collect()
 
-    print(f"[chunk {local_chunk_id}] Successfully processed {processed_count}/{len(annotation_list)} images")
+    print(
+        f"[chunk {local_chunk_id}] Successfully processed {processed_count}/{len(annotation_list)} images"
+    )
     return processed_count
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Generate SOM overlays for spatial VQA dataset")
-    parser.add_argument("--original_data_root_dir", type=str, default=".",
-                       help="Root directory containing the original dataset")
-    parser.add_argument("--save_root_dir", type=str, default="som/som_all",
-                       help="Root directory to save processed SOM images")
-    parser.add_argument("--annotation_names", nargs="+", default=["train"],
-                       help="List of annotation names to process (e.g., train val test)")
-    parser.add_argument("--visualization_tool_package", type=str, default="toolbox/visualization.py",
-                       help="Path to the visualization tool package")
-    parser.add_argument("--font_path", type=str, default=None,
-                       help="Path to the font file for text rendering (defaults to DejaVuSans-Bold.ttf in the same directory as this script)")
-    parser.add_argument("--font_size", type=int, default=None,
-                       help="Font size for text rendering (defaults to FONT_SIZE environment variable or 30)")
-    parser.add_argument("--som_method", type=str, default="show", choices=["iccv_show", "show"],
-                       help="SOM overlay method to use")
-    parser.add_argument("--debug", action="store_true",
-                       help="Debug mode: process only 1 sample sequentially without parallelization")
+    parser = argparse.ArgumentParser(
+        description="Generate SOM overlays for spatial VQA dataset"
+    )
+    parser.add_argument(
+        "--original_data_root_dir",
+        type=str,
+        default=".",
+        help="Root directory containing the original dataset",
+    )
+    parser.add_argument(
+        "--save_root_dir",
+        type=str,
+        default="som/som_all",
+        help="Root directory to save processed SOM images",
+    )
+    parser.add_argument(
+        "--annotation_names",
+        nargs="+",
+        default=["train"],
+        help="List of annotation names to process (e.g., train val test)",
+    )
+    parser.add_argument(
+        "--visualization_tool_package",
+        type=str,
+        default="toolbox/visualization.py",
+        help="Path to the visualization tool package",
+    )
+    parser.add_argument(
+        "--font_path",
+        type=str,
+        default=None,
+        help="Path to the font file for text rendering (defaults to DejaVuSans-Bold.ttf in the same directory as this script)",
+    )
+    parser.add_argument(
+        "--font_size",
+        type=int,
+        default=None,
+        help="Font size for text rendering (defaults to FONT_SIZE environment variable or 30)",
+    )
+    parser.add_argument(
+        "--som_method",
+        type=str,
+        default="show",
+        choices=["iccv_show", "show"],
+        help="SOM overlay method to use",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Debug mode: process only 1 sample sequentially without parallelization",
+    )
 
     args = parser.parse_args()
 
@@ -243,13 +332,17 @@ def main():
 
     for annotation_name in args.annotation_names:
         annotations_file = f"{args.original_data_root_dir}/{annotation_name}.json"
-        annotation_media_dir = Path(args.original_data_root_dir) / annotation_name / "images"
+        annotation_media_dir = (
+            Path(args.original_data_root_dir) / annotation_name / "images"
+        )
         annotations_list = get_annotations(annotations_file)
 
         # Debug: Print first annotation to understand structure
         if annotations_list:
             print(f"First annotation keys: {list(annotations_list[0].keys())}")
-            print(f"First annotation image field: {annotations_list[0].get('image', 'missing')}")
+            print(
+                f"First annotation image field: {annotations_list[0].get('image', 'missing')}"
+            )
             print(f"Annotation media dir: {annotation_media_dir}")
             print(f"Annotation media dir exists: {annotation_media_dir.exists()}")
 
@@ -266,7 +359,9 @@ def main():
         if args.debug:
             # Sequential processing for debug mode
             for local_chunk_id, annotation_list in enumerate(annotations_nested_list):
-                print(f"Processing chunk {local_chunk_id} with {len(annotation_list)} annotations")
+                print(
+                    f"Processing chunk {local_chunk_id} with {len(annotation_list)} annotations"
+                )
                 processed_count = process_annotation_list(
                     local_chunk_id=local_chunk_id,
                     annotation_list=annotation_list,
@@ -288,7 +383,9 @@ def main():
                         annotation_media_dir=annotation_media_dir,
                         visualization_tool_package=args.visualization_tool_package,
                     ): (local_chunk_id, annotation_list)
-                    for local_chunk_id, annotation_list in enumerate(annotations_nested_list)
+                    for local_chunk_id, annotation_list in enumerate(
+                        annotations_nested_list
+                    )
                 }
                 for future in futures:
                     try:
@@ -296,10 +393,12 @@ def main():
                         total_processed += processed_count
                     except Exception as e:
                         import traceback
+
                         print(f"Error processing chunk: {e}")
                         traceback.print_exc()
 
         print(f"Total processed images for {annotation_name}: {total_processed}")
+
 
 if __name__ == "__main__":
     main()

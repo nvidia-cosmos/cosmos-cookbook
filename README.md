@@ -1,13 +1,14 @@
-# Cosmos Playbook
+# Cosmos Cookbook
 
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
-[![Documentation](https://img.shields.io/badge/docs-cosmos--playbook-blue)](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)
+[![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 ## Overview
 
-This playbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
+This cookbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
 
 - **Inference**: Quick-start examples with pre-trained models
 - **Data Curation**: Scalable data processing pipelines with Cosmos Curate

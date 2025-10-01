@@ -61,10 +61,23 @@ Please analyze the video and provide your answer in the following format:
 
 
 def parse_arguments() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Classify videos as good or bad content.")
-    parser.add_argument("--input_dir", type=str, required=True, help="Input directory containing videos")
-    parser.add_argument("--model_name", type=str, default="reason", help="Model to use for inference (default: reason)")
-    parser.add_argument("--inference_endpoint", type=str, help="Custom inference endpoint URL (e.g. http://localhost:8008/v1)")
+    parser = argparse.ArgumentParser(
+        description="Classify videos as good or bad content."
+    )
+    parser.add_argument(
+        "--input_dir", type=str, required=True, help="Input directory containing videos"
+    )
+    parser.add_argument(
+        "--model_name",
+        type=str,
+        default="reason",
+        help="Model to use for inference (default: reason)",
+    )
+    parser.add_argument(
+        "--inference_endpoint",
+        type=str,
+        help="Custom inference endpoint URL (e.g. http://localhost:8008/v1)",
+    )
     return parser.parse_args()
 
 

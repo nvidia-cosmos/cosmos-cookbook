@@ -5,7 +5,6 @@ import imageio
 import mediapy as media
 import numpy as np
 import torch
-
 from mvbench import payload
 from mvbench.data.base import CameraView
 from mvbench.utils.camera_model import IdealPinholeCamera
@@ -116,7 +115,9 @@ class GeneratedSequentialData(GeneratedData):
 
 
 class GeneratedSeparateData(GeneratedData):
-    def __init__(self, video_paths: dict[CameraView, Path], traj_path: Path | None = None):
+    def __init__(
+        self, video_paths: dict[CameraView, Path], traj_path: Path | None = None
+    ):
         super().__init__(traj_path)
 
         self.video_paths = video_paths
@@ -168,7 +169,7 @@ class RawDataFromBytesList(GeneratedData):
     def __init__(
         self,
         video_bytes: dict[CameraView, bytes],
-        camera_params: dict[CameraView, dict] = None
+        camera_params: dict[CameraView, dict] = None,
     ):
         super().__init__(None)
         self.fps = 30  # Default fps
@@ -191,7 +192,9 @@ class RawDataFromBytesList(GeneratedData):
             self.fps = 30
 
     @staticmethod
-    def _quaternion_to_rotation_matrix(qx: float, qy: float, qz: float, qw: float) -> np.ndarray:
+    def _quaternion_to_rotation_matrix(
+        qx: float, qy: float, qz: float, qw: float
+    ) -> np.ndarray:
         """Convert quaternion to 3x3 rotation matrix with automatic normalization.
 
         Args:
@@ -205,11 +208,25 @@ class RawDataFromBytesList(GeneratedData):
         if norm > 0:
             qx, qy, qz, qw = qx / norm, qy / norm, qz / norm, qw / norm
 
-        return np.array([
-            [1 - 2 * (qy * qy + qz * qz), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
-            [2 * (qx * qy + qz * qw), 1 - 2 * (qx * qx + qz * qz), 2 * (qy * qz - qx * qw)],
-            [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx * qx + qy * qy)],
-        ])
+        return np.array(
+            [
+                [
+                    1 - 2 * (qy * qy + qz * qz),
+                    2 * (qx * qy - qz * qw),
+                    2 * (qx * qz + qy * qw),
+                ],
+                [
+                    2 * (qx * qy + qz * qw),
+                    1 - 2 * (qx * qx + qz * qz),
+                    2 * (qy * qz - qx * qw),
+                ],
+                [
+                    2 * (qx * qz - qy * qw),
+                    2 * (qy * qz + qx * qw),
+                    1 - 2 * (qx * qx + qy * qy),
+                ],
+            ]
+        )
 
     def get_frame_calibration(self, frame_idx: int) -> Calibration:
         """Return calibration for a specific frame with dynamic camera parameters.

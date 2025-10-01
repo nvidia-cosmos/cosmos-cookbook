@@ -41,10 +41,10 @@ The segmentation data is stored in pickle files, one per video. After loading a 
 
 - List of dictionaries, one per detected object
 - Each detection contains:
-    - `phrase`: String describing the object
-    - `segmentation_mask_rle`: Dictionary containing:
-        - `data`: RLE-encoded binary mask data
-        - `mask_shape`: Tuple specifying mask dimensions (height, width)
+  - `phrase`: String describing the object
+  - `segmentation_mask_rle`: Dictionary containing:
+    - `data`: RLE-encoded binary mask data
+    - `mask_shape`: Tuple specifying mask dimensions (height, width)
 
 **Mask Creation:**
 
@@ -83,10 +83,10 @@ For training KeypointControl models, you need to provide a pickle file containin
 
 - List of dictionaries, one per detected human
 - Each detection contains:
-    - Bounding boxes (normalized and absolute)
-    - Body keypoints (133 points)
-    - Hand keypoints (42 points)
-    - Face bounding box
+  - Bounding boxes (normalized and absolute)
+  - Body keypoints (133 points)
+  - Hand keypoints (42 points)
+  - Face bounding box
 
 **Coordinate Systems:**
 

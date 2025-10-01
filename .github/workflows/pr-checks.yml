@@ -1,0 +1,54 @@
+name: PR Quality Checks
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    name: Pre-commit checks
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+      - name: Install dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install pre-commit
+      - name: Run pre-commit
+        run: |
+          source .venv/bin/activate
+          pre-commit run --all-files
+  docs-build-test:
+    runs-on: ubuntu-latest
+    name: Test documentation build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+      - name: Install dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin
+      - name: Build documentation
+        run: |
+          source .venv/bin/activate
+          mkdocs build --strict
+      - name: Upload docs build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-build
+          path: site/

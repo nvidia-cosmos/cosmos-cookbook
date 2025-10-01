@@ -272,8 +272,8 @@ The following section describes the process of curating the `DBQ_20_Hr_Export` d
 - Resolution: 1080p
 - Frame rate: 30fps
 - Files are organized in nested directories by:
-    - Road intersection
-    - Time of day (AM vs PM)
+  - Road intersection
+  - Time of day (AM vs PM)
 
 ### 2. Video Splitting and Captioning
 
@@ -375,11 +375,11 @@ Visualize the data as mentioned in the [usage](#usage) section to verify your cu
 
 - **Limited Filtering Options**: The current version does not support arbitrary or customized filtering algorithms
 - **Basic Quality Control**: For noisy datasets requiring filtering based on:
-    - Resolution
-    - Frame length
-    - Motion detection
-    - Watermark removal
-    - Banner detection
+  - Resolution
+  - Frame length
+  - Motion detection
+  - Watermark removal
+  - Banner detection
   These features are currently under development (WIP)
 
 ### Workaround for Custom Filtering

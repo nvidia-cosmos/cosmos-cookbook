@@ -1,9 +1,10 @@
+import argparse
 import json
 import os
-import argparse
-from tqdm import tqdm
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Any, Dict, List, Optional, Tuple
+
+from tqdm import tqdm
 
 
 def parse_arguments() -> str:
@@ -17,10 +18,7 @@ def parse_arguments() -> str:
         description="Format WTS annotations for best view training data generation"
     )
     parser.add_argument(
-        "--data_path",
-        type=Path,
-        required=True,
-        help="Directory with annotation JSONs"
+        "--data_path", type=Path, required=True, help="Directory with annotation JSONs"
     )
     args = parser.parse_args()
     return str(args.data_path)
@@ -39,7 +37,7 @@ def process_question(row: Dict[str, Any]) -> str:
     prompt = f"<video> \n {row['question']} \n "
 
     # Add multiple choice options if they exist
-    for option in ['a', 'b', 'c', 'd']:
+    for option in ["a", "b", "c", "d"]:
         if option in row:
             prompt += f"{option.upper()}: {row[option]} \n "
 
@@ -53,7 +51,7 @@ def format_training_data_mcq_llava(
     answer: str,
     qtype: str,
     phase: str,
-    wts_id: str
+    wts_id: str,
 ) -> Dict[str, Any]:
     """
     Format training data for MCQ tasks in LLaVA conversation format.
@@ -79,13 +77,11 @@ def format_training_data_mcq_llava(
         "conversations": [
             {
                 "from": "human",
-                "value": question + "\nAnswer with the option's letter from the given choices directly."
+                "value": question
+                + "\nAnswer with the option's letter from the given choices directly.",
             },
-            {
-                "from": "gpt",
-                "value": answer.upper()
-            }
-        ]
+            {"from": "gpt", "value": answer.upper()},
+        ],
     }
     return item
 
@@ -106,7 +102,7 @@ def process_wts_environment_mcq(root_dir: str, split: str) -> List[Dict]:
     root_dir = os.path.join(root_dir)
 
     for name in tqdm(os.listdir(root_dir)):
-        if 'normal_trimmed' in name:
+        if "normal_trimmed" in name:
             continue
 
         env_file = os.path.join(root_dir, name, "environment", name + ".json")
@@ -114,7 +110,7 @@ def process_wts_environment_mcq(root_dir: str, split: str) -> List[Dict]:
             print(f"Environment file not found for {name}")
             continue
 
-        with open(env_file, 'r') as e:
+        with open(env_file, "r") as e:
             data = json.load(e)
 
         wts_id = data[0]["id"]
@@ -124,7 +120,7 @@ def process_wts_environment_mcq(root_dir: str, split: str) -> List[Dict]:
             fir = vid[:-4]
             cnt = 0
             vid2 = os.path.join(name, "overhead_view", vid)
-            if 'normal_trimmed' in root_dir:
+            if "normal_trimmed" in root_dir:
                 vid2 = "normal_trimmed/" + vid2
             # print(vid2)
 
@@ -132,8 +128,13 @@ def process_wts_environment_mcq(root_dir: str, split: str) -> List[Dict]:
                 lab = fir + "_" + str(cnt)
                 question = process_question(row)
                 item = format_training_data_mcq_llava(
-                    lab, vid2, question, row["correct"],
-                    "environment", "full_video", wts_id
+                    lab,
+                    vid2,
+                    question,
+                    row["correct"],
+                    "environment",
+                    "full_video",
+                    wts_id,
                 )
                 mcq_env_dataset.append(item)
                 cnt += 1
@@ -159,21 +160,29 @@ def main():
     print("Starting WTS annotations processing...")
 
     # Process WTS MCQ datasets
-    train_mcq_env_dataset = process_wts_environment_mcq(os.path.join(user_path, 'annotations', 'vqa', 'train'), 'train')
-    train_mcq_env_dataset += process_wts_environment_mcq(os.path.join(user_path, 'annotations', 'vqa', 'train', 'normal_trimmed'), 'train')
-
+    train_mcq_env_dataset = process_wts_environment_mcq(
+        os.path.join(user_path, "annotations", "vqa", "train"), "train"
+    )
+    train_mcq_env_dataset += process_wts_environment_mcq(
+        os.path.join(user_path, "annotations", "vqa", "train", "normal_trimmed"),
+        "train",
+    )
 
     output_dir = user_path
     os.makedirs(output_dir, exist_ok=True)
     # Save dataset
-    with open(os.path.join(output_dir, 'environment_mcq_llava_train.json'), 'w') as f:
+    with open(os.path.join(output_dir, "environment_mcq_llava_train.json"), "w") as f:
         json.dump(train_mcq_env_dataset, f, indent=4)
 
-    val_mcq_env_dataset = process_wts_environment_mcq(os.path.join(user_path, 'annotations', 'vqa', 'val'), 'val')
-    val_mcq_env_dataset += process_wts_environment_mcq(os.path.join(user_path, 'annotations', 'vqa', 'val', 'normal_trimmed'), 'val')
+    val_mcq_env_dataset = process_wts_environment_mcq(
+        os.path.join(user_path, "annotations", "vqa", "val"), "val"
+    )
+    val_mcq_env_dataset += process_wts_environment_mcq(
+        os.path.join(user_path, "annotations", "vqa", "val", "normal_trimmed"), "val"
+    )
 
     # Save dataset
-    with open(os.path.join(output_dir, 'environment_mcq_llava_val.json'), 'w') as f:
+    with open(os.path.join(output_dir, "environment_mcq_llava_val.json"), "w") as f:
         json.dump(val_mcq_env_dataset, f, indent=4)
 
     print("WTS annotations processing completed!")

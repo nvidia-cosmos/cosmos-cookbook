@@ -7,15 +7,15 @@ This section provides evaluation methods for different types of video generation
 ## Metric Families
 
 - Qualitative video quality (Predict):
-    - **FID** — image realism/diversity via Fréchet distance in Inception feature space (lower is better)
-    - **FVD** — spatio‑temporal quality via Fréchet distance on video features (appearance + motion)
+  - **FID** — image realism/diversity via Fréchet distance in Inception feature space (lower is better)
+  - **FVD** — spatio‑temporal quality via Fréchet distance on video features (appearance + motion)
 - Geometric consistency (Predict):
-    - **Sampson Error** — first‑order point‑to‑epipolar‑line distance
-    - **TSE/CSE** — temporal and cross‑view consistency for multi‑view videos
+  - **Sampson Error** — first‑order point‑to‑epipolar‑line distance
+  - **TSE/CSE** — temporal and cross‑view consistency for multi‑view videos
 - VLM‑based assessment:
-    - **Cosmos Reason** — physical plausibility, causal/temporal reasoning; usable as critic or reward model
+  - **Cosmos Reason** — physical plausibility, causal/temporal reasoning; usable as critic or reward model
 - Transfer/Control quality:
-    - **Blur SSIM, Canny‑F1, Depth RMSE, Seg mIOU, Dover** — fidelity to control signals and technical quality
+  - **Blur SSIM, Canny‑F1, Depth RMSE, Seg mIOU, Dover** — fidelity to control signals and technical quality
 
 ## Recommended Workflow
 

@@ -3,8 +3,8 @@ Minimal payload module for CSE/TSE evaluation.
 Only includes median calibration loading functionality.
 """
 from pathlib import Path
-import numpy as np
 
+import numpy as np
 from mvbench.data.base import CameraView
 from mvbench.utils.camera_model import FThetaCamera
 

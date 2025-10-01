@@ -19,21 +19,22 @@ from cosmos_reason1_utils.script import init_script
 
 init_script()
 
+import concurrent.futures
+import glob
 import json
 import logging as log
 import os
+import re
 import time
 from argparse import ArgumentParser
+from functools import partial
 from typing import Any, Dict, List, Optional, Tuple, Union
+
 import attrs
-import re
 import yaml
 from PIL import Image
 from qwen_vl_utils import process_vision_info
-from functools import partial
-import concurrent.futures
 from tqdm import tqdm
-import glob
 
 # Increase maximum allowed pixels for Pillow images to handle large inputs
 Image.MAX_IMAGE_PIXELS = 933120000
@@ -59,6 +60,7 @@ from utils.output import (
 
 MCQ_PROMPT_SUFFIX = "\nAnswer with the option's letter from the given choices directly."
 
+
 @attrs.define(slots=False)
 class LlavaInputStructure:
     datasource: str
@@ -71,17 +73,20 @@ class LlavaInputStructure:
     prompt: Optional[Union[str, List[Dict[str, Any]]]] = None
 
     @classmethod
-    def from_dict(cls, datasource: str, qa_pair: Dict[str, Any]) -> "LlavaInputStructure":
+    def from_dict(
+        cls, datasource: str, qa_pair: Dict[str, Any]
+    ) -> "LlavaInputStructure":
         return cls(
             datasource=datasource,
             media_id=qa_pair["media_id"],
-            question=qa_pair['conversations'][1]["content"],
-            correct_answer=qa_pair['conversations'][2]["content"],
-            question_idx=qa_pair['id'],
+            question=qa_pair["conversations"][1]["content"],
+            correct_answer=qa_pair["conversations"][2]["content"],
+            question_idx=qa_pair["id"],
             media_paths=qa_pair["media_paths"],
             media_mode=qa_pair["media_mode"],
-            prompt=qa_pair['conversations'][:-1],
+            prompt=qa_pair["conversations"][:-1],
         )
+
 
 def prepare_model_inputs_parallel(
     input_tasks: List[LlavaInputStructure],
@@ -146,7 +151,7 @@ def prepare_model_inputs_parallel(
             idx = future_to_idx[future]
             try:
                 model_input = future.result()
-                if model_input is not None: # Only append successful results
+                if model_input is not None:  # Only append successful results
                     processed_inputs_with_index.append((idx, model_input))
             except (ValueError, OSError, RuntimeError) as e:
                 # This catch might be redundant if prepare_single_model_input handles errors,
@@ -154,7 +159,6 @@ def prepare_model_inputs_parallel(
                 log.exception(
                     f"Unexpected error preparing model input for task {idx}: {e}. Skipping task."
                 )
-
 
     # Sort successful results by original index and extract the inputs
     processed_inputs_with_index.sort(key=lambda x: x[0])
@@ -167,8 +171,11 @@ def prepare_model_inputs_parallel(
 
     return inputs
 
+
 def prepare_single_model_input(
-    input_task: LlavaInputStructure, processor: Any, vision_config: dict,
+    input_task: LlavaInputStructure,
+    processor: Any,
+    vision_config: dict,
 ) -> Optional[Any]:
     """
     Worker function to prepare the input data for a single model inference task.
@@ -205,10 +212,7 @@ def prepare_single_model_input(
             for k, v in vision_config.items():
                 video_content[k] = v
             content.append(video_content)
-        content.append({
-            "type": "text",
-            "text": input_task.prompt[1]["content"]
-        })
+        content.append({"type": "text", "text": input_task.prompt[1]["content"]})
         input_task.prompt[1]["content"] = content
 
     # Apply the model's chat template to get the final text prompt
@@ -219,12 +223,16 @@ def prepare_single_model_input(
     )
 
     # Process vision information (image/video paths) from the prompt structure
-    image_inputs, video_inputs, video_kwargs = process_vision_info(input_task.prompt, return_video_kwargs=True)
+    image_inputs, video_inputs, video_kwargs = process_vision_info(
+        input_task.prompt, return_video_kwargs=True
+    )
 
     # Format for a potential custom model structure
     # Assuming video_inputs contains a list and we need the first item
     if not video_inputs and not image_inputs:
-        log.error(f"No video or image inputs found for task: media_id={input_task.media_id}, question_idx={input_task.question_idx}. Cannot prepare model input.")
+        log.error(
+            f"No video or image inputs found for task: media_id={input_task.media_id}, question_idx={input_task.question_idx}. Cannot prepare model input."
+        )
         return None
 
     if video_inputs:
@@ -244,6 +252,7 @@ def prepare_single_model_input(
         f"question_idx={input_task.question_idx}"
     )
     return model_input
+
 
 # === Model Definition Functions ===
 def define_model(
@@ -272,7 +281,8 @@ def define_model(
 
     else:
         hf_cache_dir = os.environ.get(
-            "HF_HOME", os.path.join(os.path.expanduser("~"), ".cache", "huggingface", "hub")
+            "HF_HOME",
+            os.path.join(os.path.expanduser("~"), ".cache", "huggingface", "hub"),
         )
         checkpoint_output_dir = os.path.join(hf_cache_dir, model_name)
         # Ensure the checkpoint directory exists
@@ -339,9 +349,9 @@ def make_tasks_from_single_media(
     output_results.append(
         OutputStructure(
             datasource=datasource_name,
-            video_id=qa_pair['media_id'],
+            video_id=qa_pair["media_id"],
             # Get the correct answer (handles variations in dict key)
-            correct_answer=qa_pair['conversations'][-1]["content"],
+            correct_answer=qa_pair["conversations"][-1]["content"],
             output_json_fname=output_json_fname,
             prompt="",  # This will be filled later
         )
@@ -382,9 +392,12 @@ def make_all_tasks(
 
         media_dir = datasource_config.get("media_dir", None)
         annotation_path = datasource_config.get("annotation_path")
-        system_prompt = datasource_config.get("system_prompt", "You are a helpful video analyzer. Please answer the question.")
+        system_prompt = datasource_config.get(
+            "system_prompt",
+            "You are a helpful video analyzer. Please answer the question.",
+        )
 
-        if answer_type == "reasoning" and '<think>' not in system_prompt:
+        if answer_type == "reasoning" and "<think>" not in system_prompt:
             system_prompt += "Answer the question with provided options in the following format: \n<think>\nyour reasoning\n</think> <answer>\nyour answer\n</answer>."
 
         # Check if video_path exists
@@ -392,23 +405,22 @@ def make_all_tasks(
             log.error(f"Media path does not exist: {media_dir}")
             continue
 
-        with open(annotation_path, 'r') as f:
+        with open(annotation_path, "r") as f:
             annotations = json.load(f)
 
             for item in annotations:
                 # question = item['conversations'][0]['value'].replace("<video>\n", "").replace("<video> \n", " ")
-                question = re.sub(r"(\n)?</?(image|video)>(\n)?", "", item['conversations'][0]['value']).strip()
+                question = re.sub(
+                    r"(\n)?</?(image|video)>(\n)?",
+                    "",
+                    item["conversations"][0]["value"],
+                ).strip()
                 question += MCQ_PROMPT_SUFFIX
-                conversation = [{
-                    "role": "system",
-                    "content": system_prompt
-                },{
-                    "role": "user",
-                    "content": question
-                }, {
-                    "role": "assistant",
-                    "content": item['conversations'][1]['value']
-                }]
+                conversation = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": question},
+                    {"role": "assistant", "content": item["conversations"][1]["value"]},
+                ]
 
                 images = item.get("image", None) or item.get("images", None)
                 videos = item.get("video", None)
@@ -417,31 +429,37 @@ def make_all_tasks(
                     if isinstance(images, str):
                         images = [images]
                     relative_media_paths = images
-                    media_mode = 'image'
+                    media_mode = "image"
                 elif videos:
                     if isinstance(videos, str):
                         videos = [videos]
                     relative_media_paths = videos
-                    media_mode = 'video'
+                    media_mode = "video"
                 else:
                     log.error(f"No media paths found for item: {item}")
                     continue
 
                 if media_dir:
-                    media_paths = [os.path.join(media_dir, path) for path in relative_media_paths]
+                    media_paths = [
+                        os.path.join(media_dir, path) for path in relative_media_paths
+                    ]
                 else:
                     media_paths = relative_media_paths
 
-                qa_pairs.append({
-                    "media_id": relative_media_paths[0],
-                    "id": item['id'],
-                    "media_paths": media_paths,
-                    "media_mode": media_mode,
-                    "conversations": conversation
-                })
+                qa_pairs.append(
+                    {
+                        "media_id": relative_media_paths[0],
+                        "id": item["id"],
+                        "media_paths": media_paths,
+                        "media_mode": media_mode,
+                        "conversations": conversation,
+                    }
+                )
 
     shard_qa_pairs = qa_pairs[shard_id::total_shard]
-    log.info(f"Sharding {len(qa_pairs)} tasks into {total_shard} shards, shard {shard_id} has {len(shard_qa_pairs)} tasks.")
+    log.info(
+        f"Sharding {len(qa_pairs)} tasks into {total_shard} shards, shard {shard_id} has {len(shard_qa_pairs)} tasks."
+    )
     for qa_pair in shard_qa_pairs:
         output_json_fname = os.path.join(
             results_output_folder, datasource_name, f"{qa_pair['media_id']}.json"
@@ -542,16 +560,12 @@ def run_model(
             reasoning = ""
 
         # Store the generated results in the OutputStructure object
-        output_result.prompt = (
-            input_task.prompt
-        )  # Store the original prompt
+        output_result.prompt = input_task.prompt  # Store the original prompt
         output_result.reasoning = reasoning
         output_result.answer = answer
         output_result.full_response = output_text
         # Check if the generated answer is correct (case-insensitive comparison)
-        output_result.is_correct = (
-            answer.lower() == input_task.correct_answer.lower()
-        )
+        output_result.is_correct = answer.lower() == input_task.correct_answer.lower()
 
         # If the generated answer is empty, add its index to the retry list
         if not answer:
@@ -632,7 +646,7 @@ def run_evaluation_metrics(result_path):
     total_count = 0
     result_files = glob.glob(os.path.join(result_path, "**", "*.json"), recursive=True)
     for result_file in result_files:
-        if 'results.json' in result_file:
+        if "results.json" in result_file:
             continue
         with open(result_file, "r") as f:
             result = json.load(f)
@@ -645,13 +659,15 @@ def run_evaluation_metrics(result_path):
         log.warning("No results found. Please check the results directory.")
         accuracy = 0
     else:
-        accuracy = correct_count/total_count
-    log.info(f"Total number of questions: {total_count}, Correct: {correct_count}, Accuracy: {accuracy}")
+        accuracy = correct_count / total_count
+    log.info(
+        f"Total number of questions: {total_count}, Correct: {correct_count}, Accuracy: {accuracy}"
+    )
 
     results = {
         "total_correct": correct_count,
         "total_questions": total_count,
-        "accuracy": accuracy
+        "accuracy": accuracy,
     }
     with open(os.path.join(result_path, "results.json"), "w") as f:
         json.dump(results, f)
@@ -754,7 +770,6 @@ def main():
     results_output_base = f"{args.results_dir}"
     log.info(f"Results base directory updated to: {results_output_base}")
 
-
     # Log all effective arguments for reproducibility
     log.info("--- Script Configuration ---")
     log.info(f"  Config file: {args.config_file}")
@@ -785,7 +800,9 @@ def main():
     if save_folder:
         results_output_dir = os.path.join(results_output_base, save_folder)
     else:
-        results_output_dir = os.path.join(results_output_base, os.path.basename(model_name.rstrip("/")), answer_type)
+        results_output_dir = os.path.join(
+            results_output_base, os.path.basename(model_name.rstrip("/")), answer_type
+        )
     log.info(f"Evaluation results will be saved to: {results_output_dir}")
 
     # === Step 1: Gather all tasks across all datasources and videos ===
@@ -800,7 +817,6 @@ def main():
         args.shard_id,
     )
     log.info(f"Initial number of tasks gathered: {len(input_tasks)}")
-
 
     # === Step 2: Load model and processor ===
     log.info("Loading model and processor...")
@@ -869,7 +885,9 @@ def main():
     log.info("Running evaluation metrics...")
     start_time = time.time()
     run_evaluation_metrics(results_output_dir)
-    log.info(f"Time taken to run evaluation metrics: {time.time() - start_time:.2f} seconds")
+    log.info(
+        f"Time taken to run evaluation metrics: {time.time() - start_time:.2f} seconds"
+    )
 
 
 # Script entry point

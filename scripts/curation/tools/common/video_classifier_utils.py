@@ -8,10 +8,16 @@ from openai import OpenAI
 from scripts.curation.tools.common.mediaprocessor import MediaProcessor
 
 # Default inference endpoints
-DEFAULT_ENDPOINTS = {"qwen7b": "http://10.31.92.100:8006/v1", "reason": "http://10.31.92.100:8007/v1"}
+DEFAULT_ENDPOINTS = {
+    "qwen7b": "http://10.31.92.100:8006/v1",
+    "reason": "http://10.31.92.100:8007/v1",
+}
 
 # Default model names
-DEFAULT_MODELS = {"qwen7b": "Qwen/Qwen2.5-VL-7B-Instruct", "reason": "/config/models/qwen2p5_vl_7B_instruct"}
+DEFAULT_MODELS = {
+    "qwen7b": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "reason": "/config/models/qwen2p5_vl_7B_instruct",
+}
 
 
 def find_video_files(directory: str) -> List[str]:
@@ -24,9 +30,15 @@ def find_video_files(directory: str) -> List[str]:
     return video_files
 
 
-def get_openai_client(model_name: str, inference_endpoint: Optional[str] = None) -> OpenAI:
+def get_openai_client(
+    model_name: str, inference_endpoint: Optional[str] = None
+) -> OpenAI:
     """Get OpenAI client with appropriate endpoint."""
-    url = inference_endpoint if inference_endpoint else DEFAULT_ENDPOINTS[model_name.lower()]
+    url = (
+        inference_endpoint
+        if inference_endpoint
+        else DEFAULT_ENDPOINTS[model_name.lower()]
+    )
     return OpenAI(base_url=url, api_key=os.getenv("NVCF_API_KEY", ""))
 
 
@@ -74,7 +86,12 @@ def process_video(
         messages = [{"role": "user", "content": [media_content, {"type": "text", "text": prompt + instruction}]}]  # type: ignore
 
         completion = client.chat.completions.create(  # type: ignore
-            model=model, messages=messages, temperature=temperature, top_p=1, max_tokens=max_tokens, stream=stream
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            top_p=1,
+            max_tokens=max_tokens,
+            stream=stream,
         )
         return completion.choices[0].message.content
     except Exception as e:  # noqa
@@ -117,7 +134,12 @@ def process_directory(
     results = {}
     for video_path in video_files:
         logger.info(f"\nProcessing: {video_path}")
-        result = process_video(video_path, prompt, model_name=model_name, inference_endpoint=inference_endpoint)
+        result = process_video(
+            video_path,
+            prompt,
+            model_name=model_name,
+            inference_endpoint=inference_endpoint,
+        )
         rel_path = os.path.relpath(video_path, input_dir)
 
         if result:

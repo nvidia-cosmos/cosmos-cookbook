@@ -11,7 +11,9 @@ def find_mp4_files(root_dir: str) -> list[str]:
     mp4_files = []
     for dirpath, _, filenames in os.walk(root_dir):
         for filename in filenames:
-            if filename.lower().endswith(".mp4") and not filename.startswith("cropped_"):
+            if filename.lower().endswith(".mp4") and not filename.startswith(
+                "cropped_"
+            ):
                 mp4_files.append(os.path.join(dirpath, filename))
     return mp4_files
 
@@ -32,7 +34,9 @@ def get_crop_params(video_path: str) -> str | None:
         "-",
     ]
     try:
-        result = subprocess.run(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE, text=True, check=True)
+        result = subprocess.run(
+            cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE, text=True, check=True
+        )
     except subprocess.CalledProcessError as e:
         output = e.stderr
     else:
@@ -55,17 +59,23 @@ MIN_CROP_SIZE = 16
 def adjust_crop_to_aspect(crop_param: str, orig_w: int, orig_h: int) -> str | None:
     parts = crop_param.split(":")
     if len(parts) != 4 or not all(p.isdigit() for p in parts):
-        logger.error(f"    [ERROR] Invalid crop parameter: {crop_param}, skipping this file.")
+        logger.error(
+            f"    [ERROR] Invalid crop parameter: {crop_param}, skipping this file."
+        )
         return None
     crop_w, crop_h, crop_x, crop_y = map(int, parts)
     if crop_w < MIN_CROP_SIZE or crop_h < MIN_CROP_SIZE:
-        logger.error(f"    [ERROR] Crop width/height too small: {crop_param}, skipping this file.")
+        logger.error(
+            f"    [ERROR] Crop width/height too small: {crop_param}, skipping this file."
+        )
         return None
     orig_aspect = orig_w / orig_h
     crop_aspect = crop_w / crop_h
     # If aspect ratio difference > 1%, adjust
     if abs(crop_aspect - orig_aspect) / orig_aspect > 0.01:
-        logger.info(f"    [INFO] Adjusting crop to preserve aspect ratio ({orig_aspect:.4f})")
+        logger.info(
+            f"    [INFO] Adjusting crop to preserve aspect ratio ({orig_aspect:.4f})"
+        )
         # Prefer to reduce crop_h (letterbox) or crop_w (pillarbox) as needed
         if crop_aspect > orig_aspect:
             # Too wide, reduce crop_w
@@ -86,7 +96,18 @@ def crop_video(input_path: str, crop_param: str, output_path: str) -> None:
     out_dir = os.path.dirname(output_path)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir, exist_ok=True)
-    cmd = ["ffmpeg", "-hide_banner", "-y", "-i", input_path, "-vf", f"crop={crop_param}", "-c:a", "copy", output_path]
+    cmd = [
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        input_path,
+        "-vf",
+        f"crop={crop_param}",
+        "-c:a",
+        "copy",
+        output_path,
+    ]
     subprocess.run(cmd, check=True)
 
 
@@ -155,9 +176,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Remove pillarbox or letterbox with text banners from videos and save to output directory."
     )
-    parser.add_argument("--input_dir", type=str, default=".", help="Input directory to search for mp4 files")
-    parser.add_argument("--output_dir", type=str, required=True, help="Directory to save cropped videos")
-    parser.add_argument("--max_passes", type=int, default=3, help="Maximum number of passes for cropping")
+    parser.add_argument(
+        "--input_dir",
+        type=str,
+        default=".",
+        help="Input directory to search for mp4 files",
+    )
+    parser.add_argument(
+        "--output_dir", type=str, required=True, help="Directory to save cropped videos"
+    )
+    parser.add_argument(
+        "--max_passes",
+        type=int,
+        default=3,
+        help="Maximum number of passes for cropping",
+    )
     args = parser.parse_args()
 
     input_dir = args.input_dir

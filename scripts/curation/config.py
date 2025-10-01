@@ -24,7 +24,11 @@ def is_lepton_job() -> bool:
 
 
 LEPTON_CONFIG_FILE_LOCATION = pathlib.Path("~/.config/dir/lepton_config.yaml")
-CONFIG_FILE_LOCATION = pathlib.Path("~/.config/dir/config.yaml") if not is_lepton_job() else LEPTON_CONFIG_FILE_LOCATION
+CONFIG_FILE_LOCATION = (
+    pathlib.Path("~/.config/dir/config.yaml")
+    if not is_lepton_job()
+    else LEPTON_CONFIG_FILE_LOCATION
+)
 
 
 @attrs.define
@@ -91,7 +95,9 @@ class PostgresUser:
 
     user: str
     password: str = attrs.field(repr=False)
-    endpoint: str = "videoprd20240530230024961300000001.cfj3pyamiol7.us-west-2.rds.amazonaws.com"
+    endpoint: str = (
+        "videoprd20240530230024961300000001.cfj3pyamiol7.us-west-2.rds.amazonaws.com"
+    )
 
 
 @attrs.define
@@ -404,7 +410,9 @@ def maybe_load_config() -> Optional[ConfigFileData]:
 def load_config() -> ConfigFileData:
     config = maybe_load_config()
     if config is None:
-        raise RuntimeError("DIR config file not found. See '/README.md#Add the yotta config file' for more info.")
+        raise RuntimeError(
+            "DIR config file not found. See '/README.md#Add the yotta config file' for more info."
+        )
     return config
 
 

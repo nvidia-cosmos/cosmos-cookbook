@@ -14,10 +14,10 @@ FID ([Heusel et al., 2017](https://arxiv.org/abs/1706.08500)) measures the simil
 
 - **Lower is better**: Values closer to 0 indicate better quality
 - **Typical ranges**:
-    - Excellent: < 10
-    - Good: 10-30
-    - Acceptable: 30-50
-    - Poor: > 50
+  - Excellent: < 10
+  - Good: 10-30
+  - Acceptable: 30-50
+  - Poor: > 50
 - **What it measures**: Visual quality and realism at the frame level
 
 #### 2. **FVD (Fréchet Video Distance)**
@@ -26,10 +26,10 @@ FVD ([Unterthiner et al., 2018](https://arxiv.org/abs/1812.01717)) extends FID t
 
 - **Lower is better**: Values closer to 0 indicate better quality
 - **Typical ranges**:
-    - Excellent: < 100
-    - Good: 100-200
-    - Acceptable: 200-400
-    - Poor: > 400
+  - Excellent: < 100
+  - Good: 100-200
+  - Acceptable: 200-400
+  - Poor: > 400
 - **What it measures**: Visual quality AND temporal coherence
 
 ### Why These Metrics Matter for ITS

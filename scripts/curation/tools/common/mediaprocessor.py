@@ -68,18 +68,26 @@ class MediaProcessor:
                 # Create temporary file
                 temp_video_path = os.path.join(self.temp_dir, "temp_cropped.mp4")
                 # Use ffmpeg to crop video
-                os.system(f"ffmpeg -y -i {video_path} -t {MAX_VIDEO_DURATION} -c copy {temp_video_path}")
+                os.system(
+                    f"ffmpeg -y -i {video_path} -t {MAX_VIDEO_DURATION} -c copy {temp_video_path}"
+                )
                 video_path = temp_video_path
 
-            video_data = fetch_video({"video": video_path, "fps": DEFAULT_FPS})  # TCHW, float32, [0, 255]
-            video_data = video_data.permute(0, 2, 3, 1).numpy().astype(np.uint8)  # THWC, uint8, [0, 255]
+            video_data = fetch_video(
+                {"video": video_path, "fps": DEFAULT_FPS}
+            )  # TCHW, float32, [0, 255]
+            video_data = (
+                video_data.permute(0, 2, 3, 1).numpy().astype(np.uint8)
+            )  # THWC, uint8, [0, 255]
 
             # encode image with base64
             base64_frames = []
             for frame in video_data:
                 img = Image.fromarray(frame)
                 output_buffer = BytesIO()
-                img.save(output_buffer, format="jpeg")  # use png to avoid compression artifacts
+                img.save(
+                    output_buffer, format="jpeg"
+                )  # use png to avoid compression artifacts
                 byte_data = output_buffer.getvalue()
                 base64_str = base64.b64encode(byte_data).decode("utf-8")
                 base64_frames.append(base64_str)

@@ -3,8 +3,8 @@ Direct baselines_data module for running CSE/TSE evaluation on any video directo
 This version doesn't depend on eval_list.json and works with any video path.
 Completely independent version - all dependencies are local.
 """
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 
 # Use local mvbench modules
 from mvbench.data.base import BaseData, CameraView
@@ -14,6 +14,7 @@ from mvbench.data.generated import GeneratedStackedData
 @dataclass
 class SimpleClip:
     """Simple clip representation that doesn't depend on eval_list.json."""
+
     clip_id: str
     video_path: Path
     category: str = "custom"  # Default category for videos not in eval_list
@@ -32,22 +33,17 @@ class SimpleClip:
 
         # Try to parse chunk-XX-UUID format
         if stem.startswith("chunk-"):
-            parts = stem.split('-', 2)
+            parts = stem.split("-", 2)
             if len(parts) == 3:
                 return cls(
                     clip_id=parts[2],
                     chunk_id=parts[1],
                     video_path=video_path,
-                    category="custom"
+                    category="custom",
                 )
 
         # Otherwise use the whole stem as clip_id
-        return cls(
-            clip_id=stem,
-            chunk_id="",
-            video_path=video_path,
-            category="custom"
-        )
+        return cls(clip_id=stem, chunk_id="", video_path=video_path, category="custom")
 
 
 def get_data_direct(video_path: Path) -> BaseData:

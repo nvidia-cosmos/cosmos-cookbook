@@ -63,7 +63,9 @@ def decode_video_for_inference(
     min_frames_range, max_frames_range = frame_count_range
     interval = max(1, (total_frames - 1) // max_frames_range + 1)
     if interval != 1:
-        print(f"Video downsampled from {total_frames} to {total_frames // interval} frames")
+        print(
+            f"Video downsampled from {total_frames} to {total_frames // interval} frames"
+        )
 
     # Downsample frames
     idx = np.arange(0, total_frames, interval)
@@ -87,7 +89,9 @@ def decode_video_for_inference(
     )
 
     list_of_pil_images = [
-        PILImage.fromarray(x).resize((resized_width, resized_height), resample=PILImage.Resampling.BICUBIC)
+        PILImage.fromarray(x).resize(
+            (resized_width, resized_height), resample=PILImage.Resampling.BICUBIC
+        )
         for x in video_frames
     ]
 
@@ -130,10 +134,14 @@ def predict_video_anomaly(video_path: str, model, processor) -> tuple[str, float
     ]
 
     # Apply chat template
-    text = processor.apply_chat_template(messages[0], tokenize=False, add_generation_prompt=True)
+    text = processor.apply_chat_template(
+        messages[0], tokenize=False, add_generation_prompt=True
+    )
 
     # Process inputs
-    image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(messages, return_video_kwargs=True)
+    image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(
+        messages, return_video_kwargs=True
+    )
     inputs = processor(
         text=[text],
         images=image_inputs,
@@ -143,7 +151,10 @@ def predict_video_anomaly(video_path: str, model, processor) -> tuple[str, float
     )
 
     # Move to device
-    inputs = {k: v.to(model.device) if isinstance(v, torch.Tensor) else v for k, v in inputs.items()}
+    inputs = {
+        k: v.to(model.device) if isinstance(v, torch.Tensor) else v
+        for k, v in inputs.items()
+    }
 
     # Generate prediction
     with torch.no_grad():
@@ -169,7 +180,9 @@ def predict_video_anomaly(video_path: str, model, processor) -> tuple[str, float
 def main():
     parser = argparse.ArgumentParser(description="Video reward model inference")
     parser.add_argument("video_path", help="Path to input video file")
-    parser.add_argument("--checkpoint", required=True, help="Path to trained model checkpoint")
+    parser.add_argument(
+        "--checkpoint", required=True, help="Path to trained model checkpoint"
+    )
 
     args = parser.parse_args()
 

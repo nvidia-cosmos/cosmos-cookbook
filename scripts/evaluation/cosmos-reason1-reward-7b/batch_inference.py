@@ -6,43 +6,59 @@ Processes all videos in a directory and generates text output files.
 
 import argparse
 import os
-import sys
 import shutil
+import sys
 from pathlib import Path
 from typing import List, Tuple
+
 
 def find_mp4_files(directory: str) -> List[str]:
     """Find all .mp4 files in a directory."""
     mp4_files = []
     if os.path.exists(directory):
         for file in os.listdir(directory):
-            if file.endswith('.mp4'):
+            if file.endswith(".mp4"):
                 mp4_files.append(os.path.join(directory, file))
     return sorted(mp4_files)
+
 
 def run_inference(video_path: str, checkpoint_path: str) -> Tuple[str, float]:
     """Run inference on a single video and return prediction and score."""
     try:
         # Import the inference module
-        sys.path.append('cosmos-reason1-reward-7b')
-        from inference import predict_video_anomaly, load_model_and_processor
+        sys.path.append("cosmos-reason1-reward-7b")
+        from inference import load_model_and_processor, predict_video_anomaly
 
         # Load model once if not already loaded
-        if not hasattr(run_inference, 'model'):
+        if not hasattr(run_inference, "model"):
             print("Loading model...")
-            run_inference.model, run_inference.processor = load_model_and_processor(checkpoint_path)
+            run_inference.model, run_inference.processor = load_model_and_processor(
+                checkpoint_path
+            )
 
-        prediction, score = predict_video_anomaly(video_path, run_inference.model, run_inference.processor)
+        prediction, score = predict_video_anomaly(
+            video_path, run_inference.model, run_inference.processor
+        )
         return prediction, score
     except Exception as e:
         print(f"Error processing {video_path}: {e}")
         return "Error", 0.0
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Batch video inference with text output generation")
-    parser.add_argument("--checkpoint", required=True, help="Path to trained model checkpoint")
-    parser.add_argument("--video-dir", required=True, help="Directory containing video files")
-    parser.add_argument("--output-dir", help="Output directory for text files (default: same as video directory)")
+    parser = argparse.ArgumentParser(
+        description="Batch video inference with text output generation"
+    )
+    parser.add_argument(
+        "--checkpoint", required=True, help="Path to trained model checkpoint"
+    )
+    parser.add_argument(
+        "--video-dir", required=True, help="Directory containing video files"
+    )
+    parser.add_argument(
+        "--output-dir",
+        help="Output directory for text files (default: same as video directory)",
+    )
 
     args = parser.parse_args()
 
@@ -89,7 +105,7 @@ def main():
 
         try:
             # Write text file with results
-            with open(output_file, 'w') as f:
+            with open(output_file, "w") as f:
                 f.write(f"Video: {video_name}\n")
                 f.write(f"Physical accuracy: {prediction}\n")
                 f.write(f"Score (high is good): {score:.4f}\n")
@@ -113,9 +129,9 @@ def main():
             error_count += 1
 
     # Print summary
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     print("PROCESSING SUMMARY")
-    print("="*50)
+    print("=" * 50)
     print(f"Total videos found: {len(videos)}")
     print(f"Successfully processed: {processed_count}")
     print(f"Errors encountered: {error_count}")
@@ -126,6 +142,7 @@ def main():
         print(f"Text files saved alongside original videos")
 
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

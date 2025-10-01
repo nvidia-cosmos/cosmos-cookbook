@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import streamlit as st
+
 from scripts.curation.tools.common.s3_utils import is_s3_path, sync_s3_to_local
 
 
@@ -34,7 +35,9 @@ def main(input_dir: str, nsamples: int = 100) -> None:
             return
 
         if len(all_videos) < nsamples:
-            st.warning(f"Only {len(all_videos)} videos found, showing all available videos.")
+            st.warning(
+                f"Only {len(all_videos)} videos found, showing all available videos."
+            )
             sampled_videos = all_videos
         else:
             sampled_videos = random.sample(all_videos, nsamples)
@@ -42,7 +45,9 @@ def main(input_dir: str, nsamples: int = 100) -> None:
         # Pagination
         videos_per_page = 12
         total_pages = (len(sampled_videos) + videos_per_page - 1) // videos_per_page
-        page = st.number_input("Page", min_value=1, max_value=total_pages, value=1, step=1)
+        page = st.number_input(
+            "Page", min_value=1, max_value=total_pages, value=1, step=1
+        )
 
         start_idx = (page - 1) * videos_per_page
         end_idx = min(start_idx + videos_per_page, len(sampled_videos))
@@ -68,7 +73,14 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Sample Video Browser")
-    parser.add_argument("--input_dir", required=True, help="Input directory (local path or S3 bucket)")
-    parser.add_argument("--nsamples", type=int, default=100, help="Number of samples to display (default: 100)")
+    parser.add_argument(
+        "--input_dir", required=True, help="Input directory (local path or S3 bucket)"
+    )
+    parser.add_argument(
+        "--nsamples",
+        type=int,
+        default=100,
+        help="Number of samples to display (default: 100)",
+    )
     args = parser.parse_args()
     main(args.input_dir, args.nsamples)

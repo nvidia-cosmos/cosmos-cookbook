@@ -19,7 +19,9 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 @torch.no_grad()
-def compute_fid(pred_images: List[torch.Tensor], gt_images: List[torch.Tensor]) -> float:
+def compute_fid(
+    pred_images: List[torch.Tensor], gt_images: List[torch.Tensor]
+) -> float:
     """
     Compute FID score between predicted and ground truth images.
 
@@ -41,7 +43,9 @@ def compute_fid(pred_images: List[torch.Tensor], gt_images: List[torch.Tensor]) 
     return fid.compute().item()
 
 
-def load_videos_for_fid(video_paths: List[str], num_frames: int = None) -> List[torch.Tensor]:
+def load_videos_for_fid(
+    video_paths: List[str], num_frames: int = None
+) -> List[torch.Tensor]:
     """
     Load videos and extract frames for FID computation.
 
@@ -70,7 +74,7 @@ def load_videos_for_fid(video_paths: List[str], num_frames: int = None) -> List[
         video = video.permute(0, 3, 1, 2).float().to(device)
 
         # Resize to 224x224 for Inception network
-        video = interpolate(video, (224, 224), mode='bilinear', align_corners=False)
+        video = interpolate(video, (224, 224), mode="bilinear", align_corners=False)
 
         # Extract individual frames
         video_images = [frame.unsqueeze(0) for frame in video]
@@ -85,30 +89,32 @@ def load_videos_for_fid(video_paths: List[str], num_frames: int = None) -> List[
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Compute FID score for single-view videos")
+    parser = argparse.ArgumentParser(
+        description="Compute FID score for single-view videos"
+    )
     parser.add_argument(
         "--pred_video_paths",
         type=str,
         required=True,
-        help="Path pattern for predicted videos (supports glob patterns, e.g., './path/*.mp4')"
+        help="Path pattern for predicted videos (supports glob patterns, e.g., './path/*.mp4')",
     )
     parser.add_argument(
         "--gt_video_paths",
         type=str,
         required=True,
-        help="Path pattern for ground truth videos (supports glob patterns, e.g., './path/*.mp4')"
+        help="Path pattern for ground truth videos (supports glob patterns, e.g., './path/*.mp4')",
     )
     parser.add_argument(
         "--num_frames",
         type=int,
         default=None,
-        help="Number of frames to use from each video (default: all frames)"
+        help="Number of frames to use from each video (default: all frames)",
     )
     parser.add_argument(
         "--output_file",
         type=str,
         default="fid_results.json",
-        help="Output JSON file for results (default: fid_results.json)"
+        help="Output JSON file for results (default: fid_results.json)",
     )
 
     args = parser.parse_args()
@@ -126,9 +132,9 @@ def main():
     print(f"Found {len(pred_video_paths)} predicted videos")
     print(f"Found {len(gt_video_paths)} ground truth videos")
 
-    assert len(gt_video_paths) == len(pred_video_paths), (
-        f"Number of videos mismatch: {len(gt_video_paths)} GT vs {len(pred_video_paths)} predicted"
-    )
+    assert len(gt_video_paths) == len(
+        pred_video_paths
+    ), f"Number of videos mismatch: {len(gt_video_paths)} GT vs {len(pred_video_paths)} predicted"
 
     # Load ground truth videos
     print("\nLoading ground truth videos...")
@@ -159,7 +165,7 @@ def main():
         "total_pred_frames": len(pred_images),
         "total_gt_frames": len(gt_images),
         "pred_video_pattern": args.pred_video_paths,
-        "gt_video_pattern": args.gt_video_paths
+        "gt_video_pattern": args.gt_video_paths,
     }
 
     with open(args.output_file, "w") as f:

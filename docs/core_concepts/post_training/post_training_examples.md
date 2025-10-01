@@ -6,14 +6,14 @@
 
 - **[Text2Image Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2image.md)**: A guide for generating high-quality images from text prompts
 - **[Video2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_video2world.md)**: A guide for generating videos from images/videos with text prompts, including the following:
-    - Single and batch processing
-    - Multi-frame conditioning
-    - Multi-GPU inference for faster generation
-    - Using the prompt refiner
-    - Rejection sampling for quality improvement
+  - Single and batch processing
+  - Multi-frame conditioning
+  - Multi-GPU inference for faster generation
+  - Using the prompt refiner
+  - Rejection sampling for quality improvement
 - **[Text2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2world.md)**: A guide for generating videos directly from text prompts, including the following:
-    - Single and batch processing
-    - Multi-GPU inference for faster generation
+  - Single and batch processing
+  - Multi-GPU inference for faster generation
 
 ### Post-train Pre-Trained Cosmos-Predict2 Models
 

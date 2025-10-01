@@ -24,15 +24,15 @@ import os
 import re
 import time
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from tqdm import tqdm
 
 # Import required modules with fallbacks
 try:
     import qwen_vl_utils
-    import transformers
     import torch
+    import transformers
     from cosmos_reason1_utils.text import create_conversation
 except ImportError as e:
     print(f"Error importing required modules: {e}")
@@ -48,11 +48,13 @@ DEFAULT_RESIZED_HEIGHT = 540
 DEFAULT_MAX_TOKENS = 1024
 
 
-def load_evaluation_data(annotation_path: str, media_path: str = "", limit: int = -1) -> List[Dict[str, Any]]:
+def load_evaluation_data(
+    annotation_path: str, media_path: str = "", limit: int = -1
+) -> List[Dict[str, Any]]:
     """Load evaluation data following CustomDataset logic."""
     print(f"Loading evaluation data from {annotation_path}...")
 
-    with open(annotation_path, 'r') as f:
+    with open(annotation_path, "r") as f:
         data = json.load(f)
 
     if limit > 0:
@@ -85,7 +87,7 @@ def load_evaluation_data(annotation_path: str, media_path: str = "", limit: int 
             "user_prompt": user_prompt,
             "response": response,
             "images": images,
-            "videos": videos
+            "videos": videos,
         }
         processed_data.append(processed_sample)
 
@@ -99,15 +101,11 @@ def load_model_and_processor(model_name: str):
 
     # Use transformers directly like in inference_sample.py
     model = transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
-        model_name,
-        torch_dtype="auto",
-        device_map="auto"
+        model_name, torch_dtype="auto", device_map="auto"
     )
     processor = transformers.AutoProcessor.from_pretrained(model_name)
 
     return model, processor
-
-
 
 
 def process_single_task(
@@ -116,18 +114,18 @@ def process_single_task(
     processor,
     task_id: int,
     vision_kwargs: Dict[str, Any],
-    max_tokens: int = DEFAULT_MAX_TOKENS
+    max_tokens: int = DEFAULT_MAX_TOKENS,
 ) -> Dict[str, Any]:
     """Process a single evaluation task following CustomDataset logic without response."""
-    annotation_id = entry.get('id', f'entry_{task_id}')
-    correct_answer = entry.get('response', '')
+    annotation_id = entry.get("id", f"entry_{task_id}")
+    correct_answer = entry.get("response", "")
 
     # Create conversation without response (for evaluation)
     conversation = create_conversation(
-        user_prompt=entry.get('user_prompt', ''),
+        user_prompt=entry.get("user_prompt", ""),
         response="",  # No response for evaluation
-        images=entry.get('images', []),
-        videos=entry.get('videos', []),
+        images=entry.get("images", []),
+        videos=entry.get("videos", []),
         vision_kwargs=vision_kwargs,
     )
 
@@ -149,7 +147,7 @@ def process_single_task(
     with torch.no_grad():
         generated_ids = model.generate(**inputs, max_new_tokens=max_tokens)
         generated_ids_trimmed = [
-            out_ids[len(in_ids):]
+            out_ids[len(in_ids) :]
             for in_ids, out_ids in zip(inputs.input_ids, generated_ids, strict=False)
         ]
         output_text = processor.batch_decode(
@@ -171,9 +169,11 @@ def process_single_task(
         # Remove common prefixes and extract the first word/number
         cleaned_text = output_text.strip()
         # Remove common prefixes like "The answer is", "Answer:", etc.
-        cleaned_text = re.sub(r"^(the\s+)?answer\s*(is)?\s*:?\s*", "", cleaned_text, flags=re.IGNORECASE)
+        cleaned_text = re.sub(
+            r"^(the\s+)?answer\s*(is)?\s*:?\s*", "", cleaned_text, flags=re.IGNORECASE
+        )
         # Extract first word or number
-        first_word_match = re.search(r'\b(\w+)\b', cleaned_text)
+        first_word_match = re.search(r"\b(\w+)\b", cleaned_text)
         if first_word_match:
             predicted_answer = first_word_match.group(1)
         else:
@@ -195,7 +195,7 @@ def process_single_task(
         "reasoning": "",
         "answer": predicted_answer,
         "full_response": output_text,
-        "is_correct": is_correct
+        "is_correct": is_correct,
     }
 
 
@@ -207,7 +207,7 @@ def save_single_result(result: Dict[str, Any], output_json_fname: str):
         os.makedirs(output_dir, exist_ok=True)
 
     # Save as list with single item (matching original format)
-    with open(output_json_fname, 'w') as f:
+    with open(output_json_fname, "w") as f:
         json.dump([result], f, indent=4)
 
 
@@ -233,19 +233,34 @@ def save_results(results: List[Dict[str, Any]], output_dir: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Simplified video language model evaluation")
-    parser.add_argument("--annotation_path", type=str, required=True, help="Path to annotation JSON file")
-    parser.add_argument("--media_path", type=str, default="", help="Path to media files directory")
-    parser.add_argument("--model_name", type=str, required=True, help="Model name or path")
-    parser.add_argument("--results_dir", type=str, required=True, help="Output directory for results")
-    parser.add_argument("--limit", type=int, default=-1, help="Limit number of tasks to evaluate")
+    parser = argparse.ArgumentParser(
+        description="Simplified video language model evaluation"
+    )
+    parser.add_argument(
+        "--annotation_path",
+        type=str,
+        required=True,
+        help="Path to annotation JSON file",
+    )
+    parser.add_argument(
+        "--media_path", type=str, default="", help="Path to media files directory"
+    )
+    parser.add_argument(
+        "--model_name", type=str, required=True, help="Model name or path"
+    )
+    parser.add_argument(
+        "--results_dir", type=str, required=True, help="Output directory for results"
+    )
+    parser.add_argument(
+        "--limit", type=int, default=-1, help="Limit number of tasks to evaluate"
+    )
 
     args = parser.parse_args()
 
     # Build vision kwargs from default macros
     vision_kwargs = {
         "fps": DEFAULT_FPS,
-        "max_pixels": DEFAULT_MAX_PIXELS, # Note: not used if resized_width and resized_height are provided
+        "max_pixels": DEFAULT_MAX_PIXELS,  # Note: not used if resized_width and resized_height are provided
         "resized_height": DEFAULT_RESIZED_HEIGHT,
         "resized_width": DEFAULT_RESIZED_WIDTH,
     }
@@ -254,7 +269,7 @@ def main():
     results_output_dir = os.path.join(
         args.results_dir,
         os.path.basename(args.model_name.rstrip("/")),
-        "naive"  # Default answer type
+        "naive",  # Default answer type
     )
 
     print(f"Annotation path: {args.annotation_path}")
@@ -274,7 +289,9 @@ def main():
 
     # Load evaluation data
     start_time = time.time()
-    evaluation_data = load_evaluation_data(args.annotation_path, args.media_path, args.limit)
+    evaluation_data = load_evaluation_data(
+        args.annotation_path, args.media_path, args.limit
+    )
     print(f"Data loaded in {time.time() - start_time:.1f}s")
 
     # Process tasks
@@ -282,7 +299,9 @@ def main():
     results = []
 
     for i, entry in enumerate(tqdm(evaluation_data, desc="Evaluating")):
-        result = process_single_task(entry, model, processor, i, vision_kwargs, DEFAULT_MAX_TOKENS)
+        result = process_single_task(
+            entry, model, processor, i, vision_kwargs, DEFAULT_MAX_TOKENS
+        )
         results.append(result)
 
     # Save results

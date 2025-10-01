@@ -26,10 +26,9 @@ import cosmos_rl.policy.config
 import pydantic
 import toml
 import torch.utils.data
-from cosmos_rl.utils.logging import logger
-
 from cosmos_reason1_utils.text import create_conversation
 from cosmos_reason1_utils.vision import VisionConfig
+from cosmos_rl.utils.logging import logger
 
 
 class CustomDatasetConfig(pydantic.BaseModel):

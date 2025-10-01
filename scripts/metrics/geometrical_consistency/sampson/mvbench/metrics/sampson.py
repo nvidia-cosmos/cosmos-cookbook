@@ -10,7 +10,6 @@ import torch
 from einops import rearrange
 from lightglue import LightGlue, SuperPoint, viz2d
 from lightglue.utils import rbd
-
 from mvbench.data.base import BaseData, CameraView
 from mvbench.utils.camera_model import FThetaCamera, IdealPinholeCamera
 from mvbench.utils.geometry import compute_rectify_map, rectify_image, rectify_kp
@@ -224,7 +223,6 @@ class BaseSampsonMetric:
             cv2.imwrite(str(path), cv2.cvtColor(img_canvas, cv2.COLOR_RGB2BGR))
 
         else:
-
             viz2d.plot_images([img0_rec.permute(2, 0, 1), img1_rec.permute(2, 0, 1)])
             viz2d.plot_matches(kp0_rec, kp1_rec, color=color.tolist(), lw=0.5)
             viz2d.save_plot(path)
@@ -309,7 +307,9 @@ class CrossViewSampsonMetric(BaseSampsonMetric):
                 if len(frame_pixel_error) > 0:
                     # Filter to keep only top K% (lowest errors) for this frame
                     num_keep = max(1, int(len(frame_pixel_error) * self.keep_ratio))
-                    _, top_indices = torch.topk(frame_pixel_error, num_keep, largest=False)
+                    _, top_indices = torch.topk(
+                        frame_pixel_error, num_keep, largest=False
+                    )
                     top_indices = torch.sort(top_indices)[0]  # Keep original order
 
                     filtered_kp0_rec_all.append(frame_kp0[top_indices])
@@ -394,10 +394,11 @@ class DynamicCrossViewSampsonMetric(BaseSampsonMetric):
 
         kp0_rec_all, kp1_rec_all = [], []
         for frame_idx in pbar(
-            range(data.num_frames()), desc=f"Dynamic cross metric {cv0.value} - {cv1.value}"
+            range(data.num_frames()),
+            desc=f"Dynamic cross metric {cv0.value} - {cv1.value}",
         ):
             # Get frame-specific calibration
-            assert hasattr(data, 'get_frame_calibration')
+            assert hasattr(data, "get_frame_calibration")
             frame_calib = data.get_frame_calibration(frame_idx)
 
             img0 = data.get_image(cv0, frame_idx)
@@ -418,11 +419,12 @@ class DynamicCrossViewSampsonMetric(BaseSampsonMetric):
         # For dynamic calibration, compute fundamental matrix based on method
         if self.fundamental_method == SampsonFundamentalMethod.CALIBRATED:
             # Use first frame's calibration for fundamental matrix
-            assert hasattr(data, 'get_frame_calibration')
+            assert hasattr(data, "get_frame_calibration")
             first_frame_calib = data.get_frame_calibration(0)
 
             t01 = torch.from_numpy(
-                np.linalg.inv(first_frame_calib.extrinsics[cv0]) @ first_frame_calib.extrinsics[cv1]
+                np.linalg.inv(first_frame_calib.extrinsics[cv0])
+                @ first_frame_calib.extrinsics[cv1]
             ).float()
             k0_rec = k1_rec = torch.from_numpy(self.target_intrinsic.K)
             f_mat = self.fundamental_from_calibration(t01, k0_rec, k1_rec)
@@ -471,22 +473,35 @@ class DynamicCrossViewSampsonMetric(BaseSampsonMetric):
             kp_start = kp_end - kp_count
 
         # Compute per-frame statistics
-        result_mean = torch.tensor([
-            torch.mean(pixel_error[kp_start[i]:kp_end[i]]) if kp_start[i] < kp_end[i] else torch.tensor(0.0)
-            for i in range(len(kp_count))
-        ])
-        result_median = torch.tensor([
-            torch.median(pixel_error[kp_start[i]:kp_end[i]]) if kp_start[i] < kp_end[i] else torch.tensor(0.0)
-            for i in range(len(kp_count))
-        ])
+        result_mean = torch.tensor(
+            [
+                torch.mean(pixel_error[kp_start[i] : kp_end[i]])
+                if kp_start[i] < kp_end[i]
+                else torch.tensor(0.0)
+                for i in range(len(kp_count))
+            ]
+        )
+        result_median = torch.tensor(
+            [
+                torch.median(pixel_error[kp_start[i] : kp_end[i]])
+                if kp_start[i] < kp_end[i]
+                else torch.tensor(0.0)
+                for i in range(len(kp_count))
+            ]
+        )
 
         # Visualization support (if needed)
         if self.visualization_folder is not None:
-            viz_path = self.visualization_folder / f"dynamic_cross_{cv0.value}_{cv1.value}"
+            viz_path = (
+                self.visualization_folder / f"dynamic_cross_{cv0.value}_{cv1.value}"
+            )
             viz_path.mkdir(exist_ok=True, parents=True)
 
             for frame_idx in range(data.num_frames()):
-                if frame_idx < len(kp_start) and kp_start[frame_idx] < kp_end[frame_idx]:
+                if (
+                    frame_idx < len(kp_start)
+                    and kp_start[frame_idx] < kp_end[frame_idx]
+                ):
                     s, e = kp_start[frame_idx], kp_end[frame_idx]
                     frame_calib = data.get_frame_calibration(frame_idx)
                     self.save_visualization(
