@@ -1,6 +1,7 @@
 [custom.dataset]
 annotation_path = "<PATH_TO_DATASET>/train_llava.json"
 media_path = "<PATH_TO_DATASET>/"
+system_prompt = "Answer the questions."
 
 [custom.vision]
 fps = 1
