@@ -11,7 +11,7 @@ We warmly welcome open source contributions to the Cosmos Cookbook! This is a co
 We'd love to hear your successful stories about how you've creatively used Cosmos models or repositories for different purposes, as well as practical recipes that you think others might benefit from learning. Whether you've:
 
 - Adapted models for novel applications
-- Discovered innovative workflows  
+- Discovered innovative workflows
 - Achieved impressive results in specific domains
 - Developed useful techniques or best practices
 - Found creative solutions to common challenges
@@ -21,16 +21,19 @@ Your experiences and knowledge help make this cookbook more valuable for the ent
 ### How to Contribute
 
 **For Complete Stories Ready to Share:**
+
 - **Raise a Pull Request** if your story is complete and ready to merge
 - We will review your contribution and get back to you within a week
 - Please keep your PRs as draft until you're ready for our review
 
 **For Ideas and Incomplete Stories:**
+
 - **Share in the Issues Board** if you have interest in sharing but don't have time to write up the complete story
 - We will work with you to embed your knowledge in the general cookbook after careful review
 - This is a great way to contribute even if you're short on time!
 
 **For Knowledge Gaps:**
+
 - **Raise an Issue** if there's a knowledge gap in the cookbook - missing important topics that you'd like to learn about but aren't currently covered
 - Help us identify what the community needs most
 
