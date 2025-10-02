@@ -25,21 +25,18 @@ jobs:
           python-version: '3.10'
       - name: Install uv
         uses: astral-sh/setup-uv@v2
-      - name: Install dependencies
-        run: |
-          uv venv
-          uv sync
       - name: Setup just
         uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff
       - name: Build documentation
         run: |
-          just ci-deploy-internal ci-deploy-external
+          just ci-deploy-external
         #      - name: Setup Pages
         #        uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: |
+            public/
 # Since the repo is still private, github pages is not yet enabled.
 # Uncomment the following once github pages is enabled for the repo:
 #  deploy:
