@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv venv
-          source .venv/bin/activate
+          uv sync
           uv pip install pre-commit
       - name: Run pre-commit
         run: |
@@ -41,12 +41,11 @@ jobs:
       - name: Install dependencies
         run: |
           uv venv
-          source .venv/bin/activate
-          uv pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin
+          uv sync
       - name: Build documentation
         run: |
-          source .venv/bin/activate
-          mkdocs build --strict
+          mkdir -p build/docs
+          uv run mkdocs build --strict
       - name: Upload docs build artifact
         uses: actions/upload-artifact@v4
         with:
