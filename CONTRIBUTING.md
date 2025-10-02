@@ -1,6 +1,6 @@
 # How to Contribute
 
-We'd love to receive your patches and contributions. Please keep your PRs as draft until such time that you would like us to review them.
+The Cosmos Cookbook is designed to create a dedicated space where the Cosmos team and community can openly share and contribute practical knowledge. We'd love to receive your patches and contributions to help build this valuable resource together.
 
 ## Open Source Contributions Welcome
 
