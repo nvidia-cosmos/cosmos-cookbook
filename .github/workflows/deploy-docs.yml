@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install uv
-        uses: astral-sh/setup-uv@v2
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
       - name: Setup just
         uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff
       - name: Build documentation
