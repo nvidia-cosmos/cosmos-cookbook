@@ -30,22 +30,19 @@ jobs:
       - name: Build documentation
         run: |
           just ci-deploy-external
-        #      - name: Setup Pages
-        #        uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            public/
-# Since the repo is still private, github pages is not yet enabled.
-# Uncomment the following once github pages is enabled for the repo:
-#  deploy:
-#    environment:
-#      name: github-pages
-#      url: ${{ steps.deployment.outputs.page_url }}
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v4
+          path: external/site/
+  deploy:
+    # Since github pages is not yet configured, this action is disabled.
+    if: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
