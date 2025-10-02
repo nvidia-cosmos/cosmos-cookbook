@@ -1,3 +1,0 @@
-# Physics Plausibility Checker
-
-WIP
