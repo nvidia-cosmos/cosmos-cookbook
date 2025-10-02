@@ -103,11 +103,6 @@ just serve-internal   # Serve internal documentation locally
 # Quality Control
 just lint            # Run linting and formatting
 just test            # Run all tests and validation
-
-# CI/CD (used in pipelines)
-just ci-lint         # CI linting
-just ci-deploy-external   # Deploy external docs
-just ci-deploy-internal   # Deploy internal docs
 ```
 
 ## Key Features

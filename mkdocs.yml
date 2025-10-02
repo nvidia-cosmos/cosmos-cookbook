@@ -29,7 +29,7 @@ markdown_extensions:
   - pymdownx.details
 theme:
   name: "material"
-  custom_dir: build/docs/assets/overrides
+  custom_dir: docs/assets/overrides
   features:
     - content.code.annotate
     - navigation.indexes
