@@ -81,11 +81,11 @@ wandb login
 
 ## Repository Setup
 
-Clone the Cosmos Playbook repository and install it in development mode:
+Clone the Cosmos Cookbook repository and install it in development mode:
 
 ```shell
-git clone git@github.com:nvidia-cosmos/cosmos-playbook.git
-cd cosmos-playbook
+git clone git@github.com:nvidia-cosmos/cosmos-cookbook.git
+cd cosmos-cookbook
 just install
 source .venv/bin/activate
 ```

@@ -49,8 +49,8 @@ uv tool install -U yt-dlp     # Video downloading
 
 ```bash
 # Clone the repository
-git clone https://github.com/nvidia-cosmos/cosmos-playbook.git
-cd cosmos-playbook
+git clone https://github.com/nvidia-cosmos/cosmos-cookbook.git
+cd cosmos-cookbook
 
 # Install dependencies and setup
 just install
@@ -69,7 +69,7 @@ Then open [http://localhost:8000](http://localhost:8000) in your browser.
 
 ## Repository Structure
 
-The Cosmos Playbook is organized into two main directories:
+The Cosmos Cookbook is organized into two main directories:
 
 ### `docs/`
 
@@ -82,7 +82,7 @@ Contains the source documentation in markdown files:
 
 ### `scripts/`
 
-Contains executable scripts referenced throughout the playbook:
+Contains executable scripts referenced throughout the cookbook:
 
 - Data processing and curation pipelines
 - Model evaluation and quality control scripts
@@ -118,7 +118,7 @@ just test            # Run all tests and validation
 
 - **[Full Documentation](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)** - Complete guides and examples
 - **[Getting Started](docs/getting_started.md)** - Environment setup and first steps
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the playbook
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the cookbook
 - **[Examples](docs/examples/)** - Real-world use cases and workflows
 
 ## Community & Support

@@ -4,7 +4,7 @@ The Cosmos Cookbook is designed to create a dedicated space where the Cosmos tea
 
 ## Open Source Contributions Welcome
 
-We warmly welcome open source contributions to the Cosmos Cookbook! This is a community-driven playbook documenting the Cosmos ecosystem, and we especially value your participation in the following ways:
+We warmly welcome open source contributions to the Cosmos Cookbook! This is a community-driven cookbook documenting the Cosmos ecosystem, and we especially value your participation in the following ways:
 
 ### Sharing Your Success Stories and Practical Recipes
 
