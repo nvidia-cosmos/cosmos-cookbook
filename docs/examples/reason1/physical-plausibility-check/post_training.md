@@ -56,22 +56,26 @@ The dataset highlights critical challenges for generative models in understandin
 #### Low Physical Plausibility (Score: 2/5)
 
 <video controls width="480">
-  <source src="assets/A_backflip_is_performed_close_to_a_wall._The_person_carefully_ensures_their_momentum_keeps_them_clear_from_hitting_the_wall.mp4" type="video/mp4">
+  <source src="assets/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
 </video>
 
-**Scene**: Person performing a backflip close to a wall
-**Physics Issue**: Momentum and spatial constraints appear inconsistent with real-world behavior
-**Key Problems**: Unrealistic trajectory and clearance from wall
+- **Scene**: A robotic arm gently pokes a stack of plastic cups.
 
-#### High Physical Plausibility (Score: 5/5)
+- **Physics Issue**: The stack of cups does not maintain its shape when the robotic arm interacts with it.
+
+- **Key Problems**: Conservation of mass and elasticity.
+
+#### High Physical Plausibility (Score: 4/5)
 
 <video controls width="480">
-  <source src="assets/A_bartender_pours_cola_from_a_bottle_into_a_large_glass_until_it_overflows_onto_the_bar.mp4" type="video/mp4">
+  <source src="assets/A_robotic_arm_pushes_a_metal_cube_off_a_steel_table.mp4" type="video/mp4">
 </video>
 
-**Scene**: Bartender pouring cola until overflow
-**Physics Strengths**: Realistic fluid dynamics, gravity effects, and overflow behavior
-**Key Success**: Accurate liquid physics and container interactions
+- **Scene**: A robotic arm pushes a metal cube off a steel table.
+
+- **Physics Strengths**: The robotic arm moves the cube from one position to another. The cube maintains its shape and volume throughout the interaction.
+
+- **Key Success**: Conservation of mass and gravity.
 
 ## Zero-Shot Inference
 
@@ -113,23 +117,23 @@ We compare Cosmos Reason1 with Gemini-2.0-Flash-Exp (baseline from the paper). E
 
 The following examples demonstrate zero-shot predictions from the Cosmos Reason1 model:
 
-#### Tennis Shot
+#### Car Crashes into Stack of Cardboard Boxes
 
 <video controls width="480">
-  <source src="assets/A_player_hits_a_forehand_drive,_the_ball_spinning_rapidly_as_it_crosses_the_net.mp4" type="video/mp4">
+  <source src="assets/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
 </video>
 
 - **Model prediction**: 1
 - **Ground truth**: 2 (poor adherence to physical laws)
 
-#### Bow Tie Manipulation
+#### Robotic Arm Operates on Circuit Board
 
 <video controls width="480">
-  <source src="assets/Close-up_of_fingers_manipulating_a_silk_bow_tie,_showing_the_precise_steps_of_tying_a_simple_knot.mp4" type="video/mp4">
+  <source src="assets/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch_2265.mp4" type="video/mp4">
 </video>
 
 - **Model prediction**: 5
-- **Ground truth**: 4 (good adherence to physical laws)
+- **Ground truth**: 5 (perfect adherence to physical laws)
 
 ## Post-Training
 
@@ -199,26 +203,24 @@ After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using 
 
 The following examples show prediction improvements from fine-tuning:
 
-#### Candle Blowing
+#### Robotic Arm Operates on Circuit Board
 
 <video controls width="480">
-    <source src="assets/A_person_blows_out_a_candle_from_a_distance__resulting_in_a_small_puff_of_smoke_near_the_extinguished_flame_.mp4" type="video/mp4">
+    <source src="assets/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
 </video>
 
-- **Before SFT**: 2
-- **After SFT (60 steps)**: 4
-- **Ground truth**: 4
+- **Before SFT**: 3
+- **After SFT (60 steps)**: 5
+- **Ground truth**: 5
 
-The fine-tuned model correctly identifies realistic smoke behavior and air dynamics.
-
-#### Cricket Shot
+#### Robot Shovels Snow
 
 <video controls width="480">
-    <source src="assets/A_batsman_hits_a_six__the_ball_clearing_the_boundary_rope_.mp4" type="video/mp4">
+    <source src="assets/ed9bc667-9b64-4224-8860-8108a42c8823_result.mp4" type="video/mp4">
 </video>
 
-- **Before SFT**: 5
-- **After SFT (60 steps)**: 2
-- **Ground truth**: 2
+- **Before SFT**: 4
+- **After SFT (60 steps)**: 5
+- **Ground truth**: 5
 
-The fine-tuned model better recognizes unrealistic ball trajectories and physics violations.
+For both examples, the fine-tuned model correctly predicts the physical plausibility scores.
