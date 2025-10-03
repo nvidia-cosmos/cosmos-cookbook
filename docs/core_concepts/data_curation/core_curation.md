@@ -15,6 +15,7 @@ The Cosmos-Curate tool offers multiple deployment modes to suit different use ca
 2. **Local Infrastructure** — *Full control with Docker*
 
     For complete control over the curation pipeline, you can run Cosmos-Curate locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
+    Note if your local system has only a single GPU, Cosmos-Curate will disable `STREAMING` mode automatically because it cannot have multiple GPU stages active at the same time; in that case, Ray worker can OOM if input video size/volume is large.
 
 3. **SLURM Clusters** — *High-performance computing at scale*
 
@@ -32,10 +33,10 @@ Install the Cosmos Curate CLI client (detailed setup instructions are provided i
 
 ```shell
 # Quick setup (full instructions in Local Setup section)
-git clone https://github.com/nvidia-cosmos/cosmos-curate.git
-cd cosmos-curate && git submodule update --init
-uv venv && source .venv/bin/activate
-pip install -e cosmos-xenna/ && poetry install --extras=local
+git clone --recurse-submodules https://github.com/nvidia-cosmos/cosmos-curate.git
+cd cosmos-curate
+uv venv --python=3.10 && source .venv/bin/activate
+uv pip install poetry && poetry install --extras=local
 ```
 
 ### NVCF Configuration
@@ -43,8 +44,9 @@ pip install -e cosmos-xenna/ && poetry install --extras=local
 1. **Set up an NGC API key**: If you don't have a valid API key yet, acquire one as follows: Go to <https://org.ngc.nvidia.com/setup>, select **Cosmos API** from the top-left corner, and choose **no team** as the org profile. Click on **Generate API Key**, then select **Generate Personal Key**. Generate a key and save it for the future usage (the key is only readable once).
 
     ```shell
+    cosmos-curate nvcf config set --org <NVCF Org ID> --key <NGC NVCF API Key>
+    # in case you will upload helm chart to you org
     ngc config set
-    cosmos-curate nvcf config set
     ```
 
 2. **Register the active function** that has been pre-deployed from Cosmos Engineering team:
@@ -97,8 +99,7 @@ The following is an example JSON for the initial processing on an Intelligent Tr
         "captioning_prompt_variant": "default",
         "captioning_prompt_text": "You are a video caption expert. Please describe this video in two paragraphs: 1. Describe the static scene: What objects and people are present? What are their spatial relationships and the overall environment? 2. Describe the actions and motion: How do objects move and interact? Focus on object permanence, collisions, and physical interactions. Be specific and precise in your observations.",
         "limit": 0,
-        "limit_clips": 0,
-        "perf_profile": true
+        "limit_clips": 0
    }
 }
 ```
@@ -139,7 +140,7 @@ There are often situations where caption quality needs progressive improvement. 
 {
     "pipeline": "split",
     "args": {
-        "input_video_path": "s3://your_bucket/your_dataset/processed_data/v0",
+        "input_video_path": "s3://your_bucket/your_dataset/processed_data/v0/clips",
         "output_clip_path": "s3://your_bucket/your_dataset/processed_data/v1",
         "generate_embeddings": false,
         "generate_previews": false,
@@ -150,8 +151,7 @@ There are often situations where caption quality needs progressive improvement. 
         "captioning_prompt_variant": "default",
         "captioning_prompt_text": "<your modified prompt here>",
         "limit": 0,
-        "limit_clips": 0,
-        "perf_profile": true
+        "limit_clips": 0
    }
 }
 ```
@@ -173,24 +173,6 @@ Here's a template for the sharding configuration:
         "annotation_version": "v0",
         "verbose": true,
         "perf_profile": false
-    },
-    "pipeline_config": {
-        "stages": [
-            {
-                "class": "nemo_curator.video.pipelines.video.captioning.captioning_stages.T5Stage",
-                "params": {
-                    "caption_fields": [
-                        "qwen_caption"
-                    ]
-                }
-            },
-            {
-                "class": "nemo_curator.video.pipelines.video.io.download_stages.DownloadPackUpload",
-                "stage_spec": {
-                    "num_workers_per_node": 4
-                }
-            }
-        ]
     }
 }
 ```
@@ -249,21 +231,22 @@ We strongly recommend using a Python virtual environment management system that 
 uv tool install poetry
 
 # Clone the repository
-git clone https://github.com/nvidia-cosmos/cosmos-curate.git
+git clone --recurse-submodules https://github.com/nvidia-cosmos/cosmos-curate.git
 cd cosmos-curate
-git submodule update --init
 
 # Install the repository
-uv venv
+uv venv --python=3.10
 source .venv/bin/activate
-pip install -e cosmos-xenna/
 poetry install --extras=local
 
 # Test installation
 cosmos-curate --help
 ```
 
-Alternatively, you can execute `./devset.sh` to complete initial setup of the environment from within your virtual environment.
+Alternatively, you can execute `./devset.sh` to complete initial setup of the environment from **within your virtual environment**.
+
+**There are a few more steps needed** to setup access to huggingface, NGC container registry etc.
+Please refer to this [Initial Setup section](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#initial-setup) for details.
 
 ### Quick Start: Hello-World Pipeline
 
@@ -274,10 +257,10 @@ The hello-world example provides a minimal introduction to the framework:
 cosmos-curate image build --image-name cosmos-curate --image-tag hello-world --envs transformers
 
 # 2. Download the GPT-2 model weights
-cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world -- python3 -m cosmos_curate.core.managers.model_cli download --models gpt2
+cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world -- pixi run python -m cosmos_curate.core.managers.model_cli download --models gpt2
 
 # 3. Run the hello-world pipeline
-cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world --curator-path . -- python3 -m cosmos_curate.pipelines.examples.hello_world_pipeline
+cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world --curator-path . -- pixi run python -m cosmos_curate.pipelines.examples.hello_world_pipeline
 ```
 
 ### Production Video Pipeline Setup
@@ -289,7 +272,7 @@ For the full video curation pipeline, you'll need to build a more comprehensive 
 This step can take up to 45 minutes for a fresh build:
 
 ```bash
-cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0 --envs text_curator,unified,video_splitting
+cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0
 ```
 
 #### Download Model Weights
@@ -297,7 +280,7 @@ cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0 --envs te
 Download weights for all required models. This may take 10+ minutes, depending on network speed.
 
 ```bash
-cosmos-curate local launch --image-name cosmos-curate --image-tag 1.0.0 -- python3 -m cosmos_curate.core.managers.model_cli download
+cosmos-curate local launch --image-name cosmos-curate --image-tag 1.0.0 -- pixi run python3 -m cosmos_curate.core.managers.model_cli download
 ```
 
 ### Running the Split-Annotate Pipeline
@@ -318,7 +301,7 @@ The split-annotate pipeline handles the core video processing workflow:
 ```bash
 cosmos-curate local launch \
     --image-name cosmos-curate --image-tag 1.0.0 --curator-path . \
-    -- python3 -m cosmos_curate.pipelines.video.run_pipeline split \
+    -- pixi run python3 -m cosmos_curate.pipelines.video.run_pipeline split \
     --input-video-path <local or s3 path containing input videos> \
     --output-clip-path <local or s3 path to store output clips and metadata> \
     --limit 1
@@ -332,27 +315,6 @@ cosmos-curate local launch \
 - Creates descriptive captions for each 256-frame window.
 - Stores processed clips and metadata to the specified output path.
 
-#### Advanced: API Endpoint Mode
-
-For integration with other systems, you can run the pipeline as a service:
-
-```bash
-# 1. Launch container with service endpoint
-cosmos-curate local launch \
-   --image-name cosmos-curate --image-tag 1.0.0 --curator-path . \
-   -- python cosmos_curate/scripts/onto_nvcf.py --helm False
-
-# 2. After "Application startup complete" appears, invoke via API
-curl -X POST http://localhost:8000/v1/run_pipeline -H "NVCF-REQID: 1234-5678" -d '{
-    "pipeline": "split",
-    "args": {
-        "input_video_path": "<local or s3 path containing input videos>",
-        "output_clip_path": "<local or s3 path to store output clips and metadata>",
-        "limit": 1
-    }
-}'
-```
-
 ### Generating Cosmos-Predict2 Datasets
 
 To create datasets specifically for Cosmos-Predict2 Video2World post-training, use the following command:
@@ -360,7 +322,7 @@ To create datasets specifically for Cosmos-Predict2 Video2World post-training, u
 ```bash
 cosmos-curate local launch \
     --image-name cosmos-curate --image-tag 1.0.0 --curator-path . \
-    -- python3 -m cosmos_curate.pipelines.video.run_pipeline split \
+    -- pixi run python3 -m cosmos_curate.pipelines.video.run_pipeline split \
     --input-video-path <input_path> \
     --output-clip-path <output_path> \
     --generate-cosmos-predict-dataset predict2 \
