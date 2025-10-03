@@ -46,6 +46,7 @@ DEFAULT_MAX_PIXELS = 655360
 DEFAULT_RESIZED_WIDTH = 960
 DEFAULT_RESIZED_HEIGHT = 540
 DEFAULT_MAX_TOKENS = 1024
+SYSTEM_PROMPT = "Answer the questions."
 
 
 def load_evaluation_data(
@@ -122,6 +123,7 @@ def process_single_task(
 
     # Create conversation without response (for evaluation)
     conversation = create_conversation(
+        system_prompt=SYSTEM_PROMPT,
         user_prompt=entry.get("user_prompt", ""),
         response="",  # No response for evaluation
         images=entry.get("images", []),
