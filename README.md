@@ -33,7 +33,6 @@ Before getting started, ensure you have the following requirements:
 - **CUDA**: 12.4 or later
 - **Docker Engine**
 - **Access**: Internet connection for downloading models and dependencies
-- **Permissions**: Administrator/sudo access for system installations
 
 ## Quick Start
 
