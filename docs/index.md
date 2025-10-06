@@ -7,7 +7,7 @@ The **NVIDIA Cosmos ecosystem** is a suite of World Foundation Models (WFMs) for
 The Cosmos ecosystem covers the complete AI development lifecycle: from **inference** with pre-trained models to **custom post-training** for domain-specific adaptation. The cookbook includes quick-start inference examples, advanced post-training workflows, and proven recipes for successful model deployment and customization.
 
 <video width="100%" height="60%" controls autoplay loop muted>
-  <source src="assets/images/front_intro.mp4" type="video/mp4">
+  <source src="assets/images/recipe_overview.gif" type="image/gif">
   Your browser does not support the video tag.
 </video>
 
@@ -24,6 +24,7 @@ We encourage community contributions including new examples, workflow improvemen
 The cookbook includes comprehensive case studies demonstrating real-world applications across the Cosmos ecosystem.
 
 ### **Cosmos Predict**
+
 
 #### Future state prediction and generation
 
@@ -79,6 +80,8 @@ The cookbook is organized around key workflows spanning **inference** and **trai
 **2. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict2, Transfer1, and Reason1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
 
 **3. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason1 as a quality filter (e.g. for synthetic data rejection sampling).
+
+**4. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
 
 ## Quick Start Paths
 

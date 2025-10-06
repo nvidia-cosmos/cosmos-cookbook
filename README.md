@@ -19,11 +19,19 @@ The Cosmos ecosystem includes five core repositories: **Curate**, **Predict2**, 
 
 ## Prerequisites
 
-Before getting started, ensure you have:
+Before getting started, ensure you have the following requirements:
 
-- **Operating System**: Linux, macOS, or WSL on Windows
-- **Python**: Version 3.10+ (see `.python-version`)
-- **Hardware**: NVIDIA GPU recommended for training workflows
+### Hardware
+
+**NVIDIA GPUs**: Not required for local documentation rendering. For running cookbook recipes and workflows: Ampere architecture or newer (A100, H100) - minimum 1 GPU, recommended 8 GPUs
+
+### Software
+
+- **Operating System**: Ubuntu 24.04, 22.04, or 20.04
+- **Python**: Version 3.10+
+- **NVIDIA Container Toolkit**: 1.16.2 or later
+- **CUDA**: 12.4 or later
+- **Docker Engine**
 - **Access**: Internet connection for downloading models and dependencies
 - **Permissions**: Administrator/sudo access for system installations
 
@@ -103,6 +111,11 @@ just serve-internal   # Serve internal documentation locally
 # Quality Control
 just lint            # Run linting and formatting
 just test            # Run all tests and validation
+
+# Continuous Integration
+just ci-lint         # Run CI linting checks
+just ci-deploy-internal         # Deploy internal documentation
+just ci-deploy-external         # Deploy external documentation
 ```
 
 ## Key Features
