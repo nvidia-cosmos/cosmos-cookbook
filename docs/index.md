@@ -25,7 +25,6 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 ### **Cosmos Predict**
 
-
 #### Future state prediction and generation
 
 | **Workflow** | **Description** | **Link** |
