@@ -76,7 +76,7 @@ class Prompt(pydantic.BaseModel):
 
 def parse_response(response):
     """Parse response to extract integer from <answer></answer> tags.
-    
+
     Returns:
         dict with 'answer' (int or None) and 'raw' (str) keys, or None if parsing failed
     """
@@ -85,7 +85,7 @@ def parse_response(response):
         wrapped = f"<root>{response.strip()}</root>"
         root = ET.fromstring(wrapped)
         answer_element = root.find("answer")
-        
+
         if answer_element is not None and answer_element.text:
             answer_text = answer_element.text.strip()
             try:
@@ -94,11 +94,11 @@ def parse_response(response):
             except ValueError:
                 # If not a valid integer, return None
                 return {"answer": None, "raw": response}
-        
+
         return {"answer": None, "raw": response}
     except Exception:
         # If XML parsing fails, try regex as fallback
-        match = re.search(r'<answer>\s*(\d+)\s*</answer>', response)
+        match = re.search(r"<answer>\s*(\d+)\s*</answer>", response)
         if match:
             try:
                 answer_int = int(match.group(1))
@@ -120,8 +120,10 @@ def build_html_report(video_path, responses):
 
     # Parse responses
     parsed_responses = [parse_response(response) for response in responses]
-    valid_responses = [r for r in parsed_responses if r is not None and r.get("answer") is not None]
-    
+    valid_responses = [
+        r for r in parsed_responses if r is not None and r.get("answer") is not None
+    ]
+
     # Calculate statistics
     if valid_responses:
         answers = [r["answer"] for r in valid_responses]
@@ -158,7 +160,7 @@ def build_html_report(video_path, responses):
 
     <h2>Summary</h2>
     <div class="stats">"""
-    
+
     if avg_score is not None:
         html += f"""
         <div class="stat">
@@ -178,7 +180,7 @@ def build_html_report(video_path, responses):
         <div class="stat failed">
             <div>No valid scores parsed</div>
         </div>"""
-    
+
     html += f"""
         <div class="stat">
             <div style="font-size: 24px; font-weight: bold;">{len(valid_responses)}/{len(responses)}</div>
@@ -188,7 +190,9 @@ def build_html_report(video_path, responses):
 
     <h2>Detailed Results ({len(responses)} trials)</h2>"""
 
-    for i, (response, parsed) in enumerate(zip(responses, parsed_responses, strict=False), 1):
+    for i, (response, parsed) in enumerate(
+        zip(responses, parsed_responses, strict=False), 1
+    ):
         if parsed is None or parsed.get("answer") is None:
             html += f"""
     <div class="result">
