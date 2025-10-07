@@ -87,15 +87,17 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
     --8<-- "docs/examples/reason1/physical-plausibility-check/assets/score_prompt.yaml"
     ```
 
-To run zero-shot inference on the VideoPhy-2 evaluation set using 8 GPUs:
+We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason1 to run zero-shot inference.
 
-    # In the cosmos-reason root directory
-    uv run video_reward_videophy.py \
-        --dataset videophysics/videophy2_test \
-        --split test \
-        --model nvidia/Cosmos-Reason1-7B \
-        --prompt_path prompts/video_reward_v1_no_thinking.yaml \
-        --num_gpus 8
+1. Copy `scripts/examples/reason1/physical-plausibility-check/video_reward.py` from this repo to `cosmos-reason1/examples/video_critic/video_reward.py`, and copy the "Prompt for Scoring Physical Plausibility" yaml file above to `cosmos-reason1/prompts/video_reward.yaml`.
+2. Run the following command to run zero-shot inference on a video:
+
+        # In the cosmos-reason1 root directory
+        uv run examples/video_critic/video_reward.py \
+            --video_path [video_path] \
+            --prompt_path prompts/video_reward.yaml
+
+The result is saved in an html file in the same directory as the video.
 
 ### Evaluation Metrics
 
@@ -148,14 +150,17 @@ The fine-tuning process uses the following data structure:
 
 ### Setup
 
-We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for fine-tuning. First, download and prepare the VideoPhy-2 training data:
+We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for fine-tuning. We first download and prepare the VideoPhy-2 training data.
 
-    # From the cosmos-reason root directory
-    cd examples/post_training_hf/
-    uv run scripts/download_videophy2.py \
-        --output data/videophy2_train \
-        --dataset videophysics/videophy2_train \
-        --split train
+1. Copy `scripts/examples/reason1/physical-plausibility-check/download_videophy2.py` from this repo to `cosmos-reason1/examples/post_training_hf/scripts/download_videophy2.py`
+2. Run the following command to download the VideoPhy-2 training data:
+
+        # In the cosmos-reason1 root directory
+        cd examples/post_training_hf/
+        uv run scripts/download_videophy2.py \
+            --output data/videophy2_train \
+            --dataset videophysics/videophy2_train \
+            --split train
 
 ### Training Configuration
 
@@ -169,10 +174,11 @@ Use the following configuration optimized for 8 GPUs:
 
 ### Running Training
 
-1. Save the configuration as `examples/post_training_hf/configs/videophy2_sft.toml`
+1. Save the "Training Configuration" above as `cosmos-reason1/examples/post_training_hf/configs/videophy2_sft.toml`
 2. Execute the training script:
 
-        # In [cosmos-reason root directory]/examples/post_training_hf
+        # In the cosmos-reason1 root directory
+        cd examples/post_training_hf/
         cosmos-rl --config configs/videophy2_sft.toml scripts/custom_sft.py
 
 **Note**: The training process uses the [custom SFT script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training_hf/scripts/custom_sft.py) which includes a data loader that works with **Hugging Face datasets format**.
