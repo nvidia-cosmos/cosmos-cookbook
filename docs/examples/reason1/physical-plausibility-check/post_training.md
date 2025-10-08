@@ -1,6 +1,6 @@
 # Physical Plausibility Prediction with Cosmos Reason1
 
-> **Authors:** [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
+> **Authors:** [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/) • [Zekun Hao](https://www.linkedin.com/in/zekunhao/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
 > **Organization:** NVIDIA
 
 ## Overview
@@ -110,10 +110,7 @@ We evaluate the model performance using two key metrics:
 
 We compare Cosmos Reason1 with Gemini-2.0-Flash-Exp (baseline from the paper). Even without fine-tuning, Cosmos Reason1 demonstrates superior performance.
 
-| Model                    | Accuracy | Correlation |
-|--------------------------|----------|-------------|
-| **Gemini-2.0-Flash-Exp** | -        | 0.11        |
-| **Cosmos Reason1**       | 0.196    | 0.293       |
+<img src="assets/correlation_bar_graph.png" alt="Correlation comparison between Gemini-2.0-Flash-Exp and Cosmos Reason1" style="max-width: 600px; width: 100%;">
 
 ### Example Predictions
 
@@ -187,16 +184,8 @@ Use the following configuration optimized for 8 GPUs:
 
 After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate significant performance improvements:
 
-| **Model Configuration** | **Accuracy** | **Correlation** |
-|-------------------------|--------------|-----------------|
-| Cosmos Reason1 (Zero-shot) | 0.196 | 0.293 |
-| + SFT (20 steps) | 0.219 | 0.280 |
-| + SFT (40 steps) | 0.311 | 0.375 |
-| + SFT (60 steps) | 0.324 | **0.395** |
-| + SFT (80 steps) | 0.259 | 0.388 |
-| + SFT (100 steps) | **0.340** | 0.383 |
-| + SFT (120 steps) | 0.308 | 0.386 |
-| **VideoPhy-AutoEval** | - | 0.37 |
+<img src="assets/sft_accuracy.png" alt="SFT Accuracy over Training Steps" style="width: 100%; max-width: 600px; display: block; margin-bottom: 16px;">
+<img src="assets/sft_correlation.png" alt="SFT Correlation over Training Steps" style="width: 100%; max-width: 600px; display: block;">
 
 **Key observations:**
 
@@ -296,18 +285,8 @@ We use the following configuration optimized for 8 GPUs:
 
 After RL training, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate further performance improvements over both zero-shot and SFT approaches:
 
-| **Model Configuration**     | **Accuracy**    | **Correlation** |
-|----------------------------|----------------:|----------------:|
-| RL (300 steps)             | 0.324           | 0.314           |
-| RL (400 steps)             | 0.354           | 0.332           |
-| RL (500 steps)             | 0.217           | 0.280           |
-| RL (600 steps)             | 0.295           | 0.341           |
-| RL (700 steps)             | 0.219           | 0.318           |
-| RL (800 steps)             | 0.285           | 0.378           |
-| RL (900 steps)             | **0.374**       | **0.425**       |
-| RL (1000 steps)            | 0.246           | 0.344           |
-| RL (1100 steps)            | 0.347           | 0.356           |
-| RL (1200 steps)            | 0.353           | 0.407           |
+<img src="assets/rl_accuracy.png" alt="RL Training Accuracy" style="width: 100%; max-width: 600px; display: block; margin-bottom: 16px;">
+<img src="assets/rl_correlation.png" alt="RL Training Correlation" style="width: 100%; max-width: 600px; display: block;">
 
 **Key observations:**
 
@@ -351,7 +330,7 @@ So putting it all together: the dough's elasticity, the sauce's behavior, and th
 - **Model prediction**: 5. (The prediction is different from the ground truth score 2.)
 - **Summary of the model output**: The analysis falsely believes that the video shows natural deformation, consistent elasticity, plausible sauce behavior, smooth hand movements, and adherence to physical laws, indicating no signs of manipulation or unrealistic simulation.
 
-**After RL Training:**
+**After RL Training (900 steps):**
 
 <details>
 <summary><strong>Model thinking trace and score</strong></summary>
