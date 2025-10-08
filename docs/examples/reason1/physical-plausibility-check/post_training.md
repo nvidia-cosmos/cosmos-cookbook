@@ -241,10 +241,12 @@ The training data input and expected model output are as follows:
 
 - **Input**: Video + language instruction to generate thinking trace and score
 - **Model output**: Thinking trace and physical plausibility score (1-5 scale)
-- **Reward**: Defined based on prediction accuracy:
-  - `1` if `prediction == ground_truth`
-  - `0.5` if `|prediction - ground_truth| <= 1`
-  - `0` otherwise
+
+The **reward function** is defined based on prediction accuracy. We use a dense reward function so that the model gets a partial credit for being close to the ground truth score:
+
+- `1` if `prediction == ground_truth`
+- `0.5` if `|prediction - ground_truth| <= 1`
+- `0` otherwise
 
 The language instruction prompts the model to generate a structured response with explicit thinking traces before providing a score:
 
@@ -289,6 +291,8 @@ We use the following configuration optimized for 8 GPUs:
 - The labels of the original VideoPhy-2 training data are not balanced and can cause the RL training to converge to a suboptimal solution. We use the `balance_labels` option to balance the labels in the training data.
 - The RL training script uses the `custom_grpo.py`, which is modified from the [GRPO script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/tools/dataset/cosmos_grpo.py) in the Cosmos Reason1 repository. We included the implemenation of our reward function in `custom_grpo.py`.
 - It is crucial to set a positive `kl_beta` value to avoid the model from overfitting to the training data.
+
+### Results
 
 After RL training, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate further performance improvements over both zero-shot and SFT approaches:
 

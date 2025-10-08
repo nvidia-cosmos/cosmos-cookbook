@@ -58,7 +58,6 @@ save_freq = 100
 max_keep = 20
 save_mode = "async"
 
-
 [rollout.parallelism]
 n_init_replicas = 1
 tp_size = 4
