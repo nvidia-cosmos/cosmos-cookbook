@@ -17,6 +17,7 @@
 # ruff: noqa: E402
 
 import re
+
 from cosmos_reason1_utils.script import init_script
 
 init_script()
@@ -27,10 +28,10 @@ import warnings
 from typing import Union
 
 import toml
+from cosmos_reason1_utils.text import set_vision_kwargs
 from cosmos_rl.dispatcher.algo.reward import format_reward_fn, single_choice_reward_fn
 from cosmos_rl.launcher.worker_entry import main as launch_worker
 from cosmos_rl.policy.config import Config as CosmosConfig
-from cosmos_reason1_utils.text import set_vision_kwargs
 from datasets import load_from_disk
 from torch.utils.data import Dataset
 from transformers import AutoTokenizer
@@ -43,11 +44,11 @@ class CustomGRPODataset(Dataset):
     def setup(self, config: CosmosConfig, tokenizer: AutoTokenizer, *args, **kwargs):
         self.config = config
         self.tokenizer = tokenizer
-        
+
         # Load dataset from disk (like custom_sft.py)
         dataset_path = config.train.train_policy.dataset.name
         self.dataset = load_from_disk(dataset_path)
-        
+
         # Set up vision kwargs
         self.vision_kwargs = {
             "max_pixels": MAX_PIXELS,
@@ -62,16 +63,16 @@ class CustomGRPODataset(Dataset):
         Return conversation structure for GRPO (prompt only, no assistant response)
         """
         sample = self.dataset[idx]
-        
+
         # Parse the JSON conversation (like custom_sft.py)
         full_conversation = json.loads(sample["conversations"])
-        
+
         # For GRPO, we use system prompt and user prompt as input
         prompt_conversation = full_conversation[:2]
-        
+
         # Set vision kwargs
         set_vision_kwargs(prompt_conversation, self.vision_kwargs)
-        
+
         return prompt_conversation
 
     def get_reference_answer(self, idx: int) -> str:
@@ -93,7 +94,9 @@ def single_choice_dense_reward_fn(
     try:
         # Extract answer from solution if it has answer tags
         sol_match = re.search(r"<answer>(.*?)</answer>", reference, re.DOTALL)
-        ground_truth_str = sol_match.group(1).strip() if sol_match else reference.strip()
+        ground_truth_str = (
+            sol_match.group(1).strip() if sol_match else reference.strip()
+        )
 
         # Extract answer from content if it has answer tags
         content_match = re.search(r"<answer>(.*?)</answer>", to_be_evaluated, re.DOTALL)
@@ -105,17 +108,17 @@ def single_choice_dense_reward_fn(
         try:
             ground_truth = float(ground_truth_str)
             student_answer = float(student_answer_str)
-            
+
             # Use normalized distance as reward
-            reward = max(0, 1. - abs(student_answer - ground_truth) / 4)
-            
+            reward = max(0, 1.0 - abs(student_answer - ground_truth) / 4)
+
         except ValueError:
             # If conversion to float fails, fall back to string comparison
             if student_answer_str.lower() == ground_truth_str.lower():
                 reward = 1.0
             else:
                 reward = 0.0
-                
+
     except Exception:
         reward = 0.0
 

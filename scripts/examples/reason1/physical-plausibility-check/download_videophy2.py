@@ -40,11 +40,11 @@ Default dataset: https://huggingface.co/datasets/videophysics/videophy2_train
 import argparse
 import json
 import os
+import random
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-import random
 from typing import Optional
-from collections import Counter
 
 import datasets
 import requests
@@ -59,16 +59,16 @@ VIDEO_DIR = "video_data/"
 
 def balance_dataset_labels(dataset) -> datasets.Dataset:
     """Balance dataset by resampling so each label appears the same number of times.
-    
+
     Args:
         dataset: The input dataset to balance
-        
+
     Returns:
         Balanced dataset with equal representation of each label
     """
     # Fix the random seed for reproducibility
     random.seed(42)
-    
+
     # Extract PC labels and group samples by label
     label_to_indices = {}
     for i, sample in enumerate(dataset):
@@ -77,48 +77,52 @@ def balance_dataset_labels(dataset) -> datasets.Dataset:
             if pc_score not in label_to_indices:
                 label_to_indices[pc_score] = []
             label_to_indices[pc_score].append(i)
-    
+
     # Print original label distribution
     print("\n📊 Original label distribution:")
     for label in sorted(label_to_indices.keys()):
         count = len(label_to_indices[label])
         print(f"  Label {label}: {count} samples")
-    
+
     # target samples per label is the average number of samples per label
     target_samples_per_label = len(dataset) // len(label_to_indices)
-    
+
     print(f"\n🎯 Target samples per label: {target_samples_per_label}")
-    
+
     # Resample each label to target count
     balanced_indices = []
     for label, indices in label_to_indices.items():
         if len(indices) >= target_samples_per_label:
             # Downsample if we have enough samples, randomly select target_samples_per_label
-            print(f"Downsampling label {label} from {len(indices)} to {target_samples_per_label}")
+            print(
+                f"Downsampling label {label} from {len(indices)} to {target_samples_per_label}"
+            )
             selected_indices = random.sample(indices, target_samples_per_label)
         else:
             # Upsample if we don't have enough samples, use all available and oversample
             # by randomly sampling with replacement
-            print(f"Upsampling label {label} from {len(indices)} to {target_samples_per_label}")
+            print(
+                f"Upsampling label {label} from {len(indices)} to {target_samples_per_label}"
+            )
             selected_indices = random.choices(indices, k=target_samples_per_label)
-        
+
         balanced_indices.extend(selected_indices)
-    
+
     # Shuffle the balanced indices to avoid ordering bias
     random.shuffle(balanced_indices)
-    
+
     # Create new balanced dataset
     balanced_data = [dataset[i] for i in balanced_indices]
     balanced_dataset = datasets.Dataset.from_list(balanced_data)
-    
+
     # Print final label distribution
     print("\n📊 Final balanced label distribution:")
     final_label_counts = Counter(sample["pc"] for sample in balanced_dataset)
     for label in sorted(final_label_counts.keys()):
         print(f"  Label {label}: {final_label_counts[label]} samples")
-    
+
     print(f"\n✅ Dataset balanced: {len(dataset)} → {len(balanced_dataset)} samples")
-    
+
     return balanced_dataset
 
 
@@ -174,15 +178,23 @@ def main():
         help="HuggingFace dataset name to download.",
     )
     parser.add_argument("--split", type=str, default="train", help="Split to download.")
-    parser.add_argument("--prompt_path", type=str, default="prompts/video_reward.yaml", help="Prompt to use.")
+    parser.add_argument(
+        "--prompt_path",
+        type=str,
+        default="prompts/video_reward.yaml",
+        help="Prompt to use.",
+    )
     parser.add_argument(
         "--workers",
         type=int,
         default=8,
         help="Number of workers for parallel video downloads.",
     )
-    parser.add_argument("--balance_labels", action="store_true",
-        help="Balance dataset labels by resampling so each label appears the same number of times.")
+    parser.add_argument(
+        "--balance_labels",
+        action="store_true",
+        help="Balance dataset labels by resampling so each label appears the same number of times.",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output).resolve()

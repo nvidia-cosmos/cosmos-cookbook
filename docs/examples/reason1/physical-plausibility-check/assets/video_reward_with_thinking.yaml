@@ -33,6 +33,5 @@ system_prompt: |
   <answer>
   2
   </answer>
-
 user_prompt: |
   Does this video adhere to the physical laws?

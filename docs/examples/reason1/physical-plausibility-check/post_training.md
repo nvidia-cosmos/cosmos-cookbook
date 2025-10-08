@@ -231,10 +231,9 @@ The following examples show prediction improvements from fine-tuning:
 
 For both examples, the fine-tuned model correctly predicts the physical plausibility scores.
 
-
 ## Reinforcement Learning
 
-Having achieved strong performance with supervised fine-tuning, we now explore reinforcement learning (RL) to further enhance the model's ability to predict physical plausibility. RL allows the model to explore and learn from reward signals based on its alignment with ground truth scores, leading to better calibration and improved performance.
+So far we have evluated the zero-shot and supervised fine-tuning (SFT) performance of the model. In this section, we explore reinforcement learning (RL) to further enhance the model's ability to predict physical plausibility. RL allows the model to explore and learn from reward signals based on its alignment with ground truth scores, which may lead to better calibration and improved performance.
 
 ### Training Data Format
 
@@ -243,9 +242,9 @@ The training data input and expected model output are as follows:
 - **Input**: Video + language instruction to generate thinking trace and score
 - **Model output**: Thinking trace and physical plausibility score (1-5 scale)
 - **Reward**: Defined based on prediction accuracy:
-    - `1` if `prediction == ground_truth`
-    - `0.5` if `|prediction - ground_truth| <= 1`
-    - `0` otherwise
+  - `1` if `prediction == ground_truth`
+  - `0.5` if `|prediction - ground_truth| <= 1`
+  - `0` otherwise
 
 The language instruction prompts the model to generate a structured response with explicit thinking traces before providing a score:
 
@@ -272,7 +271,7 @@ We use the following configuration optimized for 8 GPUs:
 1. Save the "Prompt for RL Training" above as `cosmos-reason1/examples/post_training_hf/prompts/video_reward_with_thinking.yaml`
 2. Save the "RL Training Configuration" above as `cosmos-reason1/examples/post_training_hf/configs/videophy2_rl.toml`
 3. Copy `scripts/examples/reason1/physical-plausibility-check/custom_grpo.py` from this repo to `cosmos-reason1/examples/post_training_hf/scripts/custom_grpo.py`
-4. Execute the RL training script:
+4. Prepare the training data and execute the RL training script:
 
         # In the cosmos-reason1 root directory
         cd examples/post_training_hf/
@@ -287,10 +286,9 @@ We use the following configuration optimized for 8 GPUs:
 
 **Notes**:
 
-* The labels of the original VideoPhy-2 training data are not balanced and can cause the RL training to easily converge to a suboptimal solution. We use the `balance_labels` option to balance the labels in the training data.
-* The RL training script uses the `custom_grpo.py`, which is modified from the [GRPO script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/tools/dataset/cosmos_grpo.py) in the Cosmos Reason1 repository. We included the implemenation of our reward function in `custom_grpo.py`.
-* It is crucial to set a positive `kl_beta` value to avoid the model from overfitting to the training data.
-
+- The labels of the original VideoPhy-2 training data are not balanced and can cause the RL training to converge to a suboptimal solution. We use the `balance_labels` option to balance the labels in the training data.
+- The RL training script uses the `custom_grpo.py`, which is modified from the [GRPO script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/tools/dataset/cosmos_grpo.py) in the Cosmos Reason1 repository. We included the implemenation of our reward function in `custom_grpo.py`.
+- It is crucial to set a positive `kl_beta` value to avoid the model from overfitting to the training data.
 
 After RL training, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate further performance improvements over both zero-shot and SFT approaches:
 
@@ -313,8 +311,7 @@ After RL training, we evaluate the model on the VideoPhy-2 evaluation set using 
 - Best performance achieved at 900 steps: 0.374 accuracy and 0.425 correlation
 - Performance shows some variability across checkpoints, which may be mitigated by further adjusting the learning rate schedule
 
-### Example Thinking Traces and Scores
-
+### Example Model Outputs
 
 #### Pizza Dough Tossed and Caught
 
@@ -323,7 +320,7 @@ After RL training, we evaluate the model on the VideoPhy-2 evaluation set using 
 </video>
 * **Ground truth**: 2 (poor adherence to physical laws)
 
-#### Before RL Training
+**Before RL Training:**
 
 <details>
 <summary><strong>Model thinking trace and score</strong></summary>
@@ -347,10 +344,10 @@ So putting it all together: the dough's elasticity, the sauce's behavior, and th
 &lt;/answer&gt;<br>
 </details>
 
-- **Model prediction (before RL training)**: 5
-- The analysis falsely believes that the video shows natural deformation, consistent elasticity, plausible sauce behavior, smooth hand movements, and adherence to physical laws, indicating no signs of manipulation or unrealistic simulation.
+- **Model prediction**: 5. (The prediction is different from the ground truth score 2.)
+- **Summary of the model output**: The analysis falsely believes that the video shows natural deformation, consistent elasticity, plausible sauce behavior, smooth hand movements, and adherence to physical laws, indicating no signs of manipulation or unrealistic simulation.
 
-#### After RL Training
+**After RL Training:**
 
 <details>
 <summary><strong>Model thinking trace and score</strong></summary>
@@ -382,5 +379,15 @@ Realistically, dough should stretch and fold in certain ways when rolled or shap
 &lt;/answer&gt;<br>
 </details>
 
-- **Model prediction (after RL training)**: 2. This matches the ground truth.
-- The analysis has identified the key issues in the video, including unnatural deformation, inconsistent texture, gravity-defying movement, abrupt motion changes, and unrealistic food preparation behavior.
+- **Model prediction**: 2. (The prediction matches the ground truth.)
+- **Summary of the model output**: The analysis has successfully identified the key issues in the video, including unnatural deformation, inconsistent texture, gravity-defying movement, abrupt motion changes, and unrealistic food preparation behavior.
+
+## Conclusion
+
+Fine-tuning Cosmos Reason1 on VideoPhy-2 data significantly improves physical plausibility prediction, progressing from zero-shot (0.293 correlation) to SFT (0.395) and RL (0.425). Key insights:
+
+- **Progressive improvement**: Each training stage (SFT, RL) delivers measurable gains in both accuracy and correlation, with RL achieving the best overall performance.
+- **Thinking traces enhance interpretability**: RL training with structured prompts enables the model to generate detailed reasoning traces that explain its predictions.
+- **Flexibility**: This methodology can be adapted to other video quality assessment tasks by substituting the datasets and defining appropriate metrics.
+
+As a next step, we can investigate reasoning SFT as a warmup step using datasets that contain thinking traces (for example, [VideoFeedback2](https://huggingface.co/datasets/TIGER-Lab/VideoFeedback2)). This can improve the model's reasoning ability before RL training.
