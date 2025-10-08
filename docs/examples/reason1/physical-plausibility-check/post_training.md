@@ -84,7 +84,7 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
 ???+ code "Prompt for Scoring Physical Plausibility"
 
     ```yaml
-    --8<-- "docs/examples/reason1/physical-plausibility-check/assets/score_prompt.yaml"
+    --8<-- "docs/examples/reason1/physical-plausibility-check/assets/video_reward.yaml"
     ```
 
 We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason1 to run zero-shot inference.
@@ -137,7 +137,7 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason1
 - **Model prediction**: 5
 - **Ground truth**: 5 (perfect adherence to physical laws)
 
-## Post-Training
+## Supervised Fine-Tuning (SFT)
 
 Having demonstrated that Cosmos Reason1 can predict physical plausibility and outperform baseline models in zero-shot evaluation, we now apply supervised fine-tuning (SFT) using the VideoPhy-2 training set to further improve the model's performance.
 
@@ -230,3 +230,157 @@ The following examples show prediction improvements from fine-tuning:
 - **Ground truth**: 5
 
 For both examples, the fine-tuned model correctly predicts the physical plausibility scores.
+
+
+## Reinforcement Learning
+
+Having achieved strong performance with supervised fine-tuning, we now explore reinforcement learning (RL) to further enhance the model's ability to predict physical plausibility. RL allows the model to explore and learn from reward signals based on its alignment with ground truth scores, leading to better calibration and improved performance.
+
+### Training Data Format
+
+The training data input and expected model output are as follows:
+
+- **Input**: Video + language instruction to generate thinking trace and score
+- **Model output**: Thinking trace and physical plausibility score (1-5 scale)
+- **Reward**: Defined based on prediction accuracy:
+    - `1` if `prediction == ground_truth`
+    - `0.5` if `|prediction - ground_truth| <= 1`
+    - `0` otherwise
+
+The language instruction prompts the model to generate a structured response with explicit thinking traces before providing a score:
+
+???+ code "Prompt for RL Training"
+
+    ```yaml
+    --8<-- "docs/examples/reason1/physical-plausibility-check/assets/video_reward_with_thinking.yaml"
+    ```
+
+### Training Configuration
+
+We use the **Group Relative Policy Optimization (GRPO)** algorithm in [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for RL training.
+
+We use the following configuration optimized for 8 GPUs:
+
+???+ code "RL Training Configuration"
+
+    ```toml
+    --8<-- "docs/examples/reason1/physical-plausibility-check/assets/rl_config.toml"
+    ```
+
+### Running Training
+
+1. Save the "Prompt for RL Training" above as `cosmos-reason1/examples/post_training_hf/prompts/video_reward_with_thinking.yaml`
+2. Save the "RL Training Configuration" above as `cosmos-reason1/examples/post_training_hf/configs/videophy2_rl.toml`
+3. Copy `scripts/examples/reason1/physical-plausibility-check/custom_grpo.py` from this repo to `cosmos-reason1/examples/post_training_hf/scripts/custom_grpo.py`
+4. Execute the RL training script:
+
+        # In the cosmos-reason1 root directory
+        cd examples/post_training_hf/
+        uv run scripts/download_videophy2.py \
+          --output data/videophy2_train_w_thinking_balanced \
+          --dataset videophysics/videophy2_train \
+          --split train \
+          --prompt_path prompts/video_reward_with_thinking.yaml \
+          --balance_labels
+        # Run RL training
+        cosmos-rl --config configs/videophy2_rl.toml scripts/custom_grpo.py
+
+**Notes**:
+
+* The labels of the original VideoPhy-2 training data are not balanced and can cause the RL training to easily converge to a suboptimal solution. We use the `balance_labels` option to balance the labels in the training data.
+* The RL training script uses the `custom_grpo.py`, which is modified from the [GRPO script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/tools/dataset/cosmos_grpo.py) in the Cosmos Reason1 repository. We included the implemenation of our reward function in `custom_grpo.py`.
+* It is crucial to set a positive `kl_beta` value to avoid the model from overfitting to the training data.
+
+
+After RL training, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate further performance improvements over both zero-shot and SFT approaches:
+
+| **Model Configuration**     | **Accuracy**    | **Correlation** |
+|----------------------------|----------------:|----------------:|
+| RL (300 steps)             | 0.324           | 0.314           |
+| RL (400 steps)             | 0.354           | 0.332           |
+| RL (500 steps)             | 0.217           | 0.280           |
+| RL (600 steps)             | 0.295           | 0.341           |
+| RL (700 steps)             | 0.219           | 0.318           |
+| RL (800 steps)             | 0.285           | 0.378           |
+| RL (900 steps)             | **0.374**       | **0.425**       |
+| RL (1000 steps)            | 0.246           | 0.344           |
+| RL (1100 steps)            | 0.347           | 0.356           |
+| RL (1200 steps)            | 0.353           | 0.407           |
+
+**Key observations:**
+
+- RL training shows significant improvements over both zero-shot and SFT, especially in correlation
+- Best performance achieved at 900 steps: 0.374 accuracy and 0.425 correlation
+- Performance shows some variability across checkpoints, which may be mitigated by further adjusting the learning rate schedule
+
+### Example Thinking Traces and Scores
+
+
+#### Pizza Dough Tossed and Caught
+
+<video controls width="480">
+  <source src="assets/A_pizza_dough_is_tossed_up__its_edges_become_thinner_as_it_rotates_in_the_air__and_it_s_caught_by_a_second_person_.mp4" type="video/mp4">
+</video>
+* **Ground truth**: 2 (poor adherence to physical laws)
+
+#### Before RL Training
+
+<details>
+<summary><strong>Model thinking trace and score</strong></summary>
+
+&lt;think&gt;<br>
+Okay, let's see. The video shows a close-up of someone preparing pizza dough. The dough is already spread out on a pan, right? And the person is using a small piece of dough to add tomato sauce. They pick up that little piece, stretch it a bit, and drop it onto the larger dough circle. Then they repeat the process a few times to spread the sauce evenly.<br>
+<br>
+Hmm, so the main question here is whether this follows physical laws. Let me think. When you stretch the dough, it should deform realistically. If the dough is elastic, stretching it would require some force, and when released, it should return to its original shape slightly, creating tension. But in the video, when the person lets go of the dough after stretching it, does it spring back too much or not at all? From the video, it seems like the dough behaves normally-it stretches when pulled and stays in place once dropped. That makes sense because real dough has some elasticity.<br>
+<br>
+Also, the sauce is being added by dropping the dough ball. The way it falls and spreads might seem a bit idealized, but in reality, when you drop something onto a surface, it would spread out depending on its consistency. Since the sauce is thick, it probably doesn't spread too much, which aligns with what you'd expect. So the interaction between the sauce and the dough seems plausible.<br>
+<br>
+Another thing to consider is the hand movements. The person's hand moves smoothly, picking up the dough, stretching it, and dropping it. The motion is continuous and doesn't have any jerky or unrealistic movements. The hand's weight and the way it handles the dough match how a real person would do this task. No signs of the hand passing through the dough or anything like that.<br>
+<br>
+Wait, but the camera angle is static and close-up. Could there be any visual tricks? Like maybe the dough isn't actually moving as it should? But according to the video, the actions are smooth and natural. The dough deforms as expected when stretched and doesn't float or behave unnaturally. The sauce drops realistically and doesn't clip through the dough surface.<br>
+<br>
+So putting it all together: the dough's elasticity, the sauce's behavior, and the hand movements all seem consistent with real-life physics. The video doesn't show any sudden flips, teleportation, or other impossible events. Everything follows the laws of motion and material behavior as we'd expect in reality. Therefore, the video adheres to physical commonsense.<br>
+&lt;/think&gt;<br>
+<br>
+&lt;answer&gt;<br>
+5<br>
+&lt;/answer&gt;<br>
+</details>
+
+- **Model prediction (before RL training)**: 5
+- The analysis falsely believes that the video shows natural deformation, consistent elasticity, plausible sauce behavior, smooth hand movements, and adherence to physical laws, indicating no signs of manipulation or unrealistic simulation.
+
+#### After RL Training
+
+<details>
+<summary><strong>Model thinking trace and score</strong></summary>
+
+&lt;think&gt;<br>
+Okay, let's see. In the sequence of frames provided, one can observe several visual anomalies and artifacts that suggest the video may not adhere to physical commonsense.
+The dough appears to move and change shape in a manner inconsistent with how it would naturally behave under normal circumstances.
+For instance, when the hand presses down on the dough, it seems to flatten and spread out more than expected, almost as if it were being manipulated by an invisible force rather than just being pressed by a physical object like a hand.
+This suggests a lack of realistic interaction between the hand and the dough.<br>
+<br>
+Moreover, the dough's texture and elasticity seem to vary unpredictably across the frames.
+At times, it looks smooth and pliable, but at other moments, it appears more dense and less responsive to touch.
+This inconsistency could indicate digital manipulation or poor quality footage where the dough's properties are not being captured accurately.<br>
+<br>
+Additionally, the way the dough moves after being lifted off the surface defies typical gravitational behavior.
+Instead of falling naturally due to its weight, it clings to the hand and then unexpectedly returns to rest on the surface without a clear cause.
+This kind of movement raises questions about the physics being represented in the video, possibly due to editing tricks or unrealistic simulation.<br>
+<br>
+Furthermore, the overall motion of the dough lacks fluidity and realism.
+There are abrupt changes in direction and speed that don't align with how real dough would react when handled.
+These abrupt shifts might be the result of fast-forwarding parts of the video or applying effects that disrupt the natural flow of the action.<br>
+<br>
+Lastly, considering the context of preparing a dish, the dough's behavior does not match what would typically occur during food preparation.
+Realistically, dough should stretch and fold in certain ways when rolled or shaped, but here it seems to defy these expectations, suggesting either an error in filming or an intentional artistic choice that veers away from realism.<br>
+&lt;/think&gt;<br>
+<br>
+&lt;answer&gt;<br>
+2<br>
+&lt;/answer&gt;<br>
+</details>
+
+- **Model prediction (after RL training)**: 2. This matches the ground truth.
+- The analysis has identified the key issues in the video, including unnatural deformation, inconsistent texture, gravity-defying movement, abrupt motion changes, and unrealistic food preparation behavior.
