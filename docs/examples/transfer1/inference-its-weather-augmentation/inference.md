@@ -13,7 +13,7 @@ This tutorial demonstrates how to use the Cosmos Transfer model for Synthetic Da
 
 ## Why Weather Augmentation Matters
 
-Acquiring Intelligent Transportation System (ITS) data in adverse weather conditions is time consuming and challenging. Furthermore, adding weather based diversity on pre-recorded datasets is prohibitive and impossible. This creates a great opportunity for utilizing Cosmos Transfer to generate weather-diverse data and improve downstream weather-robust detectors.
+Acquiring Intelligent Transportation System (ITS) data in adverse weather conditions is time consuming and challenging, and adding weather-based diversity to pre-recorded datasets is prohibitive and impossible. This data scarcity leads to poor performance of computer vision models in real-world adverse weather scenarios. Weather augmentation using Cosmos Transfer addresses this critical gap by generating synthetic weather-diverse training data from existing clear-weather datasets, significantly improving the robustness and accuracy of downstream ITS object detection models across various weather conditions.
 
 ## Demonstration Overview
 
@@ -118,7 +118,7 @@ As demonstrated, using all controls (vis, edge, depth, seg) fails to generate pr
 
 ## Training Downstream ITS Detector
 
-To illustrate the impact of Cosmos Transfer weather augmentation on a downstream ITS detector, we have trained an RT-DETR detector with and without the Cosmos Transfer augmented images (using all possible weather/lighting conditions). We evaluated the trained models on three public KPIs.
+To illustrate the impact of Cosmos Transfer weather augmentation on a downstream ITS detector, we have trained an RT-DETR detector with and without the Cosmos Transfer augmented images using all possible weather/lighting conditions and  evaluated the trained models on three public KPIs.
 
 ## Results
 

@@ -25,12 +25,20 @@ This structure separates the documentation from the practical implementation, ma
 
 ## Prerequisites
 
-Before starting, ensure you have the following:
+Before getting started, ensure you have the following requirements:
 
-- A Unix-like operating system (Linux, macOS, or WSL on Windows)
-- Administrator/sudo access for system installations
-- An Internet connection for downloading packages and models
-- Git installed on your system
+### Hardware
+
+**NVIDIA GPUs**: Not required for local documentation rendering. For running cookbook recipes and workflows: Ampere architecture or newer (A100, H100) - minimum 1 GPU, recommended 8 GPUs
+
+### Software
+
+- **Operating System**: Ubuntu 24.04, 22.04, or 20.04
+- **Python**: Version 3.10+
+- **NVIDIA Container Toolkit**: 1.16.2 or later
+- **CUDA**: 12.4 or later
+- **Docker Engine**
+- **Access**: Internet connection for downloading models and dependencies
 
 ### Hardware Requirements
 
