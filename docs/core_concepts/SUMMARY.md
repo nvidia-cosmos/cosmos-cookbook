@@ -1,4 +1,4 @@
-# Concepts/ML Lifecycle
+# Gen AI Concepts
 
 - [Data Annotation (TBD)](data_annotation.md)
 - [Data Curation](data_curation/)

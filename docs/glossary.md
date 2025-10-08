@@ -1,1 +1,1 @@
-# Placeholder for glossary
+Glossary

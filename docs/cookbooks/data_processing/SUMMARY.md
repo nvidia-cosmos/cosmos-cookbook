@@ -1,3 +1,3 @@
 #
 
-- [Cosmos Curate (TBD) for car collision](curate_car_collision.md)
+- [Cosmos Curate (TBD) for Car Collision](curate_car_collision.md)
