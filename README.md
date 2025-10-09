@@ -2,7 +2,7 @@
 
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
-[![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/index.html)
+[![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
@@ -128,7 +128,7 @@ just ci-deploy-external         # Deploy external documentation
 
 ## Documentation
 
-- **[Full Documentation](https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/)** - Complete guides and examples
+- **[Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)** - Complete guides and examples
 - **[Getting Started](docs/getting_started.md)** - Environment setup and first steps
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the cookbook
 - **[Examples](docs/examples/)** - Real-world use cases and workflows

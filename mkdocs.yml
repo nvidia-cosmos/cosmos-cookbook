@@ -1,8 +1,8 @@
 site_name: Cosmos Cookbook
 site_author: NVIDIA Cosmos
-site_url: https://cosmos-playbook-7663d3.gitlab-master-pages.nvidia.com/
+site_url: https://nvidia-cosmos.github.io/cosmos-cookbook/
 repo_url: https://github.com/nvidia-cosmos/cosmos-cookbook
-repo_name: NVIDIA/cosmos-cookbook
+repo_name: nvidia-cosmos/cosmos-cookbook
 docs_dir: build/docs
 nav:
   - Home: index.md

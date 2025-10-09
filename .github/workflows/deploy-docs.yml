@@ -35,8 +35,6 @@ jobs:
         with:
           path: external/site/
   deploy:
-    # Since github pages is not yet configured, this action is disabled.
-    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
