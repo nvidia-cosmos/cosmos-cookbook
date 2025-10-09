@@ -8,7 +8,7 @@ There are two primary distillation approaches widely used today:
 
 - **Step Distillation**: Reduces the number of inference steps required.
 
-This guide concentrates on step distillation--where you train Student models to achieve comparable results in a single diffusion step--compared to Teacher models, which require multiple steps (e.g. 35 diffusion steps in Cosmos-Transfer1).
+This guide concentrates on step distillation – where you train Student models to achieve comparable results in a single diffusion step – compared to Teacher models, which require multiple steps (e.g. 36 diffusion steps in Cosmos-Transfer1).
 
 In a typical distillation workflow, several variables can be adjusted to optimize model outcomes:
 
