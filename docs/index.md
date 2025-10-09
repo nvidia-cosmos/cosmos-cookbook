@@ -75,7 +75,7 @@ The cookbook is organized around key workflows spanning **inference** and **trai
 
 **3. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason1 as a quality filter (e.g. for synthetic data rejection sampling).
 
-**4. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
+**4. [Model Distillation](core_concepts/distillation/overview.md)** - Accelerate diffusion models by distilling a more efficient variant while preserving output quality. This covers single-step distillation techniques, including Knowledge Distillation (KD) and Improved Distribution Matching Distillation (DMD2).
 
 ## Quick Start Paths
 
