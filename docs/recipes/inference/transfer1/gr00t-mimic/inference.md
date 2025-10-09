@@ -40,7 +40,3 @@ Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic mot
 - **[Technical Blog](https://developer.nvidia.com/blog/building-a-synthetic-motion-generation-pipeline-for-humanoid-robot-learning/)** - Pipeline overview and results
 - **[NVIDIA Omniverse](https://www.nvidia.com/en-us/omniverse/)** - Simulation platform
 - **[Cosmos Transfer1](https://github.com/nvidia-cosmos/cosmos-transfer1)** - Multi-control video generation
-
-## Related Recipes
-
-- [Isaac GR00T-Dreams](../../../end_to_end_examples/predict2/gr00t-dreams/post-training.md) - Synthetic trajectory data generation

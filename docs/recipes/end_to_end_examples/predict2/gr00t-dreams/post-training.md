@@ -40,7 +40,3 @@ Isaac GR00T-Dreams leverages **Cosmos Predict2** to generate synthetic trajector
 - **[NVIDIA Isaac Platform](https://developer.nvidia.com/isaac)** - Robotics development platform
 - **[Cosmos Predict2](https://github.com/nvidia-cosmos/cosmos-predict2)** - World foundation model
 - **[Isaac GR00T](https://developer.nvidia.com/isaac/gr00t)** - Humanoid robot foundation model
-
-## Related Recipes
-
-- [Isaac GR00T-Mimic](../../inference/transfer1/gr00t-mimic/inference.md) - Synthetic manipulation motion generation
