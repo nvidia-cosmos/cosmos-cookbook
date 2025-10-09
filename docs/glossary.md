@@ -11,7 +11,7 @@
 **Context Parallelism (CP)**
 : A parallelization strategy that splits the sequence/context dimension across multiple devices to handle longer sequences.
 
-**Cosmos Curate**
+**Cosmos Curator**
 : A GPU-accelerated video curation pipeline built on Ray for multi-model analysis, content filtering, annotation, and deduplication of inference and training data.
 
 **Cosmos Predict**

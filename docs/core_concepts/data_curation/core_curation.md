@@ -1,10 +1,10 @@
-# Core Curation with Cosmos-Curate
+# Core Curation with Cosmos-Curator
 
 > **Prerequisites:** Before proceeding with core curation, ensure you have completed the foundational steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
 
-Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curate](https://github.com/nvidia-cosmos/cosmos-curate).
+Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curator](https://github.com/nvidia-cosmos/cosmos-curate).
 
-The Cosmos-Curate tool offers multiple deployment modes to suit different use cases and technical requirements:
+The Cosmos-Curator tool offers multiple deployment modes to suit different use cases and technical requirements:
 
 ## Deployment Options
 
@@ -14,12 +14,12 @@ The Cosmos-Curate tool offers multiple deployment modes to suit different use ca
 
 2. **Local Infrastructure** — *Full control with Docker*
 
-    For complete control over the curation pipeline, you can run Cosmos-Curate locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
-    Note if your local system has only a single GPU, Cosmos-Curate will disable `STREAMING` mode automatically because it cannot have multiple GPU stages active at the same time; in that case, Ray worker can OOM if input video size/volume is large.
+    For complete control over the curation pipeline, you can run Cosmos-Curator locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
+    Note if your local system has only a single GPU, Cosmos-Curator will disable `STREAMING` mode automatically because it cannot have multiple GPU stages active at the same time; in that case, Ray worker can OOM if input video size/volume is large.
 
 3. **SLURM Clusters** — *High-performance computing at scale*
 
-    For large-scale processing, you can deploy Cosmos-Curate on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
+    For large-scale processing, you can deploy Cosmos-Curator on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
 
 ## Using the Pre-Deployed NVCF Function
 
@@ -29,7 +29,7 @@ The NVCF approach provides a streamlined, cloud-based solution for data curation
 
 ### Prerequisites
 
-Install the Cosmos Curate CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
+Install the Cosmos Curator CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
 
 ```shell
 # Quick setup (full instructions in Local Setup section)
@@ -213,9 +213,9 @@ The sharding pipeline will produce the following artifacts under the `output_dat
 
 ---
 
-## Running Cosmos-Curate Locally
+## Running Cosmos-Curator Locally
 
-For users who need more control over the curation pipeline or prefer to run processing on their own infrastructure, Cosmos-Curate can be deployed locally using Docker containers. This approach is ideal for development, testing, and scenarios requiring custom modifications.
+For users who need more control over the curation pipeline or prefer to run processing on their own infrastructure, Cosmos-Curator can be deployed locally using Docker containers. This approach is ideal for development, testing, and scenarios requiring custom modifications.
 
 ### Setup Environment and Dependencies
 
@@ -349,4 +349,4 @@ cosmos_predict2_video2world_dataset/
 
 ### SLURM Cluster Deployment
 
-For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curate documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.
+For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curator documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.

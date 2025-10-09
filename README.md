@@ -11,11 +11,11 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 This cookbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
 
 - **Inference**: Quick-start examples with pre-trained models
-- **Data Curation**: Scalable data processing pipelines with Cosmos Curate
+- **Data Curation**: Scalable data processing pipelines with Cosmos Curator
 - **Post-Training**: Custom fine-tuning for domain-specific adaptation
 - **Evaluation**: Quality control and model assessment workflows
 
-The Cosmos ecosystem includes five core repositories: **Curate**, **Predict2**, **Transfer1**, **Reason1**, and **RL**, each targeting specific capabilities in the AI development workflow.
+The Cosmos ecosystem includes five core repositories: **Curator**, **Predict2**, **Transfer1**, **Reason1**, and **RL**, each targeting specific capabilities in the AI development workflow.
 
 ## Prerequisites
 

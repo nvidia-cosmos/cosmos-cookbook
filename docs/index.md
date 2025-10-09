@@ -51,7 +51,7 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 The Cosmos architecture consists of five core repositories, each targeting specific capabilities in the AI development workflow:
 
-**[Cosmos Curate](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
+**[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
 
 **[Cosmos Predict2](https://github.com/nvidia-cosmos/cosmos-predict2)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
 
@@ -69,7 +69,7 @@ All models include pre-trained checkpoints and support custom training for domai
 
 The cookbook is organized around key workflows spanning **inference** and **training** use cases:
 
-**1. [Data Curation](core_concepts/data_curation/overview.md)** - Use Cosmos Curate to prepare your datasets with modular, scalable processing pipelines. This includes splitting, captioning, filtering, deduplication, task-specific sampling, and cloud-native or local execution.
+**1. [Data Curation](core_concepts/data_curation/overview.md)** - Use Cosmos Curator to prepare your datasets with modular, scalable processing pipelines. This includes splitting, captioning, filtering, deduplication, task-specific sampling, and cloud-native or local execution.
 
 **2. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict2, Transfer1, and Reason1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
 
