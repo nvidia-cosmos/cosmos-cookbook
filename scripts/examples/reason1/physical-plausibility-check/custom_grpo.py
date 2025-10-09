@@ -106,11 +106,15 @@ def single_choice_dense_reward_fn(
 
         # Try to convert to float for numerical comparison
         try:
-            ground_truth = float(ground_truth_str)
-            student_answer = float(student_answer_str)
+            ground_truth = int(ground_truth_str)
+            student_answer = int(student_answer_str)
 
-            # Use normalized distance as reward
-            reward = max(0, 1.0 - abs(student_answer - ground_truth) / 4)
+            if student_answer == ground_truth:
+                reward = 1.0
+            elif abs(student_answer - ground_truth) <= 1:
+                reward = 0.5
+            else:
+                reward = 0.0
 
         except ValueError:
             # If conversion to float fails, fall back to string comparison
