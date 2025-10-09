@@ -1,6 +1,6 @@
 - [Overview](index.md)
 - [Getting Started](get_started.md)
-- [Cookbook](cookbook/)
+- [Recipes](recipes/)
 - [Core Concepts](core_concepts/)
 - [Glossary](glossary.md)
 - [FAQ](faq.md)

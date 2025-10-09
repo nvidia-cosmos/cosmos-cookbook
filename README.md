@@ -4,7 +4,6 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 [![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 ## Overview
 
