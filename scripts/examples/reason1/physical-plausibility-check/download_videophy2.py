@@ -40,6 +40,8 @@ Default dataset: https://huggingface.co/datasets/videophysics/videophy2_train
 import argparse
 import json
 import os
+import random
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
@@ -53,6 +55,75 @@ from tqdm import tqdm
 
 ROOT = Path(__file__).parents[3]
 VIDEO_DIR = "video_data/"
+
+
+def balance_dataset_labels(dataset) -> datasets.Dataset:
+    """Balance dataset by resampling so each label appears the same number of times.
+
+    Args:
+        dataset: The input dataset to balance
+
+    Returns:
+        Balanced dataset with equal representation of each label
+    """
+    # Fix the random seed for reproducibility
+    random.seed(42)
+
+    # Extract PC labels and group samples by label
+    label_to_indices = {}
+    for i, sample in enumerate(dataset):
+        pc_score = sample.get("pc")
+        if pc_score is not None:
+            if pc_score not in label_to_indices:
+                label_to_indices[pc_score] = []
+            label_to_indices[pc_score].append(i)
+
+    # Print original label distribution
+    print("\n📊 Original label distribution:")
+    for label in sorted(label_to_indices.keys()):
+        count = len(label_to_indices[label])
+        print(f"  Label {label}: {count} samples")
+
+    # target samples per label is the average number of samples per label
+    target_samples_per_label = len(dataset) // len(label_to_indices)
+
+    print(f"\n🎯 Target samples per label: {target_samples_per_label}")
+
+    # Resample each label to target count
+    balanced_indices = []
+    for label, indices in label_to_indices.items():
+        if len(indices) >= target_samples_per_label:
+            # Downsample if we have enough samples, randomly select target_samples_per_label
+            print(
+                f"Downsampling label {label} from {len(indices)} to {target_samples_per_label}"
+            )
+            selected_indices = random.sample(indices, target_samples_per_label)
+        else:
+            # Upsample if we don't have enough samples, use all available and oversample
+            # by randomly sampling with replacement
+            print(
+                f"Upsampling label {label} from {len(indices)} to {target_samples_per_label}"
+            )
+            selected_indices = random.choices(indices, k=target_samples_per_label)
+
+        balanced_indices.extend(selected_indices)
+
+    # Shuffle the balanced indices to avoid ordering bias
+    random.shuffle(balanced_indices)
+
+    # Create new balanced dataset
+    balanced_data = [dataset[i] for i in balanced_indices]
+    balanced_dataset = datasets.Dataset.from_list(balanced_data)
+
+    # Print final label distribution
+    print("\n📊 Final balanced label distribution:")
+    final_label_counts = Counter(sample["pc"] for sample in balanced_dataset)
+    for label in sorted(final_label_counts.keys()):
+        print(f"  Label {label}: {final_label_counts[label]} samples")
+
+    print(f"\n✅ Dataset balanced: {len(dataset)} → {len(balanced_dataset)} samples")
+
+    return balanced_dataset
 
 
 def download_video(video_url: str, video_index: int) -> Optional[str]:
@@ -108,10 +179,21 @@ def main():
     )
     parser.add_argument("--split", type=str, default="train", help="Split to download.")
     parser.add_argument(
+        "--prompt_path",
+        type=str,
+        default="prompts/video_reward.yaml",
+        help="Prompt to use.",
+    )
+    parser.add_argument(
         "--workers",
         type=int,
         default=8,
         help="Number of workers for parallel video downloads.",
+    )
+    parser.add_argument(
+        "--balance_labels",
+        action="store_true",
+        help="Balance dataset labels by resampling so each label appears the same number of times.",
     )
     args = parser.parse_args()
 
@@ -119,13 +201,17 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Load prompt template
-    with open(f"{ROOT}/prompts/video_reward.yaml", "rb") as f:
-        prompt_config = PromptConfig.model_validate(yaml.safe_load(f))
+    prompt_config = PromptConfig.model_validate(
+        yaml.safe_load(open(f"{ROOT}/{args.prompt_path}", "rb"))
+    )
     system_prompt = prompt_config.system_prompt
     user_prompt = prompt_config.user_prompt
 
     # Load raw dataset
     dataset = datasets.load_dataset(args.dataset, split=args.split)
+    if args.balance_labels:
+        print("Balancing dataset labels...")
+        dataset = balance_dataset_labels(dataset)
     print(f"Loaded dataset with {len(dataset)} samples")
     print(f"Using {args.workers} workers for parallel downloads")
     print("Dataset features:", dataset.features)
