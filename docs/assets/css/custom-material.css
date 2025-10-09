@@ -165,7 +165,7 @@
   fill: #ffffff;
 }
 
-.md-typeset .grid.cards > ul > li:hover {
+.md-typeset .grid.cards>ul>li:hover {
   border-color: var(--md-default-fg-color--lightest);
 }
 
@@ -177,4 +177,9 @@
   .md-typeset .grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Hide the site title in the navigation drawer */
+.md-nav--primary>.md-nav__title {
+  display: none;
 }

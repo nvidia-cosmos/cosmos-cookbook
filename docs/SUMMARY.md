@@ -1,5 +1,3 @@
-#
-
 - [Overview](index.md)
 - [Getting Started](get_started.md)
 - [Cookbook](cookbook/)
