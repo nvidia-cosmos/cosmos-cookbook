@@ -25,6 +25,7 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/end_to_end_examples/predict2/its-accident/post_training.md) |
+| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/end_to_end_examples/predict2/gr00t-dreams/post-training.md) |
 
 ### **Cosmos Transfer**
 
@@ -34,6 +35,7 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 |--------------|-----------------|----------|
 | **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
 | **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
+| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 | **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 
 ### **Cosmos Reason**
