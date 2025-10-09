@@ -1,8 +1,7 @@
 # Copyright (c) 2021, NVIDIA CORPORATION. All rights reserved.
 #
 #
-# Code copied from without modification:
-# https://gitlab-master.nvidia.com/torontoaimembers/av-foundation-model/-/blob/b9b6b8d36db8d449718109e6f24fb4a58109f73e/avm/common/utils/ndas_camera_model.py
+# Code credited to the NVIDIA Toronto AI team's av-foundation-model project.
 
 """Camera model definitions."""
 
