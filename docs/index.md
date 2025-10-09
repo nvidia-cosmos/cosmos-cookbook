@@ -24,7 +24,7 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](examples/predict2/its-accident/post_training.md) |
+| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](cookbook/end_to_end_examples/predict2/its-accident/post_training.md) |
 
 ### **Cosmos Transfer**
 
@@ -32,9 +32,9 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](examples/transfer1/inference-its-weather-augmentation/inference.md) |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](examples/transfer1/inference-warehouse-mv/inference.md) |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](examples/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
+| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](cookbook/inference/transfer1/inference-its-weather-augmentation/inference.md) |
+| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](cookbook/inference/transfer1/inference-warehouse-mv/inference.md) |
+| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](cookbook/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 
 ### **Cosmos Reason**
 
@@ -42,9 +42,9 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](examples/reason1/physical-plausibility-check/post_training.md) |
-| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](examples/reason1/spatial-ai-warehouse/post_training.md) |
-| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](examples/reason1/intelligent-transportation/post_training.md) |
+| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](cookbook/end_to_end_examples/reason1/physical-plausibility-check/post_training.md) |
+| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](cookbook/end_to_end_examples/reason1/spatial-ai-warehouse/post_training.md) |
+| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](cookbook/end_to_end_examples/reason1/intelligent-transportation/post_training.md) |
 <!--| **Training** | Visual question answering for autonomous vehicle scenarios | [Visual QA for AV](examples/reason1/visual-qa-for-AV/overview.md) |-->
 
 ## Cosmos Model Ecosystem

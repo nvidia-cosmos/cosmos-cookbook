@@ -1,2 +1,0 @@
-user_prompt: |
-  You are given a driving video. Please carefully analyze the video content, then think through and predict the next ego driving behavior in the following format: <action> your predicted action </action>.
