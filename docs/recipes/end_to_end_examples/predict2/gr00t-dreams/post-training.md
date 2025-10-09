@@ -1,7 +1,7 @@
 # Isaac GR00T-Dreams for Synthetic Trajectory Data Generation
 
 > **Authors:** NVIDIA Isaac Team
-> 
+>
 > **Organization:** NVIDIA
 
 ## Overview

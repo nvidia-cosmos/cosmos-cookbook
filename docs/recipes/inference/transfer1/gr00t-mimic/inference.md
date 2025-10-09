@@ -1,7 +1,7 @@
 # Isaac GR00T-Mimic for Synthetic Manipulation Motion Generation
 
 > **Authors:** NVIDIA Isaac Team
-> 
+>
 > **Organization:** NVIDIA
 
 ## Overview
