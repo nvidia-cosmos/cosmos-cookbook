@@ -41,7 +41,7 @@
 
 ### Post-Train Pre-Trained Cosmos Transfer 1 Models
 
-- [Post-train pre-trained Cosmos--7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md) **[with multi-GPU support]**
+- [Post-train pre-trained Cosmos-Transfer1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md) **[with multi-GPU support]**
 - [Post-train pre-trained Cosmos-Transfer1-7B-Sample-AV [LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
 - [Post-train pre-trained Cosmos-Transfer1-7B-Sample-AV-Multiview[LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
 
