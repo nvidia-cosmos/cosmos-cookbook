@@ -1,0 +1,45 @@
+name: sampson
+channels:
+  - nvidia/label/cuda-12.4.0
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  # Python version
+  - python=3.10
+  # CUDA toolkit and runtime
+  - cuda
+  - cuda-nvcc
+  - cuda-toolkit
+  - cuda-runtime
+  # Package managers
+  - pip=23.2
+  - uv
+  - setuptools
+  # Pip dependencies
+  - pip:
+      # Core scientific computing packages
+      - numpy<2.0.0
+      - scipy
+      - matplotlib
+      - pandas
+      # Computer vision packages
+      - opencv-python-headless
+      - kornia
+      - einops
+      # Video processing packages
+      - imageio-ffmpeg
+      - av
+      - mediapy
+      # Configuration and utilities
+      - omegaconf
+      - tqdm
+      - pathlib2
+      # Parallel processing
+      - ray[default]
+      # Feature matching and geometry packages
+      - pycolmap
+      # Logging and utilities
+      - loguru
+      - attrs
+      - pyquaternion
