@@ -8,9 +8,9 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Transfer1 | Inference | Synthetic manipulation motion generation for humanoid robots |
+| Cosmos Transfer 1 | Inference | Synthetic manipulation motion generation for humanoid robots |
 
-Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic motion trajectories for robot manipulation from minimal human demonstrations. Built on **NVIDIA Omniverse™** and **Cosmos Transfer1**, this blueprint addresses the challenge of limited real-world data by generating physically accurate synthetic demonstrations.
+Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic motion trajectories for robot manipulation from minimal human demonstrations. Built on **NVIDIA Omniverse™** and **Cosmos Transfer 1**, this blueprint addresses the challenge of limited real-world data by generating physically accurate synthetic demonstrations.
 
 ## Key Features
 
@@ -23,7 +23,7 @@ Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic mot
 
 1. **Human Demonstrations**: Start with a small number of human manipulation demonstrations
 2. **Simulation**: Use Isaac Sim and Omniverse for physically accurate environment simulation
-3. **Motion Synthesis**: Apply Cosmos Transfer1 to generate diverse manipulation trajectories
+3. **Motion Synthesis**: Apply Cosmos Transfer 1 to generate diverse manipulation trajectories
 4. **Policy Training**: Train imitation learning models on the synthetic dataset
 
 ## Applications
@@ -39,4 +39,4 @@ Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic mot
 - **[GitHub Repository](https://github.com/NVIDIA-Omniverse-blueprints/synthetic-manipulation-motion-generation)** - Source code and documentation
 - **[Technical Blog](https://developer.nvidia.com/blog/building-a-synthetic-motion-generation-pipeline-for-humanoid-robot-learning/)** - Pipeline overview and results
 - **[NVIDIA Omniverse](https://www.nvidia.com/en-us/omniverse/)** - Simulation platform
-- **[Cosmos Transfer1](https://github.com/nvidia-cosmos/cosmos-transfer1)** - Multi-control video generation
+- **[Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1)** - Multi-control video generation

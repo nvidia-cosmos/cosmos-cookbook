@@ -31,7 +31,7 @@ python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA av
 ### Step 2: Download Model
 
 ```bash
-# Download Cosmos-Reason1-7B-Reward model
+# Download Cosmos Reason 1-7B-Reward model
 huggingface-cli download nvidia/Cosmos-Reason1-7B-Reward --local-dir ./checkpoints --token <YOUR_HF_TOKEN>
 ```
 
@@ -88,7 +88,7 @@ python batch_inference.py --checkpoint ./checkpoints --video-dir ./test_videos -
 
 ### Detailed Analysis Mode
 
-The [Cosmos-Reason1 Video Critic Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides structured video analysis:
+The [Cosmos Reason 1 Video Critic Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides structured video analysis:
 
 ```bash
 # Run video critic evaluation
@@ -246,8 +246,8 @@ python distributed_inference.py --checkpoint ./checkpoints --video-dir ./dataset
 
 ### Official Documentation
 
-- [Cosmos-Reason1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
-- [Cosmos-Reason1-7B-Reward Model](https://huggingface.co/nvidia/Cosmos-Reason1-7B-Reward)
+- [Cosmos Reason 1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
+- [Cosmos Reason 1-7B-Reward Model](https://huggingface.co/nvidia/Cosmos-Reason1-7B-Reward)
 
 ### Examples and Tutorials
 

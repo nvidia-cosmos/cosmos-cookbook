@@ -315,9 +315,9 @@ cosmos-curate local launch \
 - Creates descriptive captions for each 256-frame window.
 - Stores processed clips and metadata to the specified output path.
 
-### Generating Cosmos-Predict2 Datasets
+### Generating Cosmos Predict 2 Datasets
 
-To create datasets specifically for Cosmos-Predict2 Video2World post-training, use the following command:
+To create datasets specifically for Cosmos Predict 2 Video2World post-training, use the following command:
 
 ```bash
 cosmos-curate local launch \
