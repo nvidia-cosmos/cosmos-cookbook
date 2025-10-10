@@ -2,7 +2,7 @@
 
 ## Standard Benchmarks
 
-Cosmos Reason models can be evaluated using standardized benchmarks that assess reasoning capabilities across diverse scenarios. The [Cosmos-Reason1 Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides instructions for running evaluation subsets, including physical reasoning, spatial understanding, and temporal consistency assessments.
+Cosmos Reason models can be evaluated using standardized benchmarks that assess reasoning capabilities across diverse scenarios. The [Cosmos Reason 1 Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) provides instructions for running evaluation subsets, including physical reasoning, spatial understanding, and temporal consistency assessments.
 
 ## Custom Evaluation on Your Data
 

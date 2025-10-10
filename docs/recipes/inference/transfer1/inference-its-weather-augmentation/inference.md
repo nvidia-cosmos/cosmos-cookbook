@@ -5,7 +5,7 @@
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos Transfer1 | Inference | Data augmentation |
+| Cosmos Transfer 1 | Inference | Data augmentation |
 
 This tutorial demonstrates how to use the Cosmos Transfer model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
@@ -27,7 +27,7 @@ Start with clear daylight highway scenes as the base input for augmentation.
 
 ![Input image](assets/input.jpg)
 
-NOTE: If you are dealing with images only, you need to create a video with repeating image frame before proceeding with the next steps and Cosmos Transfer1.
+NOTE: If you are dealing with images only, you need to create a video with repeating image frame before proceeding with the next steps and Cosmos Transfer 1.
 
 ### Video Captioning Using a VLM
 
@@ -72,11 +72,11 @@ Using the augmented prompt, Cosmos Transfer generates realistic rainy night scen
 
 ![Rainy night](assets/rainy_night.jpg)
 
-Note: We have chosen the middle frame of the output video from Cosmos Transfer1.
+Note: We have chosen the middle frame of the output video from Cosmos Transfer 1.
 
-## Control Parameters in Cosmos Transfer1
+## Control Parameters in Cosmos Transfer 1
 
-In general, it is possible to control for vis, edge, segmentation, and depth when running Cosmos Transfer1. However, experiments have found that when controlling only for **segmentation and depth**, the generated images are well suited for daylight/weather augmentations, especially when generating night scenes.
+In general, it is possible to control for vis, edge, segmentation, and depth when running Cosmos Transfer 1. However, experiments have found that when controlling only for **segmentation and depth**, the generated images are well suited for daylight/weather augmentations, especially when generating night scenes.
 
 ### Recommended Control Configuration
 
@@ -101,7 +101,7 @@ The recommended control config file is as follows:
 
 ### Why We Removed Vis and Edge Controls
 
-To illustrate why vis and edge controls are removed when using Cosmos Transfer1, two rainy night images were generated from the same input image:
+To illustrate why vis and edge controls are removed when using Cosmos Transfer 1, two rainy night images were generated from the same input image:
 
 1. **With all controls** (vis, edge, seg, depth): Night scenes are not generated as expected
 2. **With only seg and depth controls**: The generated image achieves the desired darkness level
@@ -122,7 +122,7 @@ To illustrate the impact of Cosmos Transfer weather augmentation on a downstream
 
 ## Results
 
-Experiments were conducted with a set of ~12k real ITS images and ~84K weather augmented Cosmos Transfer1 images using the pipeline described in this tutorial. Below are the results on the three KPIs:
+Experiments were conducted with a set of ~12k real ITS images and ~84K weather augmented Cosmos Transfer 1 images using the pipeline described in this tutorial. Below are the results on the three KPIs:
 
 ## ACDC Dataset
 
@@ -130,7 +130,7 @@ The ACDC dataset is an Intelligent Transportation System (ITS)-related dataset w
 
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 ![Result plot ACDC](assets/acdc_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## SUTD Dataset
 
@@ -138,7 +138,7 @@ The SUTD dataset is also an ITS-related dataset with more diverse weather condit
 
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 ![Result plot SUTD](assets/sutd_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## DAWN Dataset
 
@@ -146,7 +146,7 @@ The DAWN dataset is also another ITS-related dataset with different weather cond
 
 Below are the AP50 results of the most common objects (car, person) in the dataset along all weather conditions:
 ![Result plot DAWN](assets/dawn_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## Conclusion
 
