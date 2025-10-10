@@ -36,7 +36,7 @@
 # cosmos-reason1-utils = { path = "../../cosmos_reason1_utils", editable = true }
 # ///
 
-"""Example script for using Cosmos-Reason1 as a video reward model.
+"""Example script for using Cosmos Reason 1 as a video reward model.
 
 Example:
 
@@ -138,7 +138,7 @@ def build_html_report(video_path, responses):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cosmos-Reason1 Video Reward Report - {os.path.basename(video_path)}</title>
+    <title>Cosmos Reason 1 Video Reward Report - {os.path.basename(video_path)}</title>
     <style>
         body {{ font-family: sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }}
         video {{ width: 100%; max-width: 600px; }}
@@ -151,7 +151,7 @@ def build_html_report(video_path, responses):
     </style>
 </head>
 <body>
-    <h1>Cosmos-Reason1 Video Reward Report</h1>
+    <h1>Cosmos Reason 1 Video Reward Report</h1>
     <p>File: {os.path.basename(video_path)}</p>
 
     <h2>Video</h2>

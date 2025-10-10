@@ -1,15 +1,15 @@
-# Distilling Cosmos-Transfer1 Models
+# Distilling Cosmos Transfer 1 Models
 
 > **Authors:** [Grace Lam](https://www.linkedin.com/in/grace-lam/)
 > **Organization:** NVIDIA
 
-## Instructions from the Cosmos-Transfer1 Repo
+## Instructions from the Cosmos Transfer 1 Repo
 
-- [Distill Cosmos-Transfer1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/distillation_cosmos_transfer1_7b.md) **[with multi-GPU support]**
+- [Distill Cosmos Transfer 1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/distillation_cosmos_transfer1_7b.md) **[with multi-GPU support]**
 
-## Case Study: Distilling Cosmos-Transfer1 Edge
+## Case Study: Distilling Cosmos Transfer 1 Edge
 
-This tutorial presents a case study on single-step distillation of the 36-step Cosmos-Transfer1-7B Edge model. While the original model required 72 total inferences (36 steps x 2) due to classifier-free guidance (CFG), the distilled model requires only a single inference without CFG. This achieves a 72x speedup while maintaining output quality.
+This tutorial presents a case study on single-step distillation of the 36-step Cosmos Transfer 1-7B Edge model. While the original model required 72 total inferences (36 steps x 2) due to classifier-free guidance (CFG), the distilled model requires only a single inference without CFG. This achieves a 72x speedup while maintaining output quality.
 
 ### Overview
 
@@ -31,9 +31,9 @@ Our recipe is a two-stage distillation pipeline.
 
 #### Dataset
 
-KD minimizes the regression loss between the Student model's single-step generation and the Teacher model's multi-step generation (36 steps for Cosmos-Transfer1). Consequently, KD requires a preliminary data generation phase to create a synthetic dataset of Teacher model input-output pairs. For Cosmos-Transfer1 Edge, the input comprises random noise, text prompt, and canny edge map, while the output consists of the generated video.
+KD minimizes the regression loss between the Student model's single-step generation and the Teacher model's multi-step generation (36 steps for Cosmos Transfer 1). Consequently, KD requires a preliminary data generation phase to create a synthetic dataset of Teacher model input-output pairs. For Cosmos Transfer 1 Edge, the input comprises random noise, text prompt, and canny edge map, while the output consists of the generated video.
 
-For synthetic data generation, we randomly sampled 10,000 examples from the original training dataset used for Cosmos-Transfer1 Edge. We extracted the text prompts and canny inputs from these samples and processed them through the Teacher model (Cosmos-Transfer1 Edge) to generate corresponding output videos. The resulting KD dataset preserves the original text prompts and canny inputs while additionally storing the random noise tensors and Teacher-generated videos, creating complete input-output pairs for Student model training.
+For synthetic data generation, we randomly sampled 10,000 examples from the original training dataset used for Cosmos Transfer 1 Edge. We extracted the text prompts and canny inputs from these samples and processed them through the Teacher model (Cosmos Transfer 1 Edge) to generate corresponding output videos. The resulting KD dataset preserves the original text prompts and canny inputs while additionally storing the random noise tensors and Teacher-generated videos, creating complete input-output pairs for Student model training.
 
 To ensure high-quality synthetic data for distillation training, we generated Teacher outputs using optimal inference hyperparameters, including a guidance scale of 7 with negative prompting.
 
@@ -45,7 +45,7 @@ For KD hyperparameter optimization, we conducted systematic learning rate sweeps
 
 #### Visualizations
 
-Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the cosmos-transfer1 distillation codebase for systematic evaluation.
+Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the Cosmos Transfer 1 distillation codebase for systematic evaluation.
 
 The visualization layout displays four key components arranged vertically: Student 1-step sample, Teacher 1-step sample, canny edge input, and ground-truth reference video. Each row presents three temporal samples from the corresponding video clip – specifically the first, middle, and last frames – enabling direct visual comparison of distillation quality and temporal consistency across training iterations.
 
@@ -63,7 +63,7 @@ After ~10k steps:
 
 #### Dataset
 
-DMD2 optimizes the Student model to match the output distribution of the Teacher model through adversarial training combined with variational score distillation. Unlike Knowledge Distillation, DMD2 requires a diverse dataset of ground-truth real videos rather than synthetic Teacher-generated outputs. We used the original training dataset used for Cosmos-Transfer1 Edge.
+DMD2 optimizes the Student model to match the output distribution of the Teacher model through adversarial training combined with variational score distillation. Unlike Knowledge Distillation, DMD2 requires a diverse dataset of ground-truth real videos rather than synthetic Teacher-generated outputs. We used the original training dataset used for Cosmos Transfer 1 Edge.
 
 #### Hyperparameters
 
@@ -71,7 +71,7 @@ Similar to Knowledge Distillation, batch size and learning rate proved critical,
 
 #### Visualizations
 
-Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the cosmos-transfer1 distillation codebase for systematic evaluation.
+Throughout the distillation process, we continuously monitored training progress by logging model output samples at regular intervals. This monitoring functionality is implemented as a training callback within the Cosmos Transfer 1 distillation codebase for systematic evaluation.
 
 The visualization layout displays four key components arranged vertically: Student 1-step sample, Teacher 1-step sample, canny edge input, and ground-truth reference video. Each row presents three temporal samples from the corresponding video clip – specifically the first, middle, and last frames – enabling direct visual comparison of distillation quality and temporal consistency across training iterations.
 
