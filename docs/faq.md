@@ -94,11 +94,11 @@ Multiverse simulation involves generating multiple future outcomes from a given 
 
 ### Is Cosmos Reason a VLM, VLA, or MLLM?
 
-Cosmos-Reason1 is a physical reasoning engine designed to analyze real-world scenarios through natural language explanations. It functions as a Vision Language Model (VLM) or a Multi-Modal Large Language Model (MLLM) with chain-of-thought reasoning built-in. Unlike Vision-Language-Action (VLA) models, which map sensory inputs to executable actions, Cosmos-Reason1 employs hierarchical ontologies for space, time, and physics to generate text-based reasoning traces about safety, causality, and object interactions.
+Cosmos Reason 1 is a physical reasoning engine designed to analyze real-world scenarios through natural language explanations. It functions as a Vision Language Model (VLM) or a Multi-Modal Large Language Model (MLLM) with chain-of-thought reasoning built-in. Unlike Vision-Language-Action (VLA) models, which map sensory inputs to executable actions, Cosmos Reason 1 employs hierarchical ontologies for space, time, and physics to generate text-based reasoning traces about safety, causality, and object interactions.
 
 ### What does Cosmos Reason output?
 
-While VLAs output motor commands, Cosmos-Reason1 produces insights in text like "The slope exceeds the vehicle's tilt tolerance" that require translation layers for robotic execution. The models can do high-level planning and explainable safety checks but cannot directly control actuators or navigate dynamic environments.
+While VLAs output motor commands, Cosmos Reason 1 produces insights in text like "The slope exceeds the vehicle's tilt tolerance" that require translation layers for robotic execution. The models can do high-level planning and explainable safety checks but cannot directly control actuators or navigate dynamic environments.
 
 ## Technical Details
 
@@ -148,7 +148,7 @@ Physics alignment tests models' ability to simulate physical dynamics like gravi
 
 #### Minimum Setup
 
-**For Cosmos-Reason1-7B**:
+**For Cosmos Reason 1-7B**:
 
 - **SFT Training**: Minimum 2x 80GB GPUs
 - **RL Training**: Minimum 4x 80GB GPUs

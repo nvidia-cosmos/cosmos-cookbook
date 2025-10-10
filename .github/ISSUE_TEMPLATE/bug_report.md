@@ -29,7 +29,7 @@ A clear and concise description of what actually happened.
 
 - OS: [e.g. Ubuntu 22.04]
 - Python version: [e.g. 3.10]
-- Cosmos model: [e.g. Predict2, Transfer1, Reason1]
+- Cosmos model: [e.g. Predict 2, Transfer 1, Reason 1]
 - GPU: [e.g. A100, H100]
 
 ## Additional Context

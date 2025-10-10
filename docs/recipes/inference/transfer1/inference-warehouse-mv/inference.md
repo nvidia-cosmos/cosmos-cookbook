@@ -5,7 +5,7 @@
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos Transfer1 | Inference | Sim to Real data augmentation |
+| Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
 
 This use case study demonstrates how to apply Cosmos Transfer for data augmentation over Omniverse (OV) generated synthetic data to close the Sim-to-Real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
 
@@ -19,11 +19,11 @@ This use case study explores how first time outside-in multi-view world simulati
 
 ## Outside-In Multi-View Processing Approach
 
-Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos Transfer1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
+Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos Transfer 1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
 
 1. **Multi-view Outside-In Data Generation**: Multiview synthetic videos and corresponding multi-modal
 ground truth data (e.g., depth, segmentation masks) are prepared by [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html).
-2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos-Transfer1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos-Transfer1 model.
+2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos Transfer 1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos Transfer 1 model.
 
 This approach guarantees that all camera views receive consistent environmental transformations while maintaining spatial and temporal coherence across the multi-view setup.
 
@@ -55,7 +55,7 @@ The dataset provides a 6-camera warehouse setup with synchronized data organized
 
 ### Warehouse Outside-In Multi-View Input
 
-Each camera’s RGB video is processed sequentially through multiple Cosmos Transfer1 inference runs. Below, we present the concatenated multi-view videos to demonstrate the combined perspectives.
+Each camera's RGB video is processed sequentially through multiple Cosmos Transfer 1 inference runs. Below, we present the concatenated multi-view videos to demonstrate the combined perspectives.
 
 **Multi-View RGB Input:**
 
@@ -91,14 +91,14 @@ Users can leverage the Cosmos Transfer model to convert synthetic computer graph
 }
 ```
 
-**Combined Multi-View Transfer1 Output:**
+**Combined Multi-View Transfer 1 Output:**
 
 <video width="720" controls>
   <source src="assets/combined_grid_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-## Control Parameters in Cosmos Transfer1
+## Control Parameters in Cosmos Transfer 1
 
 By updating text prompts with varied environmental descriptions, Cosmos Transfer increases data diversity in addition to reducing the sim-to-reality gap. For example, providing descriptions of the warehouse scene under foggy or low-light conditions enables the generation of data with more challenging scenarios.
 
@@ -123,7 +123,7 @@ Example control and text prompts:
 
 With a diverse set of text prompts for world simulation, we can significantly scale up the variety of Cosmos-generated scenes.
 
-Below is a demonstration showing how Cosmos-Transfer1 augments a single view using multiple text prompts, demonstrating the impact of prompt diversity.
+Below is a demonstration showing how Cosmos Transfer 1 augments a single view using multiple text prompts, demonstrating the impact of prompt diversity.
 
 ![Data augmentation pipeline](assets/multi_world_simulation-min.gif)
 

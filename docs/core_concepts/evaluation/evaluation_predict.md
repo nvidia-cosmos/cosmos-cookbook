@@ -8,7 +8,7 @@ Use these metrics to evaluate generative video models (Predict):
 
 - **Qualitative video quality**: FID (image realism/diversity), FVD (spatio‑temporal quality)
 - **Geometric consistency**: Sampson Error; Temporal (TSE) and Cross‑view (CSE)
-- **VLM‑based assessment (Cosmos Reason)**: Zero‑shot critique and reward scoring; refer to the [Cosmos Reason as Reward](reason_as_reward.md) and the [Cosmos‑Reason1 Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) sections for more details.
+- **VLM‑based assessment (Cosmos Reason)**: Zero‑shot critique and reward scoring; refer to the [Cosmos Reason as Reward](reason_as_reward.md) and the [Cosmos Reason Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) sections for more details.
 
 ## Video Quality Metrics (FID/FVD)
 

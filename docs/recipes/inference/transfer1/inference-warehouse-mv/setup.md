@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos Transfer1 for warehouse multi-view inference.
+This guide covers the setup requirements for running Cosmos Transfer 1 for warehouse multi-view inference.
 
 ## System Requirements
 
@@ -12,7 +12,7 @@ This guide covers the setup requirements for running Cosmos Transfer1 for wareho
 
 ### Software Requirements
 
-The setup requires both the Cosmos Transfer1 repository and the Cosmos Cookbook to be properly installed and configured.
+The setup requires both the Cosmos Transfer 1 repository and the Cosmos Cookbook to be properly installed and configured.
 
 ## Installation
 
@@ -29,11 +29,11 @@ The getting started guide provides detailed instructions for:
 - Essential tool installation (uv, Hugging Face CLI, AWS CLI, etc.)
 - Development dependencies
 
-### Cosmos Transfer1 Setup
+### Cosmos Transfer 1 Setup
 
-Begin by installing and setting up the Cosmos Transfer1 repository by following the official guide:
+Begin by installing and setting up the Cosmos Transfer 1 repository by following the official guide:
 
-**[Cosmos Transfer1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
+**[Cosmos Transfer 1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
 
 The installation guide provides comprehensive steps for:
 
@@ -43,13 +43,13 @@ The installation guide provides comprehensive steps for:
 - Dependency installation
 - Inference configuration
 
-After completing the installation, copy the example cookbook assets into your Cosmos Transfer1 repository. Assuming your Cosmos Transfer1 repository root is available as `$COSMOS_TRANSFER_ROOT`, run:
+After completing the installation, copy the example cookbook assets into your Cosmos Transfer 1 repository. Assuming your Cosmos Transfer 1 repository root is available as `$COSMOS_TRANSFER_ROOT`, run:
 
 ```bash
 cp -r scripts/examples/transfer1/* "$COSMOS_TRANSFER_ROOT/examples/cookbook/"
 ```
 
-Replace `$COSMOS_TRANSFER_ROOT` with the real path to the Cosmos-Transfer1 directory path, or export the environment variable with the path.
+Replace `$COSMOS_TRANSFER_ROOT` with the real path to the Cosmos Transfer 1 directory path, or export the environment variable with the path.
 
 #### Install ffmpeg (required for video preprocessing/postprocessing)
 
@@ -61,4 +61,4 @@ conda install -c conda-forge ffmpeg
 
 ## Next Steps
 
-Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer1 for warehouse multi-view inference.
+Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer 1 for warehouse multi-view inference.

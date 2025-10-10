@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for post-training Cosmos Reason1 for intelligent transportation.
+This guide covers the setup requirements for post-training Cosmos Reason 1 for intelligent transportation.
 
 ## System Requirements
 
@@ -12,20 +12,20 @@ This guide covers the setup requirements for post-training Cosmos Reason1 for in
 
 ### Software Requirements
 
-The setup requires the Cosmos Reason1 and cosmos-rl repositories and Cosmos Reason1 model to be properly installed and configured.
+The setup requires the Cosmos Reason 1 and cosmos-rl repositories and Cosmos Reason 1 model to be properly installed and configured.
 
 ## Installation
 
-### Cosmos Reason1 Setup
+### Cosmos Reason 1 Setup
 
-To set up Cosmos Reason1 repository and model, follow the detailed installation and inference setup instructions at:
+To set up Cosmos Reason 1 repository and model, follow the detailed installation and inference setup instructions at:
 
-**[Cosmos Reason1 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md#setup)**
+**[Cosmos Reason 1 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md#setup)**
 
 ### Verification
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos Reason1 repository to ensure the model is working correctly before proceeding with the post-training pipeline.
+After completing the installation, verify the setup by running the inference examples provided in the Cosmos Reason 1 repository to ensure the model is working correctly before proceeding with the post-training pipeline.
 
 ## Next Steps
 
-Once the setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to post-train Cosmos Reason1 for intelligent transportation.
+Once the setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to post-train Cosmos Reason 1 for intelligent transportation.

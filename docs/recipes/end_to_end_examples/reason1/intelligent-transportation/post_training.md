@@ -1,11 +1,11 @@
-# Intelligent Transportation Post-Training with Cosmos Reason1
+# Intelligent Transportation Post-Training with Cosmos Reason 1
 
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)
 > **Organization:** NVIDIA
 
 ## Overview
 
-Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input–output pairs. Using domain-specific data is essential—it embeds the specialized vocabulary, visual patterns, and reasoning needed for real-world scenarios. In this recipe, we show how to fine-tune the [Cosmos-Reason1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to understand the world from a traffic point of view - scene understanding, road attributes, and pedestrian situation.
+Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input–output pairs. Using domain-specific data is essential—it embeds the specialized vocabulary, visual patterns, and reasoning needed for real-world scenarios. In this recipe, we show how to fine-tune the [Cosmos Reason 1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to understand the world from a traffic point of view - scene understanding, road attributes, and pedestrian situation.
 
 Before fine-tuning the model, let's look at the zero-shot performance of the model. The model spots some of the content correctly while identifying one of the pedestrians crossing the road incorrectly.
 
@@ -32,7 +32,7 @@ Here are examples of the video clips and textual descriptions of the pedestrian 
 
 <br>
 
-For this experiment, we fine-tune the Cosmos-Reason1 model on the Environment VQA subset of the WTS dataset.
+For this experiment, we fine-tune the Cosmos Reason 1 model on the Environment VQA subset of the WTS dataset.
 
 ### Data Pre-processing
 
@@ -49,7 +49,7 @@ python data_preprocess.py --data_path /path/to/WTS/folder
 
 ## Post-Training with Supervised Fine-Tuning (SFT)
 
-After preprocessing, the WTS dataset is in Llava format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos-Reason1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava) with a small modification to add system prompt and an MCQ prompt suffix in `custom_sft.py` script:
+After preprocessing, the WTS dataset is in Llava format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava) with a small modification to add system prompt and an MCQ prompt suffix in `custom_sft.py` script:
 
 ```shell
 # From scripts/examples/reason1/intelligent-transportation directory
@@ -58,7 +58,7 @@ cosmos-rl --config sft_config.toml custom_sft.py
 
 ### Hyperparameter optimization
 
-For this SFT experiment, we updated the default configuration in Cosmos-Reason1’s post-training llava example. Here are the key updates that optimize this experiment on 8 A100.
+For this SFT experiment, we updated the default configuration in Cosmos Reason 1’s post-training llava example. Here are the key updates that optimize this experiment on 8 A100.
 
 ???+ code "Training Configuration"
 
@@ -148,7 +148,7 @@ The last step is to deploy the trained model for inference. You can deploy it us
 
 ### FP8 Quantization
 
-The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
+The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
 
 **Step 1:** Clone the Cosmos Reason 1 repo.
 
@@ -173,7 +173,7 @@ Before deploying the quantized model for inference, please run evaluation on the
 
 NVIDIA NIM™ provides containers to self-host GPU-accelerated inferencing microservices for pretrained and customized AI models across clouds, data centers, and RTX™ AI PCs and workstations, with industry-standard APIs for simple integration into AI applications.
 
-To deploy a post-trained checkpoint, go to the [fine-tune-model](https://docs.nvidia.com/nim/vision-language-models/latest/fine-tune-model.html) section in NIM documentation. Go to “Cosmos Reason1 7B” tab. NIM will automatically serve an optimized vLLM engine for this model. The model needs to be in the Huggingface checkpoint or quantized checkpoint.
+To deploy a post-trained checkpoint, go to the [fine-tune-model](https://docs.nvidia.com/nim/vision-language-models/latest/fine-tune-model.html) section in NIM documentation. Go to "Cosmos Reason 1-7B" tab. NIM will automatically serve an optimized vLLM engine for this model. The model needs to be in the Huggingface checkpoint or quantized checkpoint.
 
 ```shell
 export CUSTOM_WEIGHTS=/path/to/customized/reason1
@@ -192,7 +192,7 @@ docker run -it --rm --name=cosmos-reason1-7b \
 
 NVIDIA Blueprint for video search and summarization (VSS) leverages both Vision-Language Models (VLM) and Large Language Models (LLM) to generate captions, answer questions, and summarize video content, enabling rapid search and understanding of videos on NVIDIA hardware.
 
-By default, VSS is configured to use base Cosmos-Reason1-7B as the default VLM. Deployment instructions for VSS are available in its [official documentation](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html). VSS supports two primary deployment methods: Docker Compose and Helm charts.
+By default, VSS is configured to use base Cosmos Reason 1-7B as the default VLM. Deployment instructions for VSS are available in its [official documentation](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html). VSS supports two primary deployment methods: Docker Compose and Helm charts.
 
 For Docker Compose deployment, navigate to the [Configure the VLM](https://docs.nvidia.com/vss/latest/content/installation-vlms-docker-compose.html#local-models-cosmos-reason1) section under “Plug-and-Play Guide (Docker Compose Deployment)” to integrate a custom fine-tuned Cosmos Reason 1 checkpoint.
 
@@ -229,7 +229,7 @@ vss:
 
 ## Conclusion
 
-Supervised Fine-Tuning Cosmos-Reason1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights:
+Supervised Fine-Tuning Cosmos Reason 1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights:
 
 - Domain data matters: Specialized datasets drive substantial performance gains.
 - Efficient training: 4K vision tokens per frame converged twice as fast as 8K with similar accuracy.

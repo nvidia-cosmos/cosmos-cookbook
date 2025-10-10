@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos Reason1 for physical plausibility prediction and post-training workflows.
+This guide covers the setup requirements for running Cosmos Reason 1 for physical plausibility prediction and post-training workflows.
 
 ## System Requirements
 
@@ -12,19 +12,19 @@ This guide covers the setup requirements for running Cosmos Reason1 for physical
 
 ### Software Requirements
 
-The setup requires the Cosmos Reason1 repository and model to be properly installed and configured.
+The setup requires the Cosmos Reason 1 repository and model to be properly installed and configured.
 
 ## Installation
 
-### Cosmos Reason1 Setup
+### Cosmos Reason 1 Setup
 
-To set up Cosmos Reason1 repository and model, follow the detailed installation and inference setup instructions at:
+To set up Cosmos Reason 1 repository and model, follow the detailed installation and inference setup instructions at:
 
-**[Cosmos Reason1 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_hf)**
+**[Cosmos Reason 1 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_hf)**
 
 ### Verification
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos Reason1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
+After completing the installation, verify the setup by running the inference examples provided in the Cosmos Reason 1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
 
 ## Next Steps
 

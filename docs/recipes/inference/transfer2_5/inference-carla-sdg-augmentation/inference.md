@@ -104,13 +104,13 @@ Cosmos Transfer 2.5 leverages carefully crafted prompts to transform synthetic s
 2. **Negative Prompts**: Constraints that prevent unrealistic artifacts and maintain structural integrity
 3. **Model's Inherent Capabilities**: Cosmos Transfer 2.5's understanding of real-world physics and lighting to enhance realism
 
-### Scene Understanding with Physical AI Model Cosmos-Reason1
+### Scene Understanding with Physical AI Model Cosmos Reason 1
 
-Our prompt engineering pipeline leverages Cosmos-Reason1, a model densely trained on AV and robotics data for superior physical scene understanding, in a two-stage approach to embed specific variations into the scene description:
+Our prompt engineering pipeline leverages Cosmos Reason 1, a model densely trained on AV and robotics data for superior physical scene understanding, in a two-stage approach to embed specific variations into the scene description:
 
 #### Stage 1: Global Scene Captioning
 
-We use Cosmos-Reason1 (7B) to generate a comprehensive caption that captures all scene elements with physical AI expertise:
+We use Cosmos Reason 1-7B to generate a comprehensive caption that captures all scene elements with physical AI expertise:
 
 - Traffic infrastructure (roads, intersections, traffic lights)
 - Vehicles and their behaviors (including anomalies)
@@ -121,11 +121,11 @@ We use Cosmos-Reason1 (7B) to generate a comprehensive caption that captures all
 
 The global caption is then processed by Llama-3.1-8B-Instruct to inject specific augmentation keywords while preserving the core scene structure. The LLM is prompted with:
 
-- The original global caption from Cosmos-Reason1-7B
+- The original global caption from Cosmos Reason 1-7B
 - Target variation keywords (e.g., "night", "snow falling", "puddles")
 - Instructions to realistically modify only the relevant aspects
 
-This approach ensures that the anomaly behavior and scene structure remain intact while only the desired visual attributes are transformed. Cosmos-Reason1's specialized training on autonomous vehicle and robotics data ensures accurate understanding of spatial relationships, vehicle dynamics, and traffic scenarios that are critical for maintaining ground truth integrity during augmentation.
+This approach ensures that the anomaly behavior and scene structure remain intact while only the desired visual attributes are transformed. Cosmos Reason 1's specialized training on autonomous vehicle and robotics data ensures accurate understanding of spatial relationships, vehicle dynamics, and traffic scenarios that are critical for maintaining ground truth integrity during augmentation.
 
 ### Augmentation Categories and Prompt Design
 
@@ -351,6 +351,6 @@ Cosmos Transfer 2.5 addresses critical challenges in Physical AI:
 3. **Scalability**: Democratizes access to diverse, high-quality training data
 4. **Reliability**: Maintains ground truth integrity for safety-critical applications
 
-By leveraging advanced generative AI with physical scene understanding from Cosmos-Reason1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
+By leveraging advanced generative AI with physical scene understanding from Cosmos Reason 1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
 
 For implementation details and additional use cases, please refer to the [setup guide](setup.md) and explore more examples in the Cosmos ecosystem.
