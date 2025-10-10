@@ -1,0 +1,12 @@
+# Markdownlint configuration for Cosmos Cookbook
+# See: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+# Disable specific rules that conflict with our documentation style
+MD013: false # Line length - we allow longer lines for readability
+MD033: false # Allow inline HTML for enhanced formatting
+MD041: false # Allow documents without top-level H1 (for SUMMARY.md files)
+MD036: true # Enforce proper headings instead of emphasis
+MD024: false # Allow duplicate headings (common in examples)
+MD025: false # Allow multiple H1 headings per document
+MD040: false # Allow fenced code blocks without language specification
+MD045: false # Allow images without alt text (for now)
