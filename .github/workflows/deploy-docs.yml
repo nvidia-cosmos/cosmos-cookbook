@@ -1,7 +1,9 @@
 # This workflow runs when main is updated in order to deploy the docs.
 name: Deploy Documentation
 on:
-  page_build:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 permissions:
   contents: read
