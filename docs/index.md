@@ -14,9 +14,9 @@ The Cosmos Cookbook is designed as an **open-source platform** where NVIDIA shar
 
 We encourage community contributions including new examples, workflow improvements, bug fixes, and documentation enhancements. The open-source nature ensures that the collective knowledge and best practices around Cosmos models continue to evolve and benefit the entire ecosystem.
 
-## End-to-End Examples
+## Post-Training Examples
 
-The cookbook includes comprehensive case studies demonstrating real-world applications across the Cosmos ecosystem.
+The cookbook includes comprehensive case studies demonstrating real-world post-training applications across the Cosmos ecosystem.
 
 ### **Cosmos Predict**
 
@@ -24,8 +24,8 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/end_to_end_examples/predict2/its-accident/post_training.md) |
-| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/end_to_end_examples/predict2/gr00t-dreams/post-training.md) |
+| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
+| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 
 ### **Cosmos Transfer**
 
@@ -44,9 +44,9 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](recipes/end_to_end_examples/reason1/physical-plausibility-check/post_training.md) |
-| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](recipes/end_to_end_examples/reason1/spatial-ai-warehouse/post_training.md) |
-| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/end_to_end_examples/reason1/intelligent-transportation/post_training.md) |
+| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md) |
+| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md) |
+| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
 
 ## Cosmos Model Ecosystem
 
@@ -101,4 +101,4 @@ This cookbook provides flexible entry points for both **inference** and **traini
 - **Inference workflows:** [Getting Started](get_started.md) for setup and immediate model deployment
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
-- **Domain examples:** [End-to-End Examples](#end-to-end-examples) organized by application area
+- **Post-training examples:** [Post-Training Examples](#post-training-examples) organized by application area

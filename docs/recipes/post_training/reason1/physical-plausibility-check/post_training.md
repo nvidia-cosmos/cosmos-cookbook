@@ -84,7 +84,7 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
 ???+ code "Prompt for Scoring Physical Plausibility"
 
     ```yaml
-    --8<-- "docs/recipes/end_to_end_examples/reason1/physical-plausibility-check/assets/video_reward.yaml"
+    --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/video_reward.yaml"
     ```
 
 We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason 1 to run zero-shot inference.
@@ -166,7 +166,7 @@ Use the following configuration optimized for 8 GPUs:
 ???+ code "Training Configuration"
 
     ```toml
-    --8<-- "docs/recipes/end_to_end_examples/reason1/physical-plausibility-check/assets/sft_config.toml"
+    --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/sft_config.toml"
     ```
 
 ### Running Training
@@ -242,7 +242,7 @@ The language instruction prompts the model to generate a structured response wit
 ???+ code "Prompt for RL Training"
 
     ```yaml
-    --8<-- "docs/recipes/end_to_end_examples/reason1/physical-plausibility-check/assets/video_reward_with_thinking.yaml"
+    --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/video_reward_with_thinking.yaml"
     ```
 
 ### Training Configuration
@@ -259,7 +259,7 @@ We use the following configuration optimized for 8 GPUs:
 ???+ code "RL Training Configuration"
 
     ```toml
-    --8<-- "docs/recipes/end_to_end_examples/reason1/physical-plausibility-check/assets/rl_config.toml"
+    --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/rl_config.toml"
     ```
 
 We prepare the training data for reinforcement learning with a different prompt and label balancing discussed in the considerations above.
