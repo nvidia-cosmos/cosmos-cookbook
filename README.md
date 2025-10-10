@@ -14,7 +14,7 @@ This cookbook provides step-by-step workflows, technical recipes, and concrete e
 - **Post-Training**: Custom fine-tuning for domain-specific adaptation
 - **Evaluation**: Quality control and model assessment workflows
 
-The Cosmos ecosystem includes five core repositories: **Curator**, **Predict 2**, **Transfer 1**, **Reason 1**, and **RL**, each targeting specific capabilities in the AI development workflow.
+The Cosmos ecosystem includes core model families: **Curator**, **Predict** (versions 2 and 2.5), **Transfer** (versions 1 and 2.5), **Reason 1**, and **RL**, each targeting specific capabilities in the AI development workflow.
 
 ## Prerequisites
 

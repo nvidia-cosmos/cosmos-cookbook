@@ -50,15 +50,29 @@ The cookbook includes comprehensive case studies demonstrating real-world applic
 
 ## Cosmos Model Ecosystem
 
-The Cosmos architecture consists of five core repositories, each targeting specific capabilities in the AI development workflow:
+The Cosmos architecture consists of multiple model families, each targeting specific capabilities in the AI development workflow:
+
+### **Cosmos Curator**
 
 **[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
 
+### **Cosmos Predict** - Future State Prediction Models
+
+**[Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5)** *(Latest)* - A flow-based model that unifies Text2World, Image2World, and Video2World into a single architecture. Uses Cosmos-Reason1 as the text encoder and significantly improves upon Predict 2 in both quality and prompt alignment. Provides specialized variants for robotics, autonomous vehicles (multiview), and simulation with support for custom post-training for domain-specific prediction tasks.
+
 **[Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
+
+### **Cosmos Transfer** - Multi-Control Video Generation Models
+
+**[Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** *(Latest)* - Enhanced multi-control video generation system with improved quality and control precision. Features ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap), 4K upscaling capabilities, and supports training for custom control modalities and domain adaptation.
 
 **[Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1)** - A multi-control video generation system with ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap). Includes 4K upscaling capabilities and supports training for custom control modalities and domain adaptation.
 
+### **Cosmos Reason** - Vision-Language Reasoning Models
+
 **[Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1)** - A 7B vision-language model for physically grounded reasoning. Handles spatial/temporal understanding and chain-of-thought tasks, with fine-tuning support for embodied AI applications and domain-specific reasoning.
+
+### **Cosmos RL** - Training Framework
 
 **[Cosmos RL](https://github.com/nvidia-cosmos/cosmos-rl)** - A distributed training framework supporting both supervised fine-tuning (SFT) and reinforcement learning approaches. Features elastic policy rollout, FP8/FP4 precision support, and optimization for large-scale VLM and LLM training.
 
@@ -72,7 +86,7 @@ The cookbook is organized around key workflows spanning **inference** and **trai
 
 **1. [Data Curation](core_concepts/data_curation/overview.md)** - Use Cosmos Curator to prepare your datasets with modular, scalable processing pipelines. This includes splitting, captioning, filtering, deduplication, task-specific sampling, and cloud-native or local execution.
 
-**2. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict 2, Transfer 1, and Reason 1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
+**2. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict (2 and 2.5), Transfer (1 and 2.5), and Reason 1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
 
 **3. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason 1 as a quality filter (e.g. for synthetic data rejection sampling).
 
