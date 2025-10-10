@@ -42,7 +42,7 @@ Before getting started, ensure you have the following requirements:
 
 ### Hardware Requirements
 
-For specific GPU and memory requirements for each Cosmos model (Predict 1, Predict 2, Transfer 1, Reason 1), refer to the official [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
+For specific GPU and memory requirements for each Cosmos model (Predict 2, Predict 2.5, Transfer 1, Transfer 2.5, Reason 1), refer to the official [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
 
 ## Generic Tool Installation
 

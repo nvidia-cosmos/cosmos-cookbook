@@ -147,4 +147,4 @@ The core curation guide covers:
 - **Local Docker setup** for full control and customization
 - **SLURM cluster deployment** for large-scale processing
 - **Advanced captioning techniques** and best practices
-- **Integration with Cosmos Predict 2** workflows
+- **Integration with Cosmos Predict** (versions 2 and 2.5) workflows
