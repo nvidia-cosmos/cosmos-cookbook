@@ -1,0 +1,23 @@
+# Requirements for video metrics evaluation scripts
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.20.0
+scipy>=1.7.0
+tqdm>=4.60.0
+
+# Video processing
+decord>=0.6.0
+opencv-python>=4.5.0
+einops>=0.6.0
+
+# Metrics computation
+torchmetrics[image]>=0.11.0  # For FID computation
+torch-fidelity>=0.3.0  # Required by torchmetrics for FID
+cd-fvd>=0.1.0  # For FVD computation
+
+# Optional but recommended
+Pillow>=8.2.0  # Image processing
+requests>=2.25.0  # For downloading model weights

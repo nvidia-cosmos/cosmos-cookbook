@@ -1,0 +1,67 @@
+[custom.dataset]
+annotation_path = "<PATH_TO_DATASET>/train_llava.json"
+media_path = "<PATH_TO_DATASET>/"
+system_prompt = "Answer the questions."
+
+[custom.vision]
+fps = 1
+resized_width = 960
+resized_height = 540
+
+[train]
+resume = true
+epoch = 1
+output_dir = "<PATH_TO_OUTPUT_DIR>/sft_fsdp8"
+epsilon = 1e-8
+optm_name = "AdamW"
+optm_lr = 1e-5
+optm_impl = "foreach"
+optm_weight_decay = 0.01
+optm_betas = [ 0.9, 0.999,]
+optm_warmup_steps = 20
+optm_grad_norm_clip = 1.0
+async_tp_enabled = false
+compile = false
+master_dtype = "float32"
+param_dtype = "bfloat16"
+fsdp_reduce_dtype = "float32"
+fsdp_offload = false
+fsdp_reshard_after_forward = "default"
+train_batch_per_replica = 32
+sync_weight_interval = 1
+enable_validation = false
+validation_step = 100
+validation_batch_per_replica = 2
+
+[policy]
+model_name_or_path = "nvidia/Cosmos-Reason1-7B"
+model_max_length = 8192
+model_gradient_checkpointing = true
+
+[logging]
+logger = ['console', 'wandb']
+project_name = "cosmos_reason1"
+experiment_name = "sft_fsdp8"
+
+[train.train_policy]
+dataset.test_size = 1
+type = "sft"
+enable_dataset_cache = false
+dataloader_num_workers = 8
+dataloader_prefetch_factor = 8
+conversation_column_name = "conversations"
+mini_batch = 4
+
+[train.ckpt]
+enable_checkpoint = true
+save_freq = 50
+save_mode = "async"
+
+[policy.parallelism]
+n_init_replicas = 1
+tp_size = 1
+cp_size = 1
+dp_shard_size = 8
+pp_size = 1
+dp_replicate_size = 1
+cp_rotate_method = "allgather"

@@ -1,0 +1,48 @@
+# This workflow runs on all branches to perform quality checks.
+name: PR Quality Checks
+on:
+  pull_request:
+    branches: [main]
+  push:
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    name: Pre-commit checks
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+      - name: Setup just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff
+      - name: Run pre-commit
+        run: |
+          just ci-lint
+  docs-build-test:
+    runs-on: ubuntu-latest
+    name: Test documentation build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+      - name: Setup just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff
+      - name: Build documentation
+        run: |
+          just ci-deploy-internal ci-deploy-external
+      - name: Upload docs build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-build
+          path: |
+            public/
+            external/

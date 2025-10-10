@@ -1,0 +1,81 @@
+{#
+Override the header to make the site name link to site_url
+#}
+<header class="md-header" data-md-component="header">
+    <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
+
+        <!-- Link to home -->
+        <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name | e }}"
+            class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+            {% include "partials/logo.html" %}
+        </a>
+
+        <!-- Button to open drawer -->
+        <label class="md-header__button md-icon" for="__drawer">
+            {% include ".icons/material/menu" ~ ".svg" %}
+        </label>
+
+        <!-- Header title with link to site URL -->
+        <div class="md-header__title" data-md-component="header-title">
+            <div class="md-header__ellipsis">
+                <div class="md-header__topic md-ellipsis">
+                    <span class="md-ellipsis">
+                        <a href="{{ config.site_url }}" style="color: inherit; text-decoration: none;">
+                            {{ config.site_name }}
+                        </a>
+                    </span>
+                </div>
+                <div class="md-header__topic md-ellipsis" data-md-component="header-topic">
+                    <span class="md-ellipsis">
+                        {% if page.meta and page.meta.title %}
+                        {{ page.meta.title }}
+                        {% else %}
+                        {{ page.title }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color palette toggle -->
+        {% if config.theme.palette %}
+        {% if not config.theme.palette is mapping %}
+        {% include "partials/palette.html" %}
+        {% endif %}
+        {% endif %}
+
+        <!-- User preference: color palette -->
+        {% if not config.theme.palette is mapping %}
+        {% include "partials/javascripts/palette.html" %}
+        {% endif %}
+
+        <!-- Site language selector -->
+        {% if config.extra.alternate %}
+        {% include "partials/alternate.html" %}
+        {% endif %}
+
+        <!-- Button to open search modal -->
+        {% if "material/search" in config.plugins %}
+        <label class="md-header__button md-icon" for="__search">
+            {% include ".icons/material/magnify.svg" %}
+        </label>
+
+        <!-- Search interface -->
+        {% include "partials/search.html" %}
+        {% endif %}
+
+        <!-- Repository information -->
+        {% if config.repo_url %}
+        <div class="md-header__source">
+            {% include "partials/source.html" %}
+        </div>
+        {% endif %}
+    </nav>
+
+    <!-- Navigation tabs (sticky) -->
+    {% if "navigation.tabs.sticky" in features %}
+    {% if "navigation.tabs" in features %}
+    {% include "partials/tabs.html" %}
+    {% endif %}
+    {% endif %}
+</header>

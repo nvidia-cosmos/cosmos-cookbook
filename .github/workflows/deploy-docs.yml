@@ -1,0 +1,45 @@
+# This workflow runs when main is updated in order to deploy the docs.
+name: Deploy Documentation
+on:
+  page_build:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for git info plugin
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+      - name: Setup just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff
+      - name: Build documentation
+        run: |
+          just ci-deploy-external
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: external/site/
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
