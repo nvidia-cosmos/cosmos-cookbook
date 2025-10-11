@@ -1,19 +1,19 @@
-# Cosmos Transfer 2.5 Sim2Real for Simulator Videos
+# Cosmos-Transfer2.5 Sim2Real for Simulator Videos
 
 > **Authors:** [Ryan Ji](https://www.linkedin.com/in/ryan-ji-a73300206/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos Transfer 2.5 | Inference | Sim to Real data augmentation |
+| Cosmos-Transfer2.5 | Inference | Sim to Real data augmentation |
 
-This tutorial demonstrates how to use the Cosmos Transfer 2.5 model to augment synthetic data from simulations, converting limited simulator outputs into photorealistic datasets while reducing the manual effort needed to scale diversity.
+This tutorial demonstrates how to use the Cosmos-Transfer2.5 model to augment synthetic data from simulations, converting limited simulator outputs into photorealistic datasets while reducing the manual effort needed to scale diversity.
 
 - [Setup and System Requirement](setup.md)
 
 ## Why Simulator-to-Real Augmentation Matters
 
-Creating diverse, photorealistic training data from simulators faces significant challenges:
+There are significant challenges associated with creating diverse, photorealistic training data from simulators:
 
 - **Domain Gap**: While simulators provide perfect ground truth and controllable scenarios, their synthetic appearance creates a substantial domain gap that limits the performance of models trained on simulator data when deployed in real-world environments.
 
@@ -21,11 +21,11 @@ Creating diverse, photorealistic training data from simulators faces significant
 
 - **Limited Visual Realism**: Traditional simulator outputs lack the photorealistic quality needed for robust real-world model deployment, requiring additional post-processing or domain adaptation techniques.
 
-This creates a great opportunity for utilizing Cosmos Transfer 2.5 to transform simulator outputs into photorealistic, diverse datasets that bridge the sim-to-real gap and improve downstream model performance in real-world deployment.
+Cosmos-Transfer2.5 can transform simulator outputs into photorealistic, diverse datasets that bridge the sim-to-real gap and improve downstream model performance in real-world deployment.
 
 ## Demonstration Overview
 
-This is a demonstration of **Cosmos Transfer 2.5** being used for simulator-to-real augmentation of synthetic data. This tutorial walks through a step-by-step process of transforming synthetic simulator outputs into photorealistic, diverse datasets. By leveraging Cosmos Transfer 2.5's advanced generative capabilities, we showcase how to bridge the sim-to-real gap while maintaining the structural integrity and semantic information from the original simulator data.
+This is a demonstration of **Cosmos-Transfer2.5** being used for simulator-to-real augmentation of synthetic data. This tutorial walks through the step-by-step process of transforming synthetic simulator outputs into photorealistic, diverse datasets. By leveraging the advanced generative capabilities of the Cosmos-Transfer2.5 model, we showcase how to bridge the sim-to-real gap while maintaining the structural integrity and semantic information from the original simulator data.
 
 ## Creating Anomaly Scenarios in Simulators
 
@@ -33,26 +33,26 @@ This is a demonstration of **Cosmos Transfer 2.5** being used for simulator-to-r
 
 Creating traffic anomaly scenarios in simulators requires manual effort and technical expertise:
 
-- **Map Design**: Custom road networks must be manually constructed or modified to support specific anomaly scenarios
-- **Traffic Setup**: Each vehicle needs individual placement, trajectory planning, and behavior scripting
-- **Anomaly Engineering**: Wrong-way driving behaviors require careful programming to ensure realistic yet unsafe patterns
+- **Map Design**: Custom road networks must be manually constructed or modified to support specific anomaly scenarios.
+- **Traffic Setup**: Each vehicle needs individual placement, trajectory planning, and behavior scripting.
+- **Anomaly Engineering**: Wrong-way driving behaviors require careful programming to ensure realistic yet unsafe patterns.
 - **Camera Configuration**: Multiple viewpoints must be positioned and calibrated to capture the anomaly from relevant angles
-- **Environment Tuning**: Lighting, weather, and time-of-day settings need manual adjustment for each variation
+- **Environment Tuning**: Lighting, weather, and time-of-day settings need manual adjustment for each variation.
 
 This labor-intensive process makes it prohibitively expensive to create diverse anomaly datasets at scale.
 
 ### Wrong-Way Driving Scenario
 
-The demonstration video showcases a critical traffic safety scenario captured in the simulator's synthetic environment:
+The demonstration video showcases a critical traffic safety scenario captured in the synthetic environment of the simulator:
 
 > "The scene depicts a large urban intersection marked with a prominent yellow grid box to prevent vehicles from blocking the crossing, surrounded by multiple lanes with clearly defined stop lines, crosswalks, and sidewalks lined with streetlights, palm trees, and banners. Traffic lights hang overhead, coordinating flows from all directions, with most vehicles orderly queued at red signals or moving forward on green, while one vehicle is notably traveling against the proper lane direction, creating a wrong-way traffic anomaly. The background features tall, detailed stone and glass buildings with arched entrances, a mix of modern and classical architectural styles, along with visible signage and distant street activity, giving the environment a realistic, bustling city atmosphere."
 
-This complex urban scenario demonstrates:
+This complex urban scenario demonstrates the following:
 
-- **Traffic Anomaly**: One vehicle driving against the proper lane direction amidst otherwise orderly traffic
-- **Rich Urban Context**: Detailed intersection with traffic infrastructure, buildings, and urban elements
-- **Synthetic Appearance**: Despite the detailed scene composition, the characteristic rendering style reveals its simulator origin
-- **Safety-Critical Behavior**: The wrong-way vehicle creates a dangerous situation that autonomous systems must detect
+- **Traffic Anomaly**: One vehicle driving against the proper lane direction amidst otherwise orderly traffic.
+- **Rich Urban Context**: Detailed intersection with traffic infrastructure, buildings, and urban elements.
+- **Synthetic Appearance**: Despite the detailed scene composition, the characteristic rendering style reveals its simulator origin.
+- **Safety-Critical Behavior**: The wrong-way vehicle creates a dangerous situation that autonomous systems must detect.
 
 ### Available Ground Truth from the Simulator
 
@@ -92,17 +92,17 @@ The simulator provides comprehensive ground truth data for each frame:
   </div>
 </div>
 
-These control signals serve as the foundation for Cosmos Transfer 2.5's photorealistic augmentation while ensuring the anomaly behavior is preserved.
+These control signals serve as the foundation for the Cosmos-Transfer2.5 model's photorealistic augmentation while ensuring the anomaly behavior is preserved.
 
 ## Prompt Engineering for Photorealistic Augmentation
 
 ### Transforming Synthetic Data Through Strategic Prompting
 
-Cosmos Transfer 2.5 leverages carefully crafted prompts to transform synthetic simulator outputs into photorealistic scenes. The key to successful augmentation lies in three critical components:
+Cosmos-Transfer2.5 leverages carefully crafted prompts to transform synthetic simulator outputs into photorealistic scenes. The key to successful augmentation lies in three critical components:
 
 1. **Positive Prompts**: Detailed descriptions that guide the model toward photorealistic qualities while preserving the anomaly behavior
 2. **Negative Prompts**: Constraints that prevent unrealistic artifacts and maintain structural integrity
-3. **Model's Inherent Capabilities**: Cosmos Transfer 2.5's understanding of real-world physics and lighting to enhance realism
+3. **Model's Inherent Capabilities**: The model's understanding of real-world physics and lighting to enhance realism
 
 ### Scene Understanding with Physical AI Model Cosmos Reason 1
 
@@ -110,7 +110,7 @@ Our prompt engineering pipeline leverages Cosmos Reason 1, a model densely train
 
 #### Stage 1: Global Scene Captioning
 
-We use Cosmos Reason 1-7B to generate a comprehensive caption that captures all scene elements with physical AI expertise:
+We use Cosmos-Reason1-7B to generate a comprehensive caption that captures all scene elements with physical AI expertise:
 
 - Traffic infrastructure (roads, intersections, traffic lights)
 - Vehicles and their behaviors (including anomalies)
@@ -119,17 +119,17 @@ We use Cosmos Reason 1-7B to generate a comprehensive caption that captures all 
 
 #### Stage 2: Variation-Specific Augmentation
 
-The global caption is then processed by Llama-3.1-8B-Instruct to inject specific augmentation keywords while preserving the core scene structure. The LLM is prompted with:
+The global caption is then processed by Llama-3.1-8B-Instruct to inject specific augmentation keywords while preserving the core scene structure. The LLM is prompted with the following:
 
 - The original global caption from Cosmos Reason 1-7B
-- Target variation keywords (e.g., "night", "snow falling", "puddles")
+- Target variation keywords (e.g. "night", "snow falling", "puddles")
 - Instructions to realistically modify only the relevant aspects
 
-This approach ensures that the anomaly behavior and scene structure remain intact while only the desired visual attributes are transformed. Cosmos Reason 1's specialized training on autonomous vehicle and robotics data ensures accurate understanding of spatial relationships, vehicle dynamics, and traffic scenarios that are critical for maintaining ground truth integrity during augmentation.
+This approach ensures that the anomaly behavior and scene structure remain intact while only the desired visual attributes are transformed. The Cosmos-Reason1 model's specialized training on autonomous vehicle and robotics data ensures accurate understanding of spatial relationships, vehicle dynamics, and traffic scenarios that are critical for maintaining ground truth integrity during augmentation.
 
 ### Augmentation Categories and Prompt Design
 
-To maximize data diversity, we employ 18 distinct augmentation types organized into three high-level categories:
+To maximize data diversity, we employ 18 distinct augmentation types, organized into three high-level categories:
 
 | Category | Conditions & Augmentation Ideas |
 |----------|--------------------------------|
@@ -139,10 +139,10 @@ To maximize data diversity, we employ 18 distinct augmentation types organized i
 
 ### Preserving Anomaly Behaviors
 
-When crafting prompts for each augmentation, special attention is given to:
+When crafting prompts for each augmentation, special attention is given to the following guidelines:
 
-- **Maintaining Visibility**: Ensuring the wrong-way vehicle remains detectable across all conditions
-- **Preserving Spatial Relationships**: Keeping relative positions and trajectories intact
+- **Maintaining Visibility**: Ensuring the wrong-way vehicle remains detectable across all conditions.
+- **Preserving Spatial Relationships**: Keeping relative positions and trajectories intact.
 - **Enhancing Realism**: Adding photorealistic elements without obscuring safety-critical features
 
 Example prompt structure for snow-covered ground augmentation:
@@ -159,22 +159,22 @@ Example prompt structure for snow-covered ground augmentation:
 "The video captures a game playing, with bad crappy graphics and cartoonish frames. It represents a recording of old outdated games. The lighting looks very fake. The textures are very raw and basic. The geometries are very primitive. The images are very pixelated and of poor CG quality. There are many subtitles in the footage. Overall, the video is unrealistic at all."
 ```
 
-This prompt engineering approach ensures that:
+This prompt engineering approach ensures the following:
 
-- The anomaly (vehicle moving diagonally/wrong-way) remains clearly visible
-- Snow effects are realistically applied without obscuring critical details
-- The synthetic appearance is transformed into photorealistic quality
-- Ground truth information from the simulator is preserved
+- The anomaly (vehicle moving diagonally/wrong-way) remains clearly visible.
+- Snow effects are realistically applied without obscuring critical details.
+- The synthetic appearance is transformed into photorealistic quality.
+- Ground truth information from the simulator is preserved.
 
-## Cosmos Transfer 2.5 Output Examples
+## Cosmos-Transfer2.5 Output Examples
 
 ### Comparing Control Model Impacts
 
-To demonstrate the versatility of Cosmos Transfer 2.5, we showcase outputs using different control configurations across our three augmentation categories. Each control model (depth, segmentation, and edge) produces distinct photorealistic transformations while preserving the critical anomaly behavior.
+To demonstrate the versatility of Cosmos-Transfer2.5, we showcase outputs using different control configurations across three augmentation categories. Each control model (depth, segmentation, and edge) produces distinct photorealistic transformations while preserving the critical anomaly behavior.
 
 ### Selected Augmentation Examples
 
-To showcase the versatility of Cosmos Transfer 2.5, we present five representative augmentations demonstrating different environmental conditions and control strategies:
+To showcase the versatility of Cosmos-Transfer2.5, we present five representative augmentations demonstrating different environmental conditions and control strategies:
 
 #### 1. Night Augmentation (Using Depth Control)
 
@@ -222,13 +222,13 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 - **Segmentation Control**: Optimal for preserving semantic boundaries and object-specific transformations
 - **Edge Control**: Excellent for retaining structural details and geometric precision
 
-All outputs successfully transform the synthetic appearance into photorealistic scenes while ensuring the wrong-way vehicle anomaly remains clearly detectable for training robust safety systems.
+All outputs successfully transform the synthetic appearance into photorealistic scenes, while ensuring the wrong-way vehicle anomaly remains clearly detectable for training robust safety systems.
 
-## Control Parameters in Cosmos Transfer 2.5
+## Control Parameters in Cosmos-Transfer2.5
 
 ### Configuration Structure
 
-Cosmos Transfer 2.5 provides flexible control parameters that allow fine-tuning of the augmentation process. The configuration determines how closely the output adheres to the structural information from the simulator while achieving photorealistic transformation.
+Cosmos-Transfer2.5 provides flexible control parameters that allow fine-tuning of the augmentation process. The configuration determines how closely the output adheres to the structural information from the simulator while achieving photorealistic transformation.
 
 ### Basic Configuration Format
 
@@ -248,13 +248,13 @@ The configuration file follows a JSON structure that specifies the input paths, 
 
 ### Control Types
 
-To use different control types, simply replace `"edge"` in the configuration with `"seg"` for segmentation control or `"depth"` for depth control, updating the control_path accordingly.
+To use different control types, simply replace `"edge"` in the configuration with `"seg"` for segmentation control or `"depth"` for depth control, while updating the `control_path` accordingly.
 
 ## Maintaining Ground Truth Integrity
 
 ### Preserving Critical Anomaly Behaviors
 
-A fundamental requirement for simulator-to-real augmentation is maintaining the integrity of ground truth data. Cosmos Transfer 2.5 excels at transforming synthetic visuals while preserving the exact behaviors and trajectories that make the data valuable for training.
+A fundamental requirement for simulator-to-real augmentation is maintaining the integrity of ground truth data. Cosmos-Transfer2.5 excels at transforming synthetic visuals while preserving the exact behaviors and trajectories that make the data valuable for training.
 
 ### Visual Validation of Anomaly Preservation
 
@@ -268,7 +268,7 @@ The generated augmented videos clearly maintain the wrong-way driving behavior a
 
 ### Ground Truth Preservation Features
 
-Cosmos Transfer 2.5 ensures that simulator-provided annotations remain valid:
+Cosmos-Transfer2.5 ensures that simulator-provided annotations remain valid:
 
 - **Vehicle Trajectories**: Frame-by-frame positions are preserved exactly as in the simulator
 - **Bounding Boxes**: Object detection annotations remain accurate after augmentation
@@ -277,24 +277,24 @@ Cosmos Transfer 2.5 ensures that simulator-provided annotations remain valid:
 
 ### Quality Assurance Results
 
-Our validation shows:
+Our validation shows the following:
 
 - **100% anomaly preservation** across all 18 augmentation types
-- **Pixel-accurate bounding box alignment** with original simulator data
+- **Pixel-accurate bounding-box alignment** with original simulator data
 - **Consistent detection rates** when using the same anomaly detection models
-- **Enhanced visual clarity** making anomalies even more apparent to human reviewers
+- **Enhanced visual clarity** that render anomalies even more apparent to human reviewers
 
-This preservation of ground truth integrity means that models trained on Cosmos Transfer 2.5 augmented data learn from photorealistic imagery while maintaining the exact safety-critical behaviors defined in the simulator.
+Because of this preservation of ground truth integrity, models trained on Cosmos-Transfer2.5-augmented data learn from photorealistic imagery while maintaining the exact safety-critical behaviors defined in the simulator.
 
 ## Scaling Data Diversity
 
 ### From Single Scenario to Comprehensive Dataset
 
-Cosmos Transfer 2.5 transforms the economics of synthetic data generation. Starting from a single simulator scenario, we generated 18 distinct augmentation variations, impressively expanding the training data diversity without additional manual effort in the simulator.
+Cosmos-Transfer2.5 transforms the economics of synthetic data generation. Starting from a single simulator scenario, we generated 18 distinct augmentation variations, significantly expanding the training data diversity without additional manual effort in the simulator.
 
 ### Augmentation Matrix Results
 
-From our original wrong-way driving scenario, we generated a complete matrix of augmentations using a single control configuration:
+From our original wrong-way driving scenario, we generated a complete matrix of augmentations using a single control configuration.
 
 #### Complete Augmentation Grid
 
@@ -302,7 +302,7 @@ From our original wrong-way driving scenario, we generated a complete matrix of 
 <img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;">
 </div>
 
-The matrix showcases all 18 variations organized by:
+The matrix showcases all 18 variations organized as follows:
 
 - **9 Environment Lighting conditions**
 - **5 Weather conditions**
@@ -312,9 +312,9 @@ This comprehensive grid demonstrates the full range of photorealistic augmentati
 
 ### Cost-Benefit Analysis
 
-The following comparison demonstrates the significant advantages of using Cosmos Transfer 2.5 over traditional simulator approaches for generating diverse training scenarios.
+The following comparison demonstrates the significant advantages of using Cosmos-Transfer2.5 over traditional simulator approaches for generating diverse training scenarios.
 
-| Aspect | Traditional Simulator | Cosmos Transfer 2.5 |
+| Aspect | Traditional Simulator | Cosmos-Transfer2.5 |
 |--------|----------------------|---------------------|
 | **Setup Time** | 18 scenarios × manual setup = Weeks of engineering effort | 1 base scenario + 18 prompts = Hours to generate full dataset |
 | **Processing** | 18 scenarios × rendering time = Significant computational cost | Parallel processing = All variations generated simultaneously |
@@ -322,35 +322,35 @@ The following comparison demonstrates the significant advantages of using Cosmos
 
 ### Data Quality Validation
 
-Each augmented output maintains:
+Each augmented output maintains the following:
 
-- ✓ Original anomaly behavior (wrong-way vehicle trajectory)
-- ✓ Consistent ground truth annotations from simulator
-- ✓ Photorealistic appearance suitable for real-world deployment
-- ✓ Diverse environmental conditions for robust model training
+- The original anomaly behavior (i.e. the wrong-way vehicle trajectory)
+- Consistent ground-truth annotations from the simulator
+- A photorealistic appearance suitable for real-world deployment
+- Diverse environmental conditions for robust model training
 
-This scalable approach enables teams to create comprehensive training datasets that prepare AI systems for the full spectrum of real-world conditions they may encounter.
+This scalable approach allows teams to create comprehensive training datasets that prepare AI systems for the full spectrum of real-world conditions they may encounter.
 
 ## Conclusion
 
-This tutorial demonstrates how Cosmos Transfer 2.5 revolutionizes synthetic data generation for Physical AI applications. By transforming basic simulator outputs into photorealistic, diverse datasets, it enables the development of robust world models for autonomous vehicles and robotics.
+This tutorial demonstrates how Cosmos-Transfer2.5 revolutionizes synthetic data generation for Physical AI applications. By transforming basic simulator outputs into photorealistic, diverse datasets, it enables the development of robust world models for autonomous vehicles and robotics.
 
-Through our wrong-way driving scenario, we've shown:
+The wrong-way driving scenario has demonstrated the following:
 
-- **18x Data Multiplication**: From a single simulator scenario to 18 photorealistic variations spanning different lighting, weather, and road conditions
+- **18x Data Multiplication**: From a single simulator scenario to 18 photorealistic variations, spanning different lighting, weather, and road conditions
 - **Preserved Ground Truth**: 100% retention of anomaly behaviors and simulator annotations across all augmentations
 - **Production-Ready Quality**: Photorealistic outputs suitable for training safety-critical AI systems
-- **Flexible Control Options**: Depth, segmentation, and edge controls for different use case requirements
+- **Flexible Control Options**: Depth, segmentation, and edge controls for different use cases
 
 ### Impact on Physical AI Development
 
-Cosmos Transfer 2.5 addresses critical challenges in Physical AI:
+Cosmos-Transfer2.5 addresses critical challenges in Physical AI:
 
 1. **Cost Efficiency**: Eliminates weeks of manual simulator engineering per scenario
 2. **Safety**: Enables training on dangerous scenarios without real-world risks
 3. **Scalability**: Democratizes access to diverse, high-quality training data
 4. **Reliability**: Maintains ground truth integrity for safety-critical applications
 
-By leveraging advanced generative AI with physical scene understanding from Cosmos Reason 1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
+By leveraging advanced generative AI with physical scene understanding from Cosmos-Reason1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
 
 For implementation details and additional use cases, please refer to the [setup guide](setup.md) and explore more examples in the Cosmos ecosystem.

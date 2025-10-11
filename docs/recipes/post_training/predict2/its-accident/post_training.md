@@ -9,93 +9,91 @@
 |-----------|--------------|--------------|
 | Cosmos Predict 2 | Post-training | Traffic anomaly generation with improved realism and prompt alignment |
 
-In Intelligent Transportation Systems (ITS), collecting real-world data for rare events like traffic accidents, jaywalking, or blocked intersections faces significant challenges:
+In Intelligent Transportation Systems (ITS), collecting real-world data for rare events like traffic accidents, jaywalking, or blocked intersections includes significant challenges:
 
-- **Privacy concerns**: Recording and using real accident footage raises ethical and legal issues
-- **Infrequent occurrence**: Critical safety events are rare by nature, making data collection expensive and time-consuming
-- **High annotation costs**: Expert annotation of traffic incidents requires specialized knowledge
-- **Safety risks**: Staging real accidents for data collection is dangerous and impractical
+- **Privacy concerns**: Recording and using real accident footage raises ethical and legal issues.
+- **Infrequent occurrence**: Critical safety events are rare by nature, making data collection expensive and time-consuming.
+- **High annotation costs**: Expert annotation of traffic incidents requires specialized knowledge.
+- **Safety risks**: Staging real accidents for data collection is dangerous and impractical.
 
 Synthetic data generation (SDG) offers a practical way to augment existing datasets, enabling teams to create targeted scenarios at scale while maintaining control over scenario parameters and data quality.
 
-- [Setup and System Requirements](setup.md)
-
 ## The Challenge: Rare Event Data in ITS
 
-Initial evaluations of the pretrained Cosmos Predict 2 model revealed gaps in generating vehicle collision scenes:
+Initial evaluations of the pre-trained Cosmos-Predict2 model revealed gaps in generating vehicle collision scenes:
 
 - Unrealistic motion dynamics
-- Oversized vehicles (likely due to dashcam bias in pretraining)
+- Oversized vehicles (likely due to dash cam bias in pre-training)
 - Lack of incident-specific behavior
-- Limited ability to maintain fixed-camera perspective
+- Limited ability to maintain a fixed-camera perspective
 
-While the pretrained model excelled at routine traffic scenes, it struggled with collision scenarios when tested on ITS-specific prompts. This confirmed the need for targeted post-training with anomaly-rich data featuring accidents in-action from fixed CCTV perspectives.
+While the pre-trained model excelled at routine traffic scenes, it struggled with collision scenarios when tested on ITS-specific prompts. This confirmed the need for targeted post-training using anomaly-rich data featuring accidents from fixed CCTV perspectives.
 
 ## Our Approach: LoRA-Based Domain Adaptation
 
-This case study documents a detailed post-training workflow using Cosmos Predict 2 Video2World with **Low-Rank Adaptation (LoRA)**, focusing on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
+This case study documents a detailed post-training workflow using Cosmos-Predict2-Video2World with **Low-Rank Adaptation (LoRA)**, focusing on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
 
 ### Why LoRA for ITS Applications?
 
-LoRA (Low-Rank Adaptation) is particularly well-suited for the ITS domain adaptation challenge for several compelling reasons:
+LoRA (Low-Rank Adaptation) is particularly well-suited for ITS domain adaptation for the following reasons:
 
-#### 1. **Critical Advantage: Data Efficiency for Rare Events**
+#### Critical Advantage: Data Efficiency for Rare Events
 
-**The core challenge in ITS**: Real accident data is inherently scarce and difficult to obtain. Unlike general video datasets with millions of samples, traffic accident datasets typically contain only hundreds to thousands of examples. This data scarcity makes LoRA the optimal choice:
+Unlike general video datasets with millions of samples, traffic accident datasets typically contain only hundreds to thousands of examples. This data scarcity makes LoRA the optimal choice:
 
-- **Effective with Limited Data**: LoRA can achieve meaningful adaptation with as few as 1,000-2,000 training samples
-- **Reduced Overfitting Risk**: Fewer parameters (45M vs 2B) means less tendency to memorize limited training data
-- **Better Generalization**: The constrained parameter space forces the model to learn generalizable patterns rather than specific examples
-- **Leverages Pre-training**: LoRA builds upon the base model's existing knowledge, requiring only minimal accident-specific data to adapt
+- **Effective with Limited Data**: LoRA can achieve meaningful adaptation with as few as 1,000-2,000 training samples.
+- **Reduced Overfitting Risk**: Fewer parameters (45M vs 2B) means less tendency to memorize limited training data.
+- **Better Generalization**: The constrained parameter space forces the model to learn generalizable patterns rather than specific examples.
+- **Leverages Pre-training**: LoRA builds upon the base model's existing knowledge, requiring only minimal accident-specific data to adapt.
 
 In our case study, with very limited clips, LoRA enabled successful adaptation where full fine-tuning would likely fail or severely overfit.
 
-#### 2. **Parameter Efficiency**
+#### Parameter Efficiency
 
-- **Minimal Storage**: LoRA adds only ~45M trainable parameters to a 2B parameter model (≈2% increase)
-- **Quick Deployment**: LoRA adapters are small (10-100MB) compared to full model checkpoints (5-50GB)
-- **Multiple Domains**: Different traffic scenarios (highways, intersections, parking lots) can each have their own LoRA adapter
+- **Minimal Storage**: LoRA adds only ~45M trainable parameters to a 2B parameter model (≈2% increase).
+- **Quick Deployment**: LoRA adapters are small (10-100MB) compared to full model checkpoints (5-50GB).
+- **Multiple Domains**: A different LoRA adapter can be used for each traffic scenario (highways, intersections, parking lots).
 
-#### 3. **Resource Optimization**
+#### Resource Optimization
 
-- **Reduced Training Time**: 1-2 hours for 2B model vs 2-4 hours for full fine-tuning
-- **Lower GPU Memory**: 20GB for LoRA vs 50GB for full model training
-- **Faster Iteration**: Enables rapid experimentation with different training configurations
+- **Reduced Training Time**: It can take 1-2 hours to train a 2B model, versus 2-4 hours for full fine-tuning.
+- **Lower GPU Memory**: 20GB of GPU memory is required for LoRA, versus 50GB for full model training.
+- **Faster Iteration**: It's possible to perform rapid experimentation with different training configurations.
 
-#### 4. **Preservation of Base Capabilities**
+#### Preservation of Base Capabilities
 
 - **No Catastrophic Forgetting**: The base model's general video generation capabilities remain intact
-- **Additive Learning**: ITS-specific knowledge is added without degrading general performance
-- **Fallback Option**: LoRA can be disabled to access original model behavior when needed
+- **Additive Learning**: ITS-specific knowledge is added without degrading general performance.
+- **Fallback Option**: LoRA can be disabled to access the behavior of the original model when needed.
 
 ### LoRA Configuration
 
-Based on this [LoRA paper (Hu et al., 2021)](https://arxiv.org/abs/2106.09685), our configuration includes:
+Based on the [LoRA paper (Hu et al., 2021)](https://arxiv.org/abs/2106.09685), our configuration includes the following:
 
 - **Target Modules**: `q_proj`, `k_proj`, `v_proj`, `output_proj`, `mlp.layer1`, `mlp.layer2`
-- **Rank**: 16 (Determines the dimensionality of the low-rank decomposition--a higher rank allows more expressiveness but increases parameters.)
-- **Alpha**: 16 (The scaling hyperparameter that controls the magnitude of LoRA updates--typically set equal to rank for balanced learning.)
-- **Training Data**: A 1:1 mixture of normal traffic scenes and incident scenarios
+- **Rank**: 16 (This value determines the dimensionality of the low-rank decomposition--a higher rank allows more expressiveness but increases parameters.)
+- **Alpha**: 16 (This scaling hyperparameter controls the magnitude of LoRA updates--it is typically set equal to rank for balanced learning.)
+- **Training Data**: A 1:1 mixture of normal traffic scenes and incident scenarios.
 
 This configuration focuses on attention mechanisms and feed-forward layers, which are crucial for the following conditions:
 
-- Understanding spatial relationships between vehicles
-- Capturing temporal dynamics of collisions
-- Maintaining consistent camera perspective
-- Generating physically plausible motion
+- Understanding spatial relationships between vehicles.
+- Capturing temporal dynamics of collisions.
+- Maintaining consistent camera perspective.
+- Generating physically plausible motion.
 
 ## Data Preparation
 
-To address the model limitations, we developed a multi-source data pipeline that combines:
+To address the model limitations, we developed a multi-source data pipeline that combines the following:
 
-- ITS normal traffic scenes: 100 hours of traffic surveillance footage from different intersections at various times of the day, all captured from fixed CCTV viewpoints (no dashcam or moving camera perspectives)
-- ITS accident scenes: Compilation of accident scenes from different intersections at various times of the day, all captured from fixed CCTV viewpoints (totaling approximately 3.5 hours of video)
+- ITS normal traffic scenes: 100 hours of traffic surveillance footage from different intersections at various times of the day, all captured from fixed CCTV viewpoints (no dash cam or moving camera perspectives)
+- ITS accident scenes: A compilation of accident scenes from different intersections at various times of the day, all captured from fixed CCTV viewpoints (totaling approximately 3.5 hours of video).
 
-**Disclaimer**: All data collected for this case study is for research proof of concept and demonstration purposes only. This data has not been merged into the pre-training dataset. This example serves solely to illustrate the data curation methodology and post-training workflow.
+> **Disclaimer**: All data collected for this case study is for research proof of concept and demonstration purposes only. This data has not been merged into the pre-training dataset. This example serves solely to illustrate the data curation methodology and post-training workflow.
 
 ### Splitting and Captioning
 
-**ITS accident scenes**: Original 5-10 minute compilations were split into individual clips using `cosmos-curate` with `transnetv2` scene detection and objective captioning.
+**ITS accident scenes**: The original 5-10 minute compilations were split into individual clips using `cosmos-curate` with `transnetv2` scene detection and objective captioning.
 
 ```json
 {
@@ -117,11 +115,11 @@ To address the model limitations, we developed a multi-source data pipeline that
 }
 ```
 
-**ITS normal traffic scenes**: 100 hours of continuous surveillance footage split into 10-second clips using `fixed-stride` algorithm. Captioning focused on general scene description since no incidents were detected.
+**ITS normal traffic scenes**: 100 hours of continuous surveillance footage split into 10-second clips using the `fixed-stride` algorithm. Captioning focused on general scene description since no incidents were detected.
 
 ### Dataset Composition
 
-The final curated dataset composition is summarized below:
+The final curated dataset composition is summarized as follows:
 
 | Dataset | Quality | Incident Coverage | Artifacts | Clips |
 |---------|---------|-------------------|-----------|-------|
@@ -132,12 +130,12 @@ The final curated dataset composition is summarized below:
 
 For post-training, we selected 1,000 samples from each dataset (1:1 ratio):
 
-- **Normal traffic scenes**: Diverse selection across intersections and times of day
-- **Accident scenes**: 1,000 clips from available 1,200 to balance normal and anomaly learning
+- **Normal traffic scenes**: A diverse selection across intersections and times of day
+- **Accident scenes**: 1,000 clips from the available 1,200 to balance normal and anomaly learning
 
 ### Video Resolution Requirements
 
-Supported resolutions for 720p video:
+The following are supported resolutions for 720p video:
 
 - **16:9**: 1280x720 (recommended for ITS footage)
 - **1:1**: 960x960
@@ -145,25 +143,25 @@ Supported resolutions for 720p video:
 - **3:4**: 720x960
 - **9:16**: 720x1280
 
-**Important**: Resize all videos to supported resolutions before training to avoid errors.
+> **Important**: Resize all videos to supported resolutions before training to avoid errors.
 
 ## Post-Training
 
-We decided to perform post-training with a 1:1 mixture of datasets between ITS normal traffic scenes and ITS accident scenes. We selected 1k annotated video clips from each of those two datasets that were curated from the previous session.
+We performed post-training with a 1:1 mixture of datasets between ITS normal traffic scenes and ITS accident scenes. We selected 1,000 annotated video clips from each of the two datasets that were curated from the previous session.
 
 ### Training Setup
 
-- Model: Cosmos Predict 2 Video2World (2B)
-- Hardware: Single node with 8 GPUs (e.g., 8 × H100)
+- Model: Cosmos-Predict2-Video2World (2B)
+- Hardware: Single node with 8 GPUs (e.g. 8×H100)
 - Training Duration: 10k iterations
-- Batch Size: 1 per GPU (8 total with data parallel)
+- Batch Size: 1 per GPU (8 total with data parallelism)
 - Learning Rate: ~3.05e-5 (2^-14.5)
 - Context Parallel Size: 2
-- Loss Monitoring: Visual inspection + convergence curves
+- Loss Monitoring: Visual inspection with convergence curves
 
-An overfitting test on four samples verified pipeline correctness before training. Additional experiments confirmed that including low-quality data degraded results, reinforcing that data quality cannot be traded for volume.
+An overfitting test on four samples verified pipeline correctness before training. Additional experiments confirmed that including low-quality data degraded results, reinforcing the principle that data quality cannot be traded for volume.
 
-We also experimented both the Full Model post-training and PEFT post-training. Detailing the process below:
+We also experimented with both Full Model post-training and PEFT post-training. The process is detailed below:
 
 ### LoRA Post-Training Workflow
 
@@ -225,7 +223,7 @@ predict2_video2world_lora_training_2b_its = dict(
 
 #### LoRA Training Execution
 
-**Single Node with 8 GPUs:**
+**Single Node with 8 GPUs**
 
 ```bash
 # Set experiment name for LoRA training
@@ -238,7 +236,7 @@ torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
   model.config.train_architecture=lora
 ```
 
-**Expected log output:**
+**Expected log output**
 
 ```
 Adding LoRA adapters: rank=16, alpha=16, targets=['q_proj', 'k_proj', 'v_proj', 'output_proj', 'mlp.layer1', 'mlp.layer2']
@@ -253,7 +251,7 @@ After post-training the Cosmos Predict 2 Video2World model on ITS-specific data 
 
 1. **Post-trained checkpoint**: A LoRA checkpoint from the post-training process (e.g., `iter_000001000.pt`)
 2. **Input image**: A CCTV traffic camera frame as the starting point (1280x720 recommended)
-3. **Environment setup**: Properly configured Cosmos Predict 2 environment with required dependencies
+3. **Environment setup**: A properly configured Cosmos-Predict2 environment with required dependencies
 
 ### Basic Command
 
@@ -351,27 +349,28 @@ We employ two primary metrics for objective evaluation of video generation quali
 
 FID ([Heusel et al., 2017](https://arxiv.org/abs/1706.08500)) measures the similarity between the distribution of generated videos and real videos by comparing features extracted from a pre-trained Inception network.
 
-- **Lower is better**: Values closer to 0 indicate better quality
-- **Typical ranges**: Excellent (< 10), Good (10-30), Acceptable (30-50), Poor (> 50)
+- **What values indicate**: Values closer to 0 indicate better quality.
+- **Typical ranges**: Excellent (< 10), Good (10-30), Acceptable (30-50), Poor (> 50
 - **What it measures**: Visual quality and realism at the frame level
 
 ##### 2. FVD (Fréchet Video Distance)
 
 FVD ([Unterthiner et al., 2018](https://arxiv.org/abs/1812.01717)) extends FID to the temporal dimension, evaluating both visual quality and temporal consistency using an I3D network.
 
-- **Lower is better**: Values closer to 0 indicate better quality
+- **What values indicate**: Values closer to 0 indicate better quality.
 - **Typical ranges**: Excellent (< 100), Good (100-200), Acceptable (200-400), Poor (> 400)
-- **What it measures**: Visual quality AND temporal coherence
+- **What it measures**: Visual quality and temporal coherence
 
 #### Why These Metrics Matter for ITS
 
-- **FID**: Validates visual realism of individual frames from single camera view
-- **FVD**: Ensures temporal consistency and realistic motion dynamics
-- Together, they quantify improvements in single-view traffic video generation
+- **FID**: Validates visual realism of individual frames from a single camera view,
+- **FVD**: Ensures temporal consistency and realistic motion dynamics,
+
+Together, these metrics quantify improvements in single-view traffic video generation.
 
 #### Limitations of FID/FVD Metrics
 
-While FID and FVD effectively measure visual quality and temporal consistency, they have notable limitations for safety-critical ITS applications. These metrics primarily evaluate statistical distributions of visual features but cannot assess **physical plausibility** - a crucial aspect for collision scenarios. For comprehensive evaluation of physical plausibility in generated accidents, additional assessment using physics-aware models like [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) would be beneficial.
+While FID and FVD effectively measure visual quality and temporal consistency, they have notable limitations for safety-critical ITS applications. These metrics primarily evaluate statistical distributions of visual features but cannot assess **physical plausibility**, a crucial aspect for collision scenarios. For comprehensive evaluation of physical plausibility in generated accidents, additional assessment using physics-aware models like [Cosmos-Reason1](https://github.com/nvidia-cosmos/cosmos-reason1) would be beneficial.
 
 ### Expected Results
 
@@ -384,39 +383,39 @@ While FID and FVD effectively measure visual quality and temporal consistency, t
 
 ## Expected Outcomes
 
-By using LoRA-based post-training, we can achieve the following:
+With LoRA-based post-training, we can achieve the following:
 
 ### Quality Improvements
 
 - **Enhanced Physical Realism**: More accurate collision dynamics and vehicle behavior
-- **Consistent Perspective**: A fixed CCTV camera viewpoint is maintained throughout generation
+- **Consistent Perspective**: A fixed CCTV camera viewpoint that is maintained throughout generation
 - **Reduced Artifacts**: Fewer unrealistic elements like floating vehicles or impossible physics
 
-### Data Efficiency Benefits
+### Data Efficiency
 
-- **Successful Training with Minimal Data**: Achieved domain adaptation with only ~1,000 accident examples
-- **No Data Waste**: Every precious accident clip contributes meaningfully to the model
-- **Synthetic Data Amplification**: The adapted model can now generate unlimited variations of accidents, effectively solving the data scarcity problem
+- **Successful Training with Minimal Data**: Domain adaptation is achieved with only ~1,000 accident examples.
+- **No Data Waste**: Every accident clip from the limited training dataset contributes meaningfully to the model.
+- **Synthetic Data Amplification**: The adapted model can now generate unlimited variations of accidents, effectively solving the data scarcity problem.
 
 ### Operational Benefits
 
-- **Rapid Adaptation**: New scenarios can be learned in hours rather than days
-- **Cost Efficiency**: Reduced computational requirements enable broader experimentation
-- **Scalable Deployment**: Multiple domain-specific models can coexist efficiently
+- **Rapid Adaptation**: New scenarios can be learned in hours rather than days.
+- **Cost Efficiency**: Reduced computational requirements enable broader experimentation.
+- **Scalable Deployment**: Multiple domain-specific models can coexist efficiently.
 
-## Use Cases Enabled
+## Use Cases
 
 This LoRA-adapted model enables several critical ITS applications:
 
-1. **Safety System Training**: Generate diverse accident scenarios for computer vision model training
-2. **Traffic Simulation**: Create realistic traffic flow videos for urban planning
-3. **Incident Analysis**: Reconstruct and visualize potential accident scenarios
-4. **Emergency Response Planning**: Simulate various incident types for preparedness training
-5. **Infrastructure Assessment**: Evaluate intersection designs with synthetic traffic scenarios
+1. **Safety System Training**: Generate diverse accident scenarios for computer vision model training.
+2. **Traffic Simulation**: Create realistic traffic flow videos for urban planning.
+3. **Incident Analysis**: Reconstruct and visualize potential accident scenarios.
+4. **Emergency Response Planning**: Simulate various incident types for preparedness training.
+5. **Infrastructure Assessment**: Evaluate intersection designs with synthetic traffic scenarios.
 
 ## Conclusion
 
-The combination of Cosmos Predict 2's powerful video generation capabilities with LoRA's efficient adaptation mechanism provides an ideal solution for ITS-specific synthetic data generation. *Most critically, LoRA enables successful domain adaptation despite the severe scarcity of real accident data*--a fundamental constraint in traffic safety applications.
+Combining the powerful video generation capabilities of Cosmos-Predict2 with the efficient adaptation mechanism of LoRA provides an ideal solution for ITS-specific synthetic data generation. *Most critically, LoRA enables successful domain adaptation despite the severe scarcity of real accident data*--a fundamental constraint in traffic safety applications.
 
 While traditional fine-tuning would require tens of thousands of examples and risk catastrophic overfitting with limited data, LoRA achieved meaningful adaptation with just over 1,000 incident clips. This data efficiency, combined with reduced computational requirements and deployment flexibility, makes LoRA not just a good choice but arguably the only viable approach for adapting large video models to rare-event domains like traffic accidents.
 

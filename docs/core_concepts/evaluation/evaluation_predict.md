@@ -94,7 +94,8 @@ python scripts/metrics/compute_fvd_single_view.py \
 
 #### Additional arguments
 
-- `--batch_size` (default: 8), `--target_size` (default: 224 224)
+- `--batch_size`: default: 8
+- `--target_size`: default: 224 224
 
 ### Output Format
 
