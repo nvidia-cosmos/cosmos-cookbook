@@ -1,10 +1,10 @@
-# Core Curation with Cosmos-Curator
+# Core Curation with Cosmos-Curate
 
-> **Prerequisites:** Before proceeding with core curation, ensure you have completed the foundational steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
+> **Prerequisites:** Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
 
-Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curator](https://github.com/nvidia-cosmos/cosmos-curate).
+Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curate](https://github.com/nvidia-cosmos/cosmos-curate).
 
-The Cosmos-Curator tool offers multiple deployment modes to suit different use cases and technical requirements:
+The Cosmos-Curate tool offers multiple deployment modes to suit different use cases and technical requirements:
 
 ## Deployment Options
 
@@ -14,12 +14,13 @@ The Cosmos-Curator tool offers multiple deployment modes to suit different use c
 
 2. **Local Infrastructure** — *Full control with Docker*
 
-    For complete control over the curation pipeline, you can run Cosmos-Curator locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
-    Note if your local system has only a single GPU, Cosmos-Curator will disable `STREAMING` mode automatically because it cannot have multiple GPU stages active at the same time; in that case, Ray worker can OOM if input video size/volume is large.
+    For complete control over the curation pipeline, you can run Cosmos-Curate locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
+
+    > **Note**: If your local system has only a single GPU, Cosmos-Curate will disable `STREAMING` mode automatically because it cannot maintain multiple GPU stages at the same time; in this case, the Ray worker may encounter an out-of-memory (OOM) condition if the input video size/volume is large.
 
 3. **SLURM Clusters** — *High-performance computing at scale*
 
-    For large-scale processing, you can deploy Cosmos-Curator on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
+    For large-scale processing, you can deploy Cosmos-Curate on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
 
 ## Using the Pre-Deployed NVCF Function
 
@@ -29,7 +30,7 @@ The NVCF approach provides a streamlined, cloud-based solution for data curation
 
 ### Prerequisites
 
-Install the Cosmos Curator CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
+Install the Cosmos Curate CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
 
 ```shell
 # Quick setup (full instructions in Local Setup section)
@@ -49,7 +50,7 @@ uv pip install poetry && poetry install --extras=local
     ngc config set
     ```
 
-2. **Register the active function** that has been pre-deployed from Cosmos Engineering team:
+2. **Register the active function** that has been pre-deployed from the Cosmos Engineering team:
 
     ```shell
     cosmos-curate nvcf function import-function \
@@ -77,7 +78,7 @@ project_root/
     └── webdataset/        # Curated and sharded webdataset
 ```
 
-You can then invoke the function to perform data curation on your S3 bucket. For subsequent steps such as splitting, captioning, recaptioning, and sharding, the same command structure is used—only the JSON configuration file changes to specify the particular functionality being executed by the cloud function.
+You can then invoke the function to perform data curation on your S3 bucket. For subsequent steps--such as splitting, captioning, recaptioning, and sharding--the same command structure is used; you only need to change the JSON configuration file to specify the particular functionality of the cloud function.
 
 ```shell
 cosmos-curate nvcf function invoke-function --data-file <path_to_your_json_file> --s3-config-file <path_to_file_containing_a_single_aws_cred>
@@ -104,13 +105,13 @@ The following is an example JSON for the initial processing on an Intelligent Tr
 }
 ```
 
-Enabling the parameters `generate_embeddings`, `generate_previews`, and `generate_captions` activates the generation of corresponding features. The `splitting_algorithm` parameter supports two options: `transnetv2` (default) and `fixed-stride`. The `caption_algorithm` and `captioning_prompt_text` parameters define the model used for the video captioning–by default, the `Qwen2.5-7b-VLM-instruct` model–and the system/user instructions provided to guide caption generation. In this configuration, the captioner is prompted to describe video clips from traffic surveillance footage by first identifying static scene elements and then describing the dynamic actions or spatial relationships between them.
+Enabling the `generate_embeddings`, `generate_previews`, and `generate_captions` parameters activates the generation of these corresponding features. The `splitting_algorithm` parameter supports two options: `transnetv2` (default) and `fixed-stride`. The `caption_algorithm` parameter defines the model used for the video captioning (by default, the `Qwen2.5-7b-VLM-instruct` model), and the `captioning_prompt_text` parameter provides the system/user instructions to guide caption generation. In this configuration, the captioner is prompted to describe video clips from traffic surveillance footage by first identifying static scene elements and then describing the dynamic actions or spatial relationships between them.
 
 To enhance the quality and specificity of the generated captions, more sophisticated prompts can be configured in the corresponding JSON file entry. The more contextual information available about a video clip, the more effectively it can be embedded into the prompt—improving the relevance and accuracy of the resulting captions.
 
 ### Captioning Best Practices
 
-When designing captioner prompts, follow these principles:
+When designing prompts for the captioner, follow these principles:
 
 - **Inference-Training Consistency**: Structure captions to mirror the inference-time prompting format. For example, describe the initial frame first, followed by the action sequence. This alignment helps the model learn how to respond to similar prompt structures during inference.
 
@@ -130,11 +131,11 @@ These practices support the creation of high-fidelity, task-aligned captions tha
     "captioning_prompt_text": "You are a video captioning specialist tasked with creating high-quality English descriptions of traffic videos. Generate a single flowing paragraph that captures both the static scene and dynamic actions without using section headers or numbered points.\n\nBegin by analyzing the first frame to establish the scene, then smoothly transition to describing the full action sequence that follows. Your caption should be specific, precise, and focused on physical interactions.\n\nFirst Frame Analysis Requirements:\n- Camera identification:\n  * Begin caption with \"A traffic CCTV camera\" if video is from a fixed surveillance camera mounted high above ground.\n  * Begin caption with \"A stationary vehicle camera\" if video is from a non-moving camera mounted low to ground (other vehicles may be moving, but camera remains stationary).\n  * Begin caption with \"A moving vehicle camera\" if video is from a camera mounted on a moving vehicle.\n- Include other vehicles, pedestrians, cyclists, traffic lights, lane markings, traffic signs, and any other traffic related objects.\n- Include weather, time of day, road conditions, and any other environmental factors that might affect driving behavior.\n- Do NOT describe logos or watermarks visible in the video.\n- Do NOT describe vehicle number plates, street names, or building names visible in the video.\n- Do NOT describe text overlays visible in the video.\n- Do NOT describe timestamps visible in the video. Do NOT mention any dates or times in the prompt.\n- Always output in English.\n\nAction Sequence Analysis Requirements:\n- Identify and describe any of these traffic scenarios occurring in the video: accidents (collisions, near-misses), violations (wrong-way driving, jaywalking, running red lights), vehicle issues (stalled, broken down), road users (pedestrians crossing, bicyclists, motorcyclists), driving maneuvers (lane changes, U-turns, merging), traffic conditions (congestion, blocked intersions), or road hazards (debris, animals, construction). When describing detected scenarios:\n  * Focus on precise details of how the scenario unfolds, including vehicle trajectories, speeds, and physical interactions\n  * Describe the cause-and-effect relationship if visible (e.g., \"vehicle brakes suddenly due to pedestrian crossing\")\n  * Include relevant environmental factors that contribute to the scenario (wet roads, limited visibility, etc.)\n  * Use simple, direct verbs that precisely convey natural movement and physical interactions (e.g., \"accelerates,\" \"collides,\" \"swerves,\" \"rotates\" rather than \"moves\" or \"goes\")\n  * Maintain focus on physics-based descriptions rather than inferring driver intentions\n  * Ensure all descriptions flow naturally in a single cohesive paragraph without section headers",
 ```
 
-**Note**: More captioning details can be found in [this document](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/REFERENCE_PIPELINES_VIDEO.md).
+> **Note**: More captioning details can be found in [this document](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/REFERENCE_PIPELINES_VIDEO.md).
 
 ### Video Re-Captioning
 
-There are often situations where caption quality needs progressive improvement. In such cases, you can iterate on the captioning prompt without recomputing embeddings or previews. The following example demonstrates a re-captioning workflow that iterates over previously split video clips and replaces their captions in a new output directory.
+There are often situations where caption quality requires progressive improvement. In such cases, you can iterate on the captioning prompt without recomputing embeddings or previews. The following example demonstrates a re-captioning workflow that iterates over previously split video clips and replaces their captions in a new output directory.
 
 ```json
 {
@@ -156,11 +157,11 @@ There are often situations where caption quality needs progressive improvement. 
 }
 ```
 
-It is worth noting that if you only intend to generate captions without altering the existing video clips, you can re-run the split pipeline on the same directory. To do this, specify a new `captioning_prompt_text` while setting the `splitting_algorithm` to `fixed_stride` and assigning a large value to `fixed_stride_split_duration`. This ensures that the original clips remain unchanged – since they typically do not exceed the maximum duration threshold – while the captions are generated using the updated prompts.
+If you only intend to generate captions without altering the existing video clips, you can re-run the split pipeline on the same directory. To do this, specify a new `captioning_prompt_text` while setting the `splitting_algorithm` to `fixed_stride` and assigning a large value to `fixed_stride_split_duration`. This ensures that the original clips remain unchanged since they typically do not exceed the maximum duration threshold, while new captions are generated using the updated prompts.
 
 ### Sharding
 
-Satisfied with the splitting and captioning, the next step is to create a sharded dataset format optimized for model training. This process organizes the processed clips into a webdataset format.
+When you're satisfied with the splitting and captioning, the next step is to create a sharded dataset format optimized for model training. This process organizes the processed clips into a webdataset format.
 
 Here's a template for the sharding configuration:
 
@@ -213,9 +214,9 @@ The sharding pipeline will produce the following artifacts under the `output_dat
 
 ---
 
-## Running Cosmos-Curator Locally
+## Running Cosmos-Curate Locally
 
-For users who need more control over the curation pipeline or prefer to run processing on their own infrastructure, Cosmos-Curator can be deployed locally using Docker containers. This approach is ideal for development, testing, and scenarios requiring custom modifications.
+For users who need more control over the curation pipeline or prefer to run processing on their own infrastructure, Cosmos-Curate can be deployed locally using Docker containers. This approach is ideal for development, testing, and scenarios requiring custom modifications.
 
 ### Setup Environment and Dependencies
 
@@ -267,9 +268,9 @@ cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world --
 
 For the full video curation pipeline, you'll need to build a more comprehensive Docker image and download additional model weights.
 
-#### Build Docker Image
+#### Build the Docker Image
 
-This step can take up to 45 minutes for a fresh build:
+Building the Docker image can take up to 45 minutes for a fresh build.
 
 ```bash
 cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0
@@ -277,7 +278,7 @@ cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0
 
 #### Download Model Weights
 
-Download weights for all required models. This may take 10+ minutes, depending on network speed.
+Download weights for all required models. This may take 10+ minutes depending on network speed.
 
 ```bash
 cosmos-curate local launch --image-name cosmos-curate --image-tag 1.0.0 -- pixi run python3 -m cosmos_curate.core.managers.model_cli download
@@ -289,12 +290,12 @@ The split-annotate pipeline handles the core video processing workflow:
 
 #### Path Configuration
 
-> **Important:** Local paths refer to paths inside the container, not your local machine. Since `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace"` is mounted to `/config/`, local paths like `~/cosmos_curate_local_workspace/foo/` should be specified as `/config/foo/` in commands.
+> **Important:** Local paths refer to paths inside the container, not on your local machine. Since `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace"` is mounted to `/config/`, local paths like `~/cosmos_curate_local_workspace/foo/` should be specified as `/config/foo/` in commands.
 
-- **Input/Output**: Can use either local container paths or S3 paths
-- **Local Example**: Videos in `~/cosmos_curate_local_workspace/raw_videos/` → specify `--input-video-path /config/raw_videos/`
-- **S3 Example**: `--input-video-path s3://bucket/raw_videos/` (ensure `~/.aws/credentials` is configured)
-- **Limitations**: Spaces not allowed in S3 video paths
+- **Input/Output**: Can be either local container paths or S3 paths.
+- **Local Example**: For videos in `~/cosmos_curate_local_workspace/raw_videos/`, specify `--input-video-path /config/raw_videos/`
+- **S3 Example**: `--input-video-path s3://bucket/raw_videos/` (ensure `~/.aws/credentials` is configured).
+- **Limitations**: Spaces are not allowed in S3 video paths.
 
 #### Basic Pipeline Execution
 
@@ -349,4 +350,4 @@ cosmos_predict2_video2world_dataset/
 
 ### SLURM Cluster Deployment
 
-For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curator documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.
+For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curate documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.

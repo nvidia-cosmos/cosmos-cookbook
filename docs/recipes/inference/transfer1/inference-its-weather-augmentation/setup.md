@@ -1,17 +1,18 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos Transfer 1 for weather augmentation of ITS images.
+This guide covers the setup requirements for running Cosmos-Transfer1 for weather augmentation of ITS images.
 
 ## System Requirements
 
 ### Minimum Hardware Requirements
 
-- **GPU**: Single A100, H100, or later GPU (recommended minimum)
+- **GPU**: 1 or more GPUs (A100, H100, or later recommended)
 - **Memory**: Sufficient VRAM for model inference
-- **Storage**: Adequate space for model weights
+- **Storage**: Adequate disk space for model weights
 
 ### Software Requirements
 
+<<<<<<< HEAD
 The setup requires the Cosmos Transfer 1 repository and model to be properly installed and configured.
 
 ## Installation
@@ -21,6 +22,17 @@ The setup requires the Cosmos Transfer 1 repository and model to be properly ins
 To set up Cosmos Transfer 1 repository and model, follow the detailed installation and inference setup instructions at:
 
 **[Cosmos Transfer 1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
+=======
+The setup requires the Cosmos-Transfer1 repository and model to be properly installed and configured.
+
+## Installation
+
+### Cosmos-Transfer1 Setup
+
+To set up Cosmos-Transfer1 repository and model, follow the detailed installation and inference setup instructions at:
+
+**[Cosmos-Transfer1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
+>>>>>>> 3a08de1 (Copyedit recipes along with recent change sto core_concepts)
 
 The installation guide provides comprehensive steps for:
 
@@ -32,8 +44,16 @@ The installation guide provides comprehensive steps for:
 
 ### Verification
 
+<<<<<<< HEAD
 After completing the installation, verify the setup by running the inference examples provided in the Cosmos Transfer 1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
 
 ## Next Steps
 
 Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer 1 for weather augmentation of ITS images.
+=======
+After completing the installation, verify the setup by running the inference examples provided in the Cosmos-Transfer1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
+
+## Next Steps
+
+Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos-Transfer1 for weather augmentation of ITS images.
+>>>>>>> 3a08de1 (Copyedit recipes along with recent change sto core_concepts)
