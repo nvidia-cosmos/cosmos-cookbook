@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos Predict 2 for traffic anomaly generation using LoRA post-training.
+This guide covers the setup requirements for running Cosmos-Predict2 for traffic anomaly generation using LoRA post-training.
 
 ## System Requirements
 
@@ -8,24 +8,23 @@ This guide covers the setup requirements for running Cosmos Predict 2 for traffi
 
 - **GPU**: Single node with 8 GPUs (A100, H100, or later recommended)
 - **Memory**: Sufficient VRAM for model inference and training (50GB+ recommended)
-- **Storage**: Adequate space for model weights, datasets, and checkpoints
+- **Storage**: Adequate disk space for model weights, datasets, and checkpoints
 
 ### Software Requirements
 
-The setup requires the Cosmos Predict 2 repository and model to be properly installed and configured.
+Setup requires the Cosmos-Predict2 repository and model to be properly installed and configured.
 
 ## Installation
 
-### Cosmos Predict 2 Setup
+### Cosmos-Predict2 Setup
 
-To set up Cosmos Predict 2 repository and model, follow the detailed installation and inference setup instructions at:
-
-**[Cosmos Predict 2 Installation Guide](https://github.com/nvidia-cosmos/cosmos-predict2)**
+To set up the Cosmos-Predict2 repository and model, follow the installation and inference setup instructions in the 
+[Cosmos-Predict2 Setup Guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/setup.md).
 
 ### Verification
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos Predict 2 repository to ensure the model is working correctly before proceeding with the post-training pipeline.
+Before proceeding with the post-training pipeline, verify that the model is working correctly by running [inference examples](https://github.com/nvidia-cosmos/cosmos-predict2?tab=readme-ov-file#user-guide) provided in the Cosmos-Predict2 repository.
 
 ## Next Steps
 
-Once the setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos Predict 2 for traffic anomaly generation with LoRA adaptation.
+Once the setup and verification are complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos-Predict2 for traffic anomaly generation with LoRA adaptation.
