@@ -19,7 +19,7 @@ Use your own video data (e.g., robotics, egocentric) to probe task‑specific re
 - **Answer correctness**: Manual review or LLM-as-a-judge
 - **Consistency across time**: Temporal coherence of responses
 - **Groundedness**: References what is actually visible
-- **Precision vs hallucination**: Especially important post-training
+- **Precision vs hallucination**: Especially important for post-training
 
 ## Automatic Metrics (During Post-Training)
 
@@ -27,14 +27,14 @@ Use your own video data (e.g., robotics, egocentric) to probe task‑specific re
 
 Generate answers on a held‑out set and measure:
 
-- **Per-token loss / perplexity**: Used on held‑out instruction–response pairs
-- **Text similarity**: BLEU, ROUGE, METEOR vs ground‑truth captions
-- **Embedding similarity**: CLIPScore, BERTScore vs reference answers
+- **Per-token loss / perplexity**: Used on held‑out instruction-response pairs
+- **Text similarity**: BLEU, ROUGE, METEOR vs. ground‑truth captions
+- **Embedding similarity**: CLIPScore, BERTScore vs. reference answers
 
 ### Video–Caption Post-Training
 
-When post‑training on `<video, caption>` pairs:
+When post‑training on `<video, caption>` pairs, ensure the following:
 
-- Build an evaluation set in **MCQ/BCQ** format with ground truth
-- Track whether the model improves at video understanding over time
-- Monitor reasoning and comprehension improvements
+- Build an evaluation set in **MCQ/BCQ** format with ground truth.
+- Track whether the model improves at video understanding over time.
+- Monitor reasoning and comprehension improvements.

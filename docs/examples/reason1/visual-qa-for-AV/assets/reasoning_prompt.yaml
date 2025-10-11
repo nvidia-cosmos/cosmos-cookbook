@@ -1,0 +1,8 @@
+user_prompt: |
+  Below is a driving scenario:
+
+  {caption}
+
+  Please think through and predict the next ego driving behavior in the following format:
+  <think> your chain of thoughts </think>.
+  <action> your predicted action </action>.

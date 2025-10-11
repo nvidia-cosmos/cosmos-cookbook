@@ -8,11 +8,11 @@ In a typical post-training workflow, several variables can be adjusted to optimi
 
 - **Training Strategy**: The choice of training strategy depends on data availability, task complexity, and computational budget. Cosmos models support three approaches:
 
-  - **Full Post-Training**: This method updates all model parameters and is recommended when large amounts of training data are available and the goal requires significant adaptation or full control over model behavior.
+    - **Full Post-Training**: This method updates all model parameters and is recommended when large amounts of training data are available and the goal requires significant adaptation or full control over model behavior.
 
-  - **LoRA Post-Training**: This is a parameter-efficient fine-tuning method that requires fewer resources and enables faster iteration. This method is ideal when data is limited but sufficient and the learning objectives are relatively simple or when maintaining base model capabilities is important.
+    - **LoRA Post-Training**: This is a parameter-efficient fine-tuning method that requires fewer resources and enables faster iteration. This method is ideal when data is limited but sufficient and the learning objectives are relatively simple or when maintaining base model capabilities is important.
 
-  - **Reinforcement Learning (for Cosmos Reason only)**: This method is applicable when data is scarce but of high quality, and is especially useful for learning complex reasoning behavior. RL is not currently supported for diffusion-based models such as Cosmos-Predict or Cosmos-Transfer.
+    - **Reinforcement Learning (for Cosmos Reason only)**: This method is applicable when data is scarce but of high quality, and is especially useful for learning complex reasoning behavior. RL is not currently supported for diffusion-based models such as Cosmos-Predict or Cosmos-Transfer.
 
 - **Hyperparameter Tuning**: Fine-tuning hyperparameters such as learning rate, batch size, and optimizer settings is essential to achieve convergence without overfitting. Small-scale experiments or overfitting tests on a few samples are often used to validate pipeline correctness and identify promising configurations before scaling up.
 
