@@ -18,34 +18,66 @@ We'd love to hear your successful stories about how you've creatively used Cosmo
 
 Your experiences and knowledge help make this cookbook more valuable for the entire community.
 
+## Contribution Categories
+
+### 1. **Recipes**
+
+Step-by-step guides for specific tasks:
+
+- **Inference**: Using pre-trained models for applications
+- **Post-Training**: Domain adaptation via fine-tuning, LoRA, or other techniques
+
+### 2. **Concepts**
+
+Explanations of fundamental topics, techniques, and architectural patterns including workflows, best practices, and tool documentation.
+
 ### How to Contribute
 
-**For Complete Stories Ready to Share:**
+- **Pull Request**: For complete contributions ready to merge (keep as draft until ready for review)
+- **Issue with Proposal**: For ideas or incomplete stories you'd like help developing
+- **Issue for Gaps**: For missing topics or knowledge gaps you'd like to see covered
 
-- **Raise a Pull Request** if your story is complete and ready to merge
-- We will review your contribution and get back to you within a week
-- Please keep your PRs as draft until you're ready for our review
+We review all contributions within a week.
 
-**For Ideas and Incomplete Stories:**
+## Recipe Templates
 
-- **Share in the Issues Board** if you have interest in sharing but don't have time to write up the complete story
-- We will work with you to embed your knowledge in the general cookbook after careful review
-- This is a great way to contribute even if you're short on time!
+Use the appropriate template when contributing a recipe:
 
-**For Knowledge Gaps:**
+- **📄 [Inference Recipe Template](assets/templates/inference_template.md)** - For pre-trained model applications
+- **📄 [Post-Training Recipe Template](assets/templates/post_training_template.md)** - For domain adaptation workflows
 
-- **Raise an Issue** if there's a knowledge gap in the cookbook - missing important topics that you'd like to learn about but aren't currently covered
-- Help us identify what the community needs most
+### Recipe Organization
 
-### Dataset Licensing Requirements
+Recipes should be organized in the following directory structure:
 
-Before contributing content that includes datasets or data examples:
+```
+docs/recipes/
+├── inference/
+│   └── [model-name]/
+│       └── [recipe-name]/
+│           ├── inference.md      # Main recipe
+│           ├── setup.md          # Optional setup guide
+│           └── assets/           # Images, videos, configs
+└── post_training/
+    └── [model-name]/
+        └── [recipe-name]/
+            ├── post_training.md  # Main recipe
+            ├── setup.md          # Optional setup guide
+            └── assets/           # Images, videos, configs
+```
 
-1. **License Verification**: Ensure that any dataset used in your contribution is properly cleared in terms of licensing for demonstration and promotional purposes related to Cosmos models.
+## Concept Template
 
-2. **Documentation**: Include clear attribution and licensing information for any datasets referenced in your contribution.
+- **📄 [Concept Template](assets/templates/concept_template.md)** - For explanatory guides on fundamental topics
 
-By contributing your successful stories and examples, you agree to these terms regarding dataset licensing and usage rights.
+Place concept guides in the appropriate subdirectory under `docs/core_concepts/` (e.g., `data_curation`, `post_training`, `evaluation`, `distillation`).
+
+## Dataset Licensing
+
+When contributing content with datasets:
+
+1. Verify proper licensing for demonstration and promotional purposes
+2. Include clear attribution and licensing information
 
 ## Testing
 
