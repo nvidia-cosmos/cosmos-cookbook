@@ -79,8 +79,6 @@ When contributing content with datasets:
 1. Verify proper licensing for demonstration and promotional purposes
 2. Include clear attribution and licensing information
 
-By contributing, you agree to these dataset licensing terms.
-
 ## Testing
 
 To serve the document locally, run
