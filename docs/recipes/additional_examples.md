@@ -10,37 +10,30 @@ For the latest Cosmos Predict 2.5 model documentation, visit the [Cosmos Predict
 
 #### Inference with Pre-Trained Cosmos Predict 2.5 Models
 
-- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference.md)**: Comprehensive guide for generating videos with Cosmos Predict 2.5, including Text2World, Image2World, and Video2World capabilities
-- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference_auto_multiview.md)**: Guide for multi-camera view generation for autonomous vehicle applications
+- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference.md)**: Video generation with Text2World, Image2World, and Video2World capabilities
+- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/inference_auto_multiview.md)**: Multi-camera view generation for autonomous vehicle applications
 
-#### Post-train Pre-Trained Cosmos Predict 2.5 Models
+#### Post-Training with Cosmos Predict 2.5 Models
 
-- **[Video2World Post-training for DreamGen Bench](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/post-training_video2world_gr00t.md)**: Post-training guide for humanoid robot trajectory generation using the DreamGen benchmark
+- **[Video2World Post-Training for DreamGen Bench](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/post-training_video2world_gr00t.md)**: Humanoid robot trajectory generation using the DreamGen benchmark
 
 ### Cosmos Predict 2
 
 #### Inference with Pre-Trained Cosmos Predict 2 Models
 
-- **[Text2Image Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2image.md)**: A guide for generating high-quality images from text prompts
-- **[Video2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_video2world.md)**: A guide for generating videos from images/videos with text prompts, including the following:
-  - Single and batch processing
-  - Multi-frame conditioning
-  - Multi-GPU inference for faster generation
-  - Using the prompt refiner
-  - Rejection sampling for quality improvement
-- **[Text2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2world.md)**: A guide for generating videos directly from text prompts, including the following:
-  - Single and batch processing
-  - Multi-GPU inference for faster generation
+- **[Text2Image Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2image.md)**: Generating high-quality images from text prompts
+- **[Video2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_video2world.md)**: Generating videos from images/videos with text prompts (single/batch processing, multi-frame conditioning, multi-GPU inference, prompt refiner, rejection sampling)
+- **[Text2World Inference](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/inference_text2world.md)**: Generating videos directly from text prompts (single/batch processing, multi-GPU inference)
 
-#### Post-train Pre-Trained Cosmos Predict 2 Models
+#### Post-Training with Cosmos Predict 2 Models
 
-- **[Video2World Post-training guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world.md)**: A general guide to the Video2World training system in the codebase
-- **[Video2World Post-training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_cosmos_nemo_assets.md)**: A case study for post-training on Cosmos-NeMo-Assets data
-- **[Video2World Post-training on fisheye-view AgiBotWorld-Alpha dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_agibot_fisheye.md)**: A case study for post-training on fisheye-view robot videos from the AgiBotWorld-Alpha dataset.
-- **[Video2World Post-training on GR00T Dreams GR1 and DROID datasets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_gr00t.md)**: A case study for post-training on GR00T Dreams GR1 and DROID datasets.
-- **[Video2World Action-conditioned Post-training on Bridge dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_action.md)**: A case study for action-conditioned post-training on Bridge dataset.
-- **[Text2Image Post-training guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image.md)**: A general guide to the Text2Image training system in the codebase.
-- **[Text2Image Post-training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image_cosmos_nemo_assets.md)**: A case study for post-training on Cosmos-NeMo-Assets image data.
+- **[Video2World Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world.md)**: General guide to the Video2World training system
+- **[Video2World Post-Training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_cosmos_nemo_assets.md)**: Post-training on Cosmos-NeMo-Assets data
+- **[Video2World Post-Training on Fisheye-View AgiBotWorld-Alpha Dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_agibot_fisheye.md)**: Post-training on fisheye-view robot videos from the AgiBotWorld-Alpha dataset
+- **[Video2World Post-Training on GR00T Dreams GR1 and DROID Datasets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_gr00t.md)**: Post-training on GR00T Dreams GR1 and DROID datasets
+- **[Video2World Action-Conditioned Post-Training on Bridge Dataset](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_video2world_action.md)**: Action-conditioned post-training on Bridge dataset
+- **[Text2Image Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image.md)**: General guide to the Text2Image training system
+- **[Text2Image Post-Training on Cosmos-NeMo-Assets](https://github.com/nvidia-cosmos/cosmos-predict2/tree/main/documentations/post-training_text2image_cosmos_nemo_assets.md)**: Post-training on Cosmos-NeMo-Assets image data
 
 ## Cosmos Transfer
 
@@ -50,40 +43,44 @@ For the latest Cosmos Transfer 2.5 model documentation, visit the [Cosmos Transf
 
 #### Inference with Pre-Trained Cosmos Transfer 2.5 Models
 
-- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md)**: Comprehensive guide for multi-control video generation with Cosmos Transfer 2.5, including depth, segmentation, LiDAR, and HDMap conditioning
-- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference_auto_multiview.md)**: Guide for multi-camera view generation for autonomous vehicle applications
+- **[Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md)**: Multi-control video generation with depth, segmentation, LiDAR, and HDMap conditioning
+- **[Auto Multiview Inference Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference_auto_multiview.md)**: Multi-camera view generation for autonomous vehicle applications
 
-#### Post-Train Pre-Trained Cosmos Transfer 2.5 Models
+#### Post-Training with Cosmos Transfer 2.5 Models
 
-- **[Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training.md)**: General guide to post-training Cosmos Transfer 2.5 models for custom control modalities and domain adaptation
-- **[Auto Multiview Post-training for HDMap](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training_auto_multiview.md)**: Post-training guide for multi-view autonomous driving scenarios with HDMap control
+- **[Post-Training Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training.md)**: General guide for custom control modalities and domain adaptation
+- **[Auto Multiview Post-Training for HDMap](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/post-training_auto_multiview.md)**: Multi-view autonomous driving scenarios with HDMap control
 
 ### Cosmos Transfer 1
 
 #### Inference with Pre-Trained Cosmos Transfer 1 Models
 
-- [Inference with pre-trained Cosmos-Transfer1-7B](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md) **[with multi-GPU support]**
-- [Inference with pre-trained Cosmos-Transfer1-7B-Sample-AV](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av.md) **[with multi-GPU support]**
-- [Inference with pre-trained Cosmos-Transfer1-7B-4KUpscaler](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_4kupscaler.md) **[with multi-GPU support]**
-- [Inference with pre-trained Cosmos-Transfer1-7B (Depth)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_depth.md)
-- [Inference with pre-trained Cosmos-Transfer1-7B (Segmentation)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_seg.md)
-- [Inference with pre-trained Cosmos-Transfer1-7B (Edge)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md#example-1-single-control-edge)
-- [Inference with pre-trained Cosmos-Transfer1-7B (Vis)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_vis.md)
-- [Inference with pre-trained Cosmos-Transfer1pt1-7B [Keypoint]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1pt1_7b_keypoint.md)
-- [Inference with pre-trained Cosmos-Transfer1-7B-Sample-AV-Multiview](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av_single2multiview.md)
+- **[Cosmos-Transfer1-7B Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md)**: Multi-GPU support
+- **[Cosmos-Transfer1-7B-Sample-AV Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av.md)**: Multi-GPU support
+- **[Cosmos-Transfer1-7B-4KUpscaler Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_4kupscaler.md)**: 4K upscaling with multi-GPU support
+- **[Cosmos-Transfer1-7B Inference (Depth)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_depth.md)**: Depth-based control
+- **[Cosmos-Transfer1-7B Inference (Segmentation)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_seg.md)**: Segmentation-based control
+- **[Cosmos-Transfer1-7B Inference (Edge)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b.md#example-1-single-control-edge)**: Edge-based control
+- **[Cosmos-Transfer1-7B Inference (Vis)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_vis.md)**: Visual-based control
+- **[Cosmos-Transfer1pt1-7B Inference (Keypoint)](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1pt1_7b_keypoint.md)**: Keypoint-based control
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Inference](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/inference_cosmos_transfer1_7b_sample_av_single2multiview.md)**: Multi-view generation
 
-#### Post-Train Pre-Trained Cosmos Transfer 1 Models
+#### Post-Training with Cosmos Transfer 1 Models
 
-- [Post-train pre-trained Cosmos-Transfer1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md) **[with multi-GPU support]**
-- [Post-train pre-trained Cosmos-Transfer1-7B-Sample-AV [LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
-- [Post-train pre-trained Cosmos-Transfer1-7B-Sample-AV-Multiview[LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
+- **[Cosmos-Transfer1-7B Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**: Depth, Edge, Keypoint, Segmentation, and Vis controls with multi-GPU support
+- **[Cosmos-Transfer1-7B-Sample-AV Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: LiDAR and HDMap controls with multi-GPU support
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: Multi-view LiDAR and HDMap controls with multi-GPU support
 
-#### Build your own Cosmos Transfer 1 Models from Scratch
+#### Post-Training Cosmos Transfer 1 Models from Scratch
 
-- [Pre-train Cosmos-Transfer1-7B [Depth | Edge | Keypoint | Segmentation | Vis]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md) **[with multi-GPU support]**
-- [Pre-train Cosmos-Transfer1-7B-Sample-AV [LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
-- [Pre-train Cosmos-Transfer1-7B-Sample-AV-Multiview[LiDAR|HDMap]](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md) **[with multi-GPU support]**
+- **[Cosmos-Transfer1-7B Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7b.md)**: Depth, Edge, Keypoint, Segmentation, and Vis controls with multi-GPU support
+- **[Cosmos-Transfer1-7B-Sample-AV Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: LiDAR and HDMap controls with multi-GPU support
+- **[Cosmos-Transfer1-7B-Sample-AV-Multiview Post-Training](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/examples/training_cosmos_transfer_7B_sample_AV.md)**: Multi-view LiDAR and HDMap controls with multi-GPU support
 
 ## Cosmos Reason 1
 
-[Cosmos Reason 1 Post-Training Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md)
+For the latest Cosmos Reason 1 model documentation, visit the [Cosmos Reason 1 Repository](https://github.com/nvidia-cosmos/cosmos-reason1).
+
+### Post-Training with Cosmos Reason 1 Models
+
+- **[Cosmos Reason 1 Post-Training Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/README.md)**: Complete post-training guide for vision-language reasoning tasks
