@@ -50,34 +50,33 @@ Example:
 ```
 """
 
-from typing import Any, Optional
-
 import argparse
 from pathlib import Path
+from typing import Any, Optional
 
 from misc_utils import (
-    read_text_file,
-    write_text_file,
     get_list_of_files,
     iterate_with_timing_info,
+    read_text_file,
     run_sharded_computation,
+    write_text_file,
 )
-
 from model_reason import LocalModel
-
 
 SCRIPT_DIR = Path(__file__).parent
 SEPARATOR = "-" * 20
 
 
-def process_videos(video_list: list[str],
-                   model_path: str,
-                   video_dir: Path,
-                   output_dir: Path,
-                   system_prompt: str,
-                   user_prompt: str,
-                   force_reprocess: bool = False,
-                   gpu_id: Optional[int] = None):
+def process_videos(
+    video_list: list[str],
+    model_path: str,
+    video_dir: Path,
+    output_dir: Path,
+    system_prompt: str,
+    user_prompt: str,
+    force_reprocess: bool = False,
+    gpu_id: Optional[int] = None,
+):
     """Process a list of videos, and record the results.
 
     Args:
@@ -118,15 +117,22 @@ def process_videos(video_list: list[str],
         write_text_file(result, output_path)
         return True
 
-    totalp = iterate_with_timing_info(video_list, process_video_fn, prefix_str=f"GPU {gpu_id}: ")
+    totalp = iterate_with_timing_info(
+        video_list, process_video_fn, prefix_str=f"GPU {gpu_id}: "
+    )
     return totalp
 
 
-def process_fn(video_list: list[str],
-               other_args: list[Any],
-               shard_id: int) -> int:
+def process_fn(video_list: list[str], other_args: list[Any], shard_id: int) -> int:
     """Pickleable function which wraps process_videos."""
-    (model_path, video_dir, output_dir, system_prompt, user_prompt, force_reprocess) = other_args
+    (
+        model_path,
+        video_dir,
+        output_dir,
+        system_prompt,
+        user_prompt,
+        force_reprocess,
+    ) = other_args
 
     return process_videos(
         video_list,
@@ -136,8 +142,9 @@ def process_fn(video_list: list[str],
         system_prompt=system_prompt,
         user_prompt=user_prompt,
         force_reprocess=force_reprocess,
-        gpu_id=shard_id
+        gpu_id=shard_id,
     )
+
 
 def join_totals_fn(results: list[Optional[int]]) -> int:
     """Return the sum of non-None items in the list."""
@@ -158,32 +165,62 @@ def main():
     """Main script."""
 
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Evaluate Cosmos-Reason1 model using configuration file")
+    parser = argparse.ArgumentParser(
+        description="Evaluate Cosmos-Reason1 model using configuration file"
+    )
 
-    parser.add_argument("--model-path", "-m", default="nvidia/Cosmos-Reason1-7B",
-                        help=("Path to the model.  This can be a huggingface model name, "
-                              "or a file path to the pretrained weights in safetensor format."))
+    parser.add_argument(
+        "--model-path",
+        "-m",
+        default="nvidia/Cosmos-Reason1-7B",
+        help=(
+            "Path to the model.  This can be a huggingface model name, "
+            "or a file path to the pretrained weights in safetensor format."
+        ),
+    )
 
-    parser.add_argument("--video-dir", "-v", default="./eval/videos",
-                        help="Directory where the input videos are located.")
+    parser.add_argument(
+        "--video-dir",
+        "-v",
+        default="./eval/videos",
+        help="Directory where the input videos are located.",
+    )
 
-    parser.add_argument("--output-dir", "-o", default="./output/baseline",
-                        help="Output directory for results.")
+    parser.add_argument(
+        "--output-dir",
+        "-o",
+        default="./output/baseline",
+        help="Output directory for results.",
+    )
 
-    parser.add_argument("--system-prompt", default="./prompts/system_prompt.txt",
-                        help="Text file containing the system prompt.")
+    parser.add_argument(
+        "--system-prompt",
+        default="./prompts/system_prompt.txt",
+        help="Text file containing the system prompt.",
+    )
 
-    parser.add_argument("--user-prompt", default="./prompts/user_prompt.txt",
-                        help="Text file containing the user prompt.")
+    parser.add_argument(
+        "--user-prompt",
+        default="./prompts/user_prompt.txt",
+        help="Text file containing the user prompt.",
+    )
 
-    parser.add_argument("--dryrun", action='store_true',
-                        help="Do a dry run (not running the model).")
+    parser.add_argument(
+        "--dryrun", action="store_true", help="Do a dry run (not running the model)."
+    )
 
-    parser.add_argument("--num-gpus", type=int, default=8,
-                        help="Number of GPUs to use for parallel processing.")
+    parser.add_argument(
+        "--num-gpus",
+        type=int,
+        default=8,
+        help="Number of GPUs to use for parallel processing.",
+    )
 
-    parser.add_argument("--force", action='store_true',
-                        help="Force reprocessing of videos even if output files exist.")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force reprocessing of videos even if output files exist.",
+    )
 
     args = parser.parse_args()
     print(f"Script arguments: {args}")
@@ -231,13 +268,20 @@ def main():
     video_list = get_list_of_files(video_dir)
     print(f"Found {len(video_list)} videos.")
 
-    other_args = (model_path, video_dir, output_dir, system_prompt, user_prompt, force_reprocess)
+    other_args = (
+        model_path,
+        video_dir,
+        output_dir,
+        system_prompt,
+        user_prompt,
+        force_reprocess,
+    )
     num_processed_results = run_sharded_computation(
         process_fn,
         join_totals_fn,
         input_data=video_list,
         other_args=other_args,
-        num_shards=num_gpus
+        num_shards=num_gpus,
     )
     print("Done.")
     print(f"Processed {num_processed_results} videos.")

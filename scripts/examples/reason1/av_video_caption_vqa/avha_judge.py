@@ -23,27 +23,24 @@
 # ]
 # ///
 
-from typing import Any, Optional
-
 import argparse
 import json
 from pathlib import Path
-
-from model_openai import OpenAIModel
+from typing import Any, Optional
 
 from misc_utils import (
+    extract_tagged_text,
     get_base_filename,
     get_filename_prefix,
-    read_json_file,
-    write_json_file,
-    read_json_output_file,
     get_list_of_files,
-    extract_tagged_text,
-    string_to_int,
     iterate_with_timing_info,
+    read_json_file,
+    read_json_output_file,
     run_sharded_computation,
+    string_to_int,
+    write_json_file,
 )
-
+from model_openai import OpenAIModel
 
 SCRIPT_DIR = Path(__file__).parent
 
@@ -102,7 +99,7 @@ def get_model():
 def run_inference(model, question, answer, llm_output):
     """Prompt the model with a question, and return the response."""
     if model is None:
-        return "Duhhh... <answer>1</answer>"   # dry run
+        return "Duhhh... <answer>1</answer>"  # dry run
 
     prompt = USER_PROMPT % (question, answer, llm_output)
     try:
@@ -130,7 +127,7 @@ def extract_score(answer: str) -> Optional[int]:
 def compute_summary(all_scores: Any) -> Any:
     """Compute the summary (mean scores) for all scores."""
     summary = {}
-    for (k, rs) in all_scores.items():
+    for k, rs in all_scores.items():
         num_results = len(rs)
         num_scores = 0
         total_score = 0
@@ -151,25 +148,31 @@ def compute_summary(all_scores: Any) -> Any:
     return summary
 
 
-def process_outputs(model,
-                    output_file_list: list[str],
-                    output_dir: Path,
-                    answer_dir: Path,
-                    score_dir: Path,
-                    questions,
-                    force_reprocess: bool,
-                    shard_id: int):
+def process_outputs(
+    model,
+    output_file_list: list[str],
+    output_dir: Path,
+    answer_dir: Path,
+    score_dir: Path,
+    questions,
+    force_reprocess: bool,
+    shard_id: int,
+):
     """Process the output for a single video, and record the results."""
 
-    all_scores = { k: [] for k in questions }
+    all_scores = {k: [] for k in questions}
     num_json_failures = 0
     prefix = f"s{shard_id}: "
 
     def update_all_scores(answer_scores):
+        nonlocal all_scores
         for k in questions:
             all_scores[k].append(answer_scores[k])
 
     def process_output_fn(output_filename: str) -> bool:
+        nonlocal num_json_failures
+        nonlocal prefix
+
         base_name = get_filename_prefix(get_base_filename(output_filename))
 
         # Process a single answer.
@@ -196,7 +199,7 @@ def process_outputs(model,
         gt_answer = read_json_file(answer_path)
 
         answer_scores = {}
-        for (k, question) in questions.items():
+        for k, question in questions.items():
             if k in gt_answer and k in llm_output:
                 print(f"{prefix}Question {k}: ...")
                 result = run_inference(
@@ -235,11 +238,13 @@ def process_outputs(model,
         # print(f"{prefix}current summary: {json.dumps(current_summary, indent=2)}")
         return True
 
-    totalp = iterate_with_timing_info(output_file_list, process_output_fn, prefix_str=prefix)
+    totalp = iterate_with_timing_info(
+        output_file_list, process_output_fn, prefix_str=prefix
+    )
     print(f"{prefix}Number of JSON failures: {num_json_failures}")
     print(f"{prefix}Processed {totalp} outputs.")
     print(f"{prefix}Finished.  Collected scores:")
-    for (k, ss) in all_scores.items():
+    for k, ss in all_scores.items():
         print(f"{prefix}: {k}: {len(ss)}")
 
     return all_scores
@@ -271,27 +276,53 @@ def main():
     """Main function."""
 
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Evaluate Cosmos-Reason1 model using configuration file")
-    parser.add_argument("--output-dir", "-o", default="./output/baseline",
-                        help="Output directory for previously-computed LLM outputs.")
+    parser = argparse.ArgumentParser(
+        description="Evaluate Cosmos-Reason1 model using configuration file"
+    )
+    parser.add_argument(
+        "--output-dir",
+        "-o",
+        default="./output/baseline",
+        help="Output directory for previously-computed LLM outputs.",
+    )
 
-    parser.add_argument("--answer-dir", "-a", default="./eval/metas",
-                        help="Directory for ground-truth answers.")
+    parser.add_argument(
+        "--answer-dir",
+        "-a",
+        default="./eval/metas",
+        help="Directory for ground-truth answers.",
+    )
 
-    parser.add_argument("--score-dir", "-s", default="./scores/baseline",
-                        help="Directory to write final scores.")
+    parser.add_argument(
+        "--score-dir",
+        "-s",
+        default="./scores/baseline",
+        help="Directory to write final scores.",
+    )
 
-    parser.add_argument("--question", "-q", default="./prompts/score_question.json",
-                        help="Question used to compute final scores.")
+    parser.add_argument(
+        "--question",
+        "-q",
+        default="./prompts/score_question.json",
+        help="Question used to compute final scores.",
+    )
 
-    parser.add_argument("--num-shards", type=int, default=1,
-                        help="Number of shards to use for parallel processing.")
+    parser.add_argument(
+        "--num-shards",
+        type=int,
+        default=1,
+        help="Number of shards to use for parallel processing.",
+    )
 
-    parser.add_argument("--dryrun", action='store_true',
-                        help="Do a dry run (not running the model).")
+    parser.add_argument(
+        "--dryrun", action="store_true", help="Do a dry run (not running the model)."
+    )
 
-    parser.add_argument("--force", action='store_true',
-                        help="Force reprocessing of videos even if output files exist.")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force reprocessing of videos even if output files exist.",
+    )
 
     args = parser.parse_args()
     print(f"Script arguments: {args}")
@@ -312,7 +343,7 @@ def main():
     score_dir = Path(args.score_dir)
     if not score_dir.is_absolute():
         score_dir = SCRIPT_DIR / score_dir
-    score_dir.mkdir(parents=True, exist_ok=True)    # Create dir if necessary.
+    score_dir.mkdir(parents=True, exist_ok=True)  # Create dir if necessary.
     print(f"Score directory set to: {score_dir}")
 
     # Load a file containing the questions to ask for scoring.
@@ -332,13 +363,13 @@ def main():
         score_dir,
         questions,
         args.dryrun,
-        args.force
+        args.force,
     )
 
     def join_results_fn(result_list: list):
         # process_outputs returns a dictionary of lists.
         # concatenate all lists into one dictionary.
-        all_scores = { k: [] for k in questions }
+        all_scores = {k: [] for k in questions}
         for result_scores in result_list:
             if result_scores is None:
                 continue
@@ -355,7 +386,7 @@ def main():
         join_results_fn,
         output_list,
         other_args=process_fn_other_args,
-        num_shards=args.num_shards
+        num_shards=args.num_shards,
     )
 
     all_scores_file = score_dir / "scores.json"

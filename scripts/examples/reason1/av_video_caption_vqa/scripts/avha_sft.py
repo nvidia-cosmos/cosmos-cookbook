@@ -35,6 +35,7 @@
 
 
 from re import S
+
 from cosmos_reason1_utils.script import init_script
 
 init_script()
@@ -51,7 +52,6 @@ from cosmos_rl.utils.util import basename_from_modelpath
 from torch.utils.data import Dataset
 from transformers import AutoTokenizer
 
-
 FPS = 2
 # Default patch size is 28 x 28 -- maintain aspect ratio.
 # + 1 to account for floating point error.
@@ -61,12 +61,12 @@ SCRIPT_DIR = Path(__file__).parent
 
 def read_text_file(filename: Path) -> str:
     """Read a text file and return its contents as a string."""
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         return f.read()
 
 
 def read_caption(caption_file) -> str:
-    with open(caption_file, 'r') as f:
+    with open(caption_file, "r") as f:
         caption_json = json.load(f)
         # Remove items that are not in the prompt.
         if "critical_object" in caption_json:
@@ -101,7 +101,9 @@ class CosmosSFTDataset(Dataset):
         # Validate directories exist
         for dir_path in [self.videos_dir, self.captions_dir]:
             if not dir_path.exists():
-                raise FileNotFoundError(f"Directory {dir_path} does not exist. Please check the dataset path.")
+                raise FileNotFoundError(
+                    f"Directory {dir_path} does not exist. Please check the dataset path."
+                )
 
         # Scan video files with the specific naming pattern
         video_files = list(self.videos_dir.glob("*.camera_front_wide_120fov.mp4"))
@@ -111,9 +113,11 @@ class CosmosSFTDataset(Dataset):
             # Extract base filename (remove .camera_front_wide_120fov.mp4 suffix)
             video_filename = video_file.name
             if video_filename.endswith(".camera_front_wide_120fov.mp4"):
-                base_id = video_filename[:-len(".camera_front_wide_120fov.mp4")]
+                base_id = video_filename[: -len(".camera_front_wide_120fov.mp4")]
             else:
-                print(f"Warning: Unexpected video filename format: {video_filename}, skipping")
+                print(
+                    f"Warning: Unexpected video filename format: {video_filename}, skipping"
+                )
                 continue
 
             # Look for corresponding caption file
@@ -131,11 +135,13 @@ class CosmosSFTDataset(Dataset):
                 print(f"Warning: Could not load caption for {base_id}: {e}, skipping")
                 continue
 
-            entries.append({
-                "video_id": base_id,
-                "video_path": str(video_file),
-                "caption_data": caption_data
-            })
+            entries.append(
+                {
+                    "video_id": base_id,
+                    "video_path": str(video_file),
+                    "caption_data": caption_data,
+                }
+            )
 
         print(f"Successfully loaded {len(entries)} dataset entries")
         return entries
@@ -162,10 +168,7 @@ class CosmosSFTDataset(Dataset):
 
         # Create conversations in the expected format with system and user prompts
         conversations = [
-            {
-                "role": "system",
-                "content": self.system_prompt
-            },
+            {"role": "system", "content": self.system_prompt},
             {
                 "role": "user",
                 "content": [
@@ -179,12 +182,9 @@ class CosmosSFTDataset(Dataset):
                         "type": "text",
                         "text": self.user_prompt,
                     },
-                ]
+                ],
             },
-            {
-                "role": "assistant",
-                "content": full_description
-            }
+            {"role": "assistant", "content": full_description},
         ]
         return conversations
 
@@ -211,12 +211,12 @@ if __name__ == "__main__":
     # Read prompts.
     prompt_dir = SCRIPT_DIR / ".." / "prompts"
     system_prompt_str = read_text_file(prompt_dir / "system_prompt.txt")
-    user_prompt_str = read_text_file(prompt_dir/ "user_prompt.txt")
+    user_prompt_str = read_text_file(prompt_dir / "user_prompt.txt")
 
     def get_dataset(comos_config: CosmosConfig) -> Dataset:
         # Get dataset path from config, with fallback to default path
         dataset_config = comos_config.train.train_policy.dataset
-        if hasattr(dataset_config, 'name') and dataset_config.name.startswith('/'):
+        if hasattr(dataset_config, "name") and dataset_config.name.startswith("/"):
             # If name is a path, use it directly.
             dataset_path = dataset_config.name
         else:

@@ -21,7 +21,6 @@ import qwen_vl_utils
 import torch
 import transformers
 
-
 FPS = 2
 # Max pixels per frame for Qwen models
 # Default patch size is 28 x 28 -- maintain 16:9 aspect ratio.
@@ -62,13 +61,15 @@ class LocalModel:
                 torch.cuda.set_device(gpu_id)
                 device_map = f"cuda:{gpu_id}"
             else:
-                device_map="auto"
+                device_map = "auto"
 
-            self.model = transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
-                model_path,
-                dtype="auto",
-                device_map=device_map,
-                trust_remote_code=True
+            self.model = (
+                transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
+                    model_path,
+                    dtype="auto",
+                    device_map=device_map,
+                    trust_remote_code=True,
+                )
             )
             # The processor is a transformers.Qwen2_5_VLProcessor
             self.processor = transformers.AutoProcessor.from_pretrained(model_path)
@@ -94,7 +95,7 @@ class LocalModel:
 
         gpu_id = str(self.gpu_id) if self.gpu_id is not None else ""
         if video_path is not None:
-            video_path = str(video_path)    # Convert to string... may be a Path object.
+            video_path = str(video_path)  # Convert to string... may be a Path object.
             print(f"Processing video {video_path} on GPU {gpu_id}")
 
         if self.model is None:
@@ -104,17 +105,21 @@ class LocalModel:
         content = []
         # Add video path if available.
         if video_path is not None:
-            content.append({
-                "type": "video",
-                "video": video_path,
-                "fps": FPS,
-                "max_pixels": MAX_PIXELS,
-            })
+            content.append(
+                {
+                    "type": "video",
+                    "video": video_path,
+                    "fps": FPS,
+                    "max_pixels": MAX_PIXELS,
+                }
+            )
         # Add user prompt.
-        content.append({
-            "type": "text",
-            "text": prompt,
-        })
+        content.append(
+            {
+                "type": "text",
+                "text": prompt,
+            }
+        )
 
         # Create a conversation in the expected format.
         conversation = [
@@ -122,10 +127,7 @@ class LocalModel:
                 "role": "system",
                 "content": self.system_prompt,
             },
-            {
-                "role": "user",
-                "content": content
-            }
+            {"role": "user", "content": content},
         ]
 
         # Process conversation and load videos.
@@ -150,7 +152,7 @@ class LocalModel:
             temperature=0.1,  # Low temperature for more consistent reasoning
             top_p=0.9,
             repetition_penalty=1.05,
-            pad_token_id=self.processor.tokenizer.eos_token_id
+            pad_token_id=self.processor.tokenizer.eos_token_id,
         )
 
         # Decode the results.

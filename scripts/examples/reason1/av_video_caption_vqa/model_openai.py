@@ -16,8 +16,8 @@
 """Convenient wrapper class to run ChatGPT5 via API call."""
 
 import os
-import uuid
 import time
+import uuid
 
 from openai import OpenAI
 
@@ -39,12 +39,11 @@ class OpenAIModel:
         correlation_id = str(uuid.uuid4())
         client = OpenAI(
             api_key=bearer_token,
-            base_url="https://prod.api.nvidia.com/llm/v1/azure",
             default_headers={
                 "correlationId": correlation_id,
                 "dataClassification": "sensitive",
-                "dataSource": "internet"
-            }
+                "dataSource": "internet",
+            },
         )
         self.system_prompt = ""
         self.client = client
@@ -60,14 +59,18 @@ class OpenAIModel:
         time.sleep(0.025)  # Keep us under the query limit.
         messages = []
         if self.system_prompt:
-            messages.append({
-                "role": "system",
-                "content": self.system_prompt,
-            })
-        messages.append({
-            "role": "user",
-            "content": prompt,
-        })
+            messages.append(
+                {
+                    "role": "system",
+                    "content": self.system_prompt,
+                }
+            )
+        messages.append(
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        )
 
         response = self.client.chat.completions.create(
             model="gpt-5",

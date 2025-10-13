@@ -19,13 +19,12 @@
 import json
 from pathlib import Path
 
-
 SCRIPT_DIR = Path(__file__).parent
 
 
 def read_json_file(filename: Path):
     """Load evaluation configuration from JSON file."""
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         return json.load(f)
 
 
@@ -43,4 +42,3 @@ keys = summaries[0].keys()
 for k in keys:
     vals = [f"{(s[k]['mean_score']):.3}" for s in summaries]
     print(f"{k}, " + ", ".join(vals))
-
