@@ -77,11 +77,13 @@ In order to get Cosmos Reason to produce annotations similar to the above, we pr
 
 Using the above prompt, the base Cosmos Reason model can produce video annotations that match the required format. To generate annotations for a set of videos, run the following script:
 
-    # from the Cosmos cookbook directory
-    cd scripts/examples/reason1/av_video_caption_vqa
-    mkdir eval
-    ln -s /path/to/videos eval/videos
-    ./avha_caption.py --output-dir ./output/baseline
+```bash
+# from the Cosmos cookbook directory
+cd scripts/examples/reason1/av_video_caption_vqa
+mkdir eval
+ln -s /path/to/videos eval/videos
+./avha_caption.py --output-dir ./output/baseline
+```
 
 ## Supervised fine tuning
 
@@ -101,8 +103,10 @@ The fine-tuning code requires four files:
 
 Check out the [cosmos-reason github repository](https://github.com/nvidia-cosmos/cosmos-reason1), and then run the following shell script, which copies the necessary files from cosmos-cookbook over to cosmos-reason:
 
-    # In the cosmos_cookbook/scripts/examples/reason1/av_video_caption_vqa/ directory
-    ./setup_sft.sh /path/to/cosmos-reason
+```bash
+# In the cosmos_cookbook/scripts/examples/reason1/av_video_caption_vqa/ directory
+./setup_sft.sh /path/to/cosmos-reason
+```
 
 ### Training Configuration
 
@@ -129,10 +133,12 @@ Most of the training configuration is copied from the existing SFT examples. The
 
 Run the following commands to fine-tune the model with cosmos-rl:
 
-    # In the cosmos-reason1/examples/post_training_hf directory
-    just install
-    source .venv/bin/activate
-    cosmos-rl --config configs/avha_sft.toml scripts/avha_sft.py
+```bash
+# In the cosmos-reason1/examples/post_training_hf directory
+just install
+source .venv/bin/activate
+cosmos-rl --config configs/avha_sft.toml scripts/avha_sft.py
+```
 
 You should see a training loss curve that looks something like the following:
 
@@ -142,8 +148,10 @@ You should see a training loss curve that looks something like the following:
 
 Once supervised fine-tuning is done, use the SFTed model to generate a new set of annotations, with the same prompt as before. Instead of loading the default model weights from HuggingFace, point the inference script at the directory where the fine-tuned weights are stored:
 
-    # In the cosmos_cookbook/scripts/examples/reason1/av_video_caption_vqa/ directory
-    ./avha_caption.py --model-path /path/to/safetensor/weights/ --output-dir ./output/sft
+```bash
+# In the cosmos_cookbook/scripts/examples/reason1/av_video_caption_vqa/ directory
+./avha_caption.py --model-path /path/to/safetensor/weights/ --output-dir ./output/sft
+```
 
 ## Evaluation using an LLM as judge
 
@@ -214,11 +222,13 @@ Here are the prompts for the auto-judge:
 
 To score the LLM responses, run the following script:
 
-    cd scripts/examples/reason1/av_video_caption_vqa
-    export OPENAI_API_KEY="your_openai_api_key"
-    avha_judge.py --output-dir ./output/baseline --score-dir ./scores/baseline
-    avha_judge.py --output-dir ./output/sft --score-dir ./scores/sft
-    avha_compare_scores.py
+```bash
+cd scripts/examples/reason1/av_video_caption_vqa
+export OPENAI_API_KEY="your_openai_api_key"
+avha_judge.py --output-dir ./output/baseline --score-dir ./scores/baseline
+avha_judge.py --output-dir ./output/sft --score-dir ./scores/sft
+avha_compare_scores.py
+```
 
 ### Results
 
