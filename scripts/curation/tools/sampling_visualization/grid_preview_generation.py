@@ -28,7 +28,11 @@ def find_mp4_files(directory: str) -> List[Path]:
 
 
 def create_grid_video(
-    video_paths: List[Path], output_path: str, duration: int = 5, fps: int = 30, grid_size: Tuple[int, int] = (10, 10)
+    video_paths: List[Path],
+    output_path: str,
+    duration: int = 5,
+    fps: int = 30,
+    grid_size: Tuple[int, int] = (10, 10),
 ) -> str:
     caps = []
     for video_path in video_paths:
@@ -62,7 +66,7 @@ def create_grid_video(
             col = i % grid_size[0]
             y = row * target_height
             x = col * target_width
-            grid[y: y + target_height, x: x + target_width] = frame
+            grid[y : y + target_height, x : x + target_width] = frame
         out.write(grid)
     for cap in caps:
         cap.release()
@@ -71,13 +75,35 @@ def create_grid_video(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Create a grid preview video from multiple videos")
-    parser.add_argument("--input_dir", required=True, help="Input directory containing videos (local path)")
-    parser.add_argument("--output_video", required=True, help="Output video file path (local path)")
-    parser.add_argument("--cols", type=int, default=10, help="Number of columns in the grid (default: 10)")
-    parser.add_argument("--rows", type=int, default=10, help="Number of rows in the grid (default: 10)")
-    parser.add_argument("--video_length", type=int, default=5, help="Length of the output video in seconds (default: 5)")
-    parser.add_argument("--fps", type=int, default=30, help="Frames per second (default: 30)")
+    parser = argparse.ArgumentParser(
+        description="Create a grid preview video from multiple videos"
+    )
+    parser.add_argument(
+        "--input_dir",
+        required=True,
+        help="Input directory containing videos (local path)",
+    )
+    parser.add_argument(
+        "--output_video", required=True, help="Output video file path (local path)"
+    )
+    parser.add_argument(
+        "--cols",
+        type=int,
+        default=10,
+        help="Number of columns in the grid (default: 10)",
+    )
+    parser.add_argument(
+        "--rows", type=int, default=10, help="Number of rows in the grid (default: 10)"
+    )
+    parser.add_argument(
+        "--video_length",
+        type=int,
+        default=5,
+        help="Length of the output video in seconds (default: 5)",
+    )
+    parser.add_argument(
+        "--fps", type=int, default=30, help="Frames per second (default: 30)"
+    )
 
     args = parser.parse_args()
 
@@ -85,7 +111,9 @@ def main() -> None:
     all_videos = find_mp4_files(args.input_dir)
     num_samples = args.cols * args.rows
     if len(all_videos) < num_samples:
-        print(f"Warning: Only {len(all_videos)} videos found, using all available videos")
+        print(
+            f"Warning: Only {len(all_videos)} videos found, using all available videos"
+        )
         sampled_videos = all_videos
     else:
         sampled_videos = random.sample(all_videos, num_samples)

@@ -36,7 +36,9 @@ def main(input_dir: str, nsamples: int = 100) -> None:
         return
 
     if len(all_videos) < nsamples:
-        st.warning(f"Only {len(all_videos)} videos found, showing all available videos.")
+        st.warning(
+            f"Only {len(all_videos)} videos found, showing all available videos."
+        )
         sampled_videos = all_videos
     else:
         sampled_videos = random.sample(all_videos, nsamples)
@@ -66,7 +68,14 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Sample Video Browser")
-    parser.add_argument("--input_dir", required=True, help="Input directory (local path)")
-    parser.add_argument("--nsamples", type=int, default=100, help="Number of samples to display (default: 100)")
+    parser.add_argument(
+        "--input_dir", required=True, help="Input directory (local path)"
+    )
+    parser.add_argument(
+        "--nsamples",
+        type=int,
+        default=100,
+        help="Number of samples to display (default: 100)",
+    )
     args = parser.parse_args()
     main(args.input_dir, args.nsamples)
