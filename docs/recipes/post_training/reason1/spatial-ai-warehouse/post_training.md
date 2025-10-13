@@ -1,18 +1,18 @@
-# Spatial AI for Warehouse Post-Training with Cosmos-Reason1
+# Spatial AI for Warehouse Post-Training with Cosmos Reason 1
 >
 > **Authors:** [Xiaolong Li](https://www.linkedin.com/in/xiaolong-li19/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)
 > **Organization:** NVIDIA
 
 ## Overview
 
-Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input-output pairs. In this recipe, we will show how to fine-tune the [Cosmos-Reason1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to learn spatial intelligence tasks such as understanding distances between objects and space, the relative spatial relationship between objects, and counting.
+Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input-output pairs. In this recipe, we will show how to fine-tune the [Cosmos Reason 1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to learn spatial intelligence tasks such as understanding distances between objects and space, the relative spatial relationship between objects, and counting.
 
 Before fine-tuning the model, let's look at the zero-shot performance of the model. Based on the question, the model has to identify the pallet closest to the transporter in region 8. Visually, the pallet identified as region 7 appears the closest to the empty transporter in region 8. Although region 2 is close, region 7 is closer. The base model incorrectly predicts region 2. Clearly there is room for the model to improve on spatial understanding tasks.
 
 <img src="assets/before_qa.png" width="960"/>
 
 <br>
-Here’s the end-to-end workflow to fine-tune the Cosmos-Reason1 model--from data preparation and supervised fine-tuning on the prepared dataset to quantizing and deploying the model for inference.
+Here’s the end-to-end workflow to fine-tune the Cosmos Reason 1 model--from data preparation and supervised fine-tuning on the prepared dataset to quantizing and deploying the model for inference.
 <img src="assets/e2e_workflow.png" width="960"/>
 
 <br>
@@ -79,7 +79,7 @@ Here's an example of the annotation format:
 
 ### Data preprocessing
 
-For this experiment, we fine-tune the Cosmos-Reason1 model on the 80k subset of the Physical AI Spatial Intelligence Warehouse dataset. Refer to [scripts/examples/reason1/spatial-ai-warehouse/](../../../../scripts/examples/reason1/spatial-ai-warehouse/) directory for more details.
+For this experiment, we fine-tune the Cosmos Reason 1 model on the 80k subset of the Physical AI Spatial Intelligence Warehouse dataset. Refer to [scripts/examples/reason1/spatial-ai-warehouse/](../../../../scripts/examples/reason1/spatial-ai-warehouse/) directory for more details.
 
 #### Step 1: Download Data
 
@@ -126,7 +126,7 @@ python toolbox/data_preprocess.py --input_file /path/to/PhysicalAI-Spatial-Intel
 
 ## Post-Training with Supervised Fine-Tuning (SFT)
 
-After data preprocessing, convert the data into standard LlaVa format. To launch training, we follow the default cosmos-rl training command in [Cosmos-Reason1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava).
+After data preprocessing, convert the data into standard LlaVa format. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava).
 
 The Cosomos-Reason model uses a vision transformer that processes images in patches. The raw image starts at 1080p resolution, so we downsample the image twice to a 960x540 resolution. Since each vision token corresponds to a `28 x 28 = 784` pixel area, the result is `960/28 * 540/28 ≈ 646 tokens/frame`
 
@@ -136,7 +136,7 @@ cosmos-rl --config configs/sft.toml toolbox/custom_sft.py
 
 ### Hyperparameter optimization
 
-We use the default settings in [Cosmos-Reason1/sft.yaml](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/configs/sft.toml) for this SFT experiment. We changed a few of the hyperparameters to run more efficiently on 8xA100 GPUs. Since the `train_batch_per_replica=32` with `mini_batch=4` parameters already take care of gradient accumulation, with 8 on each single A100, the `total_batch_size` is 256 in our case, which largely contributes to training stability with a larger batch size. Below are the customized changes required to adapt the template config file to this post-training experiment.
+We use the default settings in [Cosmos Reason 1/sft.yaml](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training/configs/sft.toml) for this SFT experiment. We changed a few of the hyperparameters to run more efficiently on 8xA100 GPUs. Since the `train_batch_per_replica=32` with `mini_batch=4` parameters already take care of gradient accumulation, with 8 on each single A100, the `total_batch_size` is 256 in our case, which largely contributes to training stability with a larger batch size. Below are the customized changes required to adapt the template config file to this post-training experiment.
 
 ### Configuration Example
 
@@ -238,9 +238,9 @@ The last step is to deploy the trained model for inference. You can deploy it us
 
 ### FP8 Quantization
 
-The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos-Reason1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
+The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
 
-1. Clone the Cosmos-Reason1 repo.
+1. Clone the Cosmos Reason 1 repo.
 
 2. Ensure you have the following dependencies to run post-training quantization (PTQ):
 
@@ -254,7 +254,7 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos-Reason
 3. Run the quantization script.
 
   ```shell
-  python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos-Reason1-7B' --save_dir 'Cosmos-Reason1-7B-W8A8-FP8'
+  python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos Reason 1-7B' --save_dir 'Cosmos Reason 1-7B-W8A8-FP8'
   ```
 
 Before deploying the quantized model for inference, run evaluation on the model for accuracy and ensure quantization doesn’t introduce any accuracy regression.
@@ -286,9 +286,9 @@ docker run -it --rm --name=cosmos-reason1-7b \
 
 The VSS (Video Search and Summarization) Blueprint leverages both Vision-Language Models (VLM) and Large Language Models (LLM) to generate captions, answer questions, and summarize video content, enabling rapid search and understanding of videos on NVIDIA hardware.
 
-By default, VSS is configured to use the base Cosmos-Reason1-7B model as the default VLM. Deployment instructions for VSS are available in the [VSS documentation](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html). VSS supports two primary deployment methods: Docker Compose and Helm charts.
+By default, VSS is configured to use the base Cosmos Reason 1-7B model as the default VLM. Deployment instructions for VSS are available in the [VSS documentation](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html). VSS supports two primary deployment methods: Docker Compose and Helm charts.
 
-For Docker Compose deployment, navigate to the [Configure the VLM](https://docs.nvidia.com/vss/latest/content/installation-vlms-docker-compose.html#local-models-cosmos-reason1) section under “Plug-and-Play Guide (Docker Compose Deployment)” to integrate a custom fine-tuned Cosmos-Reason1 checkpoint.
+For Docker Compose deployment, navigate to the [Configure the VLM](https://docs.nvidia.com/vss/latest/content/installation-vlms-docker-compose.html#local-models-cosmos-reason1) section under “Plug-and-Play Guide (Docker Compose Deployment)” to integrate a custom fine-tuned Cosmos Reason 1 checkpoint.
 
 ```shell
 export VLM_MODEL_TO_USE=cosmos-reason1
@@ -323,7 +323,7 @@ vss:
 
 ## Conclusion
 
-Supervised Fine-Tuning Cosmos-Reason1 on warehouse-specific data boosts accuracy from zero-shot levels to over 90% on spatial intelligence VQA tasks. Key insights include the following:
+Supervised Fine-Tuning Cosmos Reason 1 on warehouse-specific data boosts accuracy from zero-shot levels to over 90% on spatial intelligence VQA tasks. Key insights include the following:
 
 - **Dataset scale drives causal perception**: Large-scale datasets (>80K samples) provide sufficient complexity and diversity for the model to learn robust causal relationships and spatial reasoning patterns.
 - **Rapid convergence**: Training completes within 7 hours on 80K-scale data, and it converges within the first 100 steps, demonstrating the efficiency of the fine-tuning approach.

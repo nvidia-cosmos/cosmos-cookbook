@@ -32,10 +32,10 @@ python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA av
 
 ```bash
 # Download Cosmos Reason 1-7B-Reward model
-huggingface-cli download nvidia/Cosmos-Reason1-7B-Reward --local-dir ./checkpoints --token <YOUR_HF_TOKEN>
+huggingface-cli download nvidia/Cosmos Reason 1-7B-Reward --local-dir ./checkpoints --token <YOUR_HF_TOKEN>
 ```
 
-> **Note**: Requires HuggingFace account and token with access to nvidia/Cosmos-Reason1-7B-Reward model.
+> **Note**: Requires HuggingFace account and token with access to nvidia/Cosmos Reason 1-7B-Reward model.
 
 ## Reward Model Usage
 
@@ -247,7 +247,7 @@ python distributed_inference.py --checkpoint ./checkpoints --video-dir ./dataset
 ### Official Documentation
 
 - [Cosmos Reason 1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
-- [Cosmos Reason 1-7B-Reward Model](https://huggingface.co/nvidia/Cosmos-Reason1-7B-Reward)
+- [Cosmos Reason 1-7B-Reward Model](https://huggingface.co/nvidia/Cosmos Reason 1-7B-Reward)
 
 ### Examples and Tutorials
 

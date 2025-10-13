@@ -1,25 +1,25 @@
-# Cosmos-Transfer1 Weather Augmentation for Intelligent Transportation System (ITS) Images
+# Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images
 
 > **Authors:** [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
 > **Organization:** NVIDIA
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos-Transfer1 | Inference | Data augmentation |
+| Cosmos Transfer 1 | Inference | Data augmentation |
 
-This tutorial demonstrates how to use the Cosmos-Transfer1 model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
+This tutorial demonstrates how to use the Cosmos Transfer 1 model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
 - [Setup and System Requirement](setup.md)
 
 ## Why Weather Augmentation Matters
 
-Acquiring Intelligent Transportation System (ITS) data in adverse weather conditions is time consuming and challenging. Furthermore, adding weather based diversity on pre-recorded datasets is prohibitive and impossible. Cosmos-Transfer1 can be utilized to generate weather-diverse data and improve downstream weather-robust detectors.
+Acquiring Intelligent Transportation System (ITS) data in adverse weather conditions is time consuming and challenging. Furthermore, adding weather based diversity on pre-recorded datasets is prohibitive and impossible. Cosmos Transfer 1 can be utilized to generate weather-diverse data and improve downstream weather-robust detectors.
 
 ## Demonstration Overview
 
-This is a demonstration of using Cosmos-Transfer1 for weather augmentation of ITS images. To showcase the impact, this tutorial walks through a step-by-step Cosmos-Transfer1 weather augmentation process for ITS images to improve a downstream ITS object detector RT-DETR model.
+This is a demonstration of using Cosmos Transfer 1 for weather augmentation of ITS images. To showcase the impact, this tutorial walks through a step-by-step Cosmos Transfer 1 weather augmentation process for ITS images to improve a downstream ITS object detector RT-DETR model.
 
-## Cosmos-Transfer1 Pipeline Components
+## Cosmos Transfer 1 Pipeline Components
 
 ### Sample Input ITS Images/Videos
 
@@ -27,7 +27,7 @@ Start with clear daylight highway scenes as the base input for augmentation.
 
 ![Input image](assets/input.jpg)
 
-> **Note**: If you are dealing with images only, you need to create a video with a repeating image frame before proceeding with the next steps and Cosmos-Transfer1.
+> **Note**: If you are dealing with images only, you need to create a video with a repeating image frame before proceeding with the next steps and Cosmos Transfer 1.
 
 ### Video Captioning Using a VLM
 
@@ -66,17 +66,17 @@ The weather condition description for rainy night is as follows:
 
 > *Rainy night shrouded in deep darkness, with only scattered headlights and dim streetlights casting faint reflections on the rain-soaked road, where puddles and thin streams of water shimmer faintly.*
 
-### Cosmos-Transfer1 Output Image for Rainy Night
+### Cosmos Transfer 1 Output Image for Rainy Night
 
-Using the augmented prompt, Cosmos-Transfer1 generates realistic rainy night scenes while preserving the structural elements of the original scene.
+Using the augmented prompt, Cosmos Transfer 1 generates realistic rainy night scenes while preserving the structural elements of the original scene.
 
 ![Rainy night](assets/rainy_night.jpg)
 
-> **Note**: We have chosen the middle frame of the output video from Cosmos-Transfer1.
+> **Note**: We have chosen the middle frame of the output video from Cosmos Transfer 1.
 
-## Control Parameters in Cosmos-Transfer1
+## Control Parameters in Cosmos Transfer 1
 
-In general, it is possible to control for vis, edge, segmentation, and depth when running Cosmos-Transfer1. However, experiments have demonstrated that when controlling only for **segmentation and depth**, the generated images are well suited for daylight/weather augmentations, especially when generating night scenes.
+In general, it is possible to control for vis, edge, segmentation, and depth when running Cosmos Transfer 1. However, experiments have demonstrated that when controlling only for **segmentation and depth**, the generated images are well suited for daylight/weather augmentations, especially when generating night scenes.
 
 ### Recommended Control Configuration
 
@@ -101,16 +101,16 @@ The recommended control config file is as follows:
 
 ### Removing Vis and Edge Controls
 
-To illustrate why vis and edge controls are removed when using Cosmos-Transfer1, two rainy night images were generated from the same input image:
+To illustrate why vis and edge controls are removed when using Cosmos Transfer 1, two rainy night images were generated from the same input image:
 
 1. **With all controls** (vis, edge, seg, depth): Night scenes are not generated as expected.
 2. **With only seg and depth controls**: The generated image achieves the desired darkness level.
 
-**Cosmos-Transfer1 Generated Image - All Controls (vis, edge, depth, seg control weights of 0.9)**
+**Cosmos Transfer 1 Generated Image - All Controls (vis, edge, depth, seg control weights of 0.9)**
 
 ![Rainy night with all controls](assets/rainy_night_all_09.jpg)
 
-**Cosmos-Transfer1 Generated Image - Depth and Seg Only (control weights of 0.9)**
+**Cosmos Transfer 1 Generated Image - Depth and Seg Only (control weights of 0.9)**
 
 ![Rainy night with depth and segmentation controls](assets/rainy_night.jpg)
 
@@ -118,11 +118,11 @@ As demonstrated, using all controls (vis, edge, depth, seg) fails to generate pr
 
 ## Training Downstream ITS Detector
 
-To illustrate the impact of Cosmos-Transfer1 weather augmentation on a downstream ITS detector, we have trained an RT-DETR detector with and without the Cosmos-Transfer1 augmented images (using all possible weather/lighting conditions). We evaluated the trained models on three public KPIs.
+To illustrate the impact of Cosmos Transfer 1 weather augmentation on a downstream ITS detector, we have trained an RT-DETR detector with and without the Cosmos Transfer 1 augmented images (using all possible weather/lighting conditions). We evaluated the trained models on three public KPIs.
 
 ## Results
 
-Experiments were conducted with a set of ~12k real ITS images and ~84K weather augmented Cosmos-Transfer1 images using the pipeline described in this tutorial. Below are the results on the three KPIs:
+Experiments were conducted with a set of ~12k real ITS images and ~84K weather augmented Cosmos Transfer 1 images using the pipeline described in this tutorial. Below are the results on the three KPIs:
 
 ## ACDC Dataset
 
@@ -131,7 +131,7 @@ The ACDC dataset is an Intelligent Transportation System (ITS)-related dataset w
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 
 ![Result plot ACDC](assets/acdc_plots.png)
-As shown above, the blue curves (which are from the trained detector *with* Cosmos-Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As shown above, the blue curves (which are from the trained detector *with* Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## SUTD Dataset
 
@@ -140,7 +140,7 @@ The SUTD dataset is another ITS-related dataset with more diverse weather condit
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 
 ![Result plot SUTD](assets/sutd_plots.png)
-As shown above, the blue curves (which are from the trained detector with Cosmos-Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As shown above, the blue curves (which are from the trained detector with Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## DAWN Dataset
 
@@ -149,11 +149,11 @@ The DAWN dataset is also another ITS-related dataset with different weather cond
 Below are the AP50 results of the most common objects (car, person) in the dataset along all weather conditions:
 
 ![Result plot DAWN](assets/dawn_plots.png)
-As shown above, the blue curves (which are from the trained detector *with* Cosmos-Transfer1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As shown above, the blue curves (which are from the trained detector *with* Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## Conclusion
 
-This tutorial demonstrates how Cosmos-Transfer1 can effectively augment ITS datasets with challenging weather conditions, leading to improved performance of downstream object detection models. These are the key insights:
+This tutorial demonstrates how Cosmos Transfer 1 can effectively augment ITS datasets with challenging weather conditions, leading to improved performance of downstream object detection models. These are the key insights:
 
 * Use only segmentation and depth controls for optimal weather augmentation.
 * Proper prompt engineering is crucial for realistic weather condition generation.

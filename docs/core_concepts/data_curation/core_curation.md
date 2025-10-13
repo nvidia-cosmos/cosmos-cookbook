@@ -4,7 +4,7 @@
 
 Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curate](https://github.com/nvidia-cosmos/cosmos-curate).
 
-The Cosmos-Curate tool offers multiple deployment modes to suit different use cases and technical requirements:
+The Cosmos Curator tool offers multiple deployment modes to suit different use cases and technical requirements:
 
 ## Deployment Options
 
@@ -30,7 +30,7 @@ The NVCF approach provides a streamlined, cloud-based solution for data curation
 
 ### Prerequisites
 
-Install the Cosmos Curate CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
+Install the Cosmos Curator CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
 
 ```shell
 # Quick setup (full instructions in Local Setup section)

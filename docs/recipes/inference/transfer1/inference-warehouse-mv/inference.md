@@ -1,13 +1,13 @@
-# Cosmos-Transfer1 Sim2Real for Multi-View Warehouse Detection and Tracking
+# Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking
 
 > **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos-Transfer1 | Inference | Sim to Real data augmentation |
+| Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
 
-This use case demonstrates how to apply Cosmos-Transfer1 for data augmentation over Omniverse (OV) generated synthetic data to close the  sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
+This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the  sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
 
 - [Setup and System Requirement](setup.md)
 
@@ -15,15 +15,15 @@ This use case demonstrates how to apply Cosmos-Transfer1 for data augmentation o
 
 NVIDIA Omniverse is a powerful platform for Synthetic Data Generation (SDG) that enables precise control over scene generation and simulation. While digital simulations provide accurate derived information such as depth and segmentation with scene control, generating variations for robust model training can be computationally expensive and time-consuming.
 
-This use case explores how first time outside-in multi-view world simulation can be achieved by Cosmos-Transfer1. Transforming Omniverse-generated synthetic warehouse scenes into realistic variations reduces the sim-to-real domain gap without the computational cost of re-rendering entire scenes.
+This use case explores how first time outside-in multi-view world simulation can be achieved by Cosmos Transfer 1. Transforming Omniverse-generated synthetic warehouse scenes into realistic variations reduces the sim-to-real domain gap without the computational cost of re-rendering entire scenes.
 
 ## Outside-In Multi-View Processing Approach
 
-Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos-Transfer1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
+Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos Transfer 1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
 
 1. **Multi-view Outside-In Data Generation**: Multi-view synthetic videos and corresponding multi-modal
 ground truth data (e.g., depth, segmentation masks) are prepared by [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html).
-2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos-Transfer1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos-Transfer1 model.
+2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos Transfer 1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos Transfer 1 model.
 
 This approach guarantees that all camera views receive consistent environmental transformations while maintaining spatial and temporal coherence across the multi-view setup.
 
@@ -31,7 +31,7 @@ This approach guarantees that all camera views receive consistent environmental 
 
 ## Demonstration Overview
 
-This demonstration shows how **Cosmos-Transfer1** enables sim-to-real domain adaptation through procedural scene randomization including image noise, lighting variations, texture changes, and object placement diversity. The parameter-consistent framework ensures consistent transformations across camera views to improve downstream 3D detection and tracking performance in warehouse environments.
+This demonstration shows how **Cosmos Transfer 1** enables sim-to-real domain adaptation through procedural scene randomization including image noise, lighting variations, texture changes, and object placement diversity. The parameter-consistent framework ensures consistent transformations across camera views to improve downstream 3D detection and tracking performance in warehouse environments.
 
 ## Dataset and Setup
 
@@ -55,7 +55,7 @@ The dataset provides a 6-camera warehouse setup with synchronized data organized
 
 ### Warehouse Outside-In Multi-View Input
 
-The RGB video for each camera is processed sequentially through multiple Cosmos-Transfer1 inference runs. We present the concatenated multi-view videos below to demonstrate the combined perspectives.
+The RGB video for each camera is processed sequentially through multiple Cosmos Transfer 1 inference runs. We present the concatenated multi-view videos below to demonstrate the combined perspectives.
 
 **Multi-View RGB Input:**
 
@@ -71,11 +71,11 @@ The RGB video for each camera is processed sequentially through multiple Cosmos-
   Your browser does not support the video tag.
 </video>
 
-## Cosmos-Transfer1 Pipeline Components
+## Cosmos Transfer 1 Pipeline Components
 
 ### Sim2Real Conversion with Ambient Variation
 
-We can leverage the Cosmos-Transfer1 model to convert the appearance of synthetic computer graphics to realistic warehouse conditions. By prompting the model appropriately, we can introduce varied ambient conditions such as different lighting scenarios, while preserving the structural layout and object relationships.
+We can leverage the Cosmos Transfer 1 model to convert the appearance of synthetic computer graphics to realistic warehouse conditions. By prompting the model appropriately, we can introduce varied ambient conditions such as different lighting scenarios, while preserving the structural layout and object relationships.
 
 ```json
 {
@@ -98,9 +98,9 @@ We can leverage the Cosmos-Transfer1 model to convert the appearance of syntheti
   Your browser does not support the video tag.
 </video>
 
-## Control Parameters in Cosmos-Transfer1
+## Control Parameters in Cosmos Transfer 1
 
-By updating text prompts with varied environmental descriptions, Cosmos-Transfer1 increases data diversity in addition to reducing the sim-to-reality gap. For example, providing descriptions of the warehouse scene under foggy or low-light conditions enables the generation of data with more challenging scenarios.
+By updating text prompts with varied environmental descriptions, Cosmos Transfer 1 increases data diversity in addition to reducing the sim-to-reality gap. For example, providing descriptions of the warehouse scene under foggy or low-light conditions enables the generation of data with more challenging scenarios.
 
 ### Foggy and Dark Conditions
 
@@ -152,11 +152,11 @@ Similar to the weather augmentation approach, experiments show that controlling 
 
 ## 2D Detection Results on Augmented Dataset
 
-To evaluate the effectiveness of Cosmos-Transfer1 for data augmentation, experiments were conducted using carefully selected multi-view scenes from the AI City Challenge dataset. *Eleven distinct scenes* were picked from the [AI City v0.1](https://www.aicitychallenge.org/) dataset, representing diverse warehouse and indoor environments.
+To evaluate the effectiveness of Cosmos Transfer 1 for data augmentation, experiments were conducted using carefully selected multi-view scenes from the AI City Challenge dataset. *Eleven distinct scenes* were picked from the [AI City v0.1](https://www.aicitychallenge.org/) dataset, representing diverse warehouse and indoor environments.
 
-Each of these 11 baseline scenes was processed through the Cosmos-Transfer1 augmentation pipeline using the multi-view parameter-consistent approach described earlier. This process generated ambient variations, lighting changes, and environmental conditions (including dust and reduced visibility scenarios), while maintaining structural consistency and multi-view coherence across all camera viewpoints.
+Each of these 11 baseline scenes was processed through the Cosmos Transfer 1 augmentation pipeline using the multi-view parameter-consistent approach described earlier. This process generated ambient variations, lighting changes, and environmental conditions (including dust and reduced visibility scenarios), while maintaining structural consistency and multi-view coherence across all camera viewpoints.
 
-The resulting augmented dataset, containing both original and Cosmos-Transfer1-enhanced versions of each scene, was then used to train RT-DETR and EfficientViT-L2 detectors. The performance comparison demonstrates significant improvements in computer vision (CV) model accuracy and real-world generalization capabilities.
+The resulting augmented dataset, containing both original and Cosmos Transfer 1-enhanced versions of each scene, was then used to train RT-DETR and EfficientViT-L2 detectors. The performance comparison demonstrates significant improvements in computer vision (CV) model accuracy and real-world generalization capabilities.
 
 ### Detection Performance Results
 
@@ -168,11 +168,11 @@ The resulting augmented dataset, containing both original and Cosmos-Transfer1-e
 
 ## Conclusion
 
-This use case demonstrates how users can leverage Cosmos-Transfer1 as an AI model and framework for data augmentation to bridge the sim-to-real domain gap in multi-view warehouse scenarios. These are the key insights:
+This use case demonstrates how users can leverage Cosmos Transfer 1 as an AI model and framework for data augmentation to bridge the sim-to-real domain gap in multi-view warehouse scenarios. These are the key insights:
 
-1. **Cost-effective Data Augmentation**: Cosmos-Transfer1 provides an efficient alternative to expensive synthetic data re-generation, enabling rapid creation of environmental variations.
+1. **Cost-effective Data Augmentation**: Cosmos Transfer 1 provides an efficient alternative to expensive synthetic data re-generation, enabling rapid creation of environmental variations.
 2. **Multi-View Consistency**: The parameter-consistent approach ensures consistent transformations across all camera views while maintaining spatial and temporal coherence.
-3. **Significant Performance Gains**: Both RT-DETR and EfficientViT-L2 detectors show substantial improvements (8-11% mAP increase) when trained on Cosmos-Transfer1 augmented datasets.
+3. **Significant Performance Gains**: Both RT-DETR and EfficientViT-L2 detectors show substantial improvements (8-11% mAP increase) when trained on Cosmos Transfer 1 augmented datasets.
 4. **Optimal Control Configuration**: Using only edge and depth controls produce the best results for warehouse sim-to-real conversion.
 
 By applying this framework, we can generate realistic warehouse scenes that maintain multi-view consistency, leading to substantial improvements in downstream detection and tracking algorithm accuracy, while reducing the need for expensive real-world data collection or costly synthetic data re-rendering.

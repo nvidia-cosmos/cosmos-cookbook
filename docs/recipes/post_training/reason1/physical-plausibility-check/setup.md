@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos-Reason1 for physical plausibility prediction and post-training workflows.
+This guide covers the setup requirements for running Cosmos Reason 1 for physical plausibility prediction and post-training workflows.
 
 ## System Requirements
 
@@ -12,18 +12,18 @@ This guide covers the setup requirements for running Cosmos-Reason1 for physical
 
 ### Software Requirements
 
-The setup requires the Cosmos-Reason1 repository and model to be properly installed and configured.
+The setup requires the Cosmos Reason 1 repository and model to be properly installed and configured.
 
 ## Installation
 
-### Cosmos-Reason1 Setup
+### Cosmos Reason 1 Setup
 
-To set up Cosmos-Reason1 repository and model, follow the [Setup steps](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_hf#setup) in the Cosmos-Reason1 Post-Training Hugging Face Example.
+To set up Cosmos Reason 1 repository and model, follow the [Setup steps](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_hf#setup) in the Cosmos Reason 1 Post-Training Hugging Face Example.
 
 ### Verification
 
-After completing the installation, run the Cosmos-Reason1 [inference examples](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/README.md#inference) to ensure the model is working correctly before proceeding with the post-training pipeline.
+After completing the installation, run the Cosmos Reason 1 [inference examples](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/README.md#inference) to ensure the model is working correctly before proceeding with the post-training pipeline.
 
 ## Next Steps
 
-Once setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos-Reason1 for physical plausibility augmentation of ITS images.
+Once setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos Reason 1 for physical plausibility augmentation of ITS images.

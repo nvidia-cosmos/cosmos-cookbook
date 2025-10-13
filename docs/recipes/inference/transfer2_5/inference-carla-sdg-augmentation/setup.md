@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos-Transfer2.5 for video augmentation of synthetic data from simulators.
+This guide covers the setup requirements for running Cosmos Transfer 2.5 for video augmentation of synthetic data from simulators.
 
 ## System Requirements
 
@@ -12,13 +12,13 @@ This guide covers the setup requirements for running Cosmos-Transfer2.5 for vide
 
 ### Software Requirements
 
-The setup requires the Cosmos-Transfer2.5 repository and model to be properly installed and configured.
+The setup requires the Cosmos Transfer 2.5 repository and model to be properly installed and configured.
 
 ## Installation
 
-### Cosmos-Transfer2.5 Setup
+### Cosmos Transfer 2.5 Setup
 
-To set up Cosmos-Transfer2.5 repository and model, follow the [Cosmos-Transfer2.5 Setup Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md).
+To set up Cosmos Transfer 2.5 repository and model, follow the [Cosmos Transfer 2.5 Setup Guide](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md).
 
 The installation guide provides the following comprehensive steps:
 
@@ -30,8 +30,8 @@ The installation guide provides the following comprehensive steps:
 
 ### Verification
 
-After completing the installation, verify setup by running the [inference examples](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md) provided in the Cosmos-Transfer2.5 repository to ensure the model is working correctly before proceeding with the simulator augmentation pipeline.
+After completing the installation, verify setup by running the [inference examples](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/inference.md) provided in the Cosmos Transfer 2.5 repository to ensure the model is working correctly before proceeding with the simulator augmentation pipeline.
 
 ## Next Steps
 
-Once setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos-Transfer2.5 for simulator-to-real data augmentation.
+Once setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer 2.5 for simulator-to-real data augmentation.
