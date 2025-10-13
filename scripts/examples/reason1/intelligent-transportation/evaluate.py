@@ -58,8 +58,6 @@ from utils.output import (
     save_results_parallel,
 )
 
-MCQ_PROMPT_SUFFIX = "\nAnswer with the option's letter from the given choices directly."
-
 
 @attrs.define(slots=False)
 class LlavaInputStructure:
@@ -415,7 +413,6 @@ def make_all_tasks(
                     "",
                     item["conversations"][0]["value"],
                 ).strip()
-                question += MCQ_PROMPT_SUFFIX
                 conversation = [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": question},
