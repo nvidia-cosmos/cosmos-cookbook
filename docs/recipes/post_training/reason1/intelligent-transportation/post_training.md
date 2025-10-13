@@ -32,7 +32,7 @@ Here are examples of the video clips and textual descriptions of the pedestrian 
 
 <br>
 
-For this experiment, we fine-tune the Cosmos Reason 1 model on the Environment VQA subset of the WTS dataset.
+For this experiment, we fine-tune the Cosmos Reason 1 model on the Environment VQA subset of the WTS dataset. The subset contains 341 videos with 5k MCQ question-answer pairs. The average video length is about 75 seconds.
 
 ### Data Pre-processing
 
@@ -49,7 +49,7 @@ python data_preprocess.py --data_path /path/to/WTS/folder
 
 ## Post-Training with Supervised Fine-Tuning (SFT)
 
-After preprocessing, the WTS dataset is in Llava format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava) with a small modification to add system prompt and an MCQ prompt suffix in `custom_sft.py` script:
+After preprocessing, the WTS dataset is in Llava format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava):
 
 ```shell
 # From scripts/examples/reason1/intelligent-transportation directory
