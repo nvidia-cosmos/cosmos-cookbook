@@ -20,7 +20,7 @@ Synthetic data generation (SDG) offers a practical way to augment existing datas
 
 ## The Challenge: Rare Event Data in ITS
 
-Initial evaluations of the pre-trained Cosmos-Predict2 model revealed gaps in generating vehicle collision scenes:
+Initial evaluations of the pre-trained Cosmos Predict 2 model revealed gaps in generating vehicle collision scenes:
 
 - Unrealistic motion dynamics
 - Oversized vehicles (likely due to dash cam bias in pre-training)
@@ -31,7 +31,7 @@ While the pre-trained model excelled at routine traffic scenes, it struggled wit
 
 ## Our Approach: LoRA-Based Domain Adaptation
 
-This case study documents a detailed post-training workflow using Cosmos-Predict2 Video2World with **Low-Rank Adaptation (LoRA)**, with a focus on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
+This case study documents a detailed post-training workflow using Cosmos Predict 2 Video2World with **Low-Rank Adaptation (LoRA)**, with a focus on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
 
 ### Why LoRA for ITS Applications?
 
@@ -151,7 +151,7 @@ We performed post-training with a 1:1 mixture of datasets between ITS normal tra
 
 ### Training Setup
 
-- Model: Cosmos-Predict2 Video2World (2B)
+- Model: Cosmos Predict 2 Video2World (2B)
 - Hardware: Single node with 8 GPUs (8x H100)
 - Training Duration: 10k iterations
 - Batch Size: 1 per GPU (8 total with data parallelism)
@@ -245,13 +245,13 @@ Total parameters: 3.96B, Frozen parameters: 3,912,826,880, Trainable parameters:
 
 ## Inference with Post-Trained ITS Model
 
-After post-training the Cosmos-Predict2 Video2World model on ITS-specific data using LoRA (Low-Rank Adaptation), we can perform efficient inference to generate realistic traffic incident videos.
+After post-training the Cosmos Predict 2 Video2World model on ITS-specific data using LoRA (Low-Rank Adaptation), we can perform efficient inference to generate realistic traffic incident videos.
 
 ### Prerequisites
 
 1. **Post-trained checkpoint**: A LoRA checkpoint from the post-training process (e.g., `iter_000001000.pt`)
 2. **Input image**: A CCTV traffic camera frame as the starting point (1280x720 recommended)
-3. **Environment setup**: A properly configured Cosmos-Predict2 environment with required dependencies
+3. **Environment setup**: A properly configured Cosmos Predict 2 environment with required dependencies
 
 ### Basic Command
 
@@ -337,7 +337,7 @@ several meters.
 
 ## Evaluation
 
-This section covers the evaluation methodology for comparing the original Cosmos-Predict2 model with the LoRA post-trained version on single-view CCTV video generation.
+This section covers the evaluation methodology for comparing the original Cosmos Predict 2 model with the LoRA post-trained version on single-view CCTV video generation.
 
 ### Evaluation Metrics
 
@@ -370,7 +370,7 @@ Together, these metrics quantify improvements in single-view traffic video gener
 
 #### Limitations of FID/FVD Metrics
 
-While FID and FVD effectively measure visual quality and temporal consistency, they have notable limitations for safety-critical ITS applications. These metrics primarily evaluate statistical distributions of visual features but cannot assess **physical plausibility**--a crucial aspect of collision scenarios. For comprehensive evaluation of physical plausibility in generated accidents, additional assessment using physics-aware models like [Cosmos-Reason1](https://github.com/nvidia-cosmos/cosmos-reason1) can be beneficial.
+While FID and FVD effectively measure visual quality and temporal consistency, they have notable limitations for safety-critical ITS applications. These metrics primarily evaluate statistical distributions of visual features but cannot assess **physical plausibility**--a crucial aspect of collision scenarios. For comprehensive evaluation of physical plausibility in generated accidents, additional assessment using physics-aware models like [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) can be beneficial.
 
 ### Expected Results
 
@@ -415,7 +415,7 @@ This LoRA-adapted model enables several critical ITS applications:
 
 ## Conclusion
 
-Combining the powerful video generation capabilities of Cosmos-Predict2 with the efficient adaptation mechanism of LoRA provides an ideal solution for ITS-specific synthetic data generation. *Most critically, LoRA enables successful domain adaptation despite the severe scarcity of real accident data*--a fundamental constraint in traffic safety applications.
+Combining the powerful video generation capabilities of Cosmos Predict 2 with the efficient adaptation mechanism of LoRA provides an ideal solution for ITS-specific synthetic data generation. *Most critically, LoRA enables successful domain adaptation despite the severe scarcity of real accident data*--a fundamental constraint in traffic safety applications.
 
 While traditional fine-tuning would require tens of thousands of examples and risk catastrophic overfitting with limited data, LoRA achieved meaningful adaptation with just over 1,000 incident clips. This data efficiency, combined with reduced computational requirements and deployment flexibility, makes LoRA not just a good choice but arguably the only viable approach for adapting large video models to rare-event domains like traffic accidents.
 

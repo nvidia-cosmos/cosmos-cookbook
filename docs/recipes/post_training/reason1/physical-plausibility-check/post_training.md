@@ -1,4 +1,4 @@
-# Physical Plausibility Prediction with Cosmos-Reason1
+# Physical Plausibility Prediction with Cosmos Reason 1
 
 > **Authors:** [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
 > **Organization:** NVIDIA
@@ -7,10 +7,10 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos-Reason1 | Post-training | Physical plausibility prediction |
+| Cosmos Reason 1 | Post-training | Physical plausibility prediction |
 
 In synthetic video generation, it is crucial to determine the quality of the generated videos and filter out videos of bad quality.
-In this case study, we demonstrate using the Cosmos-Reason1 model for physical plausibility prediction. Physics plausibility assessment involves evaluating whether the physical interactions and behaviors observed in videos are consistent with real-world physics laws and constraints.
+In this case study, we demonstrate using the Cosmos Reason 1 model for physical plausibility prediction. Physics plausibility assessment involves evaluating whether the physical interactions and behaviors observed in videos are consistent with real-world physics laws and constraints.
 
 - [Setup and System Requirement](setup.md)
 
@@ -87,13 +87,13 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
     --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/video_reward.yaml"
     ```
 
-We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos-Reason1 to run zero-shot inference.
+We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason 1 to run zero-shot inference.
 
     # In the cosmos-reason root directory
     uv run video_reward_videophy.py \
         --dataset videophysics/videophy2_test \
         --split test \
-        --model nvidia/Cosmos-Reason1-7B \
+        --model nvidia/Cosmos Reason 1-7B \
         --prompt_path prompts/video_reward_v1_no_thinking.yaml \
         --num_gpus 8
 
@@ -106,7 +106,7 @@ We evaluate the model performance using two key metrics:
 
 ### Results
 
-We compare Cosmos-Reason1 with Gemini-2.0-Flash-Exp (the baseline from the paper). Even without fine-tuning, Cosmos-Reason1 demonstrates superior performance.
+We compare Cosmos Reason 1 with Gemini-2.0-Flash-Exp (the baseline from the paper). Even without fine-tuning, Cosmos Reason 1 demonstrates superior performance.
 
 <img src="assets/correlation_bar_graph.png" alt="Correlation comparison between Gemini-2.0-Flash-Exp and Cosmos Reason 1" style="max-width: 600px; width: 100%;">
 
@@ -134,7 +134,7 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 
 ## Post-Training
 
-Having demonstrated that Cosmos-Reason1 can predict physical plausibility and outperform baseline models in zero-shot evaluation, we now apply supervised fine-tuning (SFT) using the VideoPhy-2 training set to further improve the model's performance.
+Having demonstrated that Cosmos Reason 1 can predict physical plausibility and outperform baseline models in zero-shot evaluation, we now apply supervised fine-tuning (SFT) using the VideoPhy-2 training set to further improve the model's performance.
 
 ### Training Data Format
 
@@ -182,7 +182,7 @@ After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using 
 
 | **Model Configuration** | **Accuracy** | **Correlation** |
 |-------------------------|--------------|-----------------|
-| Cosmos-Reason1 (Zero-shot) | 0.196 | 0.293 |
+| Cosmos Reason 1 (Zero-shot) | 0.196 | 0.293 |
 | + SFT (20 steps) | 0.219 | 0.280 |
 | + SFT (40 steps) | 0.311 | 0.375 |
 | + SFT (60 steps) | 0.324 | **0.395** |

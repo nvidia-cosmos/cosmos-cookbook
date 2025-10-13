@@ -5,7 +5,7 @@
 
 ## Overview
 
-Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input–output pairs. Using domain-specific data is essential—it embeds the specialized vocabulary, visual patterns, and reasoning needed for real-world scenarios. In this recipe, we show how to fine-tune the [Cosmos-Reason1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to understand the world from a traffic point of view - scene understanding, road attributes, and pedestrian situation.
+Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or understand new tasks using labeled examples. While a base model learns general patterns from large, diverse data, SFT aligns the model to specific tasks with desired outputs by showing clear input–output pairs. Using domain-specific data is essential—it embeds the specialized vocabulary, visual patterns, and reasoning needed for real-world scenarios. In this recipe, we show how to fine-tune the [Cosmos Reason 1-7B](https://build.nvidia.com/nvidia/cosmos-reason1-7b) model to understand the world from a traffic point of view - scene understanding, road attributes, and pedestrian situation.
 
 Before fine-tuning the model, let's review the zero-shot performance of the model. The model spots some of the content correctly while identifying one of the pedestrians crossing the road incorrectly.
 
@@ -16,7 +16,7 @@ Before fine-tuning the model, let's review the zero-shot performance of the mode
 
 <br>
 
-Here’s the end-to-end workflow to fine-tune Cosmos-Reason1—from data preparation and supervised fine-tuning on the prepared dataset to quantizing and deploying the model for inference.
+Here’s the end-to-end workflow to fine-tune Cosmos Reason 1—from data preparation and supervised fine-tuning on the prepared dataset to quantizing and deploying the model for inference.
 <img src="assets/e2e_workflow.png" width="960"/>
 
 <br>
@@ -60,7 +60,7 @@ cosmos-rl --config sft_config.toml custom_sft.py
 
 ### Hyperparameter optimization
 
-For this SFT experiment, we updated the default configuration in the post-training Llava example for Cosmos-Reason1. Here are the key updates that optimize this experiment on 8 A100.
+For this SFT experiment, we updated the default configuration in the post-training Llava example for Cosmos Reason 1. Here are the key updates that optimize this experiment on 8 A100.
 
 ???+ code "Training Configuration"
 
@@ -146,9 +146,9 @@ The last step is to deploy the trained model for inference. You can deploy it us
 
 ### FP8 Quantization
 
-The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos-Reason1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
+The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 1 repo](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/quantize_fp8.py).
 
-1. Clone the Cosmos-Reason1 repo.
+1. Clone the Cosmos Reason 1 repo.
 
 2. To run post-training quantization (PTQ), install the following dependencies:
 
@@ -162,7 +162,7 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos-Reason
 3. Run the `quantize_fp8.py` script.
 
    ```shell
-   python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos-Reason1-7B' --save_dir 'Cosmos-Reason1-7B-W8A8-FP8'
+   python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos Reason 1-7B' --save_dir 'Cosmos Reason 1-7B-W8A8-FP8'
    ```
 
 Before deploying the quantized model for inference, we ran an evaluation on the model for accuracy and ensured quantization doesn’t introduce any accuracy regression.
@@ -227,7 +227,7 @@ vss:
 
 ## Conclusion
 
-Supervised Fine-Tuning Cosmos-Reason1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
+Supervised Fine-Tuning Cosmos Reason 1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
 
 - **Domain data matters**: Specialized datasets drive substantial performance gains.
 - **Efficient training**: 4K vision tokens per frame converged twice as fast as 8K, with similar accuracy.
