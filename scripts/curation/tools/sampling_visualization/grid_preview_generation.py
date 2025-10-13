@@ -53,7 +53,7 @@ def create_grid_video(
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # type: ignore
     out = cv2.VideoWriter(output_path, fourcc, fps, (grid_w, grid_h))
 
-    for _ in range(total_frames):  # frame_idx is not used
+    for _ in range(total_frames):
         grid = np.zeros((grid_h, grid_w, 3), dtype=np.uint8)
         for i, cap in enumerate(caps[: grid_size[0] * grid_size[1]]):
             ret, frame = cap.read()
