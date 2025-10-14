@@ -45,7 +45,7 @@ vision:
   # Downsample video frame rate
   fps: 1
   # video or image resolution
-  total_pixels: 81920
+  max_pixels: 81920
 # Generation parameters
 generation:
   # Maximum number of retries for failed generations
