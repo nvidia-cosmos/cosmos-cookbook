@@ -1,9 +1,9 @@
 # Cosmos Cookbook
 
-A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
-
 [![Documentation](https://img.shields.io/badge/docs-cosmos--cookbook-blue)](https://nvidia-cosmos.github.io/cosmos-cookbook/)
 [![Contributing](https://img.shields.io/badge/contributing-guide-green)](CONTRIBUTING.md)
+
+A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
 ## Overview
 
@@ -128,9 +128,8 @@ just ci-deploy-external         # Deploy external documentation
 ## Documentation
 
 - **[Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)** - Complete guides and examples
-- **[Getting Started](docs/getting_started.md)** - Environment setup and first steps
+- **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/get_started.html)** - Environment setup and first steps
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the cookbook
-- **[Examples](docs/examples/)** - Real-world use cases and workflows
 
 ## Community & Support
 
@@ -139,10 +138,10 @@ just ci-deploy-external         # Deploy external documentation
 - **Discussions**: Join our community discussions
 - **Documentation**: Check our comprehensive guides first
 
-## License
+## License and Contact
 
-This project follows NVIDIA's open source guidelines. See individual model repositories for specific licensing terms.
+This project will download and install additional third-party open source software projects. Review the license terms of these open source projects before use.
 
----
+NVIDIA Cosmos source code is released under the [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0).
 
-**Ready to get started?** Run `just serve-internal` and explore the documentation at [http://localhost:8000](http://localhost:8000)
+NVIDIA Cosmos models are released under the [NVIDIA Open Model License](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license). For a custom license, please contact [cosmos-license@nvidia.com](mailto:cosmos-license@nvidia.com).
