@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **NVIDIA Cosmos ecosystem** is a suite of World Foundation Models (WFMs) for real-world, domain-specific applications. This cookbook provides step-by-step workflows, technical recipes, and concrete examples across robotics, simulation, autonomous systems, and physical scene cognition. It serves as a technical reference for reproducing successful Cosmos model deployments across different domains.
+The **NVIDIA Cosmos ecosystem** is a suite of World Foundation Models (WFMs) for real-world, domain-specific applications. This cookbook provides step-by-step workflows, technical recipes, and concrete examples across robotics, simulation, autonomous systems, and physical scene understanding. It serves as a technical reference for reproducing successful Cosmos model deployments across different domains.
 
 The Cosmos ecosystem covers the complete AI development lifecycle: from **inference** with pre-trained models to **custom post-training** for domain-specific adaptation. The cookbook includes quick-start inference examples, advanced post-training workflows, and proven recipes for successful model deployment and customization.
 
