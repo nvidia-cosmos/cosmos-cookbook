@@ -1,0 +1,17 @@
+{
+  "weather": "Describe the weather conditions.",
+  "lighting":"Describe the lighting conditions.",
+  "road_conditions": "Provide a brief description of both the condition and the type of road.",
+  "traffic_light": "Describe any traffic lights, and the ego vehicle's response to them.",
+  "traffic_sign": "Describe any relevant traffic signs that the ego vehicle must pay attention to.",
+  "additional_traffic_rules":  "Describe any special traffic rules that apply on this particular section of road.",
+  "road_type":  "Describe the kind of road that the ego vehicle is traveling on.",
+  "junction_type": "Describe any junctions or intersections that the ego vehicle either passes through or stops at.",
+  "lane_type":  "Describe the number and type of lanes in the road that the ego vehicle is driving on.",
+  "additional_map_rules":  "Describe any markings on the road that indicate additional traffic rules.",
+  "interactive_expanded_metaaction":  "What category does the ego vehicle's behavior fall into?",
+  "safety_analysis":  "Write a short paragraph describing the driving situation, with a focus on features that are important to safety.",
+  "driving_difficulty":  "On a scale of 1 to 4, rate the driving difficulty.",
+  "rule_violation":  "Were there any violations of traffic law (True/False)?",
+  "interesting_scenario":  "Is this an interesting driving scenario (True/False)?"
+}

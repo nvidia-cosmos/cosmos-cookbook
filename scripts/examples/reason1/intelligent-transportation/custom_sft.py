@@ -30,8 +30,6 @@ from cosmos_reason1_utils.text import create_conversation
 from cosmos_reason1_utils.vision import VisionConfig
 from cosmos_rl.utils.logging import logger
 
-MCQ_PROMPT_SUFFIX = "\nAnswer with the option's letter from the given choices directly."
-
 
 class CustomDatasetConfig(pydantic.BaseModel):
     annotation_path: str = pydantic.Field()
@@ -39,12 +37,10 @@ class CustomDatasetConfig(pydantic.BaseModel):
     media_path: str = pydantic.Field(default="")
     """Dataset media path."""
     system_prompt: str = pydantic.Field(default="")
-    """System prompt."""
+    """System prompt for post-training."""
 
 
 class CustomConfig(pydantic.BaseModel):
-    """Custom config."""
-
     dataset: CustomDatasetConfig = pydantic.Field()
     """Dataset config."""
 
@@ -58,15 +54,12 @@ class CustomConfig(pydantic.BaseModel):
 
 
 class CustomDataset(torch.utils.data.Dataset):
-    """Custom dataset."""
-
     def __init__(
         self,
         config: cosmos_rl.policy.config.Config,
         custom_config: CustomConfig,
     ):
-        with open(custom_config.dataset.annotation_path, "r") as f:
-            self.annotation = json.load(f)
+        self.annotation = json.load(open(custom_config.dataset.annotation_path))
         self.media_path = custom_config.dataset.media_path
         self.system_prompt = custom_config.dataset.system_prompt
         self.config = config
@@ -97,7 +90,6 @@ class CustomDataset(torch.utils.data.Dataset):
 
         # Remove image and video tags from user prompt
         user_prompt = re.sub(r"(\n)?</?(image|video)>(\n)?", "", user_prompt)
-        user_prompt = user_prompt + MCQ_PROMPT_SUFFIX
 
         conversations = create_conversation(
             system_prompt=self.system_prompt,
