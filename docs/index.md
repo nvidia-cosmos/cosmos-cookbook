@@ -8,15 +8,15 @@ The Cosmos ecosystem covers the complete AI development lifecycle: from **infere
 
 ## Open Source Community Platform
 
-The Cosmos Cookbook is designed as an **open-source platform** where NVIDIA shares practical knowledge and proven techniques with the broader AI community. This collaborative approach enables researchers, developers, and practitioners to contribute their own workflows, improvements, and domain-specific adaptations.
+The Cosmos Cookbook is designed as an **open-source platform**, where NVIDIA shares practical knowledge and proven techniques with the broader AI community. This collaborative approach enables researchers, developers, and practitioners to contribute their own workflows, improvements, and domain-specific adaptations.
 
 **Repository:** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
-We encourage community contributions including new examples, workflow improvements, bug fixes, and documentation enhancements. The open-source nature ensures that the collective knowledge and best practices around Cosmos models continue to evolve and benefit the entire ecosystem.
+We encourage community contributions, including new examples, workflow improvements, bug fixes, and documentation enhancements. The open-source nature of the Cosmos Cookbook ensures that collective knowledge and best practices of Cosmos models continue to evolve and benefit the entire ecosystem.
 
 ## Post-Training Examples
 
-The cookbook includes comprehensive case studies demonstrating real-world post-training applications across the Cosmos ecosystem.
+The Cosmos Cookbook includes comprehensive case studies demonstrating real-world post-training applications across the Cosmos ecosystem.
 
 ### **Cosmos Predict**
 
@@ -33,10 +33,9 @@ The cookbook includes comprehensive case studies demonstrating real-world post-t
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
+| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](examples/transfer1/inference-its-weather-augmentation/inference.md) |
+| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](examples/transfer1/inference-warehouse-mv/inference.md) |
+| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](examples/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 
 ### **Cosmos Reason**
 
@@ -58,7 +57,7 @@ The Cosmos architecture consists of multiple model families, each targeting spec
 
 ### **Cosmos Predict** - Future State Prediction Models
 
-**[Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5)** *(Latest)* - A flow-based model that unifies Text2World, Image2World, and Video2World into a single architecture. Uses Cosmos-Reason1 as the text encoder and significantly improves upon Predict 2 in both quality and prompt alignment. Provides specialized variants for robotics, autonomous vehicles (multiview), and simulation with support for custom post-training for domain-specific prediction tasks.
+**[Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5)** *(Latest)* - A flow-based model that unifies Text2World, Image2World, and Video2World into a single architecture. Uses Cosmos Reason 1 as the text encoder and significantly improves upon Predict 2 in both quality and prompt alignment. Provides specialized variants for robotics, autonomous vehicles (multiview), and simulation with support for custom post-training for domain-specific prediction tasks.
 
 **[Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
 
@@ -90,7 +89,7 @@ The cookbook is organized around key workflows spanning **inference** and **trai
 
 **3. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason 1 as a quality filter (e.g. for synthetic data rejection sampling).
 
-**4. [Model Distillation](core_concepts/distillation/overview.md)** - Accelerate diffusion models by distilling a more efficient variant while preserving output quality. This covers single-step distillation techniques, including Knowledge Distillation (KD) and Improved Distribution Matching Distillation (DMD2).
+**4. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
 
 ## Quick Start Paths
 

@@ -1,6 +1,6 @@
 # Data Curation
 
-> **The principle of "garbage in, garbage out" is especially relevant in post-training.** High-quality datasets with sufficient quantity, quality, and domain coverage are essential for enabling models to learn novel generation capabilities.
+The principle of "garbage in, garbage out" is especially relevant in post-training. High-quality datasets with sufficient quantity, quality, and domain coverage are essential for enabling models to learn novel generation capabilities.
 
 ## Overview
 
@@ -25,7 +25,7 @@ While the complete pipeline involves many sophisticated techniques, the followin
 
 Data sourcing involves acquiring datasets from multiple sources including cloud storage, public repositories, and web content. The following tools are commonly used for efficient data collection and transfer.
 
-> **Important:** Always verify the license terms and usage rights of datasets before downloading and processing. Ensure compliance with copyright, privacy, and redistribution requirements to avoid legal issues in your projects.
+> **Important**: Always verify the license terms and usage rights of datasets before downloading and processing. Ensure compliance with copyright, privacy, and redistribution requirements to avoid legal issues in your projects.
 
 ---
 
@@ -69,7 +69,7 @@ Data sourcing involves acquiring datasets from multiple sources including cloud 
 
 ## Data Sampling and Visualization
 
-Before data curation begins, sampling and visualization are crucial for identifying potential issues and understanding dataset characteristics. This preliminary analysis helps optimize curation tools and pipelines for specific challenges.
+Sampling and visualization are crucial for identifying potential issues and understanding dataset characteristics before data curation begins. This preliminary analysis helps optimize curation tools and pipelines for specific challenges.
 
 ### Grid Preview Generation
 
@@ -111,22 +111,20 @@ nohup streamlit run scripts/curation/tools/sampling_visualization/streamlit_samp
     --input_dir <input_dir_or_s3> > streamlit.log 2>&1 &
 ```
 
-**Access:** `http://<host_ip>:<port>` (remains accessible after terminal disconnection)
+**Access**: `http://<host_ip>:<port>` (remains accessible after terminal disconnection)
 
-**Sample Output:**
+**Sample Output**:
 ![](images/video_preview.png)
 
 ---
 
 ## Data Curation Best Practices
 
-### Key Success Factors
-
-- **Start with sampling and visualization** — Understand data characteristics before processing.
-- **Apply quality filters early** — Avoid wasting time on irrelevant or low-quality data.
-- **Evaluate at small scale and deploy for scale** — Validate your pipeline before full deployment.
-- **Use appropriate tools** — Select the right tool for each stage of the pipeline.
-- **Track everything** — Maintain version control and experiment logging throughout.
+- **Start with sampling and visualization**: Understand data characteristics before processing.
+- **Apply quality filters early**: Avoid wasting time on irrelevant or low-quality data.
+- **Evaluate at small scale and deploy for scale**: Validate your pipeline before full deployment.
+- **Use appropriate tools**: Select the right tool for each stage of the pipeline.
+- **Track everything**: Maintain version control and experiment logging throughout.
 
 ---
 
@@ -141,7 +139,7 @@ Once you have completed the data sourcing, sampling, and visualization phases ou
 
 For comprehensive guidance on these core curation tasks, including both cloud-based (NVCF) and local deployment options, refer to the [Core Curation Guide](core_curation.md).
 
-The core curation guide covers:
+The core curation guide covers the following :
 
 - **NVCF deployment** for quick cloud-based processing
 - **Local Docker setup** for full control and customization

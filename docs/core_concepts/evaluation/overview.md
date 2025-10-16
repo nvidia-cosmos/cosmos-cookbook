@@ -1,21 +1,21 @@
 # Evaluation Overview
 
-Evaluation is a critical component of any post-training workflow. It serves as the ruler by which progress is measured. Establishing robust evaluation methodology and benchmarks *before* post-training begins is essential to ensure meaningful and reproducible results.
+Evaluation is a critical component of any post-training workflow. It serves as the standard by which progress is measured. Establishing robust evaluation methodology and benchmarks *before* post-training begins is essential to ensure meaningful and reproducible results.
 
 This section provides evaluation methods for different types of video generation models. Evaluation strategies differ depending on the type of model being trained, and this guide helps you choose the appropriate approach based on your model type and use case.
 
 ## Metric Families
 
 - **Qualitative video quality (Predict)**
-  - **FID** — Image realism/diversity via Fréchet distance in Inception feature space (lower is better)
-  - **FVD** — Spatio‑temporal quality via Fréchet distance on video features (appearance + motion)
+    - **FID** — Image realism/diversity via Fréchet distance in Inception feature space (lower is better)
+    - **FVD** — Spatio‑temporal quality via Fréchet distance on video features (appearance + motion)
 - **Geometric consistency (Predict)**
-  - **Sampson Error** — First‑order point‑to‑epipolar‑line distance
-  - **TSE/CSE** — Temporal and cross‑view consistency for multi‑view videos
+    - **Sampson Error** — First‑order point‑to‑epipolar‑line distance
+    - **TSE/CSE** — Temporal and cross‑view consistency for multi‑view videos
 - **VLM‑based assessment**
-  - **Cosmos Reason** — JPhysical plausibility, causal/temporal reasoning; usable as critic or reward model.
+    - **Cosmos Reason** — JPhysical plausibility, causal/temporal reasoning; usable as critic or reward model.
 - **Transfer/Control quality**
-  - **Blur SSIM, Canny‑F1, Depth RMSE, Seg mIOU, Dover** — Fidelity to control signals and technical quality.
+    - **Blur SSIM, Canny‑F1, Depth RMSE, Seg mIOU, Dover** — Fidelity to control signals and technical quality.
 
 ## Recommended Workflow
 
