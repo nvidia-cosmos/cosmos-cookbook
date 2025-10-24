@@ -1,4 +1,4 @@
-# Cosmos Transfer Sim2Real for X-Mobility navigation task
+# Cosmos Transfer Sim2Real for Robotics Navigation Tasks
 
 > **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Yan Chang](https://www.linkedin.com/in/yanchang1/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
@@ -7,7 +7,7 @@
 |------|----------|----------|
 | Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
 
-This tutorial demonstrates how to apply Cosmos Transfer to X-Mobility navigation task to improve Sim2Real performance.
+This tutorial demonstrates how to apply Cosmos Transfer to robotics navigation tasks to improve Sim2Real performance.
 
 - [Setup and System Requirement](../inference-warehouse-mv/setup.md)
 
@@ -106,6 +106,9 @@ The improved policy successfully handled challenging scenarios such as:
 - Traveling closer to obstacles, reducing total distance to the goal
 - Navigating in dimly lit environments
 - Passing through narrow spaces
+
+![Data augmentation pipeline](assets/box.gif)
+![Data augmentation pipeline](assets/pole.gif)
 
 We collected the following key metrics for all these real-world tests:
 
