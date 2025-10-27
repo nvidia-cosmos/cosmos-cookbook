@@ -118,7 +118,7 @@ python cosmos_dataset_to_xmob.py \
 - `--input_dir_cosmos`: Directory containing Cosmos Transfer output videos
 - `--input_dir_xmob`: Directory containing original X-Mobility dataset (source for ground-truth annotations)
 - `--output_dir`: Output directory for the converted dataset in X-Mobility format
-- `--mode`: Conversion mode (`simple` for basic conversion, `segmented` to include segmentation masks)
+- `--mode`: Conversion mode (`simple` for basic conversion, `segmented` for processing video segments, as in the Teacher Policy Dataset `x_mobility_isaac_sim_nav2_100k_cosmos_to_xmob`)
 
 Since the segmentation control weight was set to 1.0 during generation, the geometry and motion are preserved exactly, allowing direct reuse of all ground-truth labels from the original dataset.
 
@@ -134,7 +134,7 @@ We combined the original and Cosmos-augmented data in **equal proportions (1:1)*
 **Key Dataset Composition:**
 
 - **Hybrid Dataset** = 50% Original X-Mobility + 50% Cosmos-augmented data
-- **Total Training Data** = 260K frames (130K original + 130K augmented)
+- **Total Training Data** = 520K frames (260K original + 260K augmented)
 
 The diagram below illustrates the complete training pipeline: the hybrid dataset (combining original and Cosmos-augmented data in equal proportions) is used to train the X-Mobility model through both world model pre-training and action policy training stages, resulting in improved success rate.
 
