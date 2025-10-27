@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos Transfer 1 for warehouse multi-view inference.
+This guide covers the setup requirements for running Cosmos Transfer 1 for warehouse multi-view inference and inference for robotics navigation tasks.
 
 ## System Requirements
 
