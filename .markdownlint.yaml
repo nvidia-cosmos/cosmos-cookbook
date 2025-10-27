@@ -8,6 +8,7 @@ MD041: false # Allow documents without top-level H1 (for SUMMARY.md files)
 MD036: true # Enforce proper headings instead of emphasis
 MD024: false # Allow duplicate headings (common in examples)
 MD025: false # Allow multiple H1 headings per document
+MD028: false # Allow blank lines between blockquotes (for separate quote sections)
 MD040: false # Allow fenced code blocks without language specification
 MD045: false # Allow images without alt text (for now)
 MD046: false # Allow mixed code block styles (needed for admonitions)
