@@ -128,13 +128,13 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 #### Robotic Arm Operates on Circuit Board
 
 <video controls width="480">
-  <source src="assets/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch_2265.mp4" type="video/mp4">
+  <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/wan_videophy2_test_hard_upsampled/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
 </video>
 
 - **Model prediction**: 5
 - **Ground truth**: 5 (perfect adherence to physical laws)
 
-## Post-Training
+## Supervised Fine-Tuning (SFT)
 
 Having demonstrated that Cosmos Reason 1 can predict physical plausibility and outperform baseline models in zero-shot evaluation, we now apply supervised fine-tuning (SFT) using the VideoPhy-2 training set to further improve the model's performance.
 
@@ -174,10 +174,11 @@ We use the following configuration optimized for 8 GPUs:
 
 We run training with the following steps:
 
-1. Save the configuration as `examples/post_training_hf/configs/videophy2_sft.toml`.
+1. Save the "Training Configuration" above as `cosmos-reason1/examples/post_training_hf/configs/videophy2_sft.toml`
 2. Execute the training script:
 
-        # In [cosmos-reason root directory]/examples/post_training_hf
+        # In the cosmos-reason1 root directory
+        cd examples/post_training_hf/
         cosmos-rl --config configs/videophy2_sft.toml scripts/custom_sft.py
 
 > **Note**: The training process uses the [custom SFT script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training_hf/scripts/custom_sft.py), which includes a data loader that works with the **Hugging Face datasets format**.
@@ -186,16 +187,8 @@ We run training with the following steps:
 
 After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using the same metrics. The results demonstrate significant performance improvements:
 
-| **Model Configuration** | **Accuracy** | **Correlation** |
-|-------------------------|--------------|-----------------|
-| Cosmos Reason 1 (Zero-shot) | 0.196 | 0.293 |
-| + SFT (20 steps) | 0.219 | 0.280 |
-| + SFT (40 steps) | 0.311 | 0.375 |
-| + SFT (60 steps) | 0.324 | **0.395** |
-| + SFT (80 steps) | 0.259 | 0.388 |
-| + SFT (100 steps) | **0.340** | 0.383 |
-| + SFT (120 steps) | 0.308 | 0.386 |
-| **VideoPhy-AutoEval** | - | 0.37 |
+<img src="assets/sft_accuracy.png" alt="SFT Accuracy over Training Steps" style="width: 100%; max-width: 600px; display: block; margin-bottom: 36px;">
+<img src="assets/sft_correlation.png" alt="SFT Correlation over Training Steps" style="width: 100%; max-width: 600px; display: block;">
 
 **Key observations**
 
@@ -211,7 +204,7 @@ The following examples show prediction improvements from fine-tuning:
 #### Robotic Arm Operates on Circuit Board
 
 <video controls width="480">
-    <source src="assets/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
+    <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/cosmos_videophy2_test_challenging/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
 </video>
 
 - **Before SFT**: 3
@@ -221,7 +214,7 @@ The following examples show prediction improvements from fine-tuning:
 #### Robot Shovels Snow
 
 <video controls width="480">
-    <source src="assets/ed9bc667-9b64-4224-8860-8108a42c8823_result.mp4" type="video/mp4">
+    <source src="https://storage.cdn-luma.com/dream_machine/fb2b34ac-ed7a-4773-8382-9786890a6056/ed9bc667-9b64-4224-8860-8108a42c8823_result.mp4" type="video/mp4">
 </video>
 
 - **Before SFT**: 4

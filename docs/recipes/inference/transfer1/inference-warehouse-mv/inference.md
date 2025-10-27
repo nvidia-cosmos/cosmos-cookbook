@@ -156,7 +156,7 @@ To evaluate the effectiveness of Cosmos Transfer 1 for data augmentation, experi
 
 Each of these 11 baseline scenes was processed through the Cosmos Transfer 1 augmentation pipeline using the multi-view parameter-consistent approach described earlier. This process generated ambient variations, lighting changes, and environmental conditions (including dust and reduced visibility scenarios), while maintaining structural consistency and multi-view coherence across all camera viewpoints.
 
-The resulting augmented dataset, containing both original and Cosmos Transfer 1-enhanced versions of each scene, was then used to train RT-DETR and EfficientViT-L2 detectors. The performance comparison demonstrates significant improvements in computer vision (CV) model accuracy and real-world generalization capabilities.
+The resulting augmented dataset, containing both original and Cosmos Transfer-enhanced versions of each scene, was then used to train RT-DETR and EfficientViT-L2 detectors. The performance comparison demonstrates significant improvements in computer vision (CV) model accuracy and real-world generalization capabilities.
 
 ### Detection Performance Results
 

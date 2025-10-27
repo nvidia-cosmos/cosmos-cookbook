@@ -177,7 +177,7 @@ We experiment with different dataset sizes (ranging from 20K to 500K question-an
 
 ### Running Model Inference
 
-We provide a reference script (`evaluate.py`) for performing parallel inference over 1K validation samples. Refer to the[inference_sample.py](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/inference_sample.py) script for updated inference code.
+We provide a reference script (`evaluate.py`) for performing parallel inference over 1K validation samples. Refer to the [inference_sample.py](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/scripts/inference_sample.py) script for updated inference code.
 
 ```shell
 # Run inference with default configuration (simplified version)

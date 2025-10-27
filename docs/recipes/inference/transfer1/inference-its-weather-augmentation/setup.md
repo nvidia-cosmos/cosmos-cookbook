@@ -1,6 +1,6 @@
 # Setup and System Requirements
 
-This guide covers the setup requirements for running Cosmos-Transfer1 for weather augmentation of ITS images.
+This guide covers the setup requirements for running Cosmos Transfer 1 for weather augmentation of ITS images.
 
 ## System Requirements
 
@@ -12,7 +12,7 @@ This guide covers the setup requirements for running Cosmos-Transfer1 for weathe
 
 ### Software Requirements
 
-The setup requires the Cosmos-Transfer1 repository and model to be properly installed and configured.
+The setup requires the Cosmos Transfer 1 repository and model to be properly installed and configured.
 
 ## Installation
 
@@ -32,8 +32,8 @@ The installation guide provides comprehensive steps for:
 
 ### Verification
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos-Transfer1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
+After completing the installation, verify the setup by running the inference examples provided in the Cosmos Transfer 1 repository to ensure the model is working correctly before proceeding with the weather augmentation pipeline.
 
 ## Next Steps
 
-Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos-Transfer1 for weather augmentation of ITS images.
+Once the setup is complete, proceed to the [inference tutorial](inference.md) to learn how to use Cosmos Transfer 1 for weather augmentation of ITS images.
