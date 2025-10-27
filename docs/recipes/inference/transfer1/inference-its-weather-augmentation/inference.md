@@ -106,11 +106,11 @@ To illustrate why vis and edge controls are removed when using Cosmos Transfer 1
 1. **With all controls** (vis, edge, seg, depth): Night scenes are not generated as expected.
 2. **With only seg and depth controls**: The generated image achieves the desired darkness level.
 
-**Cosmos Transfer 1 Generated Image - All Controls (vis, edge, depth, seg control weights of 0.9)**
+#### Cosmos Transfer 1 Generated Image - All Controls (vis, edge, depth, seg control weights of 0.9)
 
 ![Rainy night with all controls](assets/rainy_night_all_09.jpg)
 
-**Cosmos Transfer 1 Generated Image - Depth and Seg Only (control weights of 0.9)**
+#### Cosmos Transfer 1 Generated Image - Depth and Seg Only (control weights of 0.9)
 
 ![Rainy night with depth and segmentation controls](assets/rainy_night.jpg)
 

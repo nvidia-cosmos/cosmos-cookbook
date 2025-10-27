@@ -223,7 +223,7 @@ predict2_video2world_lora_training_2b_its = dict(
 
 #### LoRA Training Execution
 
-**Single Node with 8 GPUs**
+##### Single Node with 8 GPUs
 
 ```bash
 # Set experiment name for LoRA training
@@ -236,7 +236,7 @@ torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
   model.config.train_architecture=lora
 ```
 
-**Expected log output**
+##### Expected log output
 
 ```
 Adding LoRA adapters: rank=16, alpha=16, targets=['q_proj', 'k_proj', 'v_proj', 'output_proj', 'mlp.layer1', 'mlp.layer2']
