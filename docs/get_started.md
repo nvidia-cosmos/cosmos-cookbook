@@ -52,7 +52,7 @@ For specific GPU and memory requirements for each Cosmos model (Predict 2, Predi
 
 The following system dependencies are required to run the Cosmos Cookbook:
 
-#### pkgx
+### pkgx
 
 [pkgx](https://docs.pkgx.sh/) is a modern package manager that simplifies CLI tool installation and management. It provides isolated environments and automatic dependency resolution.
 
@@ -60,7 +60,7 @@ The following system dependencies are required to run the Cosmos Cookbook:
 brew install pkgx || curl https://pkgx.sh | sh
 ```
 
-#### uv
+### uv
 
 [uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver, designed as a drop-in replacement for pip. It's essential for managing Python dependencies in Cosmos projects.
 

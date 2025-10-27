@@ -157,7 +157,6 @@ We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for f
             --dataset videophysics/videophy2_train \
             --split train
 
-
 ### Training Configuration
 
 We use the following configuration optimized for 8 GPUs:
@@ -188,7 +187,7 @@ After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using 
 <img src="assets/sft_accuracy.png" alt="SFT Accuracy over Training Steps" style="width: 100%; max-width: 600px; display: block; margin-bottom: 36px;">
 <img src="assets/sft_correlation.png" alt="SFT Correlation over Training Steps" style="width: 100%; max-width: 600px; display: block;">
 
-**Key observations**
+The following are key observations:
 
 - Performance improves significantly after fine-tuning
 - Best correlation achieved at 60 steps (0.395)

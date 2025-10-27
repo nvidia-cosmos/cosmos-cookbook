@@ -50,8 +50,8 @@ scripts/examples/transfer1/inference-warehouse-mv/assets/SURF_Booth_030825/
 The dataset provides a 6-camera warehouse setup with synchronized data organized as follows:
 
 - **`Camera_00/` through `Camera_05/`**: Individual camera directories, each containing the following:
-    - **`rgb.mp4`**: RGB video data for the camera view
-    - **`depth.mp4`**: Corresponding depth video data for the camera view
+  - **`rgb.mp4`**: RGB video data for the camera view
+  - **`depth.mp4`**: Corresponding depth video data for the camera view
 
 ### Warehouse Outside-In Multi-View Input
 

@@ -244,18 +244,18 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
 
 2. Ensure you have the following dependencies to run post-training quantization (PTQ):
 
-  ```shell
-  "vllm==0.9.2"
-  "transformers>=4.53.1"
-  "qwen-vl-utils[decord]"
-  "llmcompressor>=0.6.0"
-  ```
+   ```shell
+   "vllm==0.9.2"
+   "transformers>=4.53.1"
+   "qwen-vl-utils[decord]"
+   "llmcompressor>=0.6.0"
+   ```
 
 3. Run the quantization script.
 
-  ```shell
-  python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos Reason 1-7B' --save_dir 'Cosmos Reason 1-7B-W8A8-FP8'
-  ```
+   ```shell
+   python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos Reason 1-7B' --save_dir 'Cosmos Reason 1-7B-W8A8-FP8'
+   ```
 
 Before deploying the quantized model for inference, run evaluation on the model for accuracy and ensure quantization doesn’t introduce any accuracy regression.
 

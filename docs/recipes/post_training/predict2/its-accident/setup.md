@@ -18,7 +18,7 @@ Setup requires the Cosmos Predict 2 repository and model to be properly installe
 
 ### Cosmos Predict 2 Setup
 
-To set up the Cosmos Predict 2 repository and model, follow the installation and inference setup instructions in the 
+To set up the Cosmos Predict 2 repository and model, follow the installation and inference setup instructions in the
 [Cosmos Predict 2 Setup Guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/setup.md).
 
 ### Verification

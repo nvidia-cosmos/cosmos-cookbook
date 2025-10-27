@@ -155,8 +155,8 @@ As shown above, the blue curves (which are from the trained detector *with* Cosm
 
 This tutorial demonstrates how Cosmos Transfer 1 can effectively augment ITS datasets with challenging weather conditions, leading to improved performance of downstream object detection models. These are the key insights:
 
-* Use only segmentation and depth controls for optimal weather augmentation.
-* Proper prompt engineering is crucial for realistic weather condition generation.
-* Synthetic augmentation significantly improves model performance on rare weather conditions.
+- Use only segmentation and depth controls for optimal weather augmentation.
+- Proper prompt engineering is crucial for realistic weather condition generation.
+- Synthetic augmentation significantly improves model performance on rare weather conditions.
 
 For more details on implementation and training configurations, refer to the accompanying setup and configuration files in this repository.

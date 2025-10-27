@@ -77,7 +77,7 @@ We ablated the training with two common configurations for different frame resol
 
 ---
 
-**Calculation for max_pixels 81,920 to 4k total vision tokens**
+#### Calculation for max_pixels 81,920 to 4k total vision tokens
 
 1. **Frame Calculation:**
    On average, our training video is about 75 seconds long. With 1 fps, it is:
@@ -94,7 +94,7 @@ We ablated the training with two common configurations for different frame resol
 
 ---
 
-**Calculation for total_pixels 6,422,528 to 8k total vision tokens:**
+#### Calculation for total_pixels 6,422,528 to 8k total vision tokens
 
 As noted above, based on the Qwen2.5-VL model architecture, each vision token represents a `28 x 28 = 784` pixel area, so we set total_pixels as 6,422,528:
   `6,422,528 pixels / 784 pixels/token = 8,192 tokens`
