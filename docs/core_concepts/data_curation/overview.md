@@ -44,7 +44,7 @@ The **Cosmos video curation pipeline**—first established in *Cosmos-Predict1* 
    - **Vision-Language Model (VLM) Filter** – Applies high-precision semantic validation using models such as Qwen2.5-VL.
    - **Content-Type Classifier** – Excludes synthetic or non-physical content (e.g., games or animations).
 
-   Only around **4 %** of input clips survive this pipeline, forming a highly curated corpus of roughly **200 M** clips from **200 M+** raw videos—spanning domains such as **driving**, **object manipulation**, **navigation**, **human interaction**, and **natural scenes**.
+   Only around **4%** of input clips survive this pipeline, forming a highly curated corpus of roughly **200 M** clips from **200 M+** raw videos—spanning domains such as **driving**, **object manipulation**, **navigation**, **human interaction**, and **natural scenes**.
 
 5. **Video Captioning** – Each surviving clip is segmented into 5-second windows and captioned using a large vision-language model. Targeted prompt engineering ensures captions emphasize factual scene details—objects, motion, and context—at multiple lengths (short, medium, long). These captions serve as **supervision signals and conditioning prompts** for later training.
 6. **Semantic Deduplication** – Embedding-based clustering identifies near-duplicate clips. Within each cluster, the highest-resolution clip is kept. An **online deduplication strategy** supports incremental updates while maintaining semantic diversity.
@@ -162,6 +162,7 @@ For more detailed inspection, an interactive web interface built with Streamlit 
 
 ```python
 import streamlit as st
+import random
 from pathlib import Path
 
 # Sample videos from directory
