@@ -39,7 +39,6 @@ Each frame includes key fields: image, speed, semantic label, route, path, and a
 
 > **Note:** All scripts used in this experiment are available under `$COOKBOOK_ROOT/scripts/examples/transfer1/inference-x-mobility/` for readers' reference.
 
-
 ## Cosmos Transfer Data Augmentation Pipeline
 
 ### **X-Mobility Dataset Conversion to Videos for Cosmos Transfer Inputs**
@@ -132,6 +131,7 @@ We combined the original and Cosmos-augmented data in **equal proportions (1:1)*
 | **Stage 2: Action Policy Training** | Teacher policy dataset (100K frames) | 100 | 32 | 8× H100 GPUs | Joint training with world model; RGB diffuser disabled for speed |
 
 **Key Dataset Composition:**
+
 - **Hybrid Dataset** = 50% Original X-Mobility + 50% Cosmos-augmented data
 - **Total Training Data** = 260K frames (130K original + 130K augmented)
 
