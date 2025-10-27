@@ -1,84 +1,152 @@
 # Data Curation
 
-> **The principle of "garbage in, garbage out" is especially relevant in post-training.** High-quality datasets with sufficient quantity, quality, and domain coverage are essential for enabling models to learn novel generation capabilities.
+> **Authors:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) • [Alice Luo](https://www.linkedin.com/in/aliceluoqian)
+> **Organization:** NVIDIA
 
 ## Overview
 
-Data curation is the foundation of successful post-training. Models struggle to generate content types that are underrepresented or absent in training data, making it crucial to source datasets that closely match the intended use case in both distribution and structure.
+> **The principle of "garbage in, garbage out" is especially relevant in post-training.**
+> High-quality datasets with sufficient quantity, fidelity, and domain coverage are essential for enabling models to learn new generative and reasoning capabilities.
+
+Data curation is the foundation of successful post-training. Models struggle to generate or reason about content types that are underrepresented or missing in their training corpus. This makes it crucial to **source datasets that closely match the target domain** in both content distribution and structural format.
+
+While pre-training pipelines such as **Cosmos-Predict2.5** focus on scaling to hundreds of millions of videos, the same principles apply to post-training — though at smaller, more focused scales. Post-training curation emphasizes **domain alignment, data precision, and semantic quality** over raw volume, enabling efficient fine-tuning for specialized tasks in robotics, physical AI, and embodied reasoning.
+
+---
 
 ### Key Requirements
 
-- **Domain Alignment**: Data reflects the nuances, variations, and edge cases of the target domain
-- **Quality Control**: Active filtering and validation to ensure data relevance
-- **Scale and Coverage**: Sufficient quantity and diversity for robust learning
-- **Format Consistency**: Data structured in formats compatible with training workflows
+- **Domain Alignment** – Data reflects the nuances, edge cases, and variations of the intended use domain.
+- **Quality Control** – Active filtering and validation to ensure signal relevance.
+- **Scale and Coverage** – Sufficient quantity and diversity for robust generalization.
+- **Format Consistency** – Structured data compatible with training pipelines and evaluation frameworks.
+- **Ethical and Legal Compliance** – Respect data licenses, privacy, and redistribution constraints.
 
-### Data Curation Pipeline
+---
 
-Data curation is a complex science. As illustrated in the image below, it can systematically distill large-scale, heterogeneous video sources into refined training sets via phased filtering, annotation, and deduplication. Domain-aligned videos are first segmented, transcoded, and cropped, then evaluated for aesthetics, motion, OCR, and training utility. Vision-language and classifier-based filters enforce semantic coherence. Annotation modules generate metadata and embeddings, powering clustering-based deduplication. The result is a high-fidelity, semantically diverse dataset optimized for vision-language model training.
+## The Cosmos Data Curation Pipeline
+
+Data curation is a complex, multi-stage process. As shown below, it systematically transforms large-scale, heterogeneous video sources into refined, semantically rich datasets through segmentation, transcoding, filtering, captioning, and deduplication.
 
 ![Comprehensive Data Curation Pipeline](images/data_curation_pipeline.png)
 
-While the complete pipeline involves many sophisticated techniques, the following sections focus on the foundational tools and practical approaches that enable effective data curation. We'll explore the essential components that transform raw, heterogeneous data sources into high-quality, unified datasets ready for model training.
+The **Cosmos video curation pipeline**—first established in *Cosmos-Predict1* and later scaled in *Cosmos-Predict2.5*—consists of seven stages:
+
+1. **Shot-Aware Video Splitting** – Long-form videos are segmented into coherent clips using shot boundary detection. Short (<5 s) clips are discarded, while longer ones (5–60 s) form the basis for downstream curation.
+2. **GPU-Based Transcoding** – Each clip is transcoded in parallel to optimize format, frame rate, and compression quality for model ingestion.
+3. **Video Cropping** – Black borders, letterboxing, and spatial padding are removed to ensure consistent aspect ratios.
+4. **Filtering** – A multi-stage filtering pipeline removes unsuitable data. Filters include:
+   - **Aesthetic Quality Filter** – Screens for poor composition or lighting.
+   - **Motion Filter** – Removes clips with excessive or insufficient movement.
+   - **OCR Filter** – Detects overlays, watermarks, or subtitles.
+   - **Perceptual Quality Filter** – Detects technical distortions (blur, compression, noise).
+   - **Semantic Artifacts Filter** – Removes video-in-video effects or abrupt transitions.
+   - **Vision-Language Model (VLM) Filter** – Applies high-precision semantic validation using models such as Qwen2.5-VL.
+   - **Content-Type Classifier** – Excludes synthetic or non-physical content (e.g., games or animations).
+
+   Only around **4%** of input clips survive this pipeline, forming a highly curated corpus of roughly **200 M** clips from roughly **6 billion** raw videos—spanning domains such as **driving**, **object manipulation**, **navigation**, **human interaction**, and **natural scenes**.
+
+5. **Video Captioning** – Each surviving clip is segmented into 5-second windows and captioned using a large vision-language model. Targeted prompt engineering ensures captions emphasize factual scene details—objects, motion, and context—at multiple lengths (short, medium, long). These captions serve as **supervision signals and conditioning prompts** for later training.
+6. **Semantic Deduplication** – Embedding-based clustering identifies near-duplicate clips. Within each cluster, the highest-resolution clip is kept. An **online deduplication strategy** supports incremental updates while maintaining semantic diversity.
+7. **Structured Sharding** – Clips are grouped along multiple axes: content type, resolution, aspect ratio, and temporal length. This structured dataset layout supports efficient sampling, curriculum-based training, and fine-grained domain balancing.
+
+The result is a dataset that is **clean, diverse, and semantically organized**—a template for post-training curation workflows at any scale.
+
+---
+
+## From Pre-Training to Post-Training
+
+Although *Cosmos-Predict2.5* operates at petabyte scale, its principles directly inform post-training data practices:
+
+- **Scale down, specialize up:** Post-training uses smaller but more domain-specific datasets.
+- **Refine rather than expand:** Instead of collecting more data, focus on *improving alignment* and *removing noise*.
+- **Iterate via feedback loops:** Use model evaluation results to guide the next round of curation—closing the loop between data and learning outcomes.
+
+In other words, post-training data curation inherits the *structure* of pre-training pipelines but applies it to **targeted, feedback-driven refinement**.
+
+---
 
 ## Data Sourcing
 
-Data sourcing involves acquiring datasets from multiple sources including cloud storage, public repositories, and web content. The following tools are commonly used for efficient data collection and transfer.
+Data sourcing involves acquiring datasets from diverse locations—internal storage, public repositories, and the web—while ensuring ethical and license compliance.
 
-> **Important:** Always verify the license terms and usage rights of datasets before downloading and processing. Ensure compliance with copyright, privacy, and redistribution requirements to avoid legal issues in your projects.
+> **Important:** Always verify dataset usage rights, privacy policies, and redistribution terms before processing.
+> Curation should prioritize transparency, data lineage tracking, and respect for original content sources.
 
----
-
-### **Cloud Storage Tools**
-
-| Tool | Purpose | Best For |
-|------|---------|----------|
-| **s5cmd** | High-performance S3-compatible storage | Large-scale data movement with parallel processing |
-| **AWS CLI** | Official AWS command-line interface | AWS-native workflows and service integration |
-| **rclone** | Universal cloud storage sync (70+ providers) | Multi-cloud environments and complex sync operations |
-
----
-
-### **Web Content Tools**
+### Cloud Storage Tools
 
 | Tool | Purpose | Best For |
-|------|---------|----------|
-| **HuggingFace CLI** | Dataset and model repository access | Downloading datasets and models from HuggingFace Hub |
-| **yt-dlp** | Enhanced YouTube downloader | Multiple video platforms, quality selection, batch processing |
-| **wget/curl** | Command-line file downloaders | Simple downloads, recursive crawling, API-based retrieval |
+|------|----------|----------|
+| **s5cmd** | High-performance S3-compatible storage client | Large-scale parallel transfers |
+| **AWS CLI** | Official AWS command-line tool | AWS-native workflows |
+| **rclone** | Multi-cloud sync for 70+ providers | Complex multi-cloud setups |
 
----
-
-### **Data Processing Tools**
+### Web Content Tools
 
 | Tool | Purpose | Best For |
-|------|---------|----------|
-| **ffmpeg** | Video processing and conversion | Format conversion, frame extraction, resizing, quality adjustment |
-| **PIL/Pillow** | Python image processing library | Python applications, programmatic image manipulation |
+|------|----------|----------|
+| **HuggingFace CLI** | Access to model/dataset repositories | Community datasets and checkpoints |
+| **yt-dlp** | High-throughput video downloader | Batch ingestion and quality selection |
+| **wget/curl** | General-purpose file downloaders | API retrieval and recursive crawling |
 
----
-
-### **Quality Control Tools**
+### Data Processing Tools
 
 | Tool | Purpose | Best For |
-|------|---------|----------|
-| **OpenCV** | Computer vision library | Video analysis, frame extraction, quality assessment |
-| **FFprobe** | Video metadata extraction | Duration, resolution, codec, quality metrics extraction |
+|------|----------|----------|
+| **ffmpeg** | Video transcoding and frame extraction | Reformatting and quality control |
+| **PIL/Pillow** | Python imaging library | Lightweight image manipulation |
+
+### Quality Control Tools
+
+| Tool | Purpose | Best For |
+|------|----------|----------|
+| **OpenCV** | Computer vision toolkit | Visual inspection and analysis |
+| **FFprobe** | Metadata extraction | Duration, codec, and resolution stats |
 
 ---
 
 ## Data Sampling and Visualization
 
-Before data curation begins, sampling and visualization are crucial for identifying potential issues and understanding dataset characteristics. This preliminary analysis helps optimize curation tools and pipelines for specific challenges.
+Before large-scale processing or filtering, it is critical to perform **data analysis and sampling** to understand the structure, quality, and coverage of your dataset.
+Effective sampling helps reveal issues such as compression artifacts, aspect ratio inconsistencies, or irrelevant content — problems that are far easier to correct before the main curation workflow begins.
+
+At this stage, the goal is not to process the entire dataset, but to **analyze representativeness and integrity**. You should aim to answer questions such as:
+
+- Does the dataset align with the target domain and intended post-training goal?
+- Are there missing or overrepresented scene types?
+- What kinds of artifacts, distortions, or noise are common?
+- Is the metadata (if present) informative and reliable?
+
+### Recommended Analysis Practices
+
+1. **Consult Dataset Documentation**
+   When available, start by reading **dataset cards**, research papers, or technical reports describing the dataset’s collection process, quality guarantees, and known limitations. Understanding provenance and annotation methodology helps anticipate potential biases or failure modes.
+
+2. **Perform Structured Sampling**
+   Use **randomized or stratified sampling** to preview a manageable subset of videos. Evaluate visual quality, diversity, and semantic consistency before investing in large-scale processing.
+
+3. **Use Visualization Tools**
+   Sampling utilities—like the examples below—help quickly visualize data distribution and detect common quality issues.
+
+---
 
 ### Grid Preview Generation
 
-The `grid_preview_generation.py` tool creates comprehensive dataset overviews by generating grid-style preview videos. It randomly samples videos and arranges them in customizable layouts for quick visual assessment.
+Grid preview videos provide at-a-glance dataset overviews by arranging multiple sampled videos into a single tiled visualization. This quick and efficient approach enables rapid quality assessment across large video collections without manual inspection of individual files, making it an ideal method for quickly understanding video datasets at scale.
 
-```shell
-python scripts/curation/tools/sampling_visualization/grid_preview_generation.py \
-    --input_dir <input_dir> \
-    --output_video <output_dir>
+**Rationale**: By resizing and arranging randomly sampled videos into a grid layout (e.g., 10×10), you can visually assess diversity, detect outliers, and identify quality issues in seconds. Each video is scaled to a uniform thumbnail size and played synchronously for a fixed duration, creating a comprehensive snapshot of your dataset's visual characteristics.
+
+**Implementation approach** using ffmpeg's `xstack` filter:
+
+```bash
+# Sample 100 videos and create a 10x10 grid preview
+ffmpeg -i video1.mp4 -i video2.mp4 ... -i video100.mp4 \
+  -filter_complex "[0:v]scale=192:108,trim=duration=5[v0]; \
+                   [1:v]scale=192:108,trim=duration=5[v1]; \
+                   ... \
+                   [99:v]scale=192:108,trim=duration=5[v99]; \
+                   [v0][v1]...[v99]xstack=inputs=100:layout=0_0|192_0|...|1728_972[out]" \
+  -map "[out]" -r 30 output_grid.mp4
 ```
 
 **Output Example:**
@@ -86,32 +154,47 @@ python scripts/curation/tools/sampling_visualization/grid_preview_generation.py 
 
 ### Interactive Video Sampling
 
-The `streamlit_sample_video_app.py` provides an interactive web interface for detailed dataset inspection. Features include the following:
+For more detailed inspection, an interactive web interface built with Streamlit enables paginated browsing and closer examination of individual videos. This approach is ideal when you need to analyze specific samples, compare similar videos, or make manual quality assessments.
 
-- **Paginated browsing** (3x4 grid, 12 videos per page)
-- **S3 and local directory support**
-- **Configurable sample sizes**
+**Rationale**: While grid previews provide rapid overviews, interactive browsing allows for deeper inspection—pausing, replaying, and examining metadata for each video. A paginated interface (e.g., 3×4 grid showing 12 videos per page) balances screen real estate with detailed viewing, making it practical to review hundreds of samples systematically.
 
-#### Quick Start
+**Implementation approach** using Streamlit:
 
-```shell
-# Install Streamlit
-uv tool install -U streamlit
+```python
+import streamlit as st
+import random
+from pathlib import Path
 
-# Run interactive app
-streamlit run scripts/curation/tools/sampling_visualization/streamlit_sample_video_app.py \
-    -- --input_dir <input_dir_or_s3> --nsamples 36
+# Sample videos from directory
+def find_mp4_files(directory: str):
+    return list(Path(directory).rglob("*.mp4"))
+
+# Build interactive browser
+st.title("Sample Video Browser")
+all_videos = find_mp4_files(input_dir)
+sampled_videos = random.sample(all_videos, nsamples)
+
+# Pagination logic
+videos_per_page = 12
+total_pages = (len(sampled_videos) + videos_per_page - 1) // videos_per_page
+page = st.number_input("Page", min_value=1, max_value=total_pages, value=1)
+
+start_idx = (page - 1) * videos_per_page
+end_idx = min(start_idx + videos_per_page, len(sampled_videos))
+videos_to_show = sampled_videos[start_idx:end_idx]
+
+# Display videos in 3x4 grid
+for row in range(3):
+    cols = st.columns(4)
+    for col in range(4):
+        idx = row * 4 + col
+        if idx < len(videos_to_show):
+            with cols[col]:
+                st.video(str(videos_to_show[idx]))
+                st.caption(videos_to_show[idx].name)
 ```
 
-#### Background Execution
-
-```shell
-# Run in background with nohup
-nohup streamlit run scripts/curation/tools/sampling_visualization/streamlit_sample_video_app.py \
-    --input_dir <input_dir_or_s3> > streamlit.log 2>&1 &
-```
-
-**Access:** `http://<host_ip>:<port>` (remains accessible after terminal disconnection)
+This creates a navigable interface where users can browse through sampled videos, with native playback controls and filename display for each video.
 
 **Sample Output:**
 ![](images/video_preview.png)
@@ -120,13 +203,17 @@ nohup streamlit run scripts/curation/tools/sampling_visualization/streamlit_samp
 
 ## Data Curation Best Practices
 
-### Key Success Factors
+Effective curation begins long before the first filtering job runs.
+Success depends on understanding the dataset, establishing clear objectives, and iteratively validating quality throughout the process.
 
-- **Start with sampling and visualization** — Understand data characteristics before processing.
-- **Apply quality filters early** — Avoid wasting time on irrelevant or low-quality data.
-- **Evaluate at small scale and deploy for scale** — Validate your pipeline before full deployment.
-- **Use appropriate tools** — Select the right tool for each stage of the pipeline.
-- **Track everything** — Maintain version control and experiment logging throughout.
+### Key Principles
+
+- **Start with exploratory sampling** — Analyze dataset composition and potential issues before automated processing.
+- **Apply filters strategically** — Focus first on eliminating low-quality or irrelevant data.
+- **Iterate at small scale** — Validate each stage on subsets before scaling up to full production.
+- **Use the right tools for the task** — Combine visualization, transcoding, and filtering utilities for efficiency.
+- **Track lineage and versioning** — Maintain reproducibility through consistent metadata and experiment logging.
+- **Consult available references** — Dataset cards, academic papers, and internal documentation often contain valuable curation guidance.
 
 ---
 
@@ -138,13 +225,3 @@ Once you have completed the data sourcing, sampling, and visualization phases ou
 - **Automated captioning** with sophisticated prompting strategies
 - **Quality filtering** and content validation
 - **Dataset sharding** for optimized training workflows
-
-For comprehensive guidance on these core curation tasks, including both cloud-based (NVCF) and local deployment options, refer to the [Core Curation Guide](core_curation.md).
-
-The core curation guide covers:
-
-- **NVCF deployment** for quick cloud-based processing
-- **Local Docker setup** for full control and customization
-- **SLURM cluster deployment** for large-scale processing
-- **Advanced captioning techniques** and best practices
-- **Integration with Cosmos Predict** (versions 2 and 2.5) workflows
