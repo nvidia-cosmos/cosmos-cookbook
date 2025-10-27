@@ -212,7 +212,7 @@ To review the qualitative improvements in the response, we prompt the same quest
 
 ### Quantitative Results
 
-Next, let's evaluate the quantitative results for task-based accuracy for the base model versus the post-trained model. By post-training, we are able to improve accuracy significantly versus the base model. Additionally, we also swept the number of images and question-answer pairs that are needed, and, based on the experiment, we are starting to see good accuracy once we have about 80K samples. In fact, only 20K question-answer pairs are needed for "counting" and "left right" orientation tasks.
+Next, let's evaluate the quantitative results for task-based accuracy for the base model versus the post-trained model. By post-training, we are able to improve accuracy significantly versus the base model. Additionally, we also experimented with different numbers of images and question-answer pairs, and, based on the experiment, we are starting to see good accuracy once we have about 80K samples. In fact, only 20K question-answer pairs are needed for "counting" and "left right" orientation tasks.
 
 <img src="assets/quan_result.png" width="960"/>
 

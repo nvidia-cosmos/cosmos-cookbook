@@ -56,7 +56,7 @@ The dataset highlights critical challenges for generative models in understandin
 #### Low Physical Plausibility (Score: 2/5)
 
 <video controls width="480">
-  <source src="assets/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
+  <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/hunyuan_xedit_train/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
 </video>
 
 - **Scene**: A robotic arm gently pokes a stack of plastic cups.
@@ -68,7 +68,7 @@ The dataset highlights critical challenges for generative models in understandin
 #### High Physical Plausibility (Score: 4/5)
 
 <video controls width="480">
-  <source src="assets/A_robotic_arm_pushes_a_metal_cube_off_a_steel_table.mp4" type="video/mp4">
+  <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/cosmos_videophy2_train_challenging/A_robotic_arm_pushes_a_metal_cube_off_a_steel_table;_the_cube_lands_precisely_on_a_marked_spot.mp4" type="video/mp4">
 </video>
 
 - **Scene**: A robotic arm pushes a metal cube off a steel table.
@@ -89,13 +89,15 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
 
 We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason 1 to run zero-shot inference.
 
-    # In the cosmos-reason root directory
-    uv run video_reward_videophy.py \
-        --dataset videophysics/videophy2_test \
-        --split test \
-        --model nvidia/Cosmos Reason 1-7B \
-        --prompt_path prompts/video_reward_v1_no_thinking.yaml \
-        --num_gpus 8
+1. Copy `scripts/examples/reason1/physical-plausibility-check/video_reward.py` from this repo to `cosmos-reason1/examples/video_critic/video_reward.py`, and copy the "Prompt for Scoring Physical Plausibility" YAML file above to `cosmos-reason1/prompts/video_reward.yaml`.
+2. Run the following command to run zero-shot inference on a video:
+
+        # In the cosmos-reason1 root directory
+        uv run examples/video_critic/video_reward.py \
+            --video_path [video_path] \
+            --prompt_path prompts/video_reward.yaml
+
+The result is saved in an HTML file in the same directory as the video.
 
 ### Evaluation Metrics
 
@@ -147,12 +149,16 @@ The fine-tuning process uses the following data structure:
 
 We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for fine-tuning. First, download and prepare the VideoPhy-2 training data:
 
-    # From the cosmos-reason root directory
-    cd examples/post_training_hf/
-    uv run scripts/download_videophy2.py \
-        --output data/videophy2_train \
-        --dataset videophysics/videophy2_train \
-        --split train
+1. Copy `scripts/examples/reason1/physical-plausibility-check/download_videophy2.py` from this repo to `cosmos-reason1/examples/post_training_hf/scripts/download_videophy2.py`
+2. Run the following command to download the VideoPhy-2 training data:
+
+        # In the cosmos-reason1 root directory
+        cd examples/post_training_hf/
+        uv run scripts/download_videophy2.py \
+            --output data/videophy2_train \
+            --dataset videophysics/videophy2_train \
+            --split train
+
 
 ### Training Configuration
 

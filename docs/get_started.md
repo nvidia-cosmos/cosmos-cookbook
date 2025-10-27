@@ -29,9 +29,9 @@ Before getting started, ensure you have the following requirements:
 
 ### Hardware
 
-For running cookbook recipes and workflows, you will need the following: 1 GPU minimum (recommended 8 GPUs) using Ampere architecture or newer (A100, H100).
+For running cookbook recipes and workflows, you will need the following: 1 GPU minimum for inference and 4 GPUs minimum for training(recommended 8 GPUs) using Ampere architecture or newer (A100, H100).
 
-For specific GPU and memory requirements for each Cosmos model (Predict1, Predict2, Transfer1, Reason1), refer to the [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
+For specific GPU and memory requirements for each Cosmos model (Predict1, Predict2, Transfer1, etc.), refer to the [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
 
 > **Note**: A GPU is not required to render the local documentation.
 

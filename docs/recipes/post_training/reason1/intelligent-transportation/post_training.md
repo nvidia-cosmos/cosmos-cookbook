@@ -116,13 +116,13 @@ python evaluate.py --config eval_config.yaml
 
 ### Quantitative Results
 
-First, let's review the quantitative results for both experiments: one with 81,920 pixels/frame (4K visual tokens) and another with 8K visual tokens on the environment VQA subset of the WTS dataset. This is a collection of multiple choice questions (MCQ) on traffic and pedestrian videos. Overall, we see the accuracy jump to over 90 for both experiments. There is not a lot of delta in training accuracy between the two experiments, and 4K visual tokens will converge faster and provide faster inference times.
+First, let's review the quantitative results on the environment VQA subset of the WTS dataset for each experiment: one with 81,920 pixels/frame (4K visual tokens) and another with 8K visual tokens. This is a collection of multiple choice questions (MCQ) on traffic and pedestrian videos. Overall, we see the accuracy jump to over 90 for both experiments. There is not a lot of delta in training accuracy between the two experiments, and 4K visual tokens will converge faster and provide faster inference times.
 
 <img src="assets/quan_result.png" width="500"/>
 
 ### Training Time
 
-We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. Both were run with a 1 FPS sampling rate. As expected with only 81,920 pixels/frame (4K vision tokens), the model converged in roughly half the time as 8K vision tokens. In summary, you can train a very accurate model using thi amount of data in an hour or less.
+We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. Both were run with a 1 FPS sampling rate. As expected with only 81,920 pixels/frame (4K vision tokens), the model converged in roughly half the time as 8K vision tokens. In summary, you can train a very accurate model using this amount of data in an hour or less.
 
 | Method | FPS & Resolution                  | Training Time (on 8 A100s) |
 |--------|-----------------------------------|----------------------------|
