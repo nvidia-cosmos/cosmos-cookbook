@@ -29,7 +29,11 @@ Before getting started, ensure you have the following requirements:
 
 ### Hardware
 
-**NVIDIA GPUs**: Not required for local documentation rendering. For running cookbook recipes and workflows: Ampere architecture or newer (A100, H100) - minimum 1 GPU, recommended 8 GPUs
+For running cookbook recipes and workflows, you will need the following: 1 GPU minimum for inference and 4 GPUs minimum for training(recommended 8 GPUs) using Ampere architecture or newer (A100, H100).
+
+For specific GPU and memory requirements for each Cosmos model (Predict1, Predict2, Transfer1, etc.), refer to the [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
+
+> **Note**: A GPU is not required to render the local documentation.
 
 ### Software
 
@@ -38,7 +42,7 @@ Before getting started, ensure you have the following requirements:
 - **NVIDIA Container Toolkit**: 1.16.2 or later
 - **CUDA**: 12.4 or later
 - **Docker Engine**
-- **Access**: Internet connection for downloading models and dependencies
+- **Network**: Internet connection for downloading models and dependencies
 
 ### Hardware Requirements
 
@@ -64,7 +68,7 @@ brew install pkgx || curl https://pkgx.sh | sh
 pkgm install uv
 ```
 
-### Hugging Face CLI
+#### Hugging Face CLI
 
 The [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli) is essential for downloading pre-trained model checkpoints and datasets from the Hugging Face Hub.
 

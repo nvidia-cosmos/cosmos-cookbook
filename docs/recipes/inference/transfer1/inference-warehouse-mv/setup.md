@@ -6,9 +6,9 @@ This guide covers the setup requirements for running Cosmos Transfer 1 for wareh
 
 ### Minimum Hardware Requirements
 
-- **GPU**: Single A100, H100, or later GPU (recommended minimum)
+- **GPU**: 1 or more GPUs (A100, H100, or later recommended)
 - **Memory**: Sufficient VRAM for model inference
-- **Storage**: Adequate space for model weights
+- **Storage**: Adequate disk space for model weights
 
 ### Software Requirements
 
@@ -18,11 +18,11 @@ The setup requires both the Cosmos Transfer 1 repository and the Cosmos Cookbook
 
 ### Cosmos Cookbook Setup
 
-Then set up the Cosmos Cookbook repository and its dependencies by following the comprehensive setup tutorial:
+Set up the Cosmos Cookbook repository and its dependencies by following the comprehensive setup tutorial:
 
 **[Getting Started Guide](../../../../get_started.md)**
 
-The getting started guide provides detailed instructions for:
+The getting started guide provides detailed instructions for the following:
 
 - Repository cloning and setup
 - Environment configuration
@@ -31,11 +31,9 @@ The getting started guide provides detailed instructions for:
 
 ### Cosmos Transfer 1 Setup
 
-Begin by installing and setting up the Cosmos Transfer 1 repository by following the official guide:
+To set up Cosmos Transfer 1 repository and model, follow the [Cosmos Transfer 1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference) for detailed installation and inference setup instructions.
 
-**[Cosmos Transfer 1 Installation Guide](https://github.com/nvidia-cosmos/cosmos-transfer1/blob/main/INSTALL.md#inference)**
-
-The installation guide provides comprehensive steps for:
+The installation guide provides comprehensive steps for the following:
 
 - Repository cloning and setup
 - Environment configuration
@@ -43,7 +41,7 @@ The installation guide provides comprehensive steps for:
 - Dependency installation
 - Inference configuration
 
-After completing the installation, copy the example cookbook assets into your Cosmos Transfer 1 repository. Assuming your Cosmos Transfer 1 repository root is available as `$COSMOS_TRANSFER_ROOT`, run:
+After completing the installation, copy the example cookbook assets into your Cosmos Transfer 1 repository. Assuming your Cosmos Transfer 1 repository root is available as `$COSMOS_TRANSFER_ROOT`, run the following command:
 
 ```bash
 cp -r scripts/examples/transfer1/* "$COSMOS_TRANSFER_ROOT/examples/cookbook/"

@@ -196,7 +196,7 @@ for row in range(3):
 
 This creates a navigable interface where users can browse through sampled videos, with native playback controls and filename display for each video.
 
-**Sample Output:**
+**Sample Output**:
 ![](images/video_preview.png)
 
 ---
