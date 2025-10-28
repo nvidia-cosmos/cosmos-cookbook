@@ -144,7 +144,7 @@ Only videos classified as "GOOD" are retained for the final dataset.
 
 ## Pillarbox/Letterbox Removal
 
-Many online videos have been modified to include pillarbox or letterbox padding to adjust their aspect ratio, or to add text banners that provide additional information to viewers. However, these elements are not suitable for data training purposes. The `remove_pillarbox_letterbox.py` script effectively addresses this issue by automatically detecting and cropping out both types of padding. It iteratively uses the ffmpeg tool to smartly crop away uniform borders, as controlled by a given threshold.
+Many online videos have been modified to include pillarbox or letterbox padding to adjust their aspect ratio, or to add text banners that provide additional information to viewers. However, these elements are not suitable for data training purposes. The `remove_pillarbox_letterbox.py` script addresses this issue by automatically detecting and cropping out both types of padding. It iteratively uses the ffmpeg tool to crop away uniform borders, as controlled by a given threshold.
 
 ```shell
 python scripts/curation/tools/filters/pillarbox_letterbox_removal.py --input_dir <input_dir> --output_dir <output_dir>

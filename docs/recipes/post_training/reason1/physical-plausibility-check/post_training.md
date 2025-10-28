@@ -14,11 +14,11 @@ In this case study, we demonstrate using the Cosmos Reason 1 model for physical 
 
 - [Setup and System Requirement](setup.md)
 
-We first evaluate the model's ability to predict physical plausibility on an open-source dataset. We then finetune the model and evaluate its performance.
+We first evaluate the model's ability to predict physical plausibility on an open-source dataset. We then fine-tune the model and evaluate its performance.
 
 ## Dataset: VideoPhy-2
 
-We use the [**VideoPhy-2 dataset**](https://github.com/Hritikbansal/videophy/tree/main/VIDEOPHY2) for this case study, which is specifically designed as an action-centric benchmark for evaluating physical commonsense in generated videos.
+We use the [VideoPhy-2 dataset](https://github.com/Hritikbansal/videophy/tree/main/VIDEOPHY2) for this case study, which is designed as an action-centric benchmark for evaluating physical common sense in generated videos.
 
 ### Dataset Overview
 
@@ -89,7 +89,7 @@ We first evaluate the model's ability to predict physical plausibility on the Vi
 
 We use a script similar to [an existing video critic example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/video_critic/video_critic.py) in Cosmos Reason 1 to run zero-shot inference.
 
-1. Copy `scripts/examples/reason1/physical-plausibility-check/video_reward.py` from this repo to `cosmos-reason1/examples/video_critic/video_reward.py`, and copy the "Prompt for Scoring Physical Plausibility" yaml file above to `cosmos-reason1/prompts/video_reward.yaml`.
+1. Copy `scripts/examples/reason1/physical-plausibility-check/video_reward.py` from this repo to `cosmos-reason1/examples/video_critic/video_reward.py`, and copy the "Prompt for Scoring Physical Plausibility" YAML file above to `cosmos-reason1/prompts/video_reward.yaml`.
 2. Run the following command to run zero-shot inference on a video:
 
         # In the cosmos-reason1 root directory
@@ -97,7 +97,7 @@ We use a script similar to [an existing video critic example](https://github.com
             --video_path [video_path] \
             --prompt_path prompts/video_reward.yaml
 
-The result is saved in an html file in the same directory as the video.
+The result is saved in an HTML file in the same directory as the video.
 
 ### Evaluation Metrics
 
@@ -108,7 +108,7 @@ We evaluate the model performance using two key metrics:
 
 ### Results
 
-We compare Cosmos Reason 1 with Gemini-2.0-Flash-Exp (baseline from the paper). Even without fine-tuning, Cosmos Reason 1 demonstrates superior performance.
+We compare Cosmos Reason 1 with Gemini-2.0-Flash-Exp (the baseline from the paper). Even without fine-tuning, Cosmos Reason 1 demonstrates superior performance.
 
 <img src="assets/correlation_bar_graph.png" alt="Correlation comparison between Gemini-2.0-Flash-Exp and Cosmos Reason 1" style="max-width: 600px; width: 100%;">
 
@@ -118,9 +118,7 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 
 #### Car Crashes into Stack of Cardboard Boxes
 
-<video controls width="480">
-  <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
-</video>
+<source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
 
 - **Model prediction**: 1
 - **Ground truth**: 2 (poor adherence to physical laws)
@@ -147,7 +145,7 @@ The fine-tuning process uses the following data structure:
 
 ### Setup
 
-We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for fine-tuning. We first download and prepare the VideoPhy-2 training data.
+We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for fine-tuning. First, download and prepare the VideoPhy-2 training data:
 
 1. Copy `scripts/examples/reason1/physical-plausibility-check/download_videophy2.py` from this repo to `cosmos-reason1/examples/post_training_hf/scripts/download_videophy2.py`
 2. Run the following command to download the VideoPhy-2 training data:
@@ -161,7 +159,7 @@ We use the [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) library for f
 
 ### Training Configuration
 
-Use the following configuration optimized for 8 GPUs:
+We use the following configuration optimized for 8 GPUs:
 
 ???+ code "Training Configuration"
 
@@ -171,6 +169,8 @@ Use the following configuration optimized for 8 GPUs:
 
 ### Running Training
 
+We run training with the following steps:
+
 1. Save the "Training Configuration" above as `cosmos-reason1/examples/post_training_hf/configs/videophy2_sft.toml`
 2. Execute the training script:
 
@@ -178,7 +178,7 @@ Use the following configuration optimized for 8 GPUs:
         cd examples/post_training_hf/
         cosmos-rl --config configs/videophy2_sft.toml scripts/custom_sft.py
 
-**Note**: The training process uses the [custom SFT script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training_hf/scripts/custom_sft.py) which includes a data loader that works with **Hugging Face datasets format**.
+> **Note**: The training process uses the [custom SFT script](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/post_training_hf/scripts/custom_sft.py), which includes a data loader that works with the **Hugging Face datasets format**.
 
 ### Results
 
@@ -187,7 +187,7 @@ After fine-tuning, we evaluate the model on the VideoPhy-2 evaluation set using 
 <img src="assets/sft_accuracy.png" alt="SFT Accuracy over Training Steps" style="width: 100%; max-width: 600px; display: block; margin-bottom: 36px;">
 <img src="assets/sft_correlation.png" alt="SFT Correlation over Training Steps" style="width: 100%; max-width: 600px; display: block;">
 
-**Key observations:**
+The following are key observations:
 
 - Performance improves significantly after fine-tuning
 - Best correlation achieved at 60 steps (0.395)
