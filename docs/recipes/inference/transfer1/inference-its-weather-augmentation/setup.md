@@ -6,9 +6,9 @@ This guide covers the setup requirements for running Cosmos Transfer 1 for weath
 
 ### Minimum Hardware Requirements
 
-- **GPU**: Single A100, H100, or later GPU (recommended minimum)
+- **GPU**: 1 or more GPUs (A100, H100, or later recommended)
 - **Memory**: Sufficient VRAM for model inference
-- **Storage**: Adequate space for model weights
+- **Storage**: Adequate disk space for model weights
 
 ### Software Requirements
 

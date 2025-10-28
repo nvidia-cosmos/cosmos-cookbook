@@ -1,6 +1,6 @@
 # Evaluation Overview
 
-Evaluation is a critical component of any post-training workflow. It serves as the ruler by which progress is measured. Establishing robust evaluation methodology and benchmarks *before* post-training begins is essential to ensure meaningful and reproducible results.
+Evaluation is a critical component of any post-training workflow. It serves as the standard by which progress is measured. Establishing robust evaluation methodology and benchmarks *before* post-training begins is essential to ensure meaningful and reproducible results.
 
 This section provides evaluation methods for different types of video generation models. Evaluation strategies differ depending on the type of model being trained, and this guide helps you choose the appropriate approach based on your model type and use case.
 
