@@ -60,7 +60,7 @@ For this recipe, we will only download
 - [T5-11B](https://huggingface.co/google-t5/t5-11b) for generating embeddings for caption text.
 
 ```bash
-cosmos-curate local launch -- pixi run python -m cosmos_curate.core.managers.model_cli download --models transnetv2,cosmos_reason1
+cosmos-curate local launch -- pixi run python -m cosmos_curate.core.managers.model_cli download --models transnetv2,cosmos_reason1,t5_xxl
 ```
 
 The model weights will be downloaded to your **cosmos-curate workspace**, which by default is at `"${HOME}/cosmos_curate_local_workspace"`.
