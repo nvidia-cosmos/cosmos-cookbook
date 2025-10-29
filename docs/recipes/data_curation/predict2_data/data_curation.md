@@ -98,7 +98,7 @@ popd
 ```bash
 cosmos-curate local launch -- pixi run python -m cosmos_curate.pipelines.video.run_pipeline split \
     --input-video-path /config/nexar_collision_prediction/train/positive/ \
-    --output-clip-path /config/output-nexar-v0/ \
+    --output-clip-path /config/output-nexar/ \
     --no-generate-embeddings \
     --generate-cosmos-predict-dataset predict2 \
     --splitting-algorithm transnetv2 \
@@ -111,8 +111,9 @@ A few **very important** notes:
 
 - Options `--input-video-path` & `--output-clip-path` expect paths **inside the container**.
   - The **workspace** directory `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace"` mounts to `/config` in the container.
-- With `--generate-cosmos-predict-dataset predict2` you will get a directory `cosmos_predict2_video2world_dataset/` under your specified output path, i.e. `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace/output-nexar-v0"`.
+- With `--generate-cosmos-predict-dataset predict2` you will get a directory `cosmos_predict2_video2world_dataset/` under your specified output path, i.e. `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace/output-nexar"`.
   - This is the exact dataset format to [post-train/fine-tune Cosmos-Predict2 model](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/post-training_video2world.md#1-preparing-data).
+- Option `--transnetv2-min-length-frames 120` is added to specify the minimum length of clips becuase the `Cosmos-Predict2` post-training script expects a minimum number of frames.
 - Option `--limit 0` applies no limit to the number of input videos to process.
   - The data curation pipeline can fail with system out-of-memory (OOM) error if
     - you have `<=2 GPUs` in the system
@@ -121,6 +122,23 @@ A few **very important** notes:
       - i.e. `Cosmos-Curate` mainly targets systems with 4x/8x GPUs and 1TB+ memory for production runs; running on desktop workstations is primarily for pipeline development.
   - So if OOM happens, you can use a small limit like `--limit 1` and run the exact same command repeatedly.
     - `Cosmos-Curate` is smart enough to figure out what has done and what remains to be done.
+
+### Produce WebDataset Format
+
+`Cosmos-Curate` has another `Shard-Dataset` pipeline that takes the output of above `Split-Annotate` pipeline and generates a webdataset.
+
+```bash
+cosmos-curate local launch -- pixi run python -m cosmos_curate.pipelines.video.run_pipeline shard \
+    --input-clip-path /config/output-nexar/ \
+    --output-dataset-path /config/webdataset \
+    --annotation-version v0
+```
+
+Again, the **workspace** directory `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace"` mounts to `/config` in the container,
+so you will find the webdataset under `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace/webdataset/v0/"`.
+
+By default, the generated webdataset are sharded by resolution, aspect ratio, and frame window index within the video clip.
+More details can be found in the [documentation](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/REFERENCE_PIPELINES_VIDEO.md#shard-dataset-pipeline).
 
 ## Advanced Options
 
@@ -134,5 +152,5 @@ Below are some advanced things you can do
 | ----- | ----------------- | ------------------ |
 | Storage | `Cosmos-Curate` supports all S3-compatible object store (e.g. AWS, OCI, Swiftstack, GCP), you only need to configure your `~/.aws/credentials` file properly and pass in an S3 prefix. | See bullet 5 in the [Initial Setup section](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#initial-setup) |
 | Target Platform | As mentioned above, running locally on desktop with one GPU is mainly for functional development; for production runs, you may want to check out how to run on Slurm and K8s-based systems. | <ul><li>[Launch Pipelines on Slurm](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm)</li><li>[Deploy and launch on NVCF](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/NVCF_GUIDE.md)</li><li>[Reference Helm Chart used for NVCF deployment](https://github.com/nvidia-cosmos/cosmos-curate/tree/main/charts/cosmos-curate)</li><li>Guide on vanilla K8s deployment will be added soon.</li></ul> |
-| Pipeline Configuration | <ul><li>splitting algorithm: another option is `fixed-stride` to cut source videos into fixed-length clips.</li><li>captioning prompt: instead of using default prompt, you can pass in a custom prompt using `--captioning-prompt-text '...'`</li><li>filters: the reference pipeline includes<ul><li>motion-filter (`--motion-filter enable`)</li><li>aesthetic filter (`--aesthetic-threshold 3.5`)</li><li>experimental VLM-based filter (`--qwen-filter enable`); note you will need add `qwen2.5_vl` to the model download list.</li></ul></li></ul> | [Split-Annotate Pipeline](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/REFERENCE_PIPELINES_VIDEO.md#split-annotate-pipeline-stages) |
+| Pipeline Configuration | <ul><li>splitting algorithm: another option is `fixed-stride` to cut source videos into fixed-length clips.</li><li>captioning algorithm: another 2 options are `qwen` & `phi4`, which requires adding `qwen2.5_vl` and `phi_4` to the model download list, respectively.</li><li>captioning prompt: instead of using default prompt, you can pass in a custom prompt using `--captioning-prompt-text '...'`</li><li>filters: the reference pipeline includes<ul><li>motion-filter (`--motion-filter enable`)</li><li>aesthetic filter (`--aesthetic-threshold 3.5`)</li><li>experimental VLM-based filter (`--qwen-filter enable`); note you will need add `qwen2.5_vl` to the model download list.</li></ul></li></ul> | [Split-Annotate Pipeline](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/REFERENCE_PIPELINES_VIDEO.md#split-annotate-pipeline-stages) |
 | Adding New Functionality | If you need e.g. add new filtering stages... | [Pipeline Design Guide](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/PIPELINE_DESIGN_GUIDE.md) |
