@@ -55,6 +55,7 @@ cosmos-curate image build
 ### Download model weights
 
 For this recipe, we will only download
+
 - [TransnetV2](https://huggingface.co/Sn4kehead/TransNetV2) for semantically splitting a long video into short clips.
 - [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) for captioning the clips.
 - [T5-11B](https://huggingface.co/google-t5/t5-11b) for generating embeddings for caption text.
