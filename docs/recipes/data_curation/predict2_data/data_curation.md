@@ -20,7 +20,7 @@ We will cover the following steps:
 
 ### Clone and install Cosmos-Curate
 
-This will give you a CLI that helps
+This will give you a CLI that helps with the following tasks:
 
 - build container image which includes the data curation pipelines
 - download required models from HuggingFace
