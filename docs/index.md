@@ -54,7 +54,7 @@ The Cosmos Cookbook includes comprehensive case studies demonstrating real-world
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
-| **Curation** | Curate video data for Cosmos Predict 2 fine-tuning | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
+| **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 
 ## Cosmos Model Ecosystem
 
