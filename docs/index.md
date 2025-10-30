@@ -50,6 +50,12 @@ The Cosmos Cookbook includes comprehensive case studies demonstrating real-world
 | **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
 | **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md) |
 
+### **Cosmos Curator**
+
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **Curation** | Curate video data for Cosmos Predict 2 fine-tuning | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
+
 ## Cosmos Model Ecosystem
 
 The Cosmos architecture consists of multiple model families, each targeting specific capabilities in the AI development workflow:
