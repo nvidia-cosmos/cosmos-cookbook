@@ -30,7 +30,7 @@ The NVCF approach provides a streamlined, cloud-based solution for data curation
 
 ### Prerequisites
 
-Install the Cosmos Curator CLI client (detailed setup instructions are provided in the [Local Setup section](#setup-environment-and-dependencies) below):
+Install the Cosmos Curator CLI client (detailed setup instructions are provided in the [Local Setup section](#running-cosmos-curator-locally) below):
 
 ```shell
 # Quick setup (full instructions in Local Setup section)
@@ -212,141 +212,9 @@ The sharding pipeline will produce the following artifacts under the `output_dat
 │                       ├── 000000.tar
 ```
 
----
+### Running Cosmos Curator locally
 
-## Running Cosmos-Curate Locally
-
-For users who need more control over the curation pipeline or prefer to run processing on their own infrastructure, Cosmos-Curate can be deployed locally using Docker containers. This approach is ideal for development, testing, and scenarios requiring custom modifications.
-
-### Setup Environment and Dependencies
-
-We strongly recommend using a Python virtual environment management system that can specify the Python version, such as conda, mamba, or micromamba.
-
-> **Environment Tips:**
->
-> - Set `export PYTHONNOUSERSITE=1` to exclude user site-package directory
-> - For headless environments, set `export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` to avoid keyring pop-ups
-
-```bash
-# Install system dependencies
-uv tool install poetry
-
-# Clone the repository
-git clone --recurse-submodules https://github.com/nvidia-cosmos/cosmos-curate.git
-cd cosmos-curate
-
-# Install the repository
-uv venv --python=3.10
-source .venv/bin/activate
-poetry install --extras=local
-
-# Test installation
-cosmos-curate --help
-```
-
-Alternatively, you can execute `./devset.sh` to complete initial setup of the environment from **within your virtual environment**.
-
-**There are a few more steps needed** to setup access to huggingface, NGC container registry etc.
-Please refer to this [Initial Setup section](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#initial-setup) for details.
-
-### Quick Start: Hello-World Pipeline
-
-The hello-world example provides a minimal introduction to the framework:
-
-```bash
-# 1. Build a docker image for hello-world pipeline
-cosmos-curate image build --image-name cosmos-curate --image-tag hello-world --envs transformers
-
-# 2. Download the GPT-2 model weights
-cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world -- pixi run python -m cosmos_curate.core.managers.model_cli download --models gpt2
-
-# 3. Run the hello-world pipeline
-cosmos-curate local launch --image-name cosmos-curate --image-tag hello-world --curator-path . -- pixi run python -m cosmos_curate.pipelines.examples.hello_world_pipeline
-```
-
-### Production Video Pipeline Setup
-
-For the full video curation pipeline, you'll need to build a more comprehensive Docker image and download additional model weights.
-
-#### Build the Docker Image
-
-Building the Docker image can take up to 45 minutes for a fresh build.
-
-```bash
-cosmos-curate image build --image-name cosmos-curate --image-tag 1.0.0
-```
-
-#### Download Model Weights
-
-Download weights for all required models. This may take 10+ minutes depending on network speed.
-
-```bash
-cosmos-curate local launch --image-name cosmos-curate --image-tag 1.0.0 -- pixi run python3 -m cosmos_curate.core.managers.model_cli download
-```
-
-### Running the Split-Annotate Pipeline
-
-The split-annotate pipeline handles the core video processing workflow:
-
-#### Path Configuration
-
-> **Important:** Local paths refer to paths inside the container, not on your local machine. Since `"${COSMOS_CURATE_LOCAL_WORKSPACE_PREFIX:-$HOME}/cosmos_curate_local_workspace"` is mounted to `/config/`, local paths like `~/cosmos_curate_local_workspace/foo/` should be specified as `/config/foo/` in commands.
-
-- **Input/Output**: Can be either local container paths or S3 paths.
-- **Local Example**: For videos in `~/cosmos_curate_local_workspace/raw_videos/`, specify `--input-video-path /config/raw_videos/`
-- **S3 Example**: `--input-video-path s3://bucket/raw_videos/` (ensure `~/.aws/credentials` is configured).
-- **Limitations**: Spaces are not allowed in S3 video paths.
-
-#### Basic Pipeline Execution
-
-```bash
-cosmos-curate local launch \
-    --image-name cosmos-curate --image-tag 1.0.0 --curator-path . \
-    -- pixi run python3 -m cosmos_curate.pipelines.video.run_pipeline split \
-    --input-video-path <local or s3 path containing input videos> \
-    --output-clip-path <local or s3 path to store output clips and metadata> \
-    --limit 1
-```
-
-**Pipeline Workflow:**
-
-- Splits input videos into shorter clips based on scene transitions.
-- Transcodes each clip to standard format.
-- Generates motion and aesthetic scores (optional step).
-- Creates descriptive captions for each 256-frame window.
-- Stores processed clips and metadata to the specified output path.
-
-### Generating Cosmos Predict 2 Datasets
-
-To create datasets specifically for Cosmos Predict 2 Video2World post-training, use the following command:
-
-```bash
-cosmos-curate local launch \
-    --image-name cosmos-curate --image-tag 1.0.0 --curator-path . \
-    -- pixi run python3 -m cosmos_curate.pipelines.video.run_pipeline split \
-    --input-video-path <input_path> \
-    --output-clip-path <output_path> \
-    --generate-cosmos-predict-dataset predict2 \
-    --transnetv2-min-length-frames 120 \
-    --limit 1
-```
-
-This generates a `cosmos_predict2_video2world_dataset/` subdirectory with the following structure:
-
-```
-cosmos_predict2_video2world_dataset/
-├── metas/
-│   ├── {clip-uuid}_{start_frame}_{end_frame}.txt
-├── videos/
-│   ├── {clip-uuid}_{start_frame}_{end_frame}.mp4
-├── t5_xxl/
-│   ├── {clip-uuid}_{start_frame}_{end_frame}.pickle
-```
-
-### Useful Local Development Options
-
-- `--curator-path`: Mounts the source code into the container, avoiding rebuilds during development.
-- `--limit`: Process only N videos (use small values like 1 for local testing to avoid memory issues).
+For a complete end-to-end example of running Cosmos-Curate locally using Docker, refer to the [Curate data for Cosmos-Predict Fine-Tuning](../../recipes/data_curation/predict2_data/data_curation.md) recipe. This guide walks through the entire workflow using a real dataset from Hugging Face ([nexar_collision_prediction](https://huggingface.co/datasets/nexar-ai/nexar_collision_prediction)).
 
 ### SLURM Cluster Deployment
 
