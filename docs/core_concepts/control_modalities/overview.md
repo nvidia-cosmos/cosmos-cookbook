@@ -146,7 +146,7 @@ To achieve complex goals like background replacement, you must strategically com
 
 ### The Background Replacement Walkthrough
 
-The following steps illustrate how each control builds upon the last to achieve a high-fidelity result, starting from a base video. The objective is to change the original video's background to an outside street type environment.
+The following steps illustrate how each control builds upon the last to achieve a high-fidelity result, starting from a base video. The objective is to change the original video's background to an outside street type environment. This is not meant to be a recipe on how to perform a background change, but more of a walkthrough how each control modality affects the result. Specific guidelines on how to generate these results can be found [here](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
 
 #### **Step 1: Edge Only (Base Structure)**
 
@@ -187,7 +187,7 @@ To generate a *completely new and realistic* background, **Segmentation control*
   Your browser does not support the video tag.
 </video>
 
-Full receipes can be found at **[Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/)**.
+Full receipes can be found at [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
 
 ---
 
@@ -208,4 +208,4 @@ Full receipes can be found at **[Real World Video Manipulation Guidelines with C
 
 ## Use Cases
 
-- **[Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/)**
+- [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
