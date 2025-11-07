@@ -29,7 +29,9 @@ Before diving into recipes, here are the basic control modalities we'll be using
 | **Mask** | Binary mask (white = change allowed) | <video src="assets/mask.mp4" controls width="300"></video> |
 | [**Inverted Mask**](#generating-an-inverted-mask) | Inverse of mask (white = background) | <video src="assets/mask_inverted.mp4" controls width="300"></video> |
 
-Note: Edge and Vis can be automatically computed on the fly. To compute all other modalities, check out the [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) and [some starter code if necessary](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing).
+Note: Edge and Vis can be automatically computed on the fly.
+
+<!-- To compute all other modalities, check out the [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) and [some starter code if necessary](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing). -->
 
 ## **Quick Recipes: Common Use Cases**
 
@@ -326,7 +328,7 @@ To generate a filtered edge video, we simply combine the mask video with the raw
 
 <img src="./assets/filtered_edge_recipe.png" controls width="1300"></img>
 
-Some example code of how to create this can be found [here](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing/blob/main/utils/filter_out_edges.py).
+<!-- Some example code of how to create this can be found [here](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing/blob/main/utils/filter_out_edges.py). -->
 
 ### Generating an Inverted Mask
 
@@ -342,10 +344,10 @@ ffmpeg -y -i mask.mp4 \
 
 When object and background contours are too similar, edges may not be detected reliably. In these cases, increasing the brightness and contrast of the video before running Canny edge detection can help produce a more detailed and stable edge map.
 
-An example implementation of this preprocessing step can be found [here](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing/blob/main/control_net_generation/get_object_edges.py).
+<!-- An example implementation of this preprocessing step can be found [here](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing/blob/main/control_net_generation/get_object_edges.py). -->
 
 ## Resources
 
 1. [Cosmos Transfer 2.5 Model](https://github.com/nvidia-cosmos/cosmos-transfer2.5) - Model weights and documentation.
-2. [Control Extraction Tools](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing) - Scripts for generating control modalities.
-3. [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) - Summary of the role of each control modality.
+2. [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) - Summary of the role of each control modality.
+<!-- 2. [Control Extraction Tools](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing) - Scripts for generating control modalities. -->
