@@ -200,7 +200,7 @@ To generate a *completely new and realistic* background, **Segmentation control*
   Your browser does not support the video tag.
 </video>
 
-Full receipes can be found at [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+Full recipes can be found at [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
 
 ---
 
