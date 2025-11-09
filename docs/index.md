@@ -110,4 +110,4 @@ This cookbook provides flexible entry points for both **inference** and **traini
 - **Inference workflows:** [Getting Started](get_started.md) for setup and immediate model deployment
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
-- **Post-training examples:** [Post-Training Examples](#post-training-examples) organized by application area
+- **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area
