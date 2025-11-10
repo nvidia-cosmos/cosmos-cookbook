@@ -1,0 +1,5 @@
+{
+    "inference_type": "text2world",
+    "name": "TextOutput_2",
+    "prompt": "The video is shot from the driver's view, showing one yellow sedan steadily driving straight along a highway. It is afternoon, with thick fog reducing visibility. Another vehicle in the next lane is attempting to change lanes, while a truck approaches from behind."
+}

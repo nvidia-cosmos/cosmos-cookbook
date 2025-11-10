@@ -1,0 +1,7 @@
+{
+    "inference_type": "image2world",
+    "input_path": "I1_input.jpg",
+    "guidance": 7,
+    "seed": 0,
+    "prompt": "The video is taken from the perspective of a vehicle's dashboard camera, showing the view of the road ahead. The sky is clear and blue, indicating good weather conditions. The road is lined with green trees and bushes, adding a touch of nature to the urban setting. There are multiple vehicles on the road, including cars and trucks, all moving in the same direction. The vehicles vary in color, with shades of red, blue, and white being prominent. The traffic lights are visible, showing a green light, indicating that it is safe to proceed. The video does not show any accidents or unusual events, just a typical day on the road."
+}
