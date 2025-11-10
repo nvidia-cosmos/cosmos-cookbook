@@ -1,0 +1,8 @@
+{
+    "inference_type": "video2world",
+    "input_path":"samples/assets/V2_input.mp4",
+    "num_input_frames": 1,
+    "guidance": 7,
+    "seed": 1,
+    "prompt": "The video begins with a wide view of a large, empty warehouse characterized by a light grey colored floor and a solid wall in the background. The warehouse is filled with numerous stacks of boxes arranged in rows on wooden pallets. A pink ladder is positioned in the center of the frame. The camera slowly moves forward, providing a closer view of the stacks of boxes. The camera continues to move forward, offering a detailed view of the neatly arranged boxes and the ladder. The video wraps up with the camera still moving forward, maintaining the focus on the stacks of boxes and the ladder."
+}

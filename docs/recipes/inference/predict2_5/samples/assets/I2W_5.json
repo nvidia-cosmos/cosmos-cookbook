@@ -1,0 +1,7 @@
+{
+    "inference_type": "image2world",
+    "input_path": "samples/assets/I5_input.jpg",
+    "guidance": 7,
+    "seed": 0,
+    "prompt": "The video is taken from the perspective of a driver inside a vehicle. The vehicle is stationary at a traffic light, and the view outside the windshield shows a clear sky and a road with multiple lanes. There are other vehicles visible, including cars and a truck. The traffic light is red, and there are no visible pedestrians. The surroundings include a bridge in the distance and a building with a red roof. The video does not show any significant action or movement."
+}

@@ -1,0 +1,7 @@
+{
+    "inference_type": "image2world",
+    "input_path": "samples/assets/I2_input.jpg",
+    "guidance": 7,
+    "seed": 0,
+    "prompt": "The video opens with a view of a snow-covered road flanked by trees on both sides. The sky is a gradient of colors, suggesting either sunrise or sunset. The camera angle is from the perspective of a car driver, with the hood of the car visible in the foreground. As the video progresses, the car moves forward, and the surrounding landscape remains consistent, with the trees and snow-covered ground visible throughout. The lighting conditions change subtly, indicating the passage of time."
+}

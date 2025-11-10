@@ -1,0 +1,8 @@
+{
+    "inference_type": "video2world",
+    "input_path": "samples/assets/V3_input.mp4",
+    "num_input_frames": 1,
+    "guidance": 7,
+    "seed": 1,
+    "prompt": "An empty wooden pallet lies on the ground in an unloading area of a vast industrial warehouse. There are many filled pallets on the ground nearby, full of goods and shipping supplies. The floor is an old wooden floor that is dusty and dirty."
+}

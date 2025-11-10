@@ -1,0 +1,8 @@
+{
+    "inference_type": "video2world",
+    "input_path": "samples/assets/V5_input.mp4",
+    "num_input_frames": 1,
+    "guidance": 7,
+    "seed": 1,
+    "prompt": "The mounted camera on the robot's head captures its steady progress past shelves of materials toward large cylindrical structures in the distance."
+}

@@ -1,0 +1,5 @@
+{
+    "inference_type": "text2world", 
+    "name": "TextOutput_3", 
+    "prompt": "The video is shot from a pedestrian's perspective, showing a matte black van swiftly turning right at a stop sign. It is dusk, windy, and there is a cyclist approaching the intersection, waiting for the van to complete its turn."
+}

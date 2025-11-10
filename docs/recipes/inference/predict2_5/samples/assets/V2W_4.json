@@ -1,0 +1,8 @@
+{
+    "inference_type": "video2world",
+    "input_path": "samples/assets/V4_input.mp4",
+    "num_input_frames": 1,
+    "guidance": 7,
+    "seed": 1,
+    "prompt": "The static shot captures a yellow hard hat on the floor of an industrial warehouse. The concrete floor is clean with texture."
+}
