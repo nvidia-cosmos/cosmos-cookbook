@@ -1,5 +1,5 @@
 {
-    "inference_type": "text2world", 
-    "name": "TextOutput_1", 
+    "inference_type": "text2world",
+    "name": "TextOutput_1",
     "prompt": "The video is shot from a pedestrian's perspective, showing two departing black trucks quickly turn left at an intersection. It is afternoon, with fog reducing visibility. Nearby, another vehicle is attempting to make a right turn while a pedestrian waits to cross."
 }
