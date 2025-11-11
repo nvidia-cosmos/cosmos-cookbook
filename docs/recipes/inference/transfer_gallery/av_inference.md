@@ -1,7 +1,7 @@
 # Conversion from simulation to real for AV with Cosmos Transfer 2.5
 
 > **Authors:**  [Nikolay Matveiev]() • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
- 
+
 > **Organization:** NVIDIA
 
 ## Overview
@@ -10,18 +10,19 @@
 |-----------|--------------|--------------|
 | Cosmos Transfer 2.5| Inference | Sim to real using different controlnets |
 
-## Example 1:
+## Example 1
 
 - **Multi control**: The model uses different control nets, each with different control weights to produce an output. This gives the user more control over how the output would look like.
 
 **Inference command**
+
 ```Json
 {
     // Update the paramater values for control weights, seed, guidance in below json file as per the values given in the column named "Parameter values" in table below
     "seed": 5000,
     "prompt_path": "assets/prompt_av.json",                 // Update the prompt in the json file as per the input selected from below table
     "video_path": "assets/av_car_input.mp4",
-    "guidance": 3,    
+    "guidance": 3,
     "depth": {
         "control_weight": 0.4
     },
@@ -58,11 +59,8 @@ table td {
 |Dashcam video, driving through a modern urban environment, twilight or early morning, partly cloudy | seed: 5000 <br> guidance: 3 <br><br> Control weights: <br> depth: 0.4 <br> edge: 0.1 <br> seg: 0.5 <br> vis: 0.1 | <video width="4096" controls>  <source src="assets/av_car_input.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="4096" controls>  <source src="assets/av_car_output_9.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |
 |Dashcam video, driving through a modern urban environment, night time, bright street lamps lighting up the fog | seed: 5000 <br> guidance: 3 <br><br> Control weights: <br> depth: 0.4 <br> edge: 0.1 <br> seg: 0.5 <br> vis: 0.1 | <video width="4096" controls>  <source src="assets/av_car_input.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="4096" controls>  <source src="assets/av_car_output_10.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |
 
+## Examples showing quality enhancements in Transfer 2.5 vs Transfer 1
 
-
-
-## Examples showing quality enhancements in Transfer 2.5 vs Transfer 1:
-
-| **Example A** | **Example B** | **Example C** | **Example D** | 
+| **Example A** | **Example B** | **Example C** | **Example D** |
 |-----------|--------------|-----------|--------------|
 |<video width="1024" controls>  <source src="assets/av1_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |<video width="1024" controls>  <source src="assets/av2_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video>|<video width="1024" controls>  <source src="assets/av3_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video>|<video width="1024" controls>  <source src="assets/av4_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video>

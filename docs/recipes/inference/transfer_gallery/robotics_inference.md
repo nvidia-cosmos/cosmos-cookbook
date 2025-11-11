@@ -1,7 +1,7 @@
 # Conversion from simulation to real for Robots with Cosmos Transfer 2.5
 
 > **Authors:**  [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Nikolay Matveiev]() • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
- 
+
 > **Organization:** NVIDIA
 
 ## Overview
@@ -10,16 +10,17 @@
 |-----------|--------------|--------------|
 | Cosmos Transfer 2.5| Inference | Sim to real using different controlnets |
 
-## Example 1:
+## Example 1
 
 - **Edge control**: The model extracts the edges from the input video and creates a edge video from the user input. It then uses this control video along with the prompt/ text to generate the final output.
 
 **Inference command**
+
 ```Json
 {
     "seed": 1,
     "prompt_path": "assets/prompt_robot.json",            // Update the prompt in the json file as per the input selected from below table
-    "output_dir": "outputs/robot",            
+    "output_dir": "outputs/robot",
     "video_path": "assets/kitchen_stove_input.mp4",      // change the name of input file to one of them from below table
     "guidance":7,
     "edge": {
@@ -54,12 +55,12 @@ table td {
 |This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with dark wood cabinets and an expensive beige veined marble countertop. In the middle of the island counter is a large white bowl of apples. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink. | <video width="4096" controls>  <source src="assets/kitchen_fridge_input.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="4096" controls>  <source src="assets/kitchen_fridge_dark_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |
 |The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution. | <video width="4096" controls>  <source src="assets/kitchen_fridge_input.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="4096" controls>  <source src="assets/kitchen_fridge.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |
 
-
-## Example 2:
+## Example 2
 
 - **Multi control**: The model uses different control nets, each with different control weights to produce an output. This gives the user more control over how the output would look like.
 
 **Inference command**
+
 ```Json
 {
     "seed": 2000,
@@ -86,14 +87,12 @@ table td {
 
 **Input and Output**
 
-
 | **Input video** | **Input depth control video** | **Input edge control video** | **Input segment control video** | **output** |
 |-----------|--------------|--------------|--------------|--------------|
 |<video width="1024" controls>  <source src="assets/kitchen2_cg.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |<video width="1024" controls>  <source src="assets/kitchen2_depth.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="1024" controls>  <source src="assets/kitchen2_edge.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |<video width="1024" controls>  <source src="assets/kitchen2_seg.mp4" type="video/mp4">  Your browser does not support the video tag.</video> | <video width="1024" controls>  <source src="assets/kitchen2_output.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |
 
+## Examples showing quality enhancements in Transfer 2.5 vs Transfer 1
 
-## Examples showing quality enhancements in Transfer 2.5 vs Transfer 1:
-
-| **Example A** | **Example B** | 
+| **Example A** | **Example B** |
 |-----------|--------------|
 |<video width="4096" controls>  <source src="assets/robot1_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video> |<video width="4096" controls>  <source src="assets/robot2_t1_t2.mp4" type="video/mp4">  Your browser does not support the video tag.</video>
