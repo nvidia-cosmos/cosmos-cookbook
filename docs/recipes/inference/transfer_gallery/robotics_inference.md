@@ -1,6 +1,6 @@
 # Conversion from simulation to real for Robots with Cosmos Transfer 2.5
 
-> **Authors:**  [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Nikolay Matveiev]() • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
+> **Authors:**  [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Nikolay Matveiev] • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
 > **Organization:** NVIDIA
 
@@ -14,7 +14,7 @@
 
 - **Edge control**: The model extracts the edges from the input video and creates a edge video from the user input. It then uses this control video along with the prompt/ text to generate the final output.
 
-**Inference command**
+### Inference command
 
 ```Json
 {
@@ -29,7 +29,7 @@
 }
 ```
 
-**Input and Output**
+### Input and Output
 
 <style>
 table td {
@@ -59,7 +59,7 @@ table td {
 
 - **Multi control**: The model uses different control nets, each with different control weights to produce an output. This gives the user more control over how the output would look like.
 
-**Inference command**
+### Inference command
 
 ```Json
 {
@@ -85,7 +85,7 @@ table td {
 }
 ```
 
-**Input and Output**
+### Input and Output
 
 | **Input video** | **Input depth control video** | **Input edge control video** | **Input segment control video** | **output** |
 |-----------|--------------|--------------|--------------|--------------|

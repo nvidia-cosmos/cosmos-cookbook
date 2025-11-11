@@ -1,6 +1,6 @@
 # Conversion from simulation to real for AV with Cosmos Transfer 2.5
 
-> **Authors:**  [Nikolay Matveiev]() • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
+> **Authors:**  [Nikolay Matveiev] • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
 > **Organization:** NVIDIA
 
@@ -14,7 +14,7 @@
 
 - **Multi control**: The model uses different control nets, each with different control weights to produce an output. This gives the user more control over how the output would look like.
 
-**Inference command**
+### Inference command
 
 ```Json
 {
@@ -38,7 +38,7 @@
 }
 ```
 
-**Input and Output**
+### Input and Output
 
 <style>
 table td {
