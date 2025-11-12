@@ -1,4 +1,4 @@
-# Robotics Sim-to-Real Transfer with Cosmos Transfer 2.5
+# Robotics Domain Adaptation Gallery
 
 > **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
@@ -6,11 +6,18 @@
 
 ## Overview
 
-This page showcases a collection of results generated using Cosmos Transfer 2.5 for robotics applications, specifically focusing on sim-to-real transfer scenarios. The examples demonstrate how to transform synthetic robotic simulation videos into realistic environments, enabling domain adaptation for robotic training and validation. These results are intended to serve as inspiration for users exploring how to leverage the model for bridging the gap between simulated and real-world robotic environments, similar to the autonomous vehicle domain adaptation shown in the [AV inference gallery](av_inference.md).
+This page showcases results from Cosmos Transfer 2.5 for robotics applications. The examples demonstrate sim-to-real transfer for robotic manipulation tasks in kitchen environments, showing how synthetic simulation videos can be transformed into photorealistic scenes with varied materials, lighting, and environmental conditions. These results enable domain adaptation and data augmentation for robotic training and validation.
 
-## Example 1
+**Use Case**: Robotics engineers can use these techniques to generate diverse training data from a single simulation, creating variations in kitchen styles, materials, and lighting conditions without re-running expensive simulations or capturing real-world data.
 
-- **Edge control**: The model extracts the edges from the input video and creates an edge video from the user input. It then uses this control video along with the prompt/text to generate the final output.
+## Example 1: Edge-Only Control for Environment Variation
+
+This example demonstrates how to transform synthetic robotic simulation videos into photorealistic scenes with different kitchen styles and materials using **edge control**. Edge control preserves the original structure, motion, and geometry of the robot and scene while allowing the visual appearance to change dramatically based on the text prompt.
+
+- **Edge control**: Maintains the structure and layout of objects, robot poses, and camera motion from the simulation while transforming the visual appearance (materials, lighting, colors) according to the prompt.
+- **Why use edge-only**: Ideal when you want to preserve exact robot motions and object positions from simulation while varying environmental aesthetics.
+
+For detailed explanations of control modalities, see [Control Modalities Overview](../../../core_concepts/control_modalities/overview.md).
 
 <style>
 table td {
@@ -24,7 +31,9 @@ table td, table th {
 }
 </style>
 
-### Scene 1a: Kitchen Stove
+### Scene 1a: Kitchen Stove - Cooking Task
+
+This scene shows a humanoid robot performing a cooking task at a stove. The examples demonstrate how different kitchen cabinet styles (white, red, wood tones) and robot materials (plastic, metal, gold) can be generated from the same simulation.
 
 #### Input Video
 
@@ -119,7 +128,9 @@ table td, table th {
 </tbody>
 </table>
 
-### Scene 1b: Kitchen Island with Oranges
+### Scene 1b: Kitchen Island - Object Manipulation
+
+This scene shows a robot performing precise object manipulation at a kitchen island, picking up and placing items. The examples demonstrate material variations (different fruit/objects) coordinated with kitchen style changes.
 
 #### Input Video
 
@@ -214,7 +225,9 @@ table td, table th {
 </tbody>
 </table>
 
-### Scene 1c: Kitchen Refrigerator
+### Scene 1c: Kitchen Refrigerator - Appliance Interaction
+
+This scene demonstrates robot interaction with appliances, showing the robot opening a refrigerator. The examples maintain the lighting dynamics (fridge interior light) while varying kitchen aesthetics.
 
 #### Input Video
 
@@ -309,9 +322,16 @@ table td, table th {
 </tbody>
 </table>
 
-## Example 2
+## Example 2: Multi-Control with Custom Control Videos
 
-- **Multi control**: The model uses different control nets, each with different control weights to produce an output. This gives the user more control over how the output would look like.
+This example demonstrates advanced usage where you provide **custom pre-computed control videos** (depth, edge, segmentation) alongside the input video. Multi-control gives you fine-grained control over different aspects of the transformation:
+
+- **depth**: Controls 3D spatial relationships and perspective
+- **edge**: Maintains structural boundaries and object shapes
+- **seg**: Enables semantic-level changes and object replacement
+- **vis**: Preserves lighting and camera properties (set to 0 in this example)
+
+**When to use multi-control**: Use this approach when you need precise control over the transformation by pre-generating and fine-tuning specific control signals, especially for complex scene manipulations or when edge-only control is insufficient.
 
 ### Input Video
 
