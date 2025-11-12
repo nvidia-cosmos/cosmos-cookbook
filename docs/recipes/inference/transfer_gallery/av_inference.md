@@ -15,7 +15,7 @@ This page showcases a collection of results generated using Cosmos Transfer 2.5 
   - **edge**: Preserves original structure, shape, and layout
   - **seg**: Enables structural changes and semantic replacement
   - **vis**: Preserves background, lighting, and overall visual appearance
-  
+
 For detailed explanations of control modalities, see [Control Modalities Overview](../../../core_concepts/control_modalities/overview.md).
 
 ### Input Video
@@ -196,28 +196,28 @@ table td, table th {
 
 Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
 
-**Example A**
+### Example A
 
 <video width="800" controls>
   <source src="assets/av1_t1_t2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Example B**
+### Example B
 
 <video width="800" controls>
   <source src="assets/av2_t1_t2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Example C**
+### Example C
 
 <video width="800" controls>
   <source src="assets/av3_t1_t2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Example D**
+### Example D
 
 <video width="800" controls>
   <source src="assets/av4_t1_t2.mp4" type="video/mp4">

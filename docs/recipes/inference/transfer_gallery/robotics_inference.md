@@ -8,7 +8,6 @@
 
 This page showcases a collection of results generated using Cosmos Transfer 2.5 for robotics applications, specifically focusing on sim-to-real transfer scenarios. The examples demonstrate how to transform synthetic robotic simulation videos into realistic environments, enabling domain adaptation for robotic training and validation. These results are intended to serve as inspiration for users exploring how to leverage the model for bridging the gap between simulated and real-world robotic environments, similar to the autonomous vehicle domain adaptation shown in the [AV inference gallery](av_inference.md).
 
-
 ## Example 1
 
 - **Edge control**: The model extracts the edges from the input video and creates an edge video from the user input. It then uses this control video along with the prompt/text to generate the final output.
@@ -349,21 +348,21 @@ table td, table th {
 
 ### Control Videos
 
-**Depth Control**
+#### Depth Control
 
 <video width="600" controls>
   <source src="assets/kitchen2_depth.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Edge Control**
+#### Edge Control
 
 <video width="600" controls>
   <source src="assets/kitchen2_edge.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Segmentation Control**
+#### Segmentation Control
 
 <video width="600" controls>
   <source src="assets/kitchen2_seg.mp4" type="video/mp4">
@@ -381,14 +380,14 @@ table td, table th {
 
 Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
 
-**Example A**
+### Example A
 
 <video width="800" controls>
   <source src="assets/robot1_t1_t2.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-**Example B**
+### Example B
 
 <video width="800" controls>
   <source src="assets/robot2_t1_t2.mp4" type="video/mp4">
