@@ -6,7 +6,7 @@ This document contains comprehensive FAQ information compiled from multiple sour
 
 ### What is NVIDIA Cosmos?
 
-NVIDIA Cosmos is a world foundation model (WFM) development platform for physical AI applications. The platform includes pre-trained multimodal models for generating world states as videos and physical AI reasoning, along with tokenizers, guardrails, data-processing pipelines, and post-training scripts.
+**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a world foundation model (WFM) development platform to advance physical AI. At its core are Cosmos WFMs, openly available pretrained multimodal models that developers can use out-of-the-box for generating world states as videos and physical AI reasoning, or post-train to develop specialized physical AI models. NVIDIA Cosmos also includes advanced tokenizers, guardrails, accelerated data-processing pipeline, and post-training scripts.
 
 ### What are the main components of Cosmos?
 
@@ -51,26 +51,16 @@ The Cosmos platform provides the following capabilities:
 
 ### What are the main use cases for Cosmos?
 
-#### Data Curation
+**Data Curation:** Cosmos platform includes Cosmos Curator for video data and video data search to accelerate data curation for developers working with vast amounts of real or synthetic data to train physical AI models.
 
-Cosmos Curator provides video data processing and search capabilities for large-scale real or synthetic datasets used in physical AI model training.
+**Accelerate synthetic data generation (SDG):** Cosmos WFMs are purpose-built to accelerate SDG in many ways.
 
-#### Synthetic Data Generation
+- With **Cosmos Predict**, developers can generate synthetic data from a text prompt or a pair of images. Outputs include predictive next frames or interpolated frames—ideal for edge cases or exploring multiple scenarios from a single input.
+- **Omniverse** creates realistic 3D scenes that can be used as an input also referred to as 'ground truth' for **Cosmos Transfer**, which amplifies them across diverse environments and lighting. This process generates photorealistic, scalable, augmented data for robot and autonomous vehicle training as well as computer vision applications.
+- **Cosmos Reason** acts as a critic for synthetic data. It scores video inputs based on how well they match a text prompt and can generate captions to help curate training data.
+- Any combination of these models can accelerate the synthetic data generation processes. Combined with [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim), [AV Simulation](https://www.nvidia.com/en-us/use-cases/autonomous-vehicle-simulation/), [Isaac GR00T](https://developer.nvidia.com/isaac/gr00t), these models can unlock a variety of SDGs.
 
-Cosmos models support synthetic data generation through:
-
-- **Cosmos Predict**: Generates synthetic data from text prompts or image pairs, producing predictive or interpolated frames
-- **Cosmos Transfer**: Processes 3D scenes from Omniverse to generate photorealistic data across diverse environments and lighting conditions
-- **Cosmos Reason**: Evaluates synthetic data quality and generates captions for data curation
-
-#### Post-training
-
-Cosmos WFMs support customization for domain-specific applications through post-training, enabling modification of:
-
-- Output type and format
-- Output quantity and resolution
-- Output quality and style
-- Output perspective and viewpoint
+**Post-training:** Cosmos WFMs are fully customizable to develop downstream vision, robotics or autonomous vehicle foundation models tailored for customer data. Post-training can be done to change output type, output quantity, output quality, output style or output point of view.
 
 ### How do Cosmos models differ from other video foundation models?
 

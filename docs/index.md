@@ -2,86 +2,76 @@
 
 ## Overview
 
-The **NVIDIA Cosmos ecosystem** is a suite of World Foundation Models (WFMs) for real-world, domain-specific applications. This cookbook provides step-by-step workflows, technical recipes, and concrete examples across robotics, simulation, autonomous systems, and physical scene understanding. It serves as a technical reference for reproducing successful Cosmos model deployments across different domains.
+**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models — offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
 
-The Cosmos ecosystem covers the complete AI development lifecycle: from **inference** with pre-trained models to **custom post-training** for domain-specific adaptation. The cookbook includes quick-start inference examples, advanced post-training workflows, and proven recipes for successful model deployment and customization.
+The Cosmos ecosystem supports the complete Physical AI development lifecycle — from inference using pre-trained models to custom post-training for domain adaptation. Inside, you'll find:
+
+- Quick-start inference examples to get up and running fast.
+- Advanced post-training workflows for domain-specific fine-tuning.
+- Proven recipes for scalable, production-ready deployments.
 
 ## Open Source Community Platform
 
-The Cosmos Cookbook is designed as an **open-source platform**, where NVIDIA shares practical knowledge and proven techniques with the broader AI community. This collaborative approach enables researchers, developers, and practitioners to contribute their own workflows, improvements, and domain-specific adaptations.
+The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
 
-**Repository:** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
+**📂 Repository:** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
-We encourage community contributions, including new examples, workflow improvements, bug fixes, and documentation enhancements. The open-source nature of the Cosmos Cookbook ensures that collective knowledge and best practices of Cosmos models continue to evolve and benefit the entire ecosystem.
+We welcome contributions—from new examples and workflow improvements to bug fixes and documentation updates. Together, we can evolve best practices and accelerate the adoption of Cosmos models across domains.
 
-## Case Study Recipes
+## End-to-End Examples
 
-The Cosmos Cookbook includes comprehensive case studies demonstrating real-world post-training applications across the Cosmos ecosystem.
+The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
 ### **Cosmos Predict**
 
 #### Future state prediction and generation
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
+| **Workflow** | **Description**                                                       | **Link**                                                                                   |
+| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
-| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
+| **Training** | Synthetic trajectory data generation for humanoid robot learning      | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md)               |
 
 ### **Cosmos Transfer**
 
 #### Multi-control video generation and augmentation
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
+| **Workflow**  | **Description**                                                                             | **Link**                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios                          | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)           |
 | **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
-| **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
+| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls                | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md)     |
+| **Inference** | CG-to-real conversion for multi-view warehouse environments                                 | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md)                 |
+| **Inference** | Sim2Real data augmentation for robotics navigation tasks                                    | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md)                  |
+| **Inference** | Synthetic manipulation motion generation for humanoid robots                                | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md)                                     |
 
 ### **Cosmos Reason**
 
 #### Vision-language reasoning and quality control
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md) |
-| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md) |
-| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md) |
+| **Workflow** | **Description**                                                           | **Link**                                                                                                |
+| ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
+| **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
+| **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
+| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
 
 ### **Cosmos Curator**
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
+| **Workflow** | **Description**                                      | **Link**                                                                        |
+| ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 
-## Cosmos Model Ecosystem
+## Cosmos Models for Physical AI
 
-The Cosmos architecture consists of multiple model families, each targeting specific capabilities in the AI development workflow:
-
-### **Cosmos Curator**
+The Cosmos family of open models consists of five core repositories, each targeting specific capabilities in the AI development workflow:
 
 **[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
 
-### **Cosmos Predict** - Future State Prediction Models
+**[Cosmos Predict](https://github.com/nvidia-cosmos/cosmos-predict2.5)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
 
-**[Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5)** *(Latest)* - A flow-based model that unifies Text2World, Image2World, and Video2World into a single architecture. Uses Cosmos Reason 1 as the text encoder and significantly improves upon Predict 2 in both quality and prompt alignment. Provides specialized variants for robotics, autonomous vehicles (multiview), and simulation with support for custom post-training for domain-specific prediction tasks.
+**[Cosmos Transfer](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - A multi-control video generation system with ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap). Includes 4K upscaling capabilities and supports training for custom control modalities and domain adaptation.
 
-**[Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
-
-### **Cosmos Transfer** - Multi-Control Video Generation Models
-
-**[Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** *(Latest)* - Enhanced multi-control video generation system with improved quality and control precision. Features ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap), 4K upscaling capabilities, and supports training for custom control modalities and domain adaptation.
-
-**[Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1)** - A multi-control video generation system with ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap). Includes 4K upscaling capabilities and supports training for custom control modalities and domain adaptation.
-
-### **Cosmos Reason** - Vision-Language Reasoning Models
-
-**[Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1)** - A 7B vision-language model for physically grounded reasoning. Handles spatial/temporal understanding and chain-of-thought tasks, with fine-tuning support for embodied AI applications and domain-specific reasoning.
-
-### **Cosmos RL** - Training Framework
+**[Cosmos Reason](https://github.com/nvidia-cosmos/cosmos-reason1)** - A 7B vision-language model for physically grounded reasoning. Handles spatial/temporal understanding and chain-of-thought tasks, with fine-tuning support for embodied AI applications and domain-specific reasoning.
 
 **[Cosmos RL](https://github.com/nvidia-cosmos/cosmos-rl)** - A distributed training framework supporting both supervised fine-tuning (SFT) and reinforcement learning approaches. Features elastic policy rollout, FP8/FP4 precision support, and optimization for large-scale VLM and LLM training.
 
