@@ -26,7 +26,6 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 #### Future state prediction and generation
 
-#### Future state prediction and generation
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
