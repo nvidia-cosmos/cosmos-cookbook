@@ -18,7 +18,7 @@ The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Phys
 
 We welcome contributions—from new examples and workflow improvements to bug fixes and documentation updates. Together, we can evolve best practices and accelerate the adoption of Cosmos models across domains.
 
-## End-to-End Examples
+## Case Study Recipes
 
 The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
@@ -26,39 +26,41 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 #### Future state prediction and generation
 
-| **Workflow** | **Description**                                                       | **Link**                                                                                   |
-| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+#### Future state prediction and generation
+
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
-| **Training** | Synthetic trajectory data generation for humanoid robot learning      | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md)               |
+| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 
 ### **Cosmos Transfer**
 
 #### Multi-control video generation and augmentation
 
-| **Workflow**  | **Description**                                                                             | **Link**                                                                                                |
-| ------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios                          | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)           |
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 | **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls                | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md)     |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments                                 | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md)                 |
-| **Inference** | Sim2Real data augmentation for robotics navigation tasks                                    | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md)                  |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots                                | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md)                                     |
+| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
+| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
+| **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
+| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 
 ### **Cosmos Reason**
 
 #### Vision-language reasoning and quality control
 
-| **Workflow** | **Description**                                                           | **Link**                                                                                                |
-| ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
-| **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
-| **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md) |
+| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md) |
+| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
+| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md) |
 
 ### **Cosmos Curator**
 
-| **Workflow** | **Description**                                      | **Link**                                                                        |
-| ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 
 ## Cosmos Models for Physical AI
