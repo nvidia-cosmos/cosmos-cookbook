@@ -26,7 +26,6 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 #### Future state prediction and generation
 
-
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
