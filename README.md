@@ -7,12 +7,12 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 **📚 [View the Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)**
 
-> The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:  
-> **https://nvidia-cosmos.github.io/cosmos-cookbook/**
+> The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:
+> **<https://nvidia-cosmos.github.io/cosmos-cookbook/>**
 
 ## Overview
 
-This cookbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
+This cookbook provides step-by-step workflows, technical recipes, and comprehensive guides for the complete AI development lifecycle with Cosmos models:
 
 - **Inference**: Quick-start examples with pre-trained models
 - **Data Curation**: Scalable data processing pipelines with Cosmos Curator
@@ -88,7 +88,7 @@ Contains the source documentation in markdown files:
 
 - Technical guides and workflows
 - End-to-end examples and case studies
-- API references and tutorials
+- Step-by-step recipes and tutorials
 - Getting started guides
 
 ### `scripts/`
@@ -128,7 +128,7 @@ just ci-deploy-external         # Deploy external documentation
 - **Modular Scripts**: Reusable components for custom workflows
 - **Evaluation Tools**: Built-in quality assessment and metrics
 - **Production Ready**: Scalable pipelines for real-world deployment
-- **Comprehensive Docs**: Detailed guides and API references
+- **Comprehensive Docs**: Step-by-step workflows and technical recipes
 
 ## Documentation
 
