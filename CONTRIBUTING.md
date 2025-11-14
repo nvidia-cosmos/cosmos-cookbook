@@ -50,11 +50,9 @@ just test           # Run validation
 
 ### 4. Commit and Push
 
-Commit with sign-off (required, see [DCO](#developer-certificate-of-origin)):
-
 ```bash
 git add .
-git commit -s -m "Add Transfer weather augmentation recipe"
+git commit -m "Add Transfer weather augmentation recipe"
 git push origin recipe/descriptive-name
 ```
 
@@ -71,7 +69,7 @@ Update your branch based on review comments:
 
 ```bash
 git add .
-git commit -s -m "Address review feedback"
+git commit -m "Address review feedback"
 git push origin recipe/descriptive-name
 ```
 
@@ -113,17 +111,8 @@ docs/recipes/{inference|post_training}/[model-name]/[recipe-name]/
 
 **Code Review** - All submissions require review (typically within one week). Respond to feedback promptly and keep discussions professional.
 
-## Developer Certificate of Origin
+## Developer Certificate of Origin (Optional)
 
-All commits must be signed off using `git commit -s`, which appends `Signed-off-by: Your Name <your@email.com>` to your commit message.
+You may optionally sign off your commits using `git commit -s`, which appends `Signed-off-by: Your Name <your@email.com>` to your commit message.
 
-**Contributions without sign-off will not be accepted.**
-
-By signing off, you certify that:
-
-- (a) You created the contribution and have the right to submit it under the project's license, or
-- (b) The contribution is based on previous work under a compatible license and you have the right to submit it, or
-- (c) The contribution was provided to you by someone who certified (a) or (b) and you have not modified it, and
-- (d) You understand the contribution is public and will be maintained indefinitely under the project's open source license.
-
-This follows the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
+By signing off, you certify that you have the right to submit the contribution under the project's open source license, following the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
