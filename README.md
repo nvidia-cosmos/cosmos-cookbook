@@ -5,14 +5,10 @@
 
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
----
-
 **📚 [View the Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)**
 
-> The complete Cosmos Cookbook with interactive examples, detailed tutorials, and API references is available at:  
+> The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:  
 > **https://nvidia-cosmos.github.io/cosmos-cookbook/**
-
----
 
 ## Overview
 
