@@ -74,7 +74,7 @@ The [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli
 
 ```shell
 pkgm install huggingface-cli
-~/.local/bin/huggingface-cli login
+huggingface-cli login
 ```
 
 **Note:** You'll need a Hugging Face account and access token for authentication.
