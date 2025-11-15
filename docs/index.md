@@ -93,6 +93,13 @@ The cookbook is organized around key concepts spanning (controlled) **inference*
 
 **5. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
 
+## Gallery
+
+Visual examples of Cosmos Transfer results across Physical AI domains:
+
+- **[Robotics Domain Adaptation](gallery/robotics_inference.md)** - Sim-to-real transfer for robotic manipulation with varied materials, lighting, and environments.
+- **[Autonomous Vehicle Domain Adaptation](gallery/av_inference.md)** - Multi-control video generation for driving scenes across different weather, lighting, and time-of-day conditions.
+
 ## Quick Start Paths
 
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.

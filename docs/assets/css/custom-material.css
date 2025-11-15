@@ -183,3 +183,8 @@
 .md-nav--primary>.md-nav__title {
   display: none;
 }
+
+/* Make Gallery navigation item bold (only the top-level item, not subpages) */
+.md-nav__item:has(a[href="gallery/"]) > .md-nav__link {
+  font-weight: bold;
+}

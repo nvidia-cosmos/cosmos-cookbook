@@ -16,7 +16,7 @@ This page showcases a collection of results generated using Cosmos Transfer 2.5 
   - **seg**: Enables structural changes and semantic replacement
   - **vis**: Preserves background, lighting, and overall visual appearance
 
-For detailed explanations of control modalities, see [Control Modalities Overview](../../../core_concepts/control_modalities/overview.md).
+For detailed explanations of control modalities, see [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
 
 ### Input Video
 
