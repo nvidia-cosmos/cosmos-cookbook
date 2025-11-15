@@ -17,7 +17,7 @@ This example demonstrates how to transform synthetic robotic simulation videos i
 - **Edge control**: Maintains the structure and layout of objects, robot poses, and camera motion from the simulation while transforming the visual appearance (materials, lighting, colors) according to the prompt.
 - **Why use edge-only**: Ideal when you want to preserve exact robot motions and object positions from simulation while varying environmental aesthetics.
 
-For detailed explanations of control modalities, see [Control Modalities Overview](../../../core_concepts/control_modalities/overview.md).
+For detailed explanations of control modalities, see [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
 
 <style>
 table td {

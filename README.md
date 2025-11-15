@@ -17,6 +17,7 @@ https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276
 This cookbook provides step-by-step workflows, technical recipes, and comprehensive guides for the complete AI development lifecycle with Cosmos models:
 
 - **Inference**: Quick-start examples with pre-trained models
+- **Gallery**: Visual showcase of Cosmos results across different domains
 - **Data Curation**: Scalable data processing pipelines with Cosmos Curator
 - **Post-Training**: Custom fine-tuning for domain-specific adaptation
 - **Evaluation**: Quality control and model assessment workflows
