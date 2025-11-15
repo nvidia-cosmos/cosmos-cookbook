@@ -1,5 +1,6 @@
 - [Overview](index.md)
 - [Getting Started](get_started.md)
+- [Gallery](gallery/)
 - [Recipes](recipes/)
 - [Core Concepts](core_concepts/)
 - [Glossary](glossary.md)
