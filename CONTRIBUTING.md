@@ -1,145 +1,118 @@
-# How to Contribute
+# Contributing to Cosmos Cookbook
 
-The Cosmos Cookbook is designed to create a dedicated space where the Cosmos team and community can openly share and contribute practical knowledge. We'd love to receive your patches and contributions to help build this valuable resource together.
+The Cosmos Cookbook is a community-driven resource for sharing practical knowledge about the NVIDIA Cosmos ecosystem. We welcome contributions including workflows, recipes, best practices, and domain-specific adaptations.
 
-## Open Source Contributions Welcome
+## What to Contribute
 
-We warmly welcome open source contributions to the Cosmos Cookbook! This is a community-driven cookbook documenting the Cosmos ecosystem, and we especially value your participation in the following ways:
+**Recipes** - Step-by-step guides for inference workflows or post-training (fine-tuning, LoRA, domain adaptation)
 
-### Sharing Your Success Stories and Practical Recipes
+**Concepts** - Explanations of fundamental topics, techniques, architectural patterns, and tool documentation
 
-We'd love to hear your successful stories about how you've creatively used Cosmos models or repositories for different purposes, as well as practical recipes that you think others might benefit from learning. Whether you've:
+**Improvements** - Bug fixes, documentation updates, broken links, or clarifications
 
-- Adapted models for novel applications
-- Discovered innovative workflows
-- Achieved impressive results in specific domains
-- Developed useful techniques or best practices
-- Found creative solutions to common challenges
+## How to Contribute
 
-Your experiences and knowledge help make this cookbook more valuable for the entire community.
+- **Pull Request** - For complete contributions (use draft PRs for work in progress)
+- **Issue** - For proposals, ideas, or reporting gaps in documentation
 
-## Contribution Categories
+## Contribution Workflow
 
-### 1. **Recipes**
+### 1. Fork and Set Up
 
-Step-by-step guides for specific tasks:
+Fork the [Cosmos Cookbook repository](https://github.com/nvidia-cosmos/cosmos-cookbook), then clone and configure:
 
-- **Inference**: Using pre-trained models for applications
-- **Post-Training**: Domain adaptation via fine-tuning, LoRA, or other techniques
+```bash
+git clone https://github.com/YOUR-USERNAME/cosmos-cookbook.git
+cd cosmos-cookbook
+git remote add upstream https://github.com/nvidia-cosmos/cosmos-cookbook.git
 
-### 2. **Concepts**
+# Install dependencies (see README for details)
+just install
 
-Explanations of fundamental topics, techniques, and architectural patterns including workflows, best practices, and tool documentation.
-
-### How to Contribute
-
-- **Pull Request**: For complete contributions ready to merge (keep as draft until ready for review)
-- **Issue with Proposal**: For ideas or incomplete stories you'd like help developing
-- **Issue for Gaps**: For missing topics or knowledge gaps you'd like to see covered
-
-We review all contributions within a week.
-
-## Recipe Templates
-
-Use the appropriate template when contributing a recipe:
-
-- **📄 [Inference Recipe Template](assets/templates/inference_template.md)** - For pre-trained model applications
-- **📄 [Post-Training Recipe Template](assets/templates/post_training_template.md)** - For domain adaptation workflows
-
-### Recipe Organization
-
-Recipes should be organized in the following directory structure:
-
-```
-docs/recipes/
-├── inference/
-│   └── [model-name]/
-│       └── [recipe-name]/
-│           ├── inference.md      # Main recipe
-│           ├── setup.md          # Optional setup guide
-│           └── assets/           # Images, videos, configs
-└── post_training/
-    └── [model-name]/
-        └── [recipe-name]/
-            ├── post_training.md  # Main recipe
-            ├── setup.md          # Optional setup guide
-            └── assets/           # Images, videos, configs
+# Verify setup
+just serve-internal  # Visit http://localhost:8000
 ```
 
-## Concept Template
+### 2. Create a Branch
 
-- **📄 [Concept Template](assets/templates/concept_template.md)** - For explanatory guides on fundamental topics
-
-Place concept guides in the appropriate subdirectory under `docs/core_concepts/` (e.g., `data_curation`, `post_training`, `evaluation`, `distillation`).
-
-## Dataset Licensing
-
-When contributing content with datasets:
-
-1. Verify proper licensing for demonstration and promotional purposes
-2. Include clear attribution and licensing information
-
-## Testing
-
-To serve the document locally, run
-
-```shell
-just serve-internal
+```bash
+git checkout -b recipe/descriptive-name  # or docs/, fix/, etc.
 ```
 
-To test your changes locally, run
+### 3. Make Changes
 
-```shell
-just test
+Add your content following the templates below, then test:
+
+```bash
+just serve-internal  # Preview changes
+just test           # Run validation
 ```
 
-## Code Reviews
+### 4. Commit and Push
 
-All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult
-[GitHub Help](https://help.github.com/articles/about-pull-requests/) for more information on using pull requests.
+```bash
+git add .
+git commit -m "Add Transfer weather augmentation recipe"
+git push origin recipe/descriptive-name
+```
 
-## Signing Your Work
+### 5. Create Pull Request
 
-- We require that all contributors "sign-off" on their commits. This certifies that the contribution is your original work, or you have rights to submit it under the same license, or a compatible license.
+1. Visit your fork on GitHub and click **"Compare & pull request"**
+2. Fill out the PR template with a clear title and description
+3. Link related issues using `Closes #123` or `Relates to #456`
+4. Submit the PR for review
 
-  - Any contribution which contains commits that are not Signed-Off will not be accepted.
+### 6. Address Feedback
 
-- To sign off on a commit you simply use the `--signoff` (or `-s`) option when committing your changes:
+Update your branch based on review comments:
 
-  ```bash
-  git commit -s -m "Add cool feature."
-  ```
+```bash
+git add .
+git commit -m "Address review feedback"
+git push origin recipe/descriptive-name
+```
 
-  This will append the following to your commit message:
+The PR updates automatically. Once approved, maintainers will merge your contribution.
 
-  ```
-  Signed-off-by: Your Name <your@email.com>
-  ```
+### Sync Your Fork
 
-- Full text of the DCO:
+Before starting new work:
 
-  ```
-    Developer Certificate of Origin
-    Version 1.1
+```bash
+git checkout main
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
 
-    Copyright (C) 2004, 2006 The Linux Foundation and its contributors.
-    1 Letterman Drive
-    Suite D4700
-    San Francisco, CA, 94129
+## Content Templates and Organization
 
-    Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
-  ```
+Use the appropriate template for your contribution:
 
-  ```
-    Developer's Certificate of Origin 1.1
+- [Inference Recipe Template](assets/templates/inference_template.md) - Pre-trained model applications
+- [Post-Training Recipe Template](assets/templates/post_training_template.md) - Fine-tuning and domain adaptation
+- [Concept Template](assets/templates/concept_template.md) - Explanatory guides on fundamental topics
 
-    By making a contribution to this project, I certify that:
+**Recipe structure:**
 
-    (a) The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
+```
+docs/recipes/{inference|post_training}/[model-name]/[recipe-name]/
+├── {inference|post_training}.md  # Main content
+├── setup.md                       # Optional setup guide
+└── assets/                        # Media and configs
+```
 
-    (b) The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
+**Concept guides:** Place under `docs/core_concepts/[category]/` (e.g., `data_curation`, `post_training`, `evaluation`)
 
-    (c) The contribution was provided directly to me by some other person who certified (a), (b) or (c) and I have not modified it.
+## Guidelines
 
-    (d) I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it, including my sign-off) is maintained indefinitely and may be redistributed consistent with this project or the open source license(s) involved.
-  ```
+**Dataset Licensing** - Verify proper licensing for any datasets used. Include clear attribution and licensing information.
+
+**Code Review** - All submissions require review (typically within one week). Respond to feedback promptly and keep discussions professional.
+
+## Developer Certificate of Origin (Optional)
+
+You may optionally sign off your commits using `git commit -s`, which appends `Signed-off-by: Your Name <your@email.com>` to your commit message.
+
+By signing off, you certify that you have the right to submit the contribution under the project's open source license, following the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
