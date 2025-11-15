@@ -7,8 +7,9 @@ docs_dir: build/docs
 nav:
   - Home: index.md
   - Getting Started: get_started.md
-  - Core Concepts: core_concepts/
-  - Examples: examples/
+  - Gallery: gallery/
+  - Recipes: recipes/
+  - Concepts: core_concepts/
   - FAQ: faq.md
 plugins:
   - search
