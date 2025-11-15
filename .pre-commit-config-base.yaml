@@ -3,8 +3,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-added-large-files
-        args: ['--maxkb=10000'] # 10MB
-        exclude: ^docs/assets/images/carousel\.gif$
+        args: ['--maxkb=200000'] # 200MB
       - id: forbid-submodules
       - id: detect-private-key
       - id: detect-aws-credentials
