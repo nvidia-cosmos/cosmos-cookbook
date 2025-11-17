@@ -35,7 +35,7 @@ This is a demonstration of **Cosmos Predict 2** being used for ITS image generat
 
 ## Architecture
 
-![Input image](assets/architecture.jpg)
+![Input image](assets/architecture.png)
 
 ### Component explanations
 - VLM Captioner: Produces faithful, detailed captions from example ITS images to seed generation.
