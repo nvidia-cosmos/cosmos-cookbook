@@ -1,6 +1,6 @@
 # Robotics Domain Adaptation Gallery
 
-> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/) • [Joshua Bapst](https://www.linkedin.com/in/joshbapst/)
+> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Joshua Bapst](https://www.linkedin.com/in/joshbapst/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
 > **Organization:** NVIDIA
 
