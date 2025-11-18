@@ -1,17 +1,17 @@
-# Cosmos Predict2 Text2Image for Intelligent Transportation System (ITS) Images
+# Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images
 
 > **Authors:** [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/)  • [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
 > **Organization:** NVIDIA
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos Predict2 | Inference | Data generation |
+| Cosmos Predict 2 | Inference | Data generation |
 
-This tutorial demonstrates how to use the Cosmos Predict2 Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
+This tutorial demonstrates how to use the Cosmos Predict 2 Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
 - [Setup and System Requirement](setup.md)
 
-## Why ITS Data Generation Matters
+## Why ITS Synthetic Data Generation Matters
 
 Collecting high-quality ITS data at scale is expensive, slow, and often incomplete:
 
@@ -19,7 +19,7 @@ Collecting high-quality ITS data at scale is expensive, slow, and often incomple
 - The long-tail is underrepresented: road signs, cyclists, pedestrians and motorcycles appear infrequently, creating class imbalance.
 - Variations across time of day, weather and camera angles introduce domain shifts that are difficult to cover comprehensively.
 
-Cosmos Predict2 enables targeted synthetic data generation to strategically fill these gaps. With text-to-image control, we can:
+Cosmos Predict 2 enables targeted synthetic data generation to strategically fill these gaps. With text-to-image control, we can:
 
 - Generate balanced sets that upsample low-frequency classes (e.g., specific road signs, bicycles) while preserving scene realism.
 - Systematically sweep camera viewpoints (top-down, dashboard), illumination (dawn/day/dusk/night), weather, and scene layouts to improve generalization.
@@ -29,9 +29,9 @@ The result is a curated mixture of scenes that complements real data, improves c
 
 ## Demonstration Overview
 
-This is a demonstration of **Cosmos Predict 2** being used for ITS image generation. To showcase the impact, this tutorial walks through a step-by-step Cosmos Predict2 ITS image generation process to improve a downstream ITS object detector RT-DETR model.
+This is a demonstration of **Cosmos Predict 2** being used for ITS image generation. To showcase the impact, this tutorial walks through a step-by-step Cosmos Predict 2 ITS image generation process to improve a downstream ITS object detector RT-DETR model.
 
-## Cosmos Predict2 Pipeline Components
+## Cosmos Predict 2 Pipeline Components
 
 ## Architecture
 
@@ -40,7 +40,7 @@ This is a demonstration of **Cosmos Predict 2** being used for ITS image generat
 ### Component explanations
 - VLM Captioner: Produces faithful, detailed captions from example ITS images to seed generation.
 - LLM Prompt Augmenter: Injects target entities and variations (viewpoint, weather) under strict realism rules.
-- Cosmos Predict2 Text‑to‑Image: Generates high‑quality ITS images aligned with prompts.
+- Cosmos Predict 2 Text‑to‑Image: Generates high‑quality ITS images aligned with prompts.
 - Train RT‑DETR: Fine‑tune the detector .
 - Evaluate on KPIs: Measure improvements across ACDC, SUTD, DAWN (e.g., AP50 per class and weather).
 
@@ -59,7 +59,12 @@ First, generate detailed captions of the input images using a VLM as captioner:
 
 NOTE: We used Qwen 2.5 VL for captioning with the following input prompt:
 
-> *Given this image, please generate a caption that describes only the aspects of the image that satisfy all four of the following criteria: 1) obeys the laws of physics, 2) has objects that are scaled and positioned realistically relative to each other and the setting, 3) has visual coherence (i.e. all the objects belong to the setting and all the objects naturally occur with each other), and 4) has objects of the corrext texture/geometry. Make sure the caption is similar to a real-life photograph caption. Avoid the words 'scene', 'depicts', or 'imagines'.*
+> Given this image, please generate a caption that describes only the aspects of the image that satisfy all four of the following criteria:
+> 1. obeys the laws of physics.
+> 2. has objects that are scaled and positioned realistically relative to each other and the setting.
+> 3. has visual coherence (i.e. all the objects belong to the setting and all the objects naturally occur with each other).
+> 4. has objects of the correct texture/geometry.
+> 5. Make sure the caption is similar to a real-life photograph caption. Avoid the words 'scene', 'depicts', or 'imagines'.
 
 ### LLM‑guided caption augmentation to introduce target objects (e.g., bicycles)
 
@@ -112,20 +117,20 @@ NOTE: We used Llama 3.1 with the following input prompt for object-centric augme
 
 For this example, we used different camera angles (topdown, front dashboard), different weathers (snow, fog, night) and surroundings = none.
 
-### Cosmos Predict2 Output Image
+### Cosmos Predict 2 Output Image
 
-Using the augmented prompt, Cosmos Predict2 generates a night scenes with more instances of bicycle.
+The sample below is a grid composed of multiple generations across different camera angles and weather conditions.
 
 ![Output](assets/output.jpg)
 
 
 ## Training Downstream ITS Detector
 
-To illustrate the impact of Cosmos Predict2 image generation on a downstream ITS detector, we have trained an RT-DETR detector with Cosmos Predict2 generated images using different camera angels , weathers and objects and evaluated the trained models on three public KPIs.
+To illustrate the impact of Cosmos Predict 2 image generation on a downstream ITS detector, we have trained an RT-DETR detector with Cosmos Predict 2 generated images using different camera angels , weathers and objects and evaluated the trained models on three public KPIs.
 
 ## Results
 
-Experiments were conducted with a set of ~62k real ITS images and ~165K Cosmos Predict2 generated synthetic images using the pipeline described in this tutorial. 
+Experiments were conducted with a set of ~62k real ITS images and ~165K Cosmos Predict 2 generated synthetic images using the pipeline described in this tutorial. 
 
 For context, we compare against a baseline ITS detector with the exact same architecture trained on ~220k real images (no synthetic data). Both models use the same backbone: ResNet‑50 pretrained on OpenImages.
 
@@ -157,11 +162,11 @@ As seen above, the blue curves (which are from the trained detector WITH Cosmos 
 
 ## Conclusion
 
-This tutorial demonstrates how Cosmos Predict2 can strategically generate ITS images to address long‑tail sparsity, viewpoint/weather diversity, and domain gaps—leading to measurable gains on downstream detectors.
+This tutorial demonstrates how Cosmos Predict 2 can strategically generate ITS images to address long‑tail sparsity, viewpoint/weather diversity, and domain gaps—leading to measurable gains on downstream detectors.
 
 In our experiments, the baseline used ~220k real images, while the Cosmos variant used ~62k real and ~165k synthetic images. The Cosmos variant shows notable gains for the bicycle class, with AP50 improvements averaged across weather conditions per KPI.
 
-Measured bicycle AP50 improvements (baseline → +Cosmos Predict2):
+Measured bicycle AP50 improvements (baseline → +Cosmos Predict 2):
 - ACDC: 0.287 → 0.374 (+0.087)
 - SUTD: 0.515 → 0.610 (+0.095)
 - DAWN: 0.514 → 0.801 (+0.286)
