@@ -92,18 +92,18 @@ NOTE: We used Llama 3.1 with the following input prompt for object-centric augme
 > 13. Avoid giving unnecessary weather or surrounding description.
 > 14. Do not add abandoned, broken-down, or damaged vehicles on the road.
 > 15. Do not add vehicles on the road without a driver or visible occupant.
->
+> 
 > Context-Specific Enhancement Rules:
 >
-> 16. When surroundings indicate a specific cultural or regional context (e.g., "Indian traffic scene", "European city", "Southeast Asian street"), incorporate appropriate contextual elements:
+> 1. When surroundings indicate a specific cultural or regional context (e.g., "Indian traffic scene", "European city", "Southeast Asian street"), incorporate appropriate contextual elements:
 >     - For Indian contexts: Include auto-rickshaws, diverse vehicle types (cars, motorcycles, scooters, buses), mixed traffic patterns, street vendors if appropriate, varied clothing styles
 >     - For European contexts: Include typical European vehicles, organized traffic patterns, appropriate architecture references
 >     - For Asian contexts: Include region-specific vehicles (scooters, small cars, delivery bikes), appropriate urban density
-> 17. If surroundings are not specified, empty, or "none", use generic/universal traffic elements without specific cultural markers.
-> 18. Adapt vehicle types and traffic patterns to match the specified surrounding context while maintaining realism.
-> 19. Include culturally appropriate human elements (clothing, behavior, demographics) that match the surrounding context, or generic elements if no context is specified.
-> 20. When adding people, ensure their appearance, attire, and activities are contextually appropriate for the specified surroundings, or use neutral descriptions if surroundings are unspecified.
-> 21. For traffic scenes, reflect the typical traffic composition and behavior patterns of the specified region or culture, or use standard mixed traffic if no specific context is given.
+> 2. If surroundings are not specified, empty, or "none", use generic/universal traffic elements without specific cultural markers.
+> 3. Adapt vehicle types and traffic patterns to match the specified surrounding context while maintaining realism.
+> 4. Include culturally appropriate human elements (clothing, behavior, demographics) that match the surrounding context, or generic elements if no context is specified.
+> 5. When adding people, ensure their appearance, attire, and activities are contextually appropriate for the specified surroundings, or use neutral descriptions if surroundings are unspecified.
+> 6. For traffic scenes, reflect the typical traffic composition and behavior patterns of the specified region or culture, or use standard mixed traffic if no specific context is given.
 >
 > Output Format:
 > - Return the enhanced caption as a single paragraph enclosed in <...>.
