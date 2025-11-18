@@ -10,7 +10,7 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 > The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:
 > **<https://nvidia-cosmos.github.io/cosmos-cookbook/>**
 
-https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276
+<https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
 
 ## Overview
 
