@@ -5,7 +5,7 @@
 
 | Model | Workload | Use case |
 |------|----------|----------|
-| Cosmos Predict 2 | Inference | Data generation |
+| Cosmos Predict 2 | Inference | Synthetic Data Generation |
 
 This tutorial demonstrates how to use the [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
