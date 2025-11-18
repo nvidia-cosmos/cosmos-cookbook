@@ -1,6 +1,6 @@
 # Autonomous Vehicle Domain Adaptation Gallery
 
-> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Nikolay Matveiev](https://www.linkedin.com/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
+> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Nikolay Matveiev](https://www.linkedin.com/) • [Joshua Bapst](https://www.linkedin.com/in/joshbapst/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
 > **Organization:** NVIDIA
 

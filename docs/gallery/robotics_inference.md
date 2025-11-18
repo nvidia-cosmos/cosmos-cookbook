@@ -1,6 +1,6 @@
 # Robotics Domain Adaptation Gallery
 
-> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
+> **Authors:**  [Raju Wagwani](https://www.linkedin.com/in/raju-wagwani-a4746027/) • [Jathavan Sriram](https://www.linkedin.com/in/jathavansriram) • [Richard Yarlett](https://www.linkedin.com/in/richardyarlett/) • [Joshua Bapst](https://www.linkedin.com/in/joshbapst/) • [Jinwei Gu](https://www.linkedin.com/in/jinweigu/)
 
 > **Organization:** NVIDIA
 
@@ -324,7 +324,7 @@ This scene demonstrates robot interaction with appliances, showing the robot ope
 
 ## Example 2: Multi-Control with Custom Control Videos
 
-This example demonstrates advanced usage where you provide **custom pre-computed control videos** (depth, edge, segmentation) alongside the input video. Multi-control gives you fine-grained control over different aspects of the transformation:
+These examples demonstrate advanced usage where you provide **custom pre-computed control videos** (depth, edge, segmentation) alongside the input video. Multi-control gives you fine-grained control over different aspects of the transformation:
 
 - **depth**: Controls 3D spatial relationships and perspective
 - **edge**: Maintains structural boundaries and object shapes
@@ -332,6 +332,8 @@ This example demonstrates advanced usage where you provide **custom pre-computed
 - **vis**: Preserves lighting and camera properties (set to 0 in this example)
 
 **When to use multi-control**: Use this approach when you need precise control over the transformation by pre-generating and fine-tuning specific control signals, especially for complex scene manipulations or when edge-only control is insufficient.
+
+### Scene 2a
 
 ### Input Video
 
@@ -395,6 +397,119 @@ This example demonstrates advanced usage where you provide **custom pre-computed
   <source src="assets/kitchen2_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
+
+### Scene 2b
+
+### Input Video
+
+<video width="600" controls>
+  <source src="assets/robotic_arm_input.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+### Parameters
+
+```json
+{
+    "name": "robot_multicontrol",
+    "video_path": "assets/kitchen2_cg.mp4",
+    "guidance": 3,
+    "depth": {
+        "control_path": "assets/robotic_arm_input_depth.mp4",
+        "control_weight": 0.6
+    },
+    "edge": {
+        "control_path": "assets/robotic_arm_input_edge.mp4",
+        "control_weight": 1
+    },
+    "seg": {
+        "control_path": "assets/robotic_arm_input_seg.mp4",
+        "control_weight": 0.4
+    },
+    "vis": {
+       "control_path": "assets/robotic_arm_input_vis.mp4",
+        "control_weight": 0
+    },
+    "prompt": "The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light."
+}
+```
+
+### Control Videos
+
+#### Depth Control
+
+<video width="600" controls>
+  <source src="assets/robotic_arm_input_depth.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+#### Edge Control
+
+<video width="600" controls>
+  <source src="assets/robotic_arm_input_edge.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+#### Segmentation Control
+
+<video width="600" controls>
+  <source src="assets/robotic_arm_input_seg.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+#### Vis Control
+
+<video width="600" controls>
+  <source src="assets/robotic_arm_input_vis.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+#### Examples
+
+<table>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+
+<tr>
+<td><strong>Output Video</strong></td>
+<td><video width="600" controls>  <source src="assets/robotic_arm_1.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
+</tr>
+<tr>
+<td><strong>Input Prompt</strong></td>
+<td>The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light.</td>
+</tr>
+
+<tr>
+<td><strong>Output Video</strong></td>
+<td><video width="600" controls>  <source src="assets/robotic_arm_2.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
+</tr>
+<tr>
+<td><strong>Input Prompt</strong></td>
+<td>The video features two robotic arms with brushed bronze bodies, and contrasting yellow joints, manipulating a small purple plastic cube. They are positioned on a granite table, with urban rooftop in the background, illuminated by natural light</td>
+</tr>
+
+<tr>
+<td><strong>Output Video</strong></td>
+<td><video width="600" controls>  <source src="assets/robotic_arm_3.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
+</tr>
+<tr>
+<td><strong>Input Prompt</strong></td>
+<td>The video features two robotic arms with matte matte black bodies, and contrasting blue joints, manipulating a small white plastic cube. They are positioned on a marble table, with industrial warehouse in the background, illuminated by colored ambient light (blue).</td>
+</tr>
+
+<tr>
+<td><strong>Output Video</strong></td>
+<td><video width="600" controls>  <source src="assets/robotic_arm_4.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
+</tr>
+<tr>
+<td><strong>Input Prompt</strong></td>
+<td>The video features two robotic arms with matte white bodies, and contrasting black joints, manipulating a small green glass cube. They are positioned on a marble table, with closed room in the background, illuminated by artificial white light.</td>
+</tr>
+</tbody>
+</table>
 
 ## Quality Enhancements: Transfer 2.5 vs Transfer 1
 
