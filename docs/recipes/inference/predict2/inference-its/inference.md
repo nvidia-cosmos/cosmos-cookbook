@@ -7,7 +7,7 @@
 |------|----------|----------|
 | Cosmos Predict 2 | Inference | Data generation |
 
-This tutorial demonstrates how to use the Cosmos Predict 2 Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
+This tutorial demonstrates how to use the [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 
 - [Setup and System Requirement](setup.md)
 
@@ -130,7 +130,7 @@ To illustrate the impact of Cosmos Predict 2 image generation on a downstream IT
 
 ## Results
 
-Experiments were conducted with a set of ~62k real ITS images and ~165K Cosmos Predict 2 generated synthetic images using the pipeline described in this tutorial. 
+Experiments were conducted with a set of ~62k real ITS images and ~165K Cosmos Predict 2 generated synthetic images (without any filtering) using the pipeline described in this tutorial.
 
 For context, we compare against a baseline ITS detector with the exact same architecture trained on ~220k real images (no synthetic data). Both models use the same backbone: ResNet‑50 pretrained on OpenImages.
 
@@ -142,7 +142,7 @@ The ACDC dataset is an Intelligent Transportation System (ITS)-related dataset w
 
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 ![Result plot ACDC](assets/acdc_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector with Cosmos Predict 2 generated images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## SUTD Dataset
 
@@ -150,7 +150,7 @@ The SUTD dataset is also an ITS-related dataset with more diverse weather condit
 
 Below are the AP50 results of the most common objects (car, person, bicycle) in the dataset along all weather conditions:
 ![Result plot SUTD](assets/sutd_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector with Cosmos Predict 2 generated images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## DAWN Dataset
 
@@ -158,7 +158,7 @@ The DAWN dataset is also another ITS-related dataset with different weather cond
 
 Below are the AP50 results of the most common objects (car, person) in the dataset along all weather conditions:
 ![Result plot DAWN](assets/dawn_plots.png)
-As seen above, the blue curves (which are from the trained detector WITH Cosmos Transfer 1 augmented images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
+As seen above, the blue curves (which are from the trained detector with Cosmos Predict 2 generated images) have consistently higher AP50 compared to the red curves, across all weather/lightings and objects.
 
 ## Conclusion
 
