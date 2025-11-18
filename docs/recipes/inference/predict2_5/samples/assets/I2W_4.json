@@ -1,0 +1,7 @@
+{
+    "inference_type": "image2world",
+    "input_path": "samples/assets/I4_input.jpg",
+    "guidance": 7,
+    "seed": 0,
+    "prompt": "The video is taken from the perspective of a driver inside a car, with the dashboard visible in the foreground. The car is stationary at an intersection, waiting for the traffic light to change. The traffic light is visible in the upper left corner of the frame, showing a red signal. The surrounding environment includes other vehicles, trees, and buildings. The sky is clear and blue, indicating good weather conditions."
+}

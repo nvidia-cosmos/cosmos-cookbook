@@ -1,0 +1,8 @@
+{
+    "inference_type": "video2world",
+    "input_path":"samples/assets/V1_input.mp4",
+    "num_input_frames": 1,
+    "guidance": 7,
+    "seed": 1,
+    "prompt": "The video shows the perspective of a driver inside a car, with the dashboard visible at the bottom of the frame. The car is driving down a wet street, reflecting the overcast sky above. On either side of the street, there are rows of houses with well-manicured lawns and neatly trimmed hedges. The houses have a similar architectural style, with brick facades and white trim. The street is lined with tall, green trees that provide a canopy over the road. The sky is cloudy, suggesting recent or impending rain."
+}
