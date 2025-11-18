@@ -24,7 +24,6 @@ Cosmos Predict 2 enables targeted synthetic data generation to strategically fil
 - Generate balanced sets that upsample low-frequency classes (e.g., specific road signs, bicycles) while preserving scene realism.
 - Systematically sweep camera viewpoints (top-down, dashboard), illumination (dawn/day/dusk/night), weather, and scene layouts to improve generalization.
 
-
 The result is a curated mixture of scenes that complements real data, improves coverage of rare cases, and reduces domain gaps—ultimately improving downstream CV/VLM performance and robustness in production.
 
 ## Demonstration Overview
@@ -38,6 +37,7 @@ This is a demonstration of **Cosmos Predict 2** being used for ITS image generat
 ![Input image](assets/architecture.png)
 
 ### Component explanations
+
 - VLM Captioner: Produces faithful, detailed captions from example ITS images to seed generation.
 - LLM Prompt Augmenter: Injects target entities and variations (viewpoint, weather) under strict realism rules.
 - Cosmos Predict 2 Text‑to‑Image: Generates high‑quality ITS images aligned with prompts.
@@ -50,7 +50,6 @@ Start with an ITS image to take inspiration of caption.
 
 ![Input image](assets/input.jpg)
 
-
 ### Image Captioning Using a VLM
 
 First, generate detailed captions of the input images using a VLM as captioner:
@@ -60,6 +59,7 @@ First, generate detailed captions of the input images using a VLM as captioner:
 NOTE: We used Qwen 2.5 VL for captioning with the following input prompt:
 
 > Given this image, please generate a caption that describes only the aspects of the image that satisfy all four of the following criteria:
+>
 > 1. obeys the laws of physics.
 > 2. has objects that are scaled and positioned realistically relative to each other and the setting.
 > 3. has visual coherence (i.e. all the objects belong to the setting and all the objects naturally occur with each other).
@@ -77,6 +77,7 @@ NOTE: We used Llama 3.1 with the following input prompt for object-centric augme
 > """You are given a base image caption describing a scene. Enhance the caption by adding realistic and contextually varied instances of person, bicycle, and car (including synonyms such as bike, motorbike, truck, or bus) only when the scene can logically accommodate them. The modified caption will be used for generating an image.
 >
 > Strict Rules:
+>
 > 1. Preserve the original environment and setting exactly except the weather. Do not transform the scene into a road or traffic scene if it is not already one.
 > 2. If the scene is indoors, inside a campus area without visible roads, on a footpath, or otherwise unsuitable for vehicles, DO NOT add any vehicles or road elements.
 > 3. Start the enhanced caption with the given camera angle and viewpoint (e.g., "A static roadside camera captures...", "A fixed overhead camera records...") only if this matches the original scene type.
@@ -92,7 +93,7 @@ NOTE: We used Llama 3.1 with the following input prompt for object-centric augme
 > 13. Avoid giving unnecessary weather or surrounding description.
 > 14. Do not add abandoned, broken-down, or damaged vehicles on the road.
 > 15. Do not add vehicles on the road without a driver or visible occupant.
-> 
+>
 > Context-Specific Enhancement Rules:
 >
 > 1. When surroundings indicate a specific cultural or regional context (e.g., "Indian traffic scene", "European city", "Southeast Asian street"), incorporate appropriate contextual elements:
@@ -106,10 +107,12 @@ NOTE: We used Llama 3.1 with the following input prompt for object-centric augme
 > 6. For traffic scenes, reflect the typical traffic composition and behavior patterns of the specified region or culture, or use standard mixed traffic if no specific context is given.
 >
 > Output Format:
+>
 > - Return the enhanced caption as a single paragraph enclosed in <...>.
 > - Do not include any extra text or explanations.
 >
 > Inputs:
+>
 > - Camera angle: {camera_angle}
 > - Weather: {weather}
 > - Surroundings: {surroundings}
@@ -122,7 +125,6 @@ For this example, we used different camera angles (topdown, front dashboard), di
 The sample below is a grid composed of multiple generations across different camera angles and weather conditions.
 
 ![Output](assets/output.jpg)
-
 
 ## Training Downstream ITS Detector
 
@@ -167,11 +169,13 @@ This tutorial demonstrates how Cosmos Predict 2 can strategically generate ITS i
 In our experiments, the baseline used ~220k real images, while the Cosmos variant used ~62k real and ~165k synthetic images. The Cosmos variant shows notable gains for the bicycle class, with AP50 improvements averaged across weather conditions per KPI.
 
 Measured bicycle AP50 improvements (baseline → +Cosmos Predict 2):
+
 - ACDC: 0.287 → 0.374 (+0.087)
 - SUTD: 0.515 → 0.610 (+0.095)
 - DAWN: 0.514 → 0.801 (+0.286)
 
 Key takeaways:
+
 1. Targeted text-to-image synthesis boosts accuracy for low-frequency classes (e.g., bicycles) while maintaining visual realism.
 2. Viewpoint, lighting, and weather sweeps improve generalization across real deployment conditions.
 3. Strong prompt design (captioning + constrained augmentation) is critical for controllable, high-quality outputs.
