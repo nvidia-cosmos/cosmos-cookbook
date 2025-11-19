@@ -5,7 +5,7 @@
 
 ## Overview
 
-This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos-Transfer 2.5** and **FiftyOne**.  
+This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos-Transfer 2.5** and **FiftyOne**.
 It shows how to convert static images into realistic agricultural scenarios—even when control signals (depth, segmentation) are missing—using **edge-based control**, **Python-only inference**, and **FiftyOne visualization**.
 
 | Model | Workload | Use case |
@@ -14,18 +14,18 @@ It shows how to convert static images into realistic agricultural scenarios—ev
 
 ---
 
-## Setup  
-Before running this recipe, complete the environment configuration:  
+## Setup
+Before running this recipe, complete the environment configuration:
 **[Setup and System Requirements](setup.md)**
 
 ---
 
-# Motivation: Data Scarcity and Domain Gap in BioTrove Moths
+## Motivation: Data Scarcity and Domain Gap in BioTrove Moths
 
 The **BioTrove** dataset is an extensive multimodal collection, but it contains substantial **class imbalance**. Moths are among the **least represented categories**, and most samples are collected in **laboratory or artificial indoor backgrounds** rather than in agricultural environments. This creates two significant challenges:
 
-- **Data scarcity** — few real scenes of moths in natural field conditions  
-- **Domain gap** — models trained on lab-style images fail to generalize to outdoor agricultural settings  
+- **Data scarcity** — few real scenes of moths in natural field conditions
+- **Domain gap** — models trained on lab-style images fail to generalize to outdoor agricultural settings
 
 To build a robust classifier, we used **FiftyOne’s semantic search with BioCLIP** to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The subdataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove)
 
@@ -33,32 +33,32 @@ Cosmos-Transfer 2.5 enables us to **transform these scarce, lab-style images int
 
 This recipe demonstrates a full, reproducible pipeline that:
 
-- Converts moth images into videos  
-- Generates edge-based control videos  
-- Runs Cosmos-Transfer 2.5 inference  
-- Builds a multimodal grouped dataset in FiftyOne  
-- Computes embeddings + similarity search  
-- Produces realistic agricultural moth scenes at scale  
+- Converts moth images into videos
+- Generates edge-based control videos
+- Runs Cosmos-Transfer 2.5 inference
+- Builds a multimodal grouped dataset in FiftyOne
+- Computes embeddings + similarity search
+- Produces realistic agricultural moth scenes at scale
 
 ---
 
-# Pipeline Overview
+## Pipeline Overview
 
 This is the end‑to‑end flow:
 
-1. **Filter and retrieve moth images** using BioCLIP semantic search. Subdataset provided.  
-2. **Convert images → videos** (Cosmos requires video input)  
-3. **Generate Canny edge maps** as control signals  
-4. **Create JSON spec files** required by Cosmos-Transfer2.5  
-5. **Run Cosmos-Transfer inference** (Python-only invocation)  
-6. **Extract last frames** from generated videos  
-7. **Build a grouped dataset** in FiftyOne with synchronized slices  
-8. **Compute embeddings + similarity search**  
+1. **Filter and retrieve moth images** using BioCLIP semantic search. Subdataset provided.
+2. **Convert images → videos** (Cosmos requires video input)
+3. **Generate Canny edge maps** as control signals
+4. **Create JSON spec files** required by Cosmos-Transfer2.5
+5. **Run Cosmos-Transfer inference** (Python-only invocation)
+6. **Extract last frames** from generated videos
+7. **Build a grouped dataset** in FiftyOne with synchronized slices
+8. **Compute embeddings + similarity search**
 9. **Visualize results** (side-by-side, embeddings, UMAP)
 
 ---
 
-# 1. Extracting a Representative Sub-Dataset with BioCLIP
+### 1. Extracting a Representative Sub-Dataset with BioCLIP
 
 We filter BioTrove with:
 
@@ -85,9 +85,9 @@ dataset_src = fouh.load_from_hub(
 
 ---
 
-# 2. Preparing Inputs: Converting Images to Videos
+### 2. Preparing Inputs: Converting Images to Videos
 
-Cosmos-Transfer 2.5 expects a **video** for inference.  
+Cosmos-Transfer 2.5 expects a **video** for inference.
 We convert each image into a **10-frame MP4 clip** via FFmpeg.
 
 Python version:
@@ -113,7 +113,7 @@ for img in sorted(images_root.glob("*.jpg")):
 
 ---
 
-# 3. Generating Edge Maps (Control Signals)
+### 3. Generating Edge Maps (Control Signals)
 
 Since BioTrove images lack depth/segmentation, we create **Canny edge videos** as control:
 
@@ -146,16 +146,16 @@ def make_edge_video(input_video, output_video):
 
 ---
 
-# 4. Building JSON Spec Files for Cosmos-Transfer
+### 4. Building JSON Spec Files for Cosmos-Transfer
 
 Each video needs a JSON spec describing:
 
-- prompt  
-- negative prompt  
-- guidance  
-- control path  
-- resolution  
-- steps  
+- prompt
+- negative prompt
+- guidance
+- control path
+- resolution
+- steps
 
 ```python
 def write_spec_json(spec_path, video_abs, edge_abs, name):
@@ -177,7 +177,7 @@ def write_spec_json(spec_path, video_abs, edge_abs, name):
 
 ---
 
-# 5. Running Cosmos-Transfer 2.5 Inference
+### 5. Running Cosmos-Transfer 2.5 Inference
 
 Python-only invocation:
 
@@ -188,7 +188,7 @@ subprocess.run(cmd, check=True)
 
 ---
 
-# 6. Extracting the Last Frame
+### 6. Extracting the Last Frame
 
 ```python
 last_png = extract_last_frame(out_vid, last_frames_dir)
@@ -198,7 +198,7 @@ last_png = extract_last_frame(out_vid, last_frames_dir)
 
 ---
 
-# 7. Building the Grouped Dataset in FiftyOne
+### 7. Building the Grouped Dataset in FiftyOne
 
 Slices generated:
 
@@ -214,7 +214,7 @@ These enable synchronized side‑by‑side comparisons in the app.
 
 ---
 
-# 8. Embeddings and Similarity Search (CLIP)
+### 8. Embeddings and Similarity Search (CLIP)
 
 ```python
 model = foz.load_zoo_model("clip-vit-base32-torch")
@@ -232,48 +232,34 @@ fob.compute_similarity(
 
 ---
 
-# 9. Results & Observations
+### 9. Results & Observations
 
 Observations:
 
-- outputs are realistic agricultural scenes  
-- morphology preserved  
-- background diversity increased  
-- edge controls maintain moth structure  
-- high visual coherence  
+- outputs are realistic agricultural scenes
+- morphology preserved
+- background diversity increased
+- edge controls maintain moth structure
+- high visual coherence
+
 
 ---
 
-# Impact on Classification Accuracy
-
-Cosmos-Transfer 2.5 augmentation improved downstream classification accuracy by:
-
-**20%–40% absolute improvement**
-
-due to:
-
-- improved background realism  
-- reduced domain gap  
-- better feature distribution alignment  
-
----
-
-# Conclusion
+## Conclusion
 
 This recipe demonstrates:
 
-- how to address **dataset scarcity**  
-- how to create realistic domain-transfer augmentations  
-- how to integrate FiftyOne with Cosmos-Transfer  
-- how to build a reproducible Physical AI data pipeline  
+- how to address **dataset scarcity**
+- how to create realistic domain-transfer augmentations
+- how to integrate FiftyOne with Cosmos-Transfer
+- how to build a reproducible Physical AI data pipeline
 
 This approach can generalize to:
 
-- other insect/animal datasets  
-- medical scarcity use cases  
-- robotics perception domain gaps  
-- any scenario lacking real-world diversity  
+- other insect/animal datasets
+- medical scarcity use cases
+- robotics perception domain gaps
+- any scenario lacking real-world diversity
 
-For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://github.com/voxel51/fiftyone/blob/f5ee552d207c5fff71f12bda9700fa9fe9d57b3c/docs/source/tutorials/cosmos-transfer-integration.ipynb) to run it all in one.  
+For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://github.com/voxel51/fiftyone/blob/f5ee552d207c5fff71f12bda9700fa9fe9d57b3c/docs/source/tutorials/cosmos-transfer-integration.ipynb) to run it all in one.
 For more examples, you can explore other Cosmos-Transfer recipes in the cookbook.
-

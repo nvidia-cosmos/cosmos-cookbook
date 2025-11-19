@@ -4,8 +4,8 @@ This guide describes how to set up your environment to run the **Cosmos-Transfer
 
 The setup has three main parts:
 
-1. System and software requirements  
-2. Installing Cosmos-Transfer 2.5 and its dependencies  
+1. System and software requirements
+2. Installing Cosmos-Transfer 2.5 and its dependencies
 3. Installing and configuring FiftyOne and the dataset
 
 ---
@@ -14,25 +14,21 @@ The setup has three main parts:
 
 ### Minimum Hardware Requirements
 
-- **GPU**:  
-  - 1 or more NVIDIA GPUs  
+- **GPU**:
+  - 1 or more NVIDIA GPUs
   - Ampere architecture or newer (e.g., RTX 30 Series, A100, H100 or later recommended)
-- **GPU Memory**:  
-  - At least **16 GB VRAM** recommended for smooth video generation
-- **System Memory**:  
-  - At least **32 GB RAM** recommended for handling datasets and video processing
-- **Storage**:  
+- **Storage**:
   - Sufficient disk space for:
-    - Cosmos-Transfer 2.5 repository and model weights  
+    - Cosmos-Transfer 2.5 repository and model weights
     - FiftyOne datasets and derived videos/images (edge maps, outputs, last frames)
 
 ### Supported Platform
 
-- **Operating System**: Linux x86-64  
+- **Operating System**: Linux x86-64
   - Recommended: **Ubuntu ≥ 22.04** (glibc ≥ 2.35)
-- **NVIDIA Driver**:  
+- **NVIDIA Driver**:
   - **≥ 570.124.06**, compatible with CUDA **12.8.1** (or CUDA 12+)
-- **Python**:  
+- **Python**:
   - **Python 3.10** (aligns with Cosmos-Transfer 2.5 requirements)
 
 ---
@@ -81,19 +77,7 @@ source cosmos-transfer2_5-biotrove/bin/activate
 
 ---
 
-### 2. Install PyTorch with CUDA
-
-Follow the instructions on the [PyTorch website](https://pytorch.org/) to install a CUDA-enabled build. Example (placeholder):
-
-```bash
-pip install "torch>=2.5.0" "torchvision" --index-url https://download.pytorch.org/whl/cu121
-```
-
-> ⚠️ Adjust the CUDA version and index URL to match your system and the Cosmos-Transfer 2.5 docs.
-
----
-
-### 3. Install FFmpeg
+### 2. Install FFmpeg
 
 On Ubuntu:
 
@@ -112,7 +96,7 @@ without errors.
 
 ---
 
-### 4. Install FiftyOne and Supporting Python Packages
+### 3. Install FiftyOne and Supporting Python Packages
 
 Install FiftyOne and core Python dependencies:
 
@@ -128,7 +112,7 @@ pip install jupyterlab umap-learn
 
 ---
 
-### 5. Clone and Install Cosmos-Transfer 2.5
+### 4. Clone and Install Cosmos-Transfer 2.5
 
 Clone the Cosmos-Transfer 2.5 repository and install it in editable mode.
 
@@ -142,7 +126,7 @@ Then follow the **Cosmos-Transfer 2.5 Setup Guide** for environment configuratio
 
 ---
 
-### 6. Configure Environment Variables and Paths
+### 5. Configure Environment Variables and Paths
 
 Set `COSMOS_DIR`:
 
