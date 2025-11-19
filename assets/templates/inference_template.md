@@ -1,7 +1,7 @@
 # [Use Case Title] with [Cosmos Model]
 
-> **Authors:** [Name](LinkedIn URL) • [Name](LinkedIn URL)
-> **Organization:** [Your Organization]
+> **Authors:** [Name](https://www.linkedin.com/in/paula-ramos-phd/)
+> **Organization:** [Voxel51](https://voxel51.com/)
 
 ## Overview
 

@@ -7,3 +7,4 @@
 - [Transfer for Drive Simulator](./transfer2_5/inference-carla-sdg-augmentation/inference.md)
 - [Transfer for Robotics Navigation Tasks](./transfer1/inference-x-mobility/inference.md)
 - [Transfer Multi-Control Video Editing](./transfer2_5/inference-real-augmentation/inference.md)
+- [Transfer for Data Augmentation in biodiversity](./transfer2_5/inference-biotrove-aumentation_w_FiftyOne/inference.md)
