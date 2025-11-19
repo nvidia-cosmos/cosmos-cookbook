@@ -48,8 +48,6 @@ You will need the following software components:
   - Cosmos-Transfer 2.5 Python package (installed from the repo)
   - Additional Cosmos dependencies (typically installed via its setup guide), such as:
     - `json5`
-    - `pyrefly`
-    - `torch-compile`
     - `gradio` (optional UI)
     - `easyio` (for multi-storage backends)
 
