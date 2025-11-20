@@ -1,4 +1,3 @@
-#!/usr/bin/env -S uv run --script
 #
 # SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
@@ -40,16 +39,19 @@ import argparse
 import json
 import os
 import pickle
+import sys
 from pathlib import Path
 from typing import List, Optional, Union
 
-import sys
-sys.path.insert(0, str(Path.home() / "repos" / "cosmos-reason1" / "cosmos_reason1_utils" / "src"))
+sys.path.insert(
+    0, str(Path.home() / "repos" / "cosmos-reason1" / "cosmos_reason1_utils" / "src")
+)
+import subprocess
+
 import datasets
 from cosmos_reason1_utils.text import create_conversation
 from rich import print
 from tqdm import tqdm
-import subprocess
 
 
 def load_pickle(pickle_path: Union[str, Path]) -> dict:
@@ -64,23 +66,26 @@ def load_pickle(pickle_path: Union[str, Path]) -> dict:
     with open(pickle_path, "rb") as f:
         return pickle.load(f)
 
+
 def check_video(video_path):
     """Check if video is valid."""
     if not os.path.exists(video_path):
         return False
-    
+
     try:
         subprocess.run(
-            ['ffmpeg', '-v', 'error', '-i', video_path, '-f', 'null', '-'],
+            ["ffmpeg", "-v", "error", "-i", video_path, "-f", "null", "-"],
             check=True,
-            capture_output=True
+            capture_output=True,
         )
         return True
     except subprocess.CalledProcessError:
         return False
 
 
-def find_videos(video_dir: Path, extensions: tuple = (".mp4", ".avi", ".mov", ".mkv")) -> List[Path]:
+def find_videos(
+    video_dir: Path, extensions: tuple = (".mp4", ".avi", ".mov", ".mkv")
+) -> List[Path]:
     """Find all video files in a directory.
 
     Args:
@@ -95,43 +100,45 @@ def find_videos(video_dir: Path, extensions: tuple = (".mp4", ".avi", ".mov", ".
         videos.extend(video_dir.glob(f"*{ext}"))
     return sorted(videos)
 
+
 def remove_timestamps_from_events(events_text):
     """
     Remove timestamp information from event strings.
-    
+
     Converts:
         'Event 1: <1.6> <4.9> grasping the first piece'
     To:
         'Event 1: grasping the first piece'
-    
+
     Args:
         events_text (str): String containing events with timestamps, separated by newlines
-    
+
     Returns:
         str: String with timestamps removed
     """
     import re
-    
-    lines = events_text.strip().split('\n')
+
+    lines = events_text.strip().split("\n")
     cleaned_events = []
-    
+
     for line in lines:
         if line.strip():
             # Pattern to match: 'Event N: <time1> <time2> description'
             # and replace with: 'Event N: description'
-            pattern = r'(Event\s+\d+:)\s*<[\d.]+>\s*<[\d.]+>\s*(.+)'
+            pattern = r"(Event\s+\d+:)\s*<[\d.]+>\s*<[\d.]+>\s*(.+)"
             match = re.match(pattern, line.strip())
-            
+
             if match:
                 event_label = match.group(1)  # 'Event 1:'
-                description = match.group(2)   # 'grasping the first piece'
+                description = match.group(2)  # 'grasping the first piece'
                 cleaned_line = f"{event_label} {description}"
                 cleaned_events.append(cleaned_line)
             else:
                 # If pattern doesn't match, keep original line
                 cleaned_events.append(line.strip())
-    
-    return '\n'.join(cleaned_events)
+
+    return "\n".join(cleaned_events)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -167,7 +174,7 @@ def main():
     # Load prompts from pickle
     print(f"📦 Loading prompts from: {args.prompts_pickle}")
     prompts_data = load_pickle(args.prompts_pickle)
-    
+
     # Validate pickle format
     required_keys = ["system_prompt", "responses"]
     missing_keys = [key for key in required_keys if key not in prompts_data]
@@ -176,11 +183,11 @@ def main():
             f"Pickle file missing required keys: {missing_keys}. "
             f"Expected keys: {required_keys}"
         )
-    
+
     system_prompt = prompts_data["system_prompt"]
     # user_prompt = prompts_data["user_prompt"]
     responses = prompts_data["responses"]
-    
+
     print(f"✅ Loaded prompts with {len(responses)} responses")
     print(f"   System prompt: {system_prompt[:100]}...")
 
@@ -197,23 +204,25 @@ def main():
         # e.g., "coffee_d0_demo_0" -> "coffee_d0_demo0_agentview.mp4"
         video_name = demo_name.replace("demo_", "demo") + "_agentview.mp4"
         video_path = os.path.join(args.video_dir, video_name)
-        
+
         if not os.path.exists(video_path):
             continue
-        
+
         # if not check_video(video_path):
         #     failed_count += 1
         #     continue
-        
+
         # Check video file size
         video_size_bytes = os.path.getsize(video_path)
         video_size_mb = video_size_bytes / (1024 * 1024)
-        
+
         if video_size_bytes > MAX_VIDEO_SIZE_BYTES:
-            print(f"[yellow]Skipping {video_name}: size {video_size_mb:.2f} MB exceeds {MAX_VIDEO_SIZE_MB} MB limit[/yellow]")
+            print(
+                f"[yellow]Skipping {video_name}: size {video_size_mb:.2f} MB exceeds {MAX_VIDEO_SIZE_MB} MB limit[/yellow]"
+            )
             skipped_large_videos += 1
             continue
-        
+
         try:
             user_prompt = remove_timestamps_from_events(response)
             # Create conversation
@@ -249,5 +258,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

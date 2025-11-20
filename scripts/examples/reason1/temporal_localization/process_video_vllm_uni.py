@@ -1,9 +1,26 @@
-from transformers import AutoProcessor
-from vllm import LLM, SamplingParams
-from qwen_vl_utils import process_vision_info
+# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+import argparse
 import os
 import pickle
-import argparse
+
+from qwen_vl_utils import process_vision_info
+from transformers import AutoProcessor
+from vllm import LLM, SamplingParams
 
 # User prompts dictionary
 USER_PROMPTS = {
@@ -59,7 +76,7 @@ SYSTEM_PROMPT = """You are a specialized behavior analyst. Your task is to analy
                     4. Always answer in English
 
                     Event 1: <start time> - <end time> - Event | reasoning
-                    Event 2: <start time> - <end time> - Event | reasoning 
+                    Event 2: <start time> - <end time> - Event | reasoning
                     Event 3: <start time> - <end time> - Event | reasoning
 
                     [Continue for all events identified]
@@ -73,7 +90,7 @@ SYSTEM_PROMPT = """You are a specialized behavior analyst. Your task is to analy
                     </answer>"""
 
 
-def get_video_files(video_dir, extensions=('.mp4', '.avi', '.mov', '.mkv')):
+def get_video_files(video_dir, extensions=(".mp4", ".avi", ".mov", ".mkv")):
     """Get all video files from the directory"""
     video_files = []
     for file in os.listdir(video_dir):
@@ -82,17 +99,12 @@ def get_video_files(video_dir, extensions=('.mp4', '.avi', '.mov', '.mkv')):
     return sorted(video_files)
 
 
-def process_video(llm, processor, sampling_params, video_path, fps, user_prompt, total_pixels=6422528):
+def process_video(
+    llm, processor, sampling_params, video_path, fps, user_prompt, total_pixels=6422528
+):
     """Process a single video and return the generated text"""
     video_messages = [
-        {"role": "system", 
-        "content": [
-            {
-                "type": "text",
-                "text": SYSTEM_PROMPT
-            }
-        ]
-        },
+        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
         {
             "role": "user",
             "content": [
@@ -100,23 +112,22 @@ def process_video(llm, processor, sampling_params, video_path, fps, user_prompt,
                     "type": "video",
                     "video": video_path,
                     "fps": fps,
-                    "total_pixels": total_pixels
+                    "total_pixels": total_pixels,
                 },
-                {
-                    "type": "text",
-                    "text": user_prompt
-                }
-            ]
-        }
+                {"type": "text", "text": user_prompt},
+            ],
+        },
     ]
-    
+
     # Process the video
     prompt = processor.apply_chat_template(
         video_messages,
         tokenize=False,
         add_generation_prompt=True,
     )
-    image_inputs, video_inputs, video_kwargs = process_vision_info(video_messages, return_video_kwargs=True)
+    image_inputs, video_inputs, video_kwargs = process_vision_info(
+        video_messages, return_video_kwargs=True
+    )
 
     mm_data = {}
     if image_inputs is not None:
@@ -132,7 +143,7 @@ def process_video(llm, processor, sampling_params, video_path, fps, user_prompt,
 
     outputs = llm.generate([llm_inputs], sampling_params=sampling_params)
     generated_text = outputs[0].outputs[0].text
-    
+
     return generated_text
 
 
@@ -146,11 +157,11 @@ Examples:
   python process_video_vllm_uni.py --model_path /path/to/model --prompt cube --output_dir results
   python process_video_vllm_uni.py --model_path /path/to/model --prompt chips --num_trials 5 --output_dir results
   python process_video_vllm_uni.py --model_path /path/to/model --prompt toaster --start_demo 0 --end_demo 5 --output_dir results
-  
+
   # Video directory mode:
   python process_video_vllm_uni.py --model_path /path/to/model --prompt cube --video_dir /path/to/videos --output_dir results
   python process_video_vllm_uni.py --model_path /path/to/model --prompt fork --video_dir /path/to/videos --output_dir results
-        """
+        """,
     )
     parser.add_argument(
         "--output_dir",
@@ -168,13 +179,13 @@ Examples:
         "--prompt",
         choices=list(USER_PROMPTS.keys()),
         required=True,
-        help="User prompt type to use"
+        help="User prompt type to use",
     )
     parser.add_argument(
         "--video_dir",
         type=str,
         default=None,
-        help="Directory containing video files to process (alternative to demo-based mode)"
+        help="Directory containing video files to process (alternative to demo-based mode)",
     )
     parser.add_argument(
         "--num_trials",
@@ -185,7 +196,7 @@ Examples:
     parser.add_argument(
         "--fps_list",
         type=int,
-        nargs='+',
+        nargs="+",
         default=[4, 8, 12],
         help="List of FPS values to test (default: 4 8 12)",
     )
@@ -193,19 +204,19 @@ Examples:
         "--start_demo",
         type=int,
         default=0,
-        help="Starting demo number (default: 0) - only for demo-based mode"
+        help="Starting demo number (default: 0) - only for demo-based mode",
     )
     parser.add_argument(
         "--end_demo",
         type=int,
         default=10,
-        help="Ending demo number (exclusive, default: 10) - only for demo-based mode"
+        help="Ending demo number (exclusive, default: 10) - only for demo-based mode",
     )
     parser.add_argument(
         "--video_path_template",
         type=str,
         default="/mnt/pvc/datasets/videos_bridge_small/02_2023-05-05_10-36-06_traj_group0_traj{demo_num}_images0.mp4",
-        help="Video path template with {demo_num} placeholder - only for demo-based mode"
+        help="Video path template with {demo_num} placeholder - only for demo-based mode",
     )
     parser.add_argument(
         "--max_model_len",
@@ -255,16 +266,16 @@ Examples:
 def main():
     """Main function to process all videos"""
     args = parse_args()
-    
+
     # Set CUDA_VISIBLE_DEVICES if specified
     if args.cuda_visible_devices is not None:
         os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_visible_devices
         print(f"Set CUDA_VISIBLE_DEVICES={args.cuda_visible_devices}")
-    
+
     os.makedirs(args.output_dir, exist_ok=True)
-    
+
     user_prompt = USER_PROMPTS[args.prompt]
-    
+
     print(f"\n{'='*60}")
     print(f"Configuration:")
     print(f"  Model path: {args.model_path}")
@@ -279,26 +290,28 @@ def main():
     print(f"  Total pixels: {args.total_pixels}")
     if args.max_model_len:
         print(f"  Max model length: {args.max_model_len}")
-    
+
     # Determine which mode to use
     if args.video_dir:
         print(f"  Mode: Video Directory")
         print(f"  Video directory: {args.video_dir}")
-        
+
         # Get all video files from the directory
         video_files = get_video_files(args.video_dir)
-        
+
         if not video_files:
             print(f"\nError: No video files found in {args.video_dir}")
             return
-        
+
         print(f"  Found {len(video_files)} video files")
-        videos_to_process = [(os.path.basename(vp).rsplit('.', 1)[0], vp) for vp in video_files]
+        videos_to_process = [
+            (os.path.basename(vp).rsplit(".", 1)[0], vp) for vp in video_files
+        ]
     else:
         print(f"  Mode: Demo-based")
         print(f"  Demo range: {args.start_demo} to {args.end_demo-1}")
         print(f"  Video template: {args.video_path_template}")
-        
+
         # Generate demo-based video paths
         videos_to_process = []
         for demo_num in range(args.start_demo, args.end_demo):
@@ -307,73 +320,79 @@ def main():
                 videos_to_process.append((f"demo{demo_num}", video_path))
             else:
                 print(f"  Warning: Video not found: {video_path}")
-    
+
     print(f"{'='*60}\n")
-    
+
     # Initialize the model once
     print(f"Loading model from: {args.model_path}")
     if args.max_model_len:
         llm = LLM(
-        model=args.model_path,
-        limit_mm_per_prompt={"image": 10, "video": 10},
-        max_model_len=args.max_model_len if args.max_model_len else None
+            model=args.model_path,
+            limit_mm_per_prompt={"image": 10, "video": 10},
+            max_model_len=args.max_model_len if args.max_model_len else None,
         )
     else:
         llm = LLM(
-        model=args.model_path,
-        limit_mm_per_prompt={"image": 10, "video": 10},
+            model=args.model_path,
+            limit_mm_per_prompt={"image": 10, "video": 10},
         )
-        
+
     sampling_params = SamplingParams(
         temperature=args.temperature,
         top_p=args.top_p,
         repetition_penalty=args.repetition_penalty,
         max_tokens=args.max_tokens,
     )
-    
+
     # Initialize processor once
     processor = AutoProcessor.from_pretrained(args.model_path)
-    
+
     # Process videos
     for video_name, video_path in videos_to_process:
         result_dict = {}
         result_dict["video_path"] = video_path
         result_dict["prompt_type"] = args.prompt
-        
+
         print(f"\nProcessing: {video_name}")
         print(f"  Video: {video_path}")
-        
+
         for fps in args.fps_list:
             print(f"  FPS {fps}:")
             fps_key = f"fps{fps}"
             result_dict[fps_key] = []
-            
+
             for trial_num in range(1, args.num_trials + 1):
                 print(f"    Trial {trial_num}/{args.num_trials}")
-                
+
                 try:
                     # Process the video
                     output_text = process_video(
-                        llm, processor, sampling_params, 
-                        video_path, fps, user_prompt, args.total_pixels
+                        llm,
+                        processor,
+                        sampling_params,
+                        video_path,
+                        fps,
+                        user_prompt,
+                        args.total_pixels,
                     )
-                    
+
                     result_dict[fps_key].append(output_text)
-                    
+
                     # Save result_dict after each trial
-                    output_file = os.path.join(args.output_dir, f'results_{video_name}.pkl')
-                    with open(output_file, 'wb') as f:
+                    output_file = os.path.join(
+                        args.output_dir, f"results_{video_name}.pkl"
+                    )
+                    with open(output_file, "wb") as f:
                         pickle.dump(result_dict, f)
-                    
+
                     print(f"      Saved to: {output_file}")
-                    
+
                 except Exception as e:
                     print(f"      Error in trial {trial_num}: {str(e)}")
                     continue
-    
+
     print("\nAll processing completed!")
 
 
 if __name__ == "__main__":
     main()
-

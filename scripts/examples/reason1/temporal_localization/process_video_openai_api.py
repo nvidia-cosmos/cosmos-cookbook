@@ -1,9 +1,26 @@
+# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+import argparse
 import os
+import pickle
 import time
 import urllib.parse
-import pickle
-import argparse
 from pathlib import Path
+
 from openai import OpenAI
 
 # User prompts dictionary
@@ -60,7 +77,7 @@ SYSTEM_PROMPT = """You are a specialized behavior analyst. Your task is to analy
                     4. Always answer in English
 
                     Event 1: <start time> - <end time> - Event | reasoning
-                    Event 2: <start time> - <end time> - Event | reasoning 
+                    Event 2: <start time> - <end time> - Event | reasoning
                     Event 3: <start time> - <end time> - Event | reasoning
 
                     [Continue for all events identified]
@@ -74,7 +91,7 @@ SYSTEM_PROMPT = """You are a specialized behavior analyst. Your task is to analy
                     </answer>"""
 
 
-def get_video_files(video_dir, extensions=('.mp4', '.avi', '.mov', '.mkv', '.webm')):
+def get_video_files(video_dir, extensions=(".mp4", ".avi", ".mov", ".mkv", ".webm")):
     """Get all video files from the directory"""
     video_files = []
     for file in os.listdir(video_dir):
@@ -87,29 +104,24 @@ def process_video(client, video_path, model_name, max_tokens, user_prompt):
     """Process a single video using OpenAI API"""
     # Create file:// URI for the video
     video_uri = "file://" + urllib.parse.quote(str(video_path), safe="/:")
-    
+
     messages = [
-        {
-            "role": "system",
-            "content": SYSTEM_PROMPT
-        },
+        {"role": "system", "content": SYSTEM_PROMPT},
         {
             "role": "user",
             "content": [
                 {"type": "text", "text": user_prompt},
-                {"type": "video_url", "video_url": {"url": video_uri}}
+                {"type": "video_url", "video_url": {"url": video_uri}},
             ],
-        }
+        },
     ]
-    
+
     t0 = time.time()
     resp = client.chat.completions.create(
-        model=model_name,
-        messages=messages,
-        max_tokens=max_tokens
+        model=model_name, messages=messages, max_tokens=max_tokens
     )
     latency = time.time() - t0
-    
+
     return resp.choices[0].message.content, latency
 
 
@@ -124,97 +136,90 @@ Examples:
   python process_video_openai_api.py --model Qwen/Qwen3-VL-235B-A22B-Instruct --prompt cube --output_dir results
   python process_video_openai_api.py --model nvidia/Cosmos-Reason2-30B-A3B-v1.0 --prompt chips --num_trials 5 --output_dir results
   python process_video_openai_api.py --model Qwen/Qwen3-VL-8B-Instruct --prompt pour --start_demo 0 --end_demo 5 --output_dir results
-  
+
   # Video directory mode:
   python process_video_openai_api.py --model Qwen/Qwen3-VL-235B-A22B-Instruct --prompt cube --video_dir /path/to/videos --output_dir results
   python process_video_openai_api.py --model nvidia/Cosmos-Reason2-30B-A3B-v1.0 --prompt chips --video_dir /path/to/videos --output_dir results
-        """
+        """,
     )
-    
+
     parser.add_argument(
-        "--output_dir",
-        type=str,
-        required=True,
-        help="Output directory for results"
+        "--output_dir", type=str, required=True, help="Output directory for results"
     )
     parser.add_argument(
-        "--model", 
+        "--model",
         type=str,
         required=True,
-        help="Model name to use (e.g., Qwen/Qwen3-VL-235B-A22B-Instruct)"
+        help="Model name to use (e.g., Qwen/Qwen3-VL-235B-A22B-Instruct)",
     )
     parser.add_argument(
         "--prompt",
         choices=list(USER_PROMPTS.keys()),
         required=True,
-        help="User prompt type to use"
+        help="User prompt type to use",
     )
     parser.add_argument(
         "--video_dir",
         type=str,
         default=None,
-        help="Directory containing video files to process (alternative to demo-based mode)"
+        help="Directory containing video files to process (alternative to demo-based mode)",
     )
     parser.add_argument(
         "--num_trials",
         type=int,
         default=10,
-        help="Number of trials per video (default: 10)"
+        help="Number of trials per video (default: 10)",
     )
     parser.add_argument(
         "--start_demo",
         type=int,
         default=0,
-        help="Starting demo number (default: 0) - only for demo-based mode"
+        help="Starting demo number (default: 0) - only for demo-based mode",
     )
     parser.add_argument(
         "--end_demo",
         type=int,
         default=10,
-        help="Ending demo number (exclusive, default: 10) - only for demo-based mode"
+        help="Ending demo number (exclusive, default: 10) - only for demo-based mode",
     )
     parser.add_argument(
         "--video_path_template",
         type=str,
         default="/mnt/pvc/datasets/videos_bridge_small/02_2023-05-05_10-36-06_traj_group0_traj{demo_num}_images0.mp4",
-        help="Video path template with {demo_num} placeholder - only for demo-based mode"
+        help="Video path template with {demo_num} placeholder - only for demo-based mode",
     )
     parser.add_argument(
         "--api_base",
         type=str,
         default="http://localhost:8000/v1",
-        help="Base URL for OpenAI-compatible API (default: http://localhost:8000/v1)"
+        help="Base URL for OpenAI-compatible API (default: http://localhost:8000/v1)",
     )
     parser.add_argument(
         "--api_key",
         type=str,
         default="EMPTY",
-        help="API key for the service (default: EMPTY)"
+        help="API key for the service (default: EMPTY)",
     )
     parser.add_argument(
         "--max_tokens",
         type=int,
         default=8192,
-        help="Maximum tokens for completion (default: 8192)"
+        help="Maximum tokens for completion (default: 8192)",
     )
     parser.add_argument(
         "--timeout",
         type=int,
         default=3600,
-        help="API request timeout in seconds (default: 3600)"
+        help="API request timeout in seconds (default: 3600)",
     )
-    
+
     args = parser.parse_args()
-    
+
     # Initialize OpenAI client
-    client = OpenAI(
-        api_key=args.api_key,
-        base_url=args.api_base,
-        timeout=args.timeout
-    )
-    
+    client = OpenAI(api_key=args.api_key, base_url=args.api_base, timeout=args.timeout)
+
     user_prompt = USER_PROMPTS[args.prompt]
-    
+
     print(f"\n{'='*60}")
     print(f"Configuration:")
     print(f"  Model: {args.model}")
@@ -223,26 +228,28 @@ Examples:
     print(f"  Trials per video: {args.num_trials}")
     print(f"  Max tokens: {args.max_tokens}")
     print(f"  Output directory: {args.output_dir}")
-    
+
     # Determine which mode to use
     if args.video_dir:
         print(f"  Mode: Video Directory")
         print(f"  Video directory: {args.video_dir}")
-        
+
         # Get all video files from the directory
         video_files = get_video_files(args.video_dir)
-        
+
         if not video_files:
             print(f"\nError: No video files found in {args.video_dir}")
             return
-        
+
         print(f"  Found {len(video_files)} video files")
-        videos_to_process = [(os.path.basename(vp).rsplit('.', 1)[0], vp) for vp in video_files]
+        videos_to_process = [
+            (os.path.basename(vp).rsplit(".", 1)[0], vp) for vp in video_files
+        ]
     else:
         print(f"  Mode: Demo-based")
         print(f"  Demo range: {args.start_demo} to {args.end_demo-1}")
         print(f"  Video template: {args.video_path_template}")
-        
+
         # Generate demo-based video paths
         videos_to_process = []
         for demo_num in range(args.start_demo, args.end_demo):
@@ -251,48 +258,49 @@ Examples:
                 videos_to_process.append((f"demo{demo_num}", video_path))
             else:
                 print(f"  Warning: Video not found: {video_path}")
-    
+
     print(f"{'='*60}\n")
-    
+
     # Process videos
     for video_name, video_path in videos_to_process:
         result_dict = {}
-        
+
         print(f"\nProcessing: {video_name}")
         print(f"  Video: {video_path}")
-        
+
         for fps in [8]:
             print(f"  FPS {fps}:")
-            result_dict["fps"+str(fps)] = []
+            result_dict["fps" + str(fps)] = []
             for trial_num in range(args.num_trials):
                 print(f"  Trial {trial_num+1}/{args.num_trials}", end="")
-                
+
                 try:
                     # Process the video
                     output_text, latency = process_video(
                         client, video_path, args.model, args.max_tokens, user_prompt
                     )
-                    
-                    result_dict["fps"+str(fps)].append(output_text)
+
+                    result_dict["fps" + str(fps)].append(output_text)
                     result_dict["video_path"] = video_path
                     result_dict["model"] = args.model
                     result_dict["prompt_type"] = args.prompt
-                    
+
                     # Save result_dict after each trial
                     os.makedirs(args.output_dir, exist_ok=True)
-                    output_file = os.path.join(args.output_dir, f'results_{video_name}.pkl')
-                    with open(output_file, 'wb') as f:
+                    output_file = os.path.join(
+                        args.output_dir, f"results_{video_name}.pkl"
+                    )
+                    with open(output_file, "wb") as f:
                         pickle.dump(result_dict, f)
-                    
+
                     print(f" - Latency: {latency:.2f}s - Saved to: {output_file}")
-                    
+
                 except Exception as e:
                     print(f" - Error: {str(e)}")
                     continue
-    
+
     print("\nAll processing completed!")
 
 
 if __name__ == "__main__":
     main()
-
