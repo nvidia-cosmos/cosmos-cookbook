@@ -118,7 +118,9 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 
 #### Car Crashes into Stack of Cardboard Boxes
 
-<source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
+<video controls width="480">
+  <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
+</video>
 
 - **Model prediction**: 1
 - **Ground truth**: 2 (poor adherence to physical laws)
