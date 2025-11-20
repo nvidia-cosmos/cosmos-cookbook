@@ -1,12 +1,17 @@
-# Domain Transfer for BioTrove Moths with Cosmos Model 2.5
+# Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5
 
 > **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
 > **Organization:** [Voxel51](https://voxel51.com/)
 
 ## Overview
 
-This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos-Transfer 2.5** and **FiftyOne**.
-It shows how to convert static images into realistic agricultural scenarios—even when control signals (depth, segmentation) are missing—using **edge-based control**, **Python-only inference**, and **FiftyOne visualization**.
+This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos Transfer 2.5** and [**FiftyOne**](https://docs.voxel51.com/).
+It shows how to convert static images into realistic agricultural scenarios using **edge-based control**, **Python-only inference**, and **FiftyOne visualization** -- even when control signals (depth, segmentation) are missing.
+
+>  This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
+
+> Please visit the [FiftyOne Tutorial](https://github.com/voxel51/fiftyone/blob/f5ee552d207c5fff71f12bda9700fa9fe9d57b3c/docs/source/tutorials/cosmos-transfer-integration.ipynb) to run all in once.
+
 
 | Model | Workload | Use case |
 |-------|----------|----------|
@@ -22,20 +27,20 @@ Before running this recipe, complete the environment configuration:
 
 ## Motivation: Data Scarcity and Domain Gap in BioTrove Moths
 
-The **BioTrove** dataset is an extensive multimodal collection, but it contains substantial **class imbalance**. Moths are among the **least represented categories**, and most samples are collected in **laboratory or artificial indoor backgrounds** rather than in agricultural environments. This creates two significant challenges:
+The [**BioTrove**](https://baskargroup.github.io/BioTrove/) dataset is an extensive multimodal collection, but it contains substantial **class imbalance**. Moths are among the **least represented categories**, and most samples are collected in **laboratory or artificial indoor backgrounds** rather than in agricultural environments. This creates two significant challenges:
 
 - **Data scarcity** — few real scenes of moths in natural field conditions
 - **Domain gap** — models trained on lab-style images fail to generalize to outdoor agricultural settings
 
-To build a robust classifier, we used **FiftyOne’s semantic search with BioCLIP** to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The subdataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove)
+To build a robust classifier, we used [**FiftyOne’s semantic search with BioCLIP**](https://github.com/paularamo/fiftyone-workshop-biodiversity) to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The sub-dataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove)
 
-Cosmos-Transfer 2.5 enables us to **transform these scarce, lab-style images into photorealistic agricultural scenarios**, while preserving the structure and identity of each moth. Internal experiments show **20–40% improvements in classification accuracy**, thanks to better domain alignment and increased appearance diversity.
+Cosmos Transfer 2.5 enables us to **transform these scarce, lab-style images into photorealistic agricultural scenarios**, while preserving the structure and identity of each moth. Internal experiments show **20–40% improvements in classification accuracy**, thanks to better domain alignment and increased appearance diversity.
 
 This recipe demonstrates a full, reproducible pipeline that:
 
 - Converts moth images into videos
 - Generates edge-based control videos
-- Runs Cosmos-Transfer 2.5 inference
+- Runs Cosmos Transfer 2.5 inference
 - Builds a multimodal grouped dataset in FiftyOne
 - Computes embeddings + similarity search
 - Produces realistic agricultural moth scenes at scale
@@ -49,7 +54,7 @@ This is the end‑to‑end flow:
 1. **Filter and retrieve moth images** using BioCLIP semantic search. Subdataset provided.
 2. **Convert images → videos** (Cosmos requires video input)
 3. **Generate Canny edge maps** as control signals
-4. **Create JSON spec files** required by Cosmos-Transfer2.5
+4. **Create JSON spec files** required by Cosmos Transfer 2.5
 5. **Run Cosmos-Transfer inference** (Python-only invocation)
 6. **Extract last frames** from generated videos
 7. **Build a grouped dataset** in FiftyOne with synchronized slices
@@ -87,7 +92,7 @@ dataset_src = fouh.load_from_hub(
 
 ### 2. Preparing Inputs: Converting Images to Videos
 
-Cosmos-Transfer 2.5 expects a **video** for inference.
+Cosmos Transfer 2.5 currently supports **videos** as inputs for inference.
 We convert each image into a **10-frame MP4 clip** via FFmpeg.
 
 Python version:
@@ -174,10 +179,24 @@ def write_spec_json(spec_path, video_abs, edge_abs, name):
     }
     spec_path.write_text(json.dumps(obj, indent=2))
 ```
+In this step we build one JSON spec per input video.
+Each spec controls:
+
+```prompt``` / ```negative_prompt``` – text prompts (often generated or expanded with an LLM) that describe the target domain (e.g., outdoor field imagery, natural lighting, realistic foliage, moth appearance). This is where we introduce variations in lighting, background/environment, and moth texture/appearance, while keeping the biological semantics intact.
+
+```video_path``` – path to the original domain video.
+
+```edge.control_path``` + ```edge.control_weight``` – path to the Canny edge control video and its weight, which constrains structure and motion.
+
+```guidance```, ```resolution```, ```num_steps``` – generation hyperparameters used by Cosmos Transfer 2.5.
+
+The prompts (```MOTH_PROMPT``` and its variations) are authored once and then expanded with an LLM to create multiple realistic variants (lighting, environment, texture), which we embed into different JSON spec files for the same base video.
+
+> To see that configuration, please review the [FiftyOne Tutorial](https://github.com/voxel51/fiftyone/blob/f5ee552d207c5fff71f12bda9700fa9fe9d57b3c/docs/source/tutorials/cosmos-transfer-integration.ipynb)
 
 ---
 
-### 5. Running Cosmos-Transfer 2.5 Inference
+### 5. Running Cosmos Transfer 2.5 Inference
 
 Python-only invocation:
 
@@ -185,6 +204,12 @@ Python-only invocation:
 cmd = [sys.executable, str(INFER_SCRIPT), "-i", str(spec_json), "-o", str(OUT_DIR)]
 subprocess.run(cmd, check=True)
 ```
+
+After running the command, keep in mind the following parameter definitions:
+
+- ```INFER_SCRIPT``` — the path to the Cosmos Transfer 2.5 inference script you want to execute.
+- ```SPEC_JSON``` — the path to the JSON specification file that defines the model, inputs, and control signals.
+- ```OUT_DIR``` — the output directory where generated videos, logs, and metadata will be saved.
 
 ---
 
@@ -199,6 +224,8 @@ last_png = extract_last_frame(out_vid, last_frames_dir)
 ---
 
 ### 7. Building the Grouped Dataset in FiftyOne
+
+In FiftyOne, a grouped dataset is a dataset that contains multiple slices. In the context of a grouped dataset, a slice refers to one of the components (such as an image, video, or point cloud) within each group. Each group can contain multiple slices, potentially of different modalities, which are organized under a group field. [Grouped Datasets](https://docs.voxel51.com/user_guide/groups.html)
 
 Slices generated:
 
@@ -215,6 +242,8 @@ These enable synchronized side‑by‑side comparisons in the app.
 ---
 
 ### 8. Embeddings and Similarity Search (CLIP)
+
+This workflow uses the ```CLIP``` model from the FiftyOne Model Zoo to generate embeddings for each sample in our dataset view (```flattened_view```). The embeddings are stored in the ```embeddings``` field. Then, a similarity index is created using these embeddings, enabling you to perform similarity searches—such as finding visually or semantically similar samples—within the dataset. The brain_key ```key_sim``` is used to reference this similarity index for future queries.
 
 ```python
 model = foz.load_zoo_model("clip-vit-base32-torch")
@@ -234,15 +263,18 @@ fob.compute_similarity(
 
 ### 9. Results & Observations
 
-Observations:
+While Cosmos Transfer 2.5 produced a high percentage of usable samples, the whole usability depends on refining the control signals. In particular, improving edge-control generation results in a more stable geometry and fewer artifacts in the final outputs. A promising next step is to incorporate a semantic segmentation model such as SAM3 to generate a clean moth mask. This would better preserve insect morphology and any changes in the insect shapes during the domain transfer stage.
+
+Even with these controls, not every synthetic sample will be suitable for training. Each output should still pass a quality inspection step
 
 - outputs are realistic agricultural scenes
-- morphology preserved
+- morphology* preserved
 - background diversity increased
-- edge controls maintain moth structure
+- edge controls mainly maintain moth structure - we need to revisit this
 - high visual coherence
 
-
+> morphology refers to the actual physical structure of the moth, its shape, wing outline, antennae, body proportions, and overall geometry.
+>
 ---
 
 ## Conclusion
