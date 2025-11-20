@@ -275,7 +275,7 @@ Examples:
 
         for trial in range(num_trials):
             print(f"\n--- Trial {trial} ---")
-            if not f"fps{fps}" in loaded_dict:
+            if f"fps{fps}" not in loaded_dict:
                 print(f"FPS {fps} not found in results file")
                 continue
             output_text_fps = loaded_dict[f"fps{fps}"]
