@@ -1,6 +1,6 @@
 # Distilling Cosmos Predict 2.5
 
-> **Authors:** [Qianli Ma](https://qianlim.github.io/)  
+> **Authors:** [Qianli Ma](https://qianlim.github.io/)
 > **Organization:** NVIDIA
 
 ## Overview
