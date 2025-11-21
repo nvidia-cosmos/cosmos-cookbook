@@ -6,3 +6,4 @@
 - [Reason for Visual Q&A in ITS](./reason1/intelligent-transportation/post_training.md)
 - [Reason for Warehouse Safety](./reason1/spatial-ai-warehouse/post_training.md)
 - [Reason for AV video Captioning and VQA](./reason1/av_video_caption_vqa/post_training.md)
+- [Reason for MimicGen temporal localization](./reason1/temporal_localization/post_training.md)
