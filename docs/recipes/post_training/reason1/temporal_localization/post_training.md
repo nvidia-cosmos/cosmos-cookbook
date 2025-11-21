@@ -9,8 +9,19 @@
 |------|----------|----------|
 | Cosmos Reason 1 | Post-training | Temporal localization for MimicGen data generation |
 
-[MimicGen](https://mimicgen.github.io/) is a system for automatically synthesizing large-scale, diverse robot-learning datasets from only a small number of human demonstrations. It works by dividing each demonstration into object-centric subtasks annotated with timestamp boundaries. Given a new scene with different object configurations, MimicGen selects an existing demonstration, spatially transforms each of its subtask segments to match the new context, stitches them together, and has the robot execute the resulting trajectory to collect a new demonstration. In this way, a small set of manually recorded demonstrations can be expanded into a large dataset with varied contexts and trajectories.
-By leveraging the Cosmos Reason temporal localization capability, we can automatically generate timestamp annotations for subtasks using short simulation videos, reducing manual effort and improving scalability.
+[MimicGen](https://mimicgen.github.io/) is a system for automatically synthesizing large-scale, diverse robot-learning datasets from only a small number of human demonstrations.
+
+It works by dividing each demonstration into **object-centric subtasks** annotated with **timestamp boundaries**.
+
+Given a new scene with different object configurations, MimicGen:
+
+- selects an existing demonstration,
+- spatially transforms each subtask to match the new context and stitches them together
+- executes the resulting trajectory to collect a new demonstration.
+
+This allows a small set of manually recorded demonstrations to be expanded into **a large dataset with varied contexts and trajectories**.
+
+By leveraging the **Cosmos Reason temporal localization** capability, timestamp annotations for subtasks can be automatically generated from short simulation videos, reducing manual effort and improving scalability.
 
 - [Setup and System Requirement](setup.md)
 
@@ -68,17 +79,17 @@ Extract the exact timestamps for each event.
 
 ### Run Baseline Evaluation
 
-For Zero-shot Evaluation we used the test dataset consisting of 60 videos across 7 different tasks. The test dataset includes both simulation environments from [Isaac Lab Mimic](https://isaac-sim.github.io/IsaacLab/main/source/overview/imitation-learning/teleop_imitation.html) ([Isaac Lab Cube Stacking, Isaac Lab Humanoid Nut Pouring](https://isaac-sim.github.io/IsaacLab/main/source/overview/imitation-learning/teleop_imitation.html#pre-recorded-demonstrations)) and real-world datasets ([AgiBot](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha), [BridgeData V2](https://rail-berkeley.github.io/bridgedata/)), and covers both robot-arm and humanoid scenarios. Looking ahead, the fine-tuning dataset will contain only robot-arm demonstrations. As a result, the humanoid scenarios in the test dataset are fully out-of-distribution, making them particularly useful for evaluating how well the model generalizes during re-evaluation.
+For Zero-shot Evaluation we used the test dataset consisting of 60 videos across 7 different tasks. The test dataset includes both simulation environments from [Isaac Lab Mimic](https://isaac-sim.github.io/IsaacLab/main/source/overview/imitation-learning/teleop_imitation.html) ([Cube Stacking, Humanoid Nut Pouring](https://isaac-sim.github.io/IsaacLab/main/source/overview/imitation-learning/teleop_imitation.html#pre-recorded-demonstrations)) and real-world datasets ([AgiBot](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha), [BridgeData V2](https://rail-berkeley.github.io/bridgedata/)), and covers both robot-arm and humanoid scenarios. Looking ahead, the fine-tuning dataset will contain only robot-arm demonstrations. As a result, the humanoid scenarios in the test dataset are fully out-of-distribution, making them particularly useful for evaluating how well the model generalizes during re-evaluation.
 
 | Task | Frame number | Number of videos | Caption |
 |------|--------------|------------------|---------|
-| Cube_stacking Isaac Lab ![Cube Stacking](assets/cube_stacking.gif) | 179-247 | 10 | Event 1: grasping the red cube \| The robotic arm closes its grippers around the red cube, securing it firmly.<br><br>Event 2: releasing the red cube \| The robotic arm releases the red cube, allowing it to rest atop the blue cube.<br><br>Event 3: grasping the green cube \| The robotic arm closes its grippers around the green cube, picking it up from the surface. |
-| Humanoid_nut_pouring Isaac Lab ![Nut Pouring](assets/nut_pouring.gif) | 288-313 | 5 | Event 1: Picking up the red cylinder from the table.<br><br>Event 2: Placing the red cylinder in the blue tray.<br><br>Event 3: Picking up the yellow bowl from the table. |
-| Cube_stacking Bridge 1 ![Bridge Cube Stacking](assets/bridge_2.gif)| 38-47 | 5 | Event 1: grasping the cube.<br><br>Event 2: releasing the cube. |
-| AgiBot Toaster ![Toaster](assets/toaster.gif)| 451 | 10 | Event 1: grasping bread.<br><br>Event 2: releasing bread.<br><br>Event 3: pushing the toaster.<br><br>Event 4: releasing the toaster. |
-| AgiBot Chips ![Chips](assets/chips.gif) | 397-451 | 10 | Event 1: grasping a bag of chips.<br><br>Event 2: releasing a bag of chips. |
-| AgiBot Fork ![Fork](assets/fork.gif) | 451 | 10 | Event 1: grasping a fork.<br><br>Event 2: releasing a fork.<br><br>Event 3: grasping a bowl.<br><br>Event 4: releasing a bowl. |
-| AgiBot Cup ![Cup](assets/cup.gif) | 451 | 10 | Event 1: grasping a cup.<br><br>Event 2: grasping a rag.<br><br>Event 3: releasing a rag. |
+| Isaac Lab: Cube stacking  ![Cube Stacking](assets/cube_stacking.gif) | 179-247 | 10 | Event 1: grasping the red cube \| The robotic arm closes its grippers around the red cube, securing it firmly.<br><br>Event 2: releasing the red cube \| The robotic arm releases the red cube, allowing it to rest atop the blue cube.<br><br>Event 3: grasping the green cube \| The robotic arm closes its grippers around the green cube, picking it up from the surface. |
+|  Isaac Lab: Humanoid nut pouring ![Nut Pouring](assets/nut_pouring.gif) | 288-313 | 5 | Event 1: Picking up the red cylinder from the table.<br><br>Event 2: Placing the red cylinder in the blue tray.<br><br>Event 3: Picking up the yellow bowl from the table. |
+| BridgeData V2: Cube_stacking  ![Bridge Cube Stacking](assets/bridge_2.gif)| 38-47 | 5 | Event 1: grasping the cube.<br><br>Event 2: releasing the cube. |
+| AgiBot: task 358, Toaster ![Toaster](assets/toaster.gif)| 451 | 10 | Event 1: grasping bread.<br><br>Event 2: releasing bread.<br><br>Event 3: pushing the toaster.<br><br>Event 4: releasing the toaster. |
+| AgiBot: task 366, Chips ![Chips](assets/chips.gif) | 397-451 | 10 | Event 1: grasping a bag of chips.<br><br>Event 2: releasing a bag of chips. |
+| AgiBot: task 378, Fork ![Fork](assets/fork.gif) | 451 | 10 | Event 1: grasping a fork.<br><br>Event 2: releasing a fork.<br><br>Event 3: grasping a bowl.<br><br>Event 4: releasing a bowl. |
+| AgiBot: task 412, Cup ![Cup](assets/cup.gif) | 451 | 10 | Event 1: grasping a cup.<br><br>Event 2: grasping a rag.<br><br>Event 3: releasing a rag. |
 
 Timestamps were added to the videos using a custom adaptive script (compatible with different FPS values) using `add_timestamps_to_all_videos_adaptive.py`:
 
@@ -285,11 +296,11 @@ The automatically extracted timestamps were then manually refined to ensure accu
 | Task | Frame number | Number of actions | Caption |
 |------|--------------|-------------------|---------|
 | coffee, d0-d2 ![coffee](assets/coffee_d0.gif) | 70 | 1 | Event 1: <2.2> <5.6> grasping the pod |
-| nut_assembly, d0 ![nut_assembly](assets/nut_assembly_d0.gif)| 308 | 3 | Event 1: <2.7> <5.5> grasping the square nut<br><br>Event 2: <5.5> <8.1> inserting the square nut<br><br>Event 3: <8.1> <10.6> grasping the round nut |
-| square d0 ![square](assets/square_d0.gif)| 56 | 1 | Event 1: <2.1> <4.3> grasping the square nut |
-| stack d1 ![stack](assets/stack_d1.gif)| 49 | 1 | Event 1: <1.9> <3.3> grasping the red cube |
-| threading d0-d2 ![threading](assets/threading_d0.gif)| 56 | 1 | Event 1: <1.9> <6.5> grasping the mallet |
-| three_piece_assembly d0 d1 ![three_piece_assembly](assets/three_piece_assembly_d0.gif)| 232 | 3 | Event 1: <2.2> <5.4> grasping the first piece<br><br>Event 2: <5.5> <7.7> inserting the first piece<br><br>Event 3: <7.7> <10.5> grasping the second piece |
+| nut assembly, d0 ![nut_assembly](assets/nut_assembly_d0.gif)| 308 | 3 | Event 1: <2.7> <5.5> grasping the square nut<br><br>Event 2: <5.5> <8.1> inserting the square nut<br><br>Event 3: <8.1> <10.6> grasping the round nut |
+| square, d0 ![square](assets/square_d0.gif)| 56 | 1 | Event 1: <2.1> <4.3> grasping the square nut |
+| stack, d1 ![stack](assets/stack_d1.gif)| 49 | 1 | Event 1: <1.9> <3.3> grasping the red cube |
+| threading, d0-d2 ![threading](assets/threading_d0.gif)| 56 | 1 | Event 1: <1.9> <6.5> grasping the mallet |
+| three piece assembly, d0 d1 ![three_piece_assembly](assets/three_piece_assembly_d0.gif)| 232 | 3 | Event 1: <2.2> <5.4> grasping the first piece<br><br>Event 2: <5.5> <7.7> inserting the first piece<br><br>Event 3: <7.7> <10.5> grasping the second piece |
 
 ### Preprocessing
 
@@ -580,7 +591,7 @@ The following example shows temporal localization improvements from fine-tuning:
     Event 3: <7.9> <10.6> Picking up the yellow bowl from the table.
     ```
 
-- **Ground Truth**
+- **Ground Truth**:
 
     ```
     Event 1: <1.7> <6.2> Picking up the red cylinder from the table.
