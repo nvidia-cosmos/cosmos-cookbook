@@ -39,7 +39,7 @@ class Video2WorldModelDistillDMD2TrigFlow(DistillationCoreMixin, TrigFlowMixin, 
     ...
 ```
 
-The distillation model inherits common distillation-related codes from the `DistillationCoreMixin`. The `TrigFlowMixin` provides handy traning-time timestep sampling functions since we use Trigflow as a unified parameterization for both distillation methods. Then the model then inherits the teacher model class -- in this case the Predict2.5 `Video2WorldModel`, to reuse most of its functions including tokenizer, data handling, conditioner, etc. Note that the order of inheritance matters here.
+The distillation model inherits common distillation-related codes from the `DistillationCoreMixin`. The `TrigFlowMixin` provides handy training-time timestep sampling functions since we use Trigflow as a unified parameterization for both distillation methods. Then the model then inherits the teacher model class -- in this case the Predict2.5 `Video2WorldModel`, to reuse most of its functions including tokenizer, data handling, conditioner, etc. Note that the order of inheritance matters here.
 
 The key of implementation is to rewrite the training step. The high-level training_step that alternates student and critic phases is in `DistillationCoreMixin`. For DMD2, implement two methods in your model:
 
