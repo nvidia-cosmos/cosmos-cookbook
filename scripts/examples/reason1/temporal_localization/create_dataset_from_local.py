@@ -185,7 +185,6 @@ def main():
         )
 
     system_prompt = prompts_data["system_prompt"]
-    # user_prompt = prompts_data["user_prompt"]
     responses = prompts_data["responses"]
 
     print(f"✅ Loaded prompts with {len(responses)} responses")
@@ -208,9 +207,9 @@ def main():
         if not os.path.exists(video_path):
             continue
 
-        # if not check_video(video_path):
-        #     failed_count += 1
-        #     continue
+        if not check_video(video_path):
+            failed_count += 1
+            continue
 
         # Check video file size
         video_size_bytes = os.path.getsize(video_path)

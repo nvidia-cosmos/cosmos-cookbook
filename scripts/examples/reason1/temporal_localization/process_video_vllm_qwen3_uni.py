@@ -283,7 +283,7 @@ Examples:
     parser.add_argument(
         "--video_path_template",
         type=str,
-        default="/mnt/pvc/datasets/videos_bridge_small/02_2023-05-05_10-36-06_traj_group0_traj{demo_num}_images0.mp4",
+        default="/data/videos_mimicgen/cube_stacking_demo{demo_num}.mp4",
         help="Video path template with {demo_num} placeholder - only for demo-based mode",
     )
 

@@ -185,7 +185,7 @@ Examples:
     parser.add_argument(
         "--video_path_template",
         type=str,
-        default="/mnt/pvc/datasets/videos_bridge_small/02_2023-05-05_10-36-06_traj_group0_traj{demo_num}_images0.mp4",
+        default="/data/videos_mimicgen/cube_stacking_demo{demo_num}.mp4",
         help="Video path template with {demo_num} placeholder - only for demo-based mode",
     )
     parser.add_argument(
@@ -203,8 +203,8 @@ Examples:
     parser.add_argument(
         "--max_tokens",
         type=int,
-        default=8192,
-        help="Maximum tokens for completion (default: 8192)",
+        default=4096,
+        help="Maximum tokens for completion (default: 4096)",
     )
     parser.add_argument(
         "--timeout",
