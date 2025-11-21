@@ -1,6 +1,6 @@
 # Cosmos Reason for Mimic Gen temporal localization
 
-> **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Aleksandr Efitorov](https://www.linkedin.com/in/alex-efitorov/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
+> **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Alexander Efitorov](https://www.linkedin.com/in/alex-efitorov/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
 
 ## Overview
