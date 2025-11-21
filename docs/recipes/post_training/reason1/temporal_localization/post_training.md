@@ -15,9 +15,9 @@ It works by dividing each demonstration into **object-centric subtasks** annotat
 
 Given a new scene with different object configurations, MimicGen:
 
-- selects an existing demonstration,
+- selects an existing demonstration
 - spatially transforms each subtask to match the new context and stitches them together
-- executes the resulting trajectory to collect a new demonstration.
+- executes the resulting trajectory to collect a new demonstration
 
 This allows a small set of manually recorded demonstrations to be expanded into **a large dataset with varied contexts and trajectories**.
 
@@ -85,7 +85,7 @@ For Zero-shot Evaluation we used the test dataset consisting of 60 videos across
 |------|--------------|------------------|---------|
 | Isaac Lab: Cube stacking  ![Cube Stacking](assets/cube_stacking.gif) | 179-247 | 10 | Event 1: grasping the red cube \| The robotic arm closes its grippers around the red cube, securing it firmly.<br><br>Event 2: releasing the red cube \| The robotic arm releases the red cube, allowing it to rest atop the blue cube.<br><br>Event 3: grasping the green cube \| The robotic arm closes its grippers around the green cube, picking it up from the surface. |
 |  Isaac Lab: Humanoid nut pouring ![Nut Pouring](assets/nut_pouring.gif) | 288-313 | 5 | Event 1: Picking up the red cylinder from the table.<br><br>Event 2: Placing the red cylinder in the blue tray.<br><br>Event 3: Picking up the yellow bowl from the table. |
-| BridgeData V2: Cube_stacking  ![Bridge Cube Stacking](assets/bridge_2.gif)| 38-47 | 5 | Event 1: grasping the cube.<br><br>Event 2: releasing the cube. |
+| BridgeData V2: Cube stacking  ![Bridge Cube Stacking](assets/bridge_2.gif)| 38-47 | 5 | Event 1: grasping the cube.<br><br>Event 2: releasing the cube. |
 | AgiBot: task 358, Toaster ![Toaster](assets/toaster.gif)| 451 | 10 | Event 1: grasping bread.<br><br>Event 2: releasing bread.<br><br>Event 3: pushing the toaster.<br><br>Event 4: releasing the toaster. |
 | AgiBot: task 366, Chips ![Chips](assets/chips.gif) | 397-451 | 10 | Event 1: grasping a bag of chips.<br><br>Event 2: releasing a bag of chips. |
 | AgiBot: task 378, Fork ![Fork](assets/fork.gif) | 451 | 10 | Event 1: grasping a fork.<br><br>Event 2: releasing a fork.<br><br>Event 3: grasping a bowl.<br><br>Event 4: releasing a bowl. |
@@ -99,7 +99,7 @@ python add_timestamps_to_all_videos_adaptive.py \
 -o /path/to/videos_with_ts
 ```
 
-We used the public checkpoint of Cosmos Reason 1 for evaluation with the following configuration:
+We used the public checkpoint of [Cosmos Reason 1](https://huggingface.co/nvidia/Cosmos-Reason1-7B) for evaluation with the following configuration:
 
 - `max_tokens = 4096`
 - `fps = 4, 8, 12`
