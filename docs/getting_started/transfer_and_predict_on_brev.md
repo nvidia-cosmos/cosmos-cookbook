@@ -31,11 +31,13 @@ In this section, we'll walk through building a Launchable for Transfer2.5. The s
 
     ![Cosmos Transfer URL](../assets/images/brev03-create-launchable-step1.png)
 
-4. Add a setup script. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). See [Sample setup script](#sample-setup-script) for an example.
+4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example we use the [sample script](#sample-setup-script) from later in this guide which builds the Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container.
 
     ![Add setup script](../assets/images/brev04-create-launchable-step2.png)
 
-5. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup the sample Gradio server from the Transfer repo (or some other custom server). 
+    > Setting up Predict2.5 is nearly identical. See the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
+
+5. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup the sample Gradio server from the Transfer repo (or some other custom server).
 
     ![Add ports](../assets/images/brev05-create-launchable-step3.png)
 
@@ -51,8 +53,20 @@ In this section, we'll walk through building a Launchable for Transfer2.5. The s
 
     ![Ready to deploy](../assets/images/brev08-launchable-ready-to-deploy.png)
 
+9. After deploying, visit the instance page where you will find helpful examples of how to connect to the instance. Note the Delete button. Delete your instance when you're done, which can also be done with the `brev delete` command. Instances that support pause & resume can be stopped from this page.
+
+    ![Instance page](../assets/images/brev09-instance-page.png)
+
+10. Connect to the instance. In our example, we run the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
+
+    ![Docker prompt](../assets/images/brev10-docker-prompt.png)
+
+    > The Docker entrypoint pulls dependencies, and since we share the Python virtual environment (venv) folder with the container, subsequent runs will already have the deps installed.
+
+11. Have fun. Cosmos like a pro!
+
 ### Sample setup script
-The sample setup script below builds a Transfer2.5 Docker image and creates a script in the home folder of your Brev environment to run it. Once inside the container, do not forget to run `hf auth login` to enable checkpoint downloads. See also [Transfer2.5 downloading checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) for more info.
+The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, do not forget to run `hf auth login` to enable checkpoint downloads. See also [Transfer2.5 downloading checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) for more info.
 
 ```bash
 #!/bin/bash
@@ -103,9 +117,9 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 - Prefer instances with a few TB+ of storage. With less than 2TB you might sometimes run out of space!
 - Don't forget to shutdown (delete) your instances when you're done.
 - As of November 2025, most instances suitable for Transfer and Predict do not support the pause and resume (start/stop) feature.
-- Note Brev's deployment time estimate when evaluating instance types, ex: "Ready in 7minutes". 
+- Note Brev's deployment time estimate when evaluating instance types, ex: "Ready in 7minutes".
 - Deployment can fail on occasion and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3 times the estimated ready time in your mind and you will be happy 😀
-- Your favorite cloud provider might not always be available. 
+- Your favorite cloud provider might not always be available.
 - You can change a Launchable's compute! Reasons you might want to include
     - ☁️ The preferred cloud provider is not available
     - 💰 You want to save money with a different configuration
