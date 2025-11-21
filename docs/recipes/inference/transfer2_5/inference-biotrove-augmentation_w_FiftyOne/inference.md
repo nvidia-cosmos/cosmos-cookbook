@@ -32,7 +32,7 @@ The [**BioTrove**](https://baskargroup.github.io/BioTrove/) dataset is an extens
 - **Data scarcity** — few real scenes of moths in natural field conditions
 - **Domain gap** — models trained on lab-style images fail to generalize to outdoor agricultural settings
 
-To build a robust classifier, we used [**FiftyOne’s semantic search with BioCLIP**](https://github.com/paularamo/fiftyone-workshop-biodiversity) to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The sub-dataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove)
+To build a robust classifier, we used [**FiftyOne’s semantic search with BioCLIP**](https://github.com/paularamo/fiftyone-workshop-biodiversity) to retrieve **~1000 moth images** from the full dataset. However, most retrieved samples still lacked realistic field backgrounds. The sub-dataset is in Hugging Face Hub, [here](https://huggingface.co/datasets/pjramg/moth_biotrove).
 
 Cosmos Transfer 2.5 enables us to **transform these scarce, lab-style images into photorealistic agricultural scenarios**, while preserving the structure and identity of each moth. Internal experiments show **20–40% improvements in classification accuracy**, thanks to better domain alignment and increased appearance diversity.
 
@@ -265,10 +265,10 @@ fob.compute_similarity(
 
 While Cosmos Transfer 2.5 produced a high percentage of usable samples, the whole usability depends on refining the control signals. In particular, improving edge-control generation results in a more stable geometry and fewer artifacts in the final outputs. A promising next step is to incorporate a semantic segmentation model such as SAM3 to generate a clean moth mask. This would better preserve insect morphology and any changes in the insect shapes during the domain transfer stage.
 
-Even with these controls, not every synthetic sample will be suitable for training. Each output should still pass a quality inspection step
+Even with these controls, not every synthetic sample will be suitable for training. Each output should still pass a quality inspection step.
 
 - outputs are realistic agricultural scenes
-- morphology* preserved
+- moth morphology preserved*
 - background diversity increased
 - edge controls mainly maintain moth structure - we need to revisit this
 - high visual coherence

@@ -115,8 +115,8 @@ pip install jupyterlab umap-learn
 Clone the Cosmos Transfer 2.5 repository and install it in editable mode.
 
 ```bash
-git clone https://github.com/nvidia-cosmos/Cosmos Transfer 2.5.git
-cd Cosmos Transfer 2.5
+git clone https://github.com/nvidia-cosmos/cosmos-transfer2.5.git
+cd cosmos-transfer2.5
 pip install -e .
 ```
 
@@ -129,7 +129,7 @@ Then follow the **Cosmos Transfer 2.5 Setup Guide** for environment configuratio
 Set `COSMOS_DIR`:
 
 ```bash
-export COSMOS_DIR=/path/to/Cosmos Transfer 2.5
+export COSMOS_DIR=/path/to/cosmos-transfer2.5
 ```
 
 Optional:
@@ -168,6 +168,9 @@ python examples/inference.py --help
 ### Verify FiftyOne + FFmpeg
 
 ```python
+import fiftyone as fo
+print("FiftyOne version:", fo.__version__)
+
 dataset_src = fouh.load_from_hub(
     "pjramg/moth_biotrove",
     persistent=True,
