@@ -7,7 +7,7 @@ This guide covers the setup requirements for running Cosmos Reason 1 for MimicGe
 ### Minimum Hardware Requirements
 
 - **GPU**: 1 or more GPUs (A100, H100, or later recommended)
-- **Memory**: Sufficient VRAM for model inference
+- **Memory**: 24 GB VRAM for model inference
 - **Storage**: Adequate disk space for model weights
 
 ### Software Requirements
