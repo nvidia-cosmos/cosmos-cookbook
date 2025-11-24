@@ -58,7 +58,7 @@ Once your instance is ready, Brev will provide SSH connection details. ![instanc
 ```bash
 brev login --token <YOUR_TOKEN>
 ```
-2. Open a terminal locally
+Open a terminal locally
 ```bash
 brev shell sample-reason1-fa3124
 ```
