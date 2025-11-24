@@ -1,4 +1,5 @@
 # Get Started with Cosmos Reason1 on Brev: Inference and Post-Training
+>
 > **Author:** Saurav Nanda
 > **Organization:** NVIDIA
 
@@ -20,26 +21,25 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 - See the quickstart to get a feel for the platform: [https://docs.nvidia.com/brev/latest/quick-start.html](https://docs.nvidia.com/brev/latest/quick-start.html). The handy Brev docs are linked from the Brev page too.
 - A Hugging Face account with access to [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B)
 
+## The cheat code: Launchables
 
-## The cheat code: Launchables!
 [Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
-
-> **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time. 
+> **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time.
 
 ## Step 1: Create a Brev Instance
 
 1. Log in to your [Brev account](https://brev.dev)
 2. Find the Launchable section of the Brev website.
-![Launchables Menu](./images/brev-01-launchable-menu.png) 
+![Launchables Menu](./images/brev-01-launchable-menu.png)
 3. Click the **Create Launchable** button.
 ![Create Launchable Button](./images/brev-02-create-launchable-button.png)
 4. Enter the Cosmos Reason [GitHub URL](https://github.com/nvidia-cosmos/cosmos-reason1) ![https://github.com/nvidia-cosmos/cosmos-reason1](./images/brev-03-chose-repo.png)
 
 5. Choose H100 GPU instance with 80GB VRAM.
 ![H100 Instance](./images/brev04-choose-compute.png)
- 
-6. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup some other custom server(if any). ![Jupyter](./images/brev-05-chosejupyter.png) 
+
+6. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup some other custom server(if any). ![Jupyter](./images/brev-05-chosejupyter.png)
 
 7. Add a setup script for Cosmos Reason.  See [sample setup script](./setup_script.sh) for an example.
  ![Setup Script](./images/brev-06-startup-script.png)
@@ -48,27 +48,32 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 
 ## Step 2: Connect to Your Instance
 
-Once your instance is ready, Brev will provide SSH connection details. ![instance](./images/brev-09-access-or-stop.png) 
+Once your instance is ready, Brev will provide SSH connection details. ![instance](./images/brev-09-access-or-stop.png)
 
 ### Option 1: Open Jupyter Notebook
+
 ![Notebook](./images/brev-10-notebook.png)
 
-### Option 2: Copy the SSH command from your Brev dashboard:
+### Option 2: Copy the SSH command from your Brev dashboard
 
 ```bash
 brev login --token <YOUR_TOKEN>
 ```
+
 2. Open a terminal locally
+
 ```bash
 brev shell sample-reason1-fa3124
 ```
+
 OR Open in Code Editor
 
 ```bash
 brev open sample-reason1-fa3124 cursor
 ```
 
-## Step 4: Authenticate Hugging Face CLI 
+## Step 4: Authenticate Hugging Face CLI
+
 The Hugging Face Token is required to download the Cosmos Reason1 model:
 
 ```bash
@@ -80,15 +85,13 @@ When prompted, enter your Hugging Face token. You can create a token at [https:/
 
 **Important**: Make sure you have access to the [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) model. Request access if needed.
 
-
 ## Step 6: Run Inference and Post-Training
 
-Now you're ready to run inference with Cosmos Reason1! 
+Now you're ready to run inference with Cosmos Reason1!
 
 Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the infernce and post-training examples.
 
 ## Troubleshooting
-
 
 ### Model Download Issues
 
@@ -128,7 +131,6 @@ Before stopping your instance:
 scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outputs ./local-outputs
 ```
 
-
 ## Additional Resources
 
 - [Cosmos Reason1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
@@ -140,7 +142,6 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outp
 ## Support
 
 For issues related to:
+
 - **Cosmos Reason1**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason1/issues)
 - **Brev Platform**: Contact [Brev support](https://brev.dev/support)
-
-
