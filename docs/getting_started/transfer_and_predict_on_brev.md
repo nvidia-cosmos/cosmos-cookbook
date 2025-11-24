@@ -125,6 +125,6 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 - Deployment can fail on occasion and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3 times the estimated ready time in your mind and you will be happy 😀
 - Your favorite cloud provider might not always be available.
 - You can change a Launchable's compute! Reasons you might want to include
-  - ☁️ The preferred cloud provider is not available
-  - 💰 You want to save money with a different configuration
-  - 🏎️ You want to try higher specs
+    - ☁️ The preferred cloud provider is not available
+    - 💰 You want to save money with a different configuration
+    - 🏎️ You want to try higher specs
