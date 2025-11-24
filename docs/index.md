@@ -1,5 +1,12 @@
 # Cosmos Cookbook
 
+<div style="width: 100%; max-width: 969px; margin: 2rem 0; display: block;">
+  <video autoplay loop muted playsinline style="width: 100%; max-width: 969px; height: auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: block;">
+    <source src="assets/images/homepage_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
 ## Overview
 
 **[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models — offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
@@ -9,8 +16,6 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 - Quick-start inference examples to get up and running fast.
 - Advanced post-training workflows for domain-specific fine-tuning.
 - Proven recipes for scalable, production-ready deployments.
-
-<https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
 
 ## Open Source Community Platform
 
