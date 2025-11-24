@@ -1,0 +1,31 @@
+[custom.dataset]
+path = "data/videophy2_train"
+
+[train]
+epoch = 10
+output_dir = "outputs/videophy2_sft"
+compile = false
+train_batch_per_replica = 32
+
+[policy]
+model_name_or_path = "nvidia/Cosmos-Reason1-7B"
+model_max_length = 4096
+
+[logging]
+logger = ['console']
+project_name = "cosmos_reason1"
+experiment_name = "post_training_hf/videophy2_sft"
+
+[train.train_policy]
+type = "sft"
+conversation_column_name = "conversations"
+mini_batch = 4
+
+[train.ckpt]
+enable_checkpoint = true
+
+[policy.parallelism]
+tp_size = 1
+cp_size = 1
+dp_shard_size = 8
+pp_size = 1
