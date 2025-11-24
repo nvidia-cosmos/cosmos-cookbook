@@ -38,11 +38,11 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 
 5. Choose H100 GPU instance with 80GB VRAM.
 ![H100 Instance](./images/brev04-choose-compute.png)
- 
+
 6. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup some other custom server(if any). ![Jupyter](./images/brev-05-chosejupyter.png) 
 
-7. Add a setup script for Cosmos Reason.  See [sample setup script](./setup_script.sh) for an example.
- ![Setup Script](./images/brev-06-startup-script.png)
+7. Add a setup script for Cosmos Reason. See [sample setup script](./setup_script.sh) for an example.
+![Setup Script](./images/brev-06-startup-script.png)
 
 8. Name your Launchable and configure access.(usually takes 2-3 minutes). ![create](./images/brev-07-create-launchable.png)
 
@@ -68,7 +68,8 @@ OR Open in Code Editor
 brev open sample-reason1-fa3124 cursor
 ```
 
-## Step 4: Authenticate Hugging Face CLI 
+## Step 3: Authenticate Hugging Face CLI
+
 The Hugging Face Token is required to download the Cosmos Reason1 model:
 
 ```bash
@@ -81,11 +82,11 @@ When prompted, enter your Hugging Face token. You can create a token at [https:/
 **Important**: Make sure you have access to the [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) model. Request access if needed.
 
 
-## Step 6: Run Inference and Post-Training
+## Step 4: Run Inference and Post-Training
 
-Now you're ready to run inference with Cosmos Reason1! 
+Now you're ready to run inference with Cosmos Reason1!
 
-Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the infernce and post-training examples.
+Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the inference and post-training examples.
 
 ## Troubleshooting
 
@@ -142,5 +143,3 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outp
 For issues related to:
 - **Cosmos Reason1**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason1/issues)
 - **Brev Platform**: Contact [Brev support](https://brev.dev/support)
-
-
