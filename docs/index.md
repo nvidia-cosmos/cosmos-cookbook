@@ -10,6 +10,8 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 - Advanced post-training workflows for domain-specific fine-tuning.
 - Proven recipes for scalable, production-ready deployments.
 
+<https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
+
 ## Open Source Community Platform
 
 The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
