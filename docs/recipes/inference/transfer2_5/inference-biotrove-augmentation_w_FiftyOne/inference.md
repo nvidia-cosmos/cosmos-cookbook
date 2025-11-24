@@ -8,10 +8,9 @@
 This recipe demonstrates a complete **domain-transfer pipeline** for addressing **data scarcity** in the BioTrove moth dataset using **Cosmos Transfer 2.5** and [**FiftyOne**](https://docs.voxel51.com/).
 It shows how to convert static images into realistic agricultural scenarios using **edge-based control**, **Python-only inference**, and **FiftyOne visualization** -- even when control signals (depth, segmentation) are missing.
 
->  This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
+> This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
 
 > Please visit the [FiftyOne Tutorial](https://docs.dev.voxel51.com/tutorials/cosmos-transfer-integration.html) to run all in once.
-
 
 | Model | Workload | Use case |
 |-------|----------|----------|
@@ -20,6 +19,7 @@ It shows how to convert static images into realistic agricultural scenarios usin
 ---
 
 ## Setup
+
 Before running this recipe, complete the environment configuration:
 **[Setup and System Requirements](setup.md)**
 
@@ -86,7 +86,6 @@ dataset_src = fouh.load_from_hub(
 ```
 
 > ![file_name](https://cdn.voxel51.com/tutorials/cosmos-transfer2_5/moth_biotrove.webp)
-
 
 ---
 
@@ -179,6 +178,7 @@ def write_spec_json(spec_path, video_abs, edge_abs, name):
     }
     spec_path.write_text(json.dumps(obj, indent=2))
 ```
+
 In this step we build one JSON spec per input video.
 Each spec controls:
 
