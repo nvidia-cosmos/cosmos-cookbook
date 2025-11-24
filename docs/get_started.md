@@ -80,4 +80,5 @@ huggingface-cli login
 **Note:** You'll need a Hugging Face account and access token for authentication.
 
 ## Guides
+
 - [Get started with Transfer2.5 and Predict2.5 on Brev](getting_started/transfer_and_predict_on_brev.md)
