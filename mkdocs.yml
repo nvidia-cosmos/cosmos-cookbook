@@ -28,6 +28,8 @@ markdown_extensions:
       check_paths: true
   - pymdownx.superfences
   - pymdownx.details
+  - pymdownx.arithmatex:
+      generic: true
 theme:
   name: "material"
   custom_dir: docs/assets/overrides
@@ -67,6 +69,9 @@ extra_css:
   - assets/css/color-schemes.css
   - assets/css/fonts.css
   - assets/css/custom-material.css
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:
   github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
 copyright: |

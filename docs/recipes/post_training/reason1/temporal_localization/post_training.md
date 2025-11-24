@@ -375,12 +375,12 @@ Because clip duration is fixed and you set fps, the system adjusts per‑frame r
 
 **pixels per frame ≈ budget / frames**, where **frames = duration × fps**
 
-with **side resolution ≈ √(pixels per frame)** is then snapped to the patch grid of 14 pixels
+with **side resolution** \( \approx \sqrt{\text{pixels per frame}} \) is then snapped to the patch grid of 14 pixels
 
 **Example:** 7s input video (Cosmos Reason params: vision tokens = 8192, fps = 8):
 
 1. **7 × 8 = 56 frames**
-2. **6,422,528 / 56 ≈ 114,700 pixels per frame** with side resolution: **√114,700 ≈ 338 pixels**
+2. **6,422,528 / 56 ≈ 114,700 pixels per frame** with side resolution: \( \sqrt{114,700} \approx 338 \) **pixels**
 3. snapped to patch grid: **24 × 14 = 336 pixels per side ⇒ 24² = 576 patches per frame**
 
 **Guidance:**
