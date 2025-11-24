@@ -1,9 +1,10 @@
 # Get Started with Transfer2.5 and Predict2.5 on Brev
 
-> **Authors:** Carlos Casanova
+> **Authors:** [Carlos Casanova](https://www.linkedin.com/in/carloscasanova/)
 > **Organization:** NVIDIA
 
 ## Explore Brev
+
 NVIDIA's Brev is an excellent platform for experimenting with Cosmos. To get started,
 
 1. Create an account at [https://brev.nvidia.com](https://brev.nvidia.com)
@@ -12,7 +13,8 @@ NVIDIA's Brev is an excellent platform for experimenting with Cosmos. To get sta
 
 While lower spec'd GPUs can work for some workflows, prefer those with 80GB of VRAM. Note also that the Transfer2.5 AV Multiview model requires instances with 8 or more GPUs.
 
-## The cheat code: Launchables!
+## The cheat code: Launchables
+
 [Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 In this section, we'll walk through building a Launchable for Transfer2.5. The steps are nearly identical for Predict2.5.
@@ -66,6 +68,7 @@ In this section, we'll walk through building a Launchable for Transfer2.5. The s
 11. Have fun. Cosmos like a pro!
 
 ### Sample setup script
+
 The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, do not forget to run `hf auth login` to enable checkpoint downloads. See also [Transfer2.5 downloading checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) for more info.
 
 ```bash
@@ -113,6 +116,7 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 ```
 
 ## Notes, tips and gotchas
+
 - Prefer GPUs with 80GB+ of VRAM.
 - Prefer instances with a few TB+ of storage. With less than 2TB you might sometimes run out of space!
 - Don't forget to shutdown (delete) your instances when you're done.
@@ -121,6 +125,6 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 - Deployment can fail on occasion and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3 times the estimated ready time in your mind and you will be happy 😀
 - Your favorite cloud provider might not always be available.
 - You can change a Launchable's compute! Reasons you might want to include
-    - ☁️ The preferred cloud provider is not available
-    - 💰 You want to save money with a different configuration
-    - 🏎️ You want to try higher specs
+  - ☁️ The preferred cloud provider is not available
+  - 💰 You want to save money with a different configuration
+  - 🏎️ You want to try higher specs
