@@ -5,11 +5,19 @@
 
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
+**📚 [View the Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)**
+
+> The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:
+> **<https://nvidia-cosmos.github.io/cosmos-cookbook/>**
+
+<https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
+
 ## Overview
 
-This cookbook provides step-by-step workflows, technical recipes, and concrete examples for the complete AI development lifecycle with Cosmos models:
+This cookbook provides step-by-step workflows, technical recipes, and comprehensive guides for the complete AI development lifecycle with Cosmos models:
 
 - **Inference**: Quick-start examples with pre-trained models
+- **Gallery**: Visual showcase of Cosmos results across different domains
 - **Data Curation**: Scalable data processing pipelines with Cosmos Curator
 - **Post-Training**: Custom fine-tuning for domain-specific adaptation
 - **Evaluation**: Quality control and model assessment workflows
@@ -83,7 +91,7 @@ Contains the source documentation in markdown files:
 
 - Technical guides and workflows
 - End-to-end examples and case studies
-- API references and tutorials
+- Step-by-step recipes and tutorials
 - Getting started guides
 
 ### `scripts/`
@@ -123,7 +131,7 @@ just ci-deploy-external         # Deploy external documentation
 - **Modular Scripts**: Reusable components for custom workflows
 - **Evaluation Tools**: Built-in quality assessment and metrics
 - **Production Ready**: Scalable pipelines for real-world deployment
-- **Comprehensive Docs**: Detailed guides and API references
+- **Comprehensive Docs**: Step-by-step workflows and technical recipes
 
 ## Documentation
 
