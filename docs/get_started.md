@@ -79,8 +79,7 @@ hf auth login
 
 **Note:** You'll need a Hugging Face account and access token for authentication.
 
-## Cloud GPU Setup
+## Guides
 
-If you don't have local GPU access, you can use cloud GPU platforms:
-
-- [Cosmos Reason1 on Brev](getting_started/reason1_on_brev.md) - Complete guide for inference and post-training on Brev H100 instances
+- [Cosmos Reason1 on Brev](getting_started/reason1/reason1_on_brev.md) - Complete guide for inference and post-training on Brev H100 instances
+- [Get started with Transfer2.5 and Predict2.5 on Brev](getting_started/transfer_and_predict_on_brev.md)
