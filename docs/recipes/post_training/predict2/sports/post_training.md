@@ -154,54 +154,163 @@ The following are supported resolutions for 720p video:
 ### 2.1 Configuration
 
 
-#### Key Configuration Parameters
+Two configurations for sports are provided:
+- `predict2_lora_training_2b_cosmos_sports_assets_txt` - For text caption format
+- `predict2_lora_training_2b_cosmos_sports_assets_json_rank32` - For JSON caption format with long prompts
+
+#### Complete Sports Configuration
 
 ```python
-model=dict(
+from imaginaire.lazy_config import LazyCall as L
+from projects.cosmos.predict2.datasets.local_datasets.dataset_video import (
+    VideoDataset,
+    get_generic_dataloader,
+    get_sampler,
+)
+
+# Dataset configuration for sports videos (Text format)
+example_dataset_cosmos_sports_assets_lora_txt = L(VideoDataset)(
+    dataset_dir="/project/cosmos/arslana/codes/sports/sports_v8",
+    num_frames=93,
+    video_size=(704, 1280),
+)
+
+# Dataset configuration for sports videos (JSON format with long prompts)
+example_dataset_cosmos_sports_assets_lora_json = L(VideoDataset)(
+    dataset_dir="/project/cosmos/arslana/codes/sports/sports_v8",
+    num_frames=93,
+    video_size=(704, 1280),
+    caption_format="json",
+    prompt_type="long",
+)
+
+# Dataloader configuration
+dataloader_train_cosmos_sports_assets_lora_txt = L(get_generic_dataloader)(
+    dataset=example_dataset_cosmos_sports_assets_lora_txt,
+    sampler=L(get_sampler)(dataset=example_dataset_cosmos_sports_assets_lora_txt),
+    batch_size=1,
+    drop_last=True,
+    num_workers=4,
+    pin_memory=True,
+)
+
+dataloader_train_cosmos_sports_assets_lora_json = L(get_generic_dataloader)(
+    dataset=example_dataset_cosmos_sports_assets_lora_json,
+    sampler=L(get_sampler)(dataset=example_dataset_cosmos_sports_assets_lora_json),
+    batch_size=1,
+    drop_last=True,
+    num_workers=4,
+    pin_memory=True,
+)
+
+# Model configuration with LoRA
+_lora_model_config = dict(
     config=dict(
         # Enable LoRA training
         use_lora=True,
-        lora_rank=32,              # Rank of LoRA adaptation matrices (higher than typical)
+        # LoRA configuration parameters
+        lora_rank=32,              # Rank of LoRA adaptation matrices (higher for sports complexity)
         lora_alpha=32,             # LoRA scaling parameter
         lora_target_modules="q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2",
         init_lora_weights=True,    # Properly initialize LoRA weights
-
-        # Training for all three modes
+        
+        # Training configuration for all three modes
+        # The model will randomly sample between 0, 1, and 2 conditional frames during training
         min_num_conditional_frames=0,  # Allow text2world (0 frames)
         max_num_conditional_frames=2,  # Allow up to video2world (2 frames)
-
-        # Probability distribution for each mode
+        
+        # Probability distribution for sampling number of conditional frames
+        # This controls how often each mode is trained:
+        # - 0 frames: text2world (33.3%)
+        # - 1 frame: image2world (33.3%)
+        # - 2 frames: video2world (33.4%)
         conditional_frames_probs={0: 0.333, 1: 0.333, 2: 0.334},
         
-        # Additional settings
+        # Optional: set conditional_frame_timestep for better control
         conditional_frame_timestep=-1.0,  # Default -1 means not effective
+        # Keep the default conditioning strategy
         conditioning_strategy="frame_replace",
         denoise_replace_gt_frames=True,
     ),
-),
-```
+)
 
-#### Training Parameters
+# Training configuration
+_lora_trainer = dict(
+    logging_iter=100,
+    max_iter=10000,
+    callbacks=dict(
+        heart_beat=dict(save_s3=False),
+        iter_speed=dict(hit_thres=1000, save_s3=False),
+        device_monitor=dict(save_s3=False),
+        every_n_sample_reg=dict(every_n=1000, save_s3=False),
+        every_n_sample_ema=dict(every_n=1000, save_s3=False),
+        wandb=dict(save_s3=False),
+        wandb_10x=dict(save_s3=False),
+        dataloader_speed=dict(save_s3=False),
+    ),
+)
 
-```python
-trainer=dict(
-    logging_iter=100,      # Log metrics every 100 iterations
-    max_iter=10000,       # Total training iterations
-),
-optimizer=dict(
-    lr=0.0001,            # Learning rate
-    weight_decay=0.001,   # Weight decay for regularization
-),
-scheduler=dict(
+# Optimizer configuration
+_lora_optimizer = dict(
+    lr=0.0001,
+    weight_decay=0.001,
+)
+
+# Scheduler configuration
+_lora_scheduler = dict(
     f_max=[0.5],
     f_min=[0.2],
     warm_up_steps=[2_000],
     cycle_lengths=[100000],
-),
-checkpoint=dict(
-    save_iter=1000,       # Save checkpoint every 1000 iterations
-),
+)
+
+# Checkpoint configuration
+_lora_checkpoint_base = dict(
+    load_path=get_checkpoint_path(DEFAULT_CHECKPOINT.s3.uri),
+    load_from_object_store=dict(enabled=False),
+    save_to_object_store=dict(enabled=False),
+    save_iter=1000,  # Save checkpoint every 1000 iterations
+)
+
+# Model parallel configuration
+_lora_model_parallel = dict(
+    context_parallel_size=1,
+)
+
+# Complete experiment configurations
+predict2_lora_training_2b_cosmos_sports_assets_txt = dict(
+    defaults=_lora_defaults,
+    job=dict(
+        project="cosmos_predict_v2p5",
+        group="lora",
+        name="2b_cosmos_sports_assets_lora",
+    ),
+    dataloader_train=dataloader_train_cosmos_sports_assets_lora_txt,
+    checkpoint=_lora_checkpoint_base,
+    optimizer=_lora_optimizer,
+    scheduler=_lora_scheduler,
+    trainer=_lora_trainer,
+    model=_lora_model_config,
+    model_parallel=_lora_model_parallel,
+)
+
+predict2_lora_training_2b_cosmos_sports_assets_json_rank32 = dict(
+    defaults=_lora_defaults,
+    job=dict(
+        project="cosmos_predict_v2p5",
+        group="lora",
+        name="2b_cosmos_sports_assets_json_lora",
+    ),
+    dataloader_train=dataloader_train_cosmos_sports_assets_lora_json,
+    checkpoint=_lora_checkpoint_base,
+    optimizer=_lora_optimizer,
+    scheduler=_lora_scheduler,
+    trainer=_lora_trainer,
+    model=_lora_model_config,
+    model_parallel=_lora_model_parallel,
+)
 ```
+
 
 ### 2.2 Training
 
@@ -356,24 +465,21 @@ The model automatically detects the generation mode based on the input:
 
 Generated videos will be saved to the output directory.
 
-### Example Prompt for Sports Generation
+### Example Prompts for Soccer Video Generation
+
+#### Text2World Generation Prompts
+
+#### Image2World/Video2World Generation Example
 
 ```json
 {
-  "prompts": [
-    {
-      "text": "A soccer player dribbles down the court and performs a spectacular slam dunk, the crowd erupts in cheers",
-      "output": "basketball_dunk.mp4"
-    },
-    {
-      "text": "A soccer player executes a perfect bicycle kick, scoring a goal from outside the penalty box",
-      "output": "soccer_bicycle_kick.mp4"
-    },
-    {
-      "text": "A tennis player serves an ace at 140 mph during a crucial match point at Wimbledon",
-      "output": "tennis_ace.mp4"
-    }
-  ]
+  "inference_type": "image2world",
+  "name": "soccer_action_sequence",
+  "prompt": "A soccer player in a red and black uniform dribbles the ball past an opponent in an orange and white uniform. The player in red sprints towards the goal, evading the defender. As he approaches the goalpost, the goalkeeper dives to make a save but fails to stop the ball from entering the net. The camera follows the ball as it flies into the goal, capturing the excitement of the moment.",
+  "input_path": "first_frame.mp4",
+  "seed": 0,
+  "guidance": 3,
+  "num_output_frames": 93
 }
 ```
 
