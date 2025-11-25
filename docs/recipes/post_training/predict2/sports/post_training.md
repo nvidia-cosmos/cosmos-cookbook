@@ -1,422 +1,380 @@
-# Traffic Anomaly Generation with Cosmos Predict2
+# LoRA Post-training for Sports Video Generation
 
-> **Authors:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/), [Grace Lam](https://www.linkedin.com/in/grace-lam/), [Amol Fasale](https://www.linkedin.com/in/amolfasale/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
-> **Organization:** NVIDIA
+This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos-Predict2.5 models for sports video generation tasks, supporting Text2World, Image2World, and Video2World generation modes.
 
-## Overview
+## Table of Contents
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| Cosmos Predict2 | Post-training | Traffic anomaly generation with improved realism and prompt alignment |
+- [Prerequisites](#prerequisites)
+- [What is LoRA?](#what-is-lora)
+- [Preparing Data](#1-preparing-data)
+- [LoRA Post-training](#2-lora-post-training)
+  - [Configuration](#21-configuration)
+  - [Training](#22-training)
+- [Inference with LoRA Post-trained checkpoint](#3-inference-with-lora-post-trained-checkpoint)
+  - [Converting DCP Checkpoint to Consolidated PyTorch Format](#31-converting-dcp-checkpoint-to-consolidated-pytorch-format)
+  - [Running Inference](#32-running-inference)
 
-In Intelligent Transportation Systems (ITS), collecting real-world data for rare events like traffic accidents, jaywalking, or blocked intersections includes significant challenges:
+## Prerequisites
 
-- **Privacy concerns**: Recording and using real accident footage raises ethical and legal issues.
-- **Infrequent occurrence**: Critical safety events are rare by nature, making data collection expensive and time-consuming.
-- **High annotation costs**: Expert annotation of traffic incidents requires specialized knowledge.
-- **Safety risks**: Staging real accidents for data collection is dangerous and impractical.
+### 1. Environment Setup
 
-Synthetic data generation (SDG) offers a practical way to augment existing datasets, enabling teams to create targeted scenarios at scale while maintaining control over scenario parameters and data quality.
+Follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies.
 
-## The Challenge: Rare Event Data in ITS
+### 2. Hugging Face Configuration
 
-Initial evaluations of the pre-trained Cosmos Predict 2 model revealed gaps in generating vehicle collision scenes:
+Model checkpoints are automatically downloaded during post-training if they are not present. Configure Hugging Face as follows:
 
-- Unrealistic motion dynamics
-- Oversized vehicles (likely due to dash cam bias in pre-training)
-- Lack of incident-specific behavior
-- Limited ability to maintain a fixed-camera perspective
+```bash
+# Login with your Hugging Face token (required for downloading models)
+hf auth login
 
-While the pre-trained model excelled at routine traffic scenes, it struggled with collision scenarios when tested on ITS-specific prompts. This confirmed the need for targeted post-training using anomaly-rich data featuring accidents from fixed CCTV perspectives.
+# Set custom cache directory for HF models
+# Default: ~/.cache/huggingface
+export HF_HOME=/path/to/your/hf/cache
+```
 
-## Our Approach: LoRA-Based Domain Adaptation
+> **💡 Tip**: Ensure you have sufficient disk space in `HF_HOME`.
 
-This case study documents a detailed post-training workflow using Cosmos Predict 2 Video2World with **Low-Rank Adaptation (LoRA)**, with a focus on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
+### 3. Training Output Directory
 
-### Why LoRA for ITS Applications?
+Configure where training checkpoints and artifacts will be saved:
 
-LoRA (Low-Rank Adaptation) is particularly well-suited for ITS domain adaptation for the following reasons:
+```bash
+# Set output directory for training checkpoints and artifacts
+# Default: /tmp/imaginaire4-output
+export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
+```
 
-#### Critical Advantage: Data Efficiency for Rare Events
+> **💡 Tip**: Ensure you have sufficient disk space in `IMAGINAIRE_OUTPUT_ROOT`.
 
-Unlike general video datasets with millions of samples, traffic accident datasets typically contain only hundreds to thousands of examples. This data scarcity makes LoRA the optimal choice:
+## Weights & Biases (W&B) Logging
 
-- **Effective with Limited Data**: LoRA can achieve meaningful adaptation with as few as 1,000-2,000 training samples.
-- **Reduced Overfitting Risk**: Fewer parameters (45M vs 2B) means less tendency to memorize limited training data.
-- **Better Generalization**: The constrained parameter space forces the model to learn generalizable patterns rather than specific examples.
-- **Leverages Pre-training**: LoRA builds upon the base model's existing knowledge, requiring only minimal accident-specific data to adapt.
+By default, training will attempt to log metrics to Weights & Biases. You have several options:
 
-In our case study, with very limited clips, LoRA enabled successful adaptation where full fine-tuning would likely fail or severely overfit.
+### Option 1: Enable W&B
 
-#### Parameter Efficiency
+To enable full experiment tracking with W&B:
 
-- **Minimal Storage**: LoRA adds only ~45M trainable parameters to a 2B parameter model (≈2% increase).
-- **Quick Deployment**: LoRA adapters are small (10-100MB) compared to full model checkpoints (5-50GB).
-- **Multiple Domains**: A different LoRA adapter can be used for each traffic scenario (highways, intersections, parking lots).
+1. Create a free account at [wandb.ai](https://wandb.ai)
+2. Get your API key from [https://wandb.ai/authorize](https://wandb.ai/authorize)
+3. Set the environment variable:
 
-#### Resource Optimization
+    ```bash
+    export WANDB_API_KEY=your_api_key_here
+    ```
 
-- **Reduced Training Time**: It can take 1-2 hours to train a 2B model, versus 2-4 hours for full fine-tuning.
-- **Lower GPU Memory**: 20GB of GPU memory is required for LoRA, versus 50GB for full model training.
-- **Faster Iteration**: It's possible to perform rapid experimentation with different training configurations.
+### Option 2: Disable W&B
 
-#### Preservation of Base Capabilities
+Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
 
-- **No Catastrophic Forgetting**: The base model's general video generation capabilities remain intact
-- **Additive Learning**: ITS-specific knowledge is added without degrading general performance.
-- **Fallback Option**: LoRA can be disabled to access the behavior of the original model when needed.
+## What is LoRA?
 
-### LoRA Configuration
+LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning technique that allows you to adapt large pre-trained models to specific domains or tasks by training only a small number of additional parameters.
 
-Based on the [LoRA paper (Hu et al., 2021)](https://arxiv.org/abs/2106.09685), our configuration includes the following:
+### Key Benefits of LoRA Post-Training
 
-- **Target Modules**: `q_proj`, `k_proj`, `v_proj`, `output_proj`, `mlp.layer1`, `mlp.layer2`
-- **Rank**: 16 (This value determines the dimensionality of the low-rank decomposition--a higher rank allows more expressiveness but increases parameters.)
-- **Alpha**: 16 (This scaling hyperparameter controls the magnitude of LoRA updates--it is typically set equal to rank for balanced learning.)
-- **Training Data**: A 1:1 mixture of normal traffic scenes and incident scenarios.
+- **Memory Efficiency**: Only trains ~1-2% of total model parameters
+- **Faster Training**: Significantly reduced training time per iteration
+- **Storage Efficiency**: LoRA checkpoints are much smaller than full model checkpoints
+- **Flexibility**: Can maintain multiple LoRA adapters for different domains
+- **Preserved Base Capabilities**: Retains the original model's capabilities while adding domain-specific improvements
 
-This configuration focuses on attention mechanisms and feed-forward layers, which are crucial for the following conditions:
+### When to Use LoRA vs Full Fine-tuning
 
-- Understanding spatial relationships between vehicles.
-- Capturing temporal dynamics of collisions.
-- Maintaining consistent camera perspective.
-- Generating physically plausible motion.
+**Use LoRA when:**
+- You have limited compute resources
+- You want to create domain-specific adapters
+- You need to preserve the base model's general capabilities
+- You're working with smaller datasets
 
-## Data Preparation
+**Use full fine-tuning when:**
+- You need maximum model adaptation
+- You have sufficient compute and storage
+- You're making fundamental changes to model behavior
 
-To address the model limitations, we developed a multi-source data pipeline that combines the following:
+## 1. Preparing Data
 
-- ITS normal traffic scenes: 100 hours of traffic surveillance footage from different intersections at various times of the day, all captured from fixed CCTV viewpoints (no dash cam or moving camera perspectives)
-- ITS accident scenes: A compilation of accident scenes from different intersections at various times of the day, all captured from fixed CCTV viewpoints (totaling approximately 3.5 hours of video).
+### 1.1 Understanding Training Data Requirements
 
-> **Disclaimer**: All data collected for this case study is for research proof of concept and demonstration purposes only. This data has not been merged into the pre-training dataset. This example serves solely to illustrate the data curation methodology and post-training workflow.
+The training approach uses the same video dataset to train all three generation modes:
 
-### Splitting and Captioning
+- **Text2World (0 frames)**: Uses only text prompts, videos serve as ground truth for reconstruction
+- **Image2World (1 frame)**: Uses first frame as condition, generates remaining frames
+- **Video2World (2+ frames)**: Uses initial frames as condition, continues the video generation
 
-**ITS accident scenes**: The original 5-10 minute compilations were split into individual clips using `cosmos-curate` with `transnetv2` scene detection and objective captioning.
+### 1.2 Dataset Location
+
+The sports dataset is configured to use videos from:
+```
+/project/cosmos/arslana/codes/sports/sports_v8
+```
+
+This dataset contains sports video clips in **MP4 format** at 720p resolution (704x1280).
+
+### 1.3 Dataset Formats
+
+The system supports two caption formats:
+
+#### Text Format (.txt files)
+- Simple text files containing one caption per file
+- Files should be placed in a `metas/` directory
+- Filename should match the video filename (e.g., `video1.mp4` → `video1.txt`)
+
+#### JSON Format (.json files)
+- More flexible format supporting multiple prompt variations
+- Files should be placed in a `captions/` directory
+- Supports long, short, and medium prompt types
+
+**JSON Caption File Format:**
 
 ```json
 {
-    "pipeline": "split",
-    "args": {
-        "input_video_path": "s3://your_bucket/raw_data/its_accident_scenes",
-        "output_clip_path": "s3://your_bucket/processed_data/its_accident_scenes/v0",
-        "generate_embeddings": true,
-        "generate_previews": true,
-        "generate_captions": true,
-        "splitting_algorithm": "transnetv2",
-        "captioning_algorithm": "qwen",
-        "captioning_prompt_variant": "default",
-        "captioning_prompt_text": "You are a video captioning expert trained to describe short CCTV footage of traffic collisions and abnormalities. Every input video contains either a visible traffic collision or a clear traffic abnormality such as a near miss, illegal turn, jaywalking, sudden braking, or swerving. Your task is to generate one concise and factual English paragraph that describes both the static environment and the dynamic physical event. For collision events, clearly describe how the collision unfolds — including the objects involved, their directions and relative speeds, the point of contact, and what happens immediately after. Begin every caption with: 'A traffic CCTV camera' Then describe: Environment: weather, Visible elements: vehicles, pedestrians, traffic lights, signs, road markings, Dynamic event: What vehicles or people are involved, How they move before the event, Where the impact occurs (e.g., front-left bumper hits right side of motorcycle), What happens afterward (e.g., rider falls, car swerves, vehicle spins, traffic halts). Use clear, physics-based verbs such as: collides, hits, swerves, brakes, accelerates, turns, merges, falls, flips, spins, crosses. Output Rules: Output must be one concise paragraph (1-3 small sentences), Focus on visible, physical actions - no speculation or emotional inference, Do not include: driver intentions, license plates, timestamps, brand names, street/building names, or text overlays, Assume all videos contain either a collision or an abnormal traffic event. Output Style Examples: A traffic CCTV camera shows a dry four-way intersection during the day. A red hatchback runs a red light and enters the intersection at moderate speed. From the right, a white SUV proceeds legally and collides into the hatchback's passenger-side door. The hatchback comes to rest near the opposite curb. A traffic CCTV camera captures a multi-lane road during daytime. Vehicles are moving slowly in moderate traffic. A black sedan abruptly slows down, and a silver pickup behind it fails to brake in time, crashing into the sedan's rear bumper. The front of the pickup crumples slightly while the sedan is pushed forward by a few meters. A traffic CCTV camera captures an intersection under clear skies. A motorcyclist enters the intersection diagonally from the left, crossing through oncoming traffic. A silver SUV traveling straight at moderate speed strikes the motorcycle's front wheel with its front-left bumper. The rider is thrown off and skids several feet across the road surface.",
-        "limit": 0,
-        "limit_clips": 0,
-        "perf_profile": true
-   }
+  "model_name": {
+    "long": "Detailed description of the sports action...",
+    "short": "Brief summary of the sports play...",
+    "medium": "Moderate length description of the sports scene..."
+  }
 }
 ```
 
-**ITS normal traffic scenes**: 100 hours of continuous surveillance footage split into 10-second clips using the `fixed-stride` algorithm. Captioning focused on general scene description since no incidents were detected.
-
-### Dataset Composition
-
-The final curated dataset composition is summarized as follows:
-
-| Dataset | Quality | Incident Coverage | Artifacts | Clips |
-|---------|---------|-------------------|-----------|-------|
-| ITS normal traffic scenes (10 sec clips) | High | No | None | 44,000 |
-| ITS accident scenes (5-15 sec clips) | Medium | Yes | None | 1,200 |
-
-### Post-Training Dataset Sampling
-
-For post-training, we selected 1,000 samples from each dataset (1:1 ratio):
-
-- **Normal traffic scenes**: A diverse selection across intersections and times of day
-- **Accident scenes**: 1,000 clips from the available 1,200 to balance normal and anomaly learning
-
-### Video Resolution Requirements
+### 1.4 Video Resolution Requirements
 
 The following are supported resolutions for 720p video:
 
-- **16:9**: 1280x720 (recommended for ITS footage)
+- **16:9**: 1280x704 (configured for sports dataset)
 - **1:1**: 960x960
 - **4:3**: 960x720
 - **3:4**: 720x960
 - **9:16**: 720x1280
 
-> **Important**: Resize all videos to supported resolutions before training to avoid errors.
+> **Important**: The sports configuration is set for 704x1280 resolution. Ensure all videos match this resolution.
 
-## Post-Training
+## 2. LoRA Post-training
 
-We performed post-training with a 1:1 mixture of datasets between ITS normal traffic scenes and ITS accident scenes. We selected 1,000 annotated video clips from each of the two datasets that were curated from the previous session.
+### 2.1 Configuration
 
-### Training Setup
 
-- Model: Cosmos Predict 2 Video2World (2B)
-- Hardware: Single node with 8 GPUs (8x H100)
-- Training Duration: 10k iterations
-- Batch Size: 1 per GPU (8 total with data parallelism)
-- Learning Rate: ~3.05e-5 (2^-14.5)
-- Context Parallel Size: 2
-- Loss Monitoring: Visual inspection with convergence curves
-
-An overfitting test on four samples verified pipeline correctness before training. Additional experiments confirmed that including low-quality data degraded results, reinforcing the principle that data quality cannot be traded for volume.
-
-We also experimented with both Full Model post-training and PEFT post-training. The process is detailed below:
-
-### LoRA Post-Training Workflow
-
-#### LoRA Configuration Setup (2B Model)
+#### Key Configuration Parameters
 
 ```python
-predict2_video2world_lora_training_2b_its = dict(
-    defaults=[
-        {"override /model": "predict2_video2world_fsdp_2b"},
-        {"override /optimizer": "fusedadamw"},
-        {"override /scheduler": "lambdalinear"},
-        {"override /ckpt_type": "standard"},
-        {"override /data_val": "mock"},
-        "_self_",
-    ],
-    job=dict(
-        project="posttraining",
-        group="video2world_lora",
-        name="2b_its_lora",
+model=dict(
+    config=dict(
+        # Enable LoRA training
+        use_lora=True,
+        lora_rank=32,              # Rank of LoRA adaptation matrices (higher than typical)
+        lora_alpha=32,             # LoRA scaling parameter
+        lora_target_modules="q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2",
+        init_lora_weights=True,    # Properly initialize LoRA weights
+
+        # Training for all three modes
+        min_num_conditional_frames=0,  # Allow text2world (0 frames)
+        max_num_conditional_frames=2,  # Allow up to video2world (2 frames)
+
+        # Probability distribution for each mode
+        conditional_frames_probs={0: 0.333, 1: 0.333, 2: 0.334},
+        
+        # Additional settings
+        conditional_frame_timestep=-1.0,  # Default -1 means not effective
+        conditioning_strategy="frame_replace",
+        denoise_replace_gt_frames=True,
     ),
-    model=dict(
-        config=dict(
-            train_architecture="lora",                     # Enable LoRA training
-            lora_rank=16,                                  # Low-rank decomposition dimension
-            lora_alpha=16,                                 # LoRA scaling factor
-            lora_target_modules="q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2",
-            init_lora_weights=True,
-            pipe_config=dict(
-                ema=dict(enabled=True),                    # Enable EMA for stability
-                guardrail_config=dict(enabled=False),      # Disable during training
-            ),
-        )
-    ),
-    model_parallel=dict(
-        context_parallel_size=2,                          # For video sequences
-    ),
-    dataloader_train=dataloader_train_its,
-    trainer=dict(
-        distributed_parallelism="fsdp",
-        callbacks=dict(
-            iter_speed=dict(hit_thres=10),                # Report speed every 10 iterations
-        ),
-        max_iter=2000,                                   # Total training iterations
-    ),
-    checkpoint=dict(
-        save_iter=500,                                    # Save checkpoint every 500 iterations
-    ),
-    optimizer=dict(
-        lr=2 ** (-14.5),                                 # Learning rate: ~3.05e-5
-    ),
-    scheduler=dict(
-        warm_up_steps=[2_000],                           # Warmup period
-        cycle_lengths=[400_000],                         # Scheduler cycle length
-        f_max=[0.6],                                     # Maximum factor
-        f_min=[0.3],                                     # Minimum factor
-    ),
-)
+),
 ```
 
-#### LoRA Training Execution
+#### Training Parameters
 
-##### Single Node with 8 GPUs
+```python
+trainer=dict(
+    logging_iter=100,      # Log metrics every 100 iterations
+    max_iter=10000,       # Total training iterations
+),
+optimizer=dict(
+    lr=0.0001,            # Learning rate
+    weight_decay=0.001,   # Weight decay for regularization
+),
+scheduler=dict(
+    f_max=[0.5],
+    f_min=[0.2],
+    warm_up_steps=[2_000],
+    cycle_lengths=[100000],
+),
+checkpoint=dict(
+    save_iter=1000,       # Save checkpoint every 1000 iterations
+),
+```
+
+### 2.2 Training
+
+Run the LoRA post-training using one of the following configurations:
+
+#### Using Text Caption Format
 
 ```bash
-# Set experiment name for LoRA training
-EXP=predict2_video2world_lora_training_2b_its
-
-# Run LoRA training on single node with 8 GPUs
 torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
-  --config=cosmos_predict2/configs/base/config.py \
-  --experiment=${EXP} \
-  model.config.train_architecture=lora
+  --config=projects/cosmos/predict2/configs/video2world/config.py -- \
+  experiment=predict2_lora_training_2b_cosmos_sports_assets_txt
 ```
 
-##### Expected log output
-
-```
-Adding LoRA adapters: rank=16, alpha=16, targets=['q_proj', 'k_proj', 'v_proj', 'output_proj', 'mlp.layer1', 'mlp.layer2']
-Total parameters: 3.96B, Frozen parameters: 3,912,826,880, Trainable parameters: 45,875,200
-```
-
-## Inference with Post-Trained ITS Model
-
-After post-training the Cosmos Predict 2 Video2World model on ITS-specific data using LoRA (Low-Rank Adaptation), we can perform efficient inference to generate realistic traffic incident videos.
-
-### Prerequisites
-
-1. **Post-trained checkpoint**: A LoRA checkpoint from the post-training process (e.g., `iter_000001000.pt`)
-2. **Input image**: A CCTV traffic camera frame as the starting point (1280x720 recommended)
-3. **Environment setup**: A properly configured Cosmos Predict 2 environment with required dependencies
-
-### Basic Command
+#### Using JSON Caption Format with Long Prompts
 
 ```bash
-export NUM_GPUS=8
-export PYTHONPATH=$(pwd)
-
-torchrun --nproc_per_node=${NUM_GPUS} examples/video2world_lora.py \
-    --model_size 2B \
-    --dit_path "checkpoints/posttraining/video2world/2b_metropolis/checkpoints/model/iter_000001000.pt" \
-    --input_path "path/to/input_frame.jpg" \
-    --prompt "Your accident scenario description" \
-    --save_path "output/generated_accident.mp4" \
-    --num_gpus ${NUM_GPUS} \
-    --use_lora \
-    --lora_rank 16 \
-    --lora_alpha 16 \
-    --lora_target_modules "q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2" \
-    --offload_guardrail \
-    --offload_prompt_refiner
+torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
+  --config=projects/cosmos/predict2/configs/video2world/config.py -- \
+  experiment=predict2_lora_training_2b_cosmos_sports_assets_json_rank32
 ```
 
-### Example: Generating Traffic Collision Scenario
+#### Disabling W&B Logging
+
+Add `job.wandb_mode=disabled` to disable wandb:
 
 ```bash
-export NUM_GPUS=8
-torchrun --nproc_per_node=${NUM_GPUS} examples/video2world_lora.py \
-    --model_size 2B \
-    --dit_path "checkpoints/posttraining/video2world/2b_metropolis/checkpoints/model/iter_000001000.pt" \
-    --input_path "benchmark/frames_1280x704/intersection_view.jpg" \
-    --prompt 'A static traffic CCTV camera captures an urban street scene, where two cars are speeding down the road. Suddenly, a white sedan abruptly enters from an intersection, cutting across traffic and colliding with one of the vehicles. The impact causes significant damage. Both vehicles come to a halt following the crash.' \
-    --save_path output/collision_scenario.mp4 \
-    --num_gpus ${NUM_GPUS} \
-    --use_lora \
-    --lora_rank 16 \
-    --lora_alpha 16 \
-    --lora_target_modules "q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2" \
-    --offload_guardrail \
-    --offload_prompt_refiner
+torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
+  --config=projects/cosmos/predict2/configs/video2world/config.py -- \
+  experiment=predict2_lora_training_2b_cosmos_sports_assets_txt \
+  job.wandb_mode=disabled
 ```
 
-### Key Parameters
+Checkpoints are saved to:
+- Text format: `${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict_v2p5/lora/2b_cosmos_sports_assets_lora/checkpoints`
+- JSON format: `${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict_v2p5/lora/2b_cosmos_sports_assets_json_lora/checkpoints`
 
-#### LoRA-Specific Parameters
+**Note**: By default, `IMAGINAIRE_OUTPUT_ROOT` is `/tmp/imaginaire4-output`. We strongly recommend setting `IMAGINAIRE_OUTPUT_ROOT` to a location with sufficient storage space for your checkpoints.
 
-| Parameter | Description | Required Value |
-|-----------|-------------|----------------|
-| `--use_lora` | Enable LoRA inference mode | **Must be set** |
-| `--lora_rank` | Rank of LoRA adaptation | 16 (match training) |
-| `--lora_alpha` | LoRA scaling parameter | 16 (match training) |
-| `--lora_target_modules` | Target modules for LoRA | "q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2" |
+## Checkpointing
 
-### Prompt Engineering for ITS Scenarios
+Training uses two checkpoint formats:
 
-Effective prompts are crucial for generating realistic traffic incidents. Follow these guidelines:
+### 1. Distributed Checkpoint (DCP) Format
 
-#### Structure
+**Primary format for training checkpoints.**
 
-1. **Start with camera perspective**: "A static traffic CCTV camera..."
-2. **Describe the scene**: Location, weather, traffic conditions
-3. **Detail the incident**: Vehicle types, movements, collision dynamics
-4. **Include aftermath**: Post-collision behavior
+- **Structure**: Multi-file directory with sharded model weights
+- **Used for**: Saving checkpoints during training, resuming training
+- **Advantages**:
+  - Efficient parallel I/O for multi-GPU training
+  - Supports FSDP (Fully Sharded Data Parallel)
+  - Optimized for distributed workloads
 
-#### Example Prompts
-
-##### Intersection Collision
+**Example directory structure:**
 
 ```
-A static traffic CCTV camera captures a busy four-way intersection during daytime.
-A red sedan runs a red light and enters the intersection at high speed. From the
-right, a white SUV proceeds legally and collides with the sedan's passenger side.
-The impact causes the sedan to spin and both vehicles come to rest blocking traffic.
+checkpoints/
+├── iter_{NUMBER}/
+│   ├── model/
+│   │   ├── .metadata
+│   │   └── __0_0.distcp
+│   ├── optim/
+│   ├── scheduler/
+│   └── trainer/
+└── latest_checkpoint.txt
 ```
 
-##### Rear-End Collision
+### 2. Consolidated PyTorch (.pt) Format
 
+**Single-file format for inference and distribution.**
+
+- **Structure**: Single `.pt` file containing the complete model state
+- **Used for**: Inference, model sharing, initial post-training
+- **Advantages**:
+  - Easy to distribute and version control
+  - Standard PyTorch format
+  - Simpler for single-GPU workflows
+
+## 3. Inference with LoRA Post-trained checkpoint
+
+### 3.1 Converting DCP Checkpoint to Consolidated PyTorch Format
+
+Since the checkpoints are saved in DCP format during training, you need to convert them to consolidated PyTorch format (.pt) for inference. Use the `convert_distcp_to_pt.py` script:
+
+```bash
+# For text format checkpoint
+CHECKPOINTS_DIR=${IMAGINAIRE_OUTPUT_ROOT:-/tmp/imaginaire4-output}/cosmos_predict_v2p5/lora/2b_cosmos_sports_assets_lora/checkpoints
+CHECKPOINT_ITER=$(cat $CHECKPOINTS_DIR/latest_checkpoint.txt)
+CHECKPOINT_DIR=$CHECKPOINTS_DIR/$CHECKPOINT_ITER
+
+# Convert DCP checkpoint to PyTorch format
+python scripts/convert_distcp_to_pt.py $CHECKPOINT_DIR/model $CHECKPOINT_DIR
 ```
-A traffic CCTV camera shows a multi-lane highway with moderate traffic flow. A silver
-pickup truck suddenly brakes hard, and a black sedan following too closely crashes
-into its rear bumper. The sedan's front crumples while the pickup is pushed forward
-several meters.
+
+This conversion will create three files:
+
+- `model.pt`: Full checkpoint containing both regular and EMA weights
+- `model_ema_fp32.pt`: EMA weights only in float32 precision  
+- `model_ema_bf16.pt`: EMA weights only in bfloat16 precision (recommended for inference)
+
+### 3.2 Running Inference
+
+After converting the checkpoint, you can run inference with your post-trained model. The model can be either run from command-line or from IPython notebooks:
+
+* [inference notebook single GPU](../examples/notebook/inference.ipynb)
+* [inference notebook multi-GPU with server](../examples/notebook/inference_with_server.ipynb)
+
+The model can be used for any generation mode. Simply use the appropriate JSON configuration with the corresponding experiment:
+
+#### Text2World Generation
+
+```bash
+# Using Text format checkpoint
+torchrun --nproc_per_node=8 examples/inference.py \
+  -i assets/sports_text2world_prompts.json \
+  -o outputs/sports_text2world \
+  --checkpoint-path $CHECKPOINT_DIR/model_ema_bf16.pt \
+  --experiment predict2_lora_training_2b_cosmos_sports_assets_txt
+
+# Using JSON format checkpoint
+torchrun --nproc_per_node=8 examples/inference.py \
+  -i assets/sports_text2world_prompts.json \
+  -o outputs/sports_text2world \
+  --checkpoint-path $JSON_CHECKPOINT_DIR/model_ema_bf16.pt \
+  --experiment predict2_lora_training_2b_cosmos_sports_assets_json_rank32
 ```
 
-## Evaluation
+#### Image2World Generation
 
-This section covers the evaluation methodology for comparing the original Cosmos Predict 2 model with the LoRA post-trained version on single-view CCTV video generation.
+```bash
+torchrun --nproc_per_node=8 examples/inference.py \
+  -i assets/sports_image2world_inputs.json \
+  -o outputs/sports_image2world \
+  --checkpoint-path $CHECKPOINT_DIR/model_ema_bf16.pt \
+  --experiment predict2_lora_training_2b_cosmos_sports_assets_txt
+```
 
-### Evaluation Metrics
+#### Video2World Generation  
 
-#### Quantitative Metrics
+```bash
+torchrun --nproc_per_node=8 examples/inference.py \
+  -i assets/sports_video2world_inputs.json \
+  -o outputs/sports_video2world \
+  --checkpoint-path $CHECKPOINT_DIR/model_ema_bf16.pt \
+  --experiment predict2_lora_training_2b_cosmos_sports_assets_txt
+```
 
-We employ two primary metrics for objective evaluation of video generation quality:
+The model automatically detects the generation mode based on the input:
+- Provide text only → Text2World generation
+- Provide 1 image frame → Image2World generation
+- Provide 2+ video frames → Video2World generation
 
-##### 1. FID (Fréchet Inception Distance)
+Generated videos will be saved to the output directory.
 
-FID ([Heusel et al., 2017](https://arxiv.org/abs/1706.08500)) measures the similarity between the distribution of generated videos and real videos by comparing features extracted from a pre-trained Inception network.
+### Example Prompt for Sports Generation
 
-- **What values indicate**: Values closer to 0 indicate better quality.
-- **Typical ranges**: Excellent (< 10), Good (10-30), Acceptable (30-50), Poor (> 50
-- **What it measures**: Visual quality and realism at the frame level
+```json
+{
+  "prompts": [
+    {
+      "text": "A soccer player dribbles down the court and performs a spectacular slam dunk, the crowd erupts in cheers",
+      "output": "basketball_dunk.mp4"
+    },
+    {
+      "text": "A soccer player executes a perfect bicycle kick, scoring a goal from outside the penalty box",
+      "output": "soccer_bicycle_kick.mp4"
+    },
+    {
+      "text": "A tennis player serves an ace at 140 mph during a crucial match point at Wimbledon",
+      "output": "tennis_ace.mp4"
+    }
+  ]
+}
+```
 
-##### 2. FVD (Fréchet Video Distance)
-
-FVD ([Unterthiner et al., 2018](https://arxiv.org/abs/1812.01717)) extends FID to the temporal dimension, evaluating both visual quality and temporal consistency using an I3D network.
-
-- **What values indicate**: Values closer to 0 indicate better quality.
-- **Typical ranges**: Excellent (< 100), Good (100-200), Acceptable (200-400), Poor (> 400)
-- **What it measures**: Visual quality and temporal coherence
-
-#### Why These Metrics Matter for ITS
-
-- **FID**: Validates visual realism of individual frames from a single camera view,
-- **FVD**: Ensures temporal consistency and realistic motion dynamics,
-
-Together, these metrics quantify improvements in single-view traffic video generation.
-
-#### Limitations of FID/FVD Metrics
-
-While FID and FVD effectively measure visual quality and temporal consistency, they have notable limitations for safety-critical ITS applications. These metrics primarily evaluate statistical distributions of visual features but cannot assess **physical plausibility**--a crucial aspect of collision scenarios. For comprehensive evaluation of physical plausibility in generated accidents, additional assessment using physics-aware models like [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) can be beneficial.
-
-### Expected Results
-
-#### Typical Improvements from LoRA Post-Training
-
-| Metric | Baseline Model | LoRA Post-Trained | Improvement |
-|--------|---------------|-------------------|-------------|
-| **FID Score** | ~35-40 | ~20-25 | 35-40% ↓ |
-| **FVD Score** | ~250-300 | ~150-180 | 35-40% ↓ |
-
-## Expected Outcomes
-
-With LoRA-based post-training, we can achieve the following:
-
-### Quality Improvements
-
-- **Enhanced Physical Realism**: More accurate collision dynamics and vehicle behavior
-- **Consistent Perspective**: A fixed CCTV camera viewpoint that is maintained throughout generation
-- **Reduced Artifacts**: Fewer unrealistic elements like floating vehicles or impossible physics
-
-### Data Efficiency
-
-- **Successful Training with Minimal Data**: Domain adaptation is achieved with only ~1,000 accident examples.
-- **No Data Waste**: Every accident clip from the limited training dataset contributes meaningfully to the model.
-- **Synthetic Data Amplification**: The adapted model can now generate unlimited variations of accidents, effectively solving the data scarcity problem.
-
-### Operational Benefits
-
-- **Rapid Adaptation**: New scenarios can be learned in hours rather than days.
-- **Cost Efficiency**: Reduced computational requirements enable broader experimentation.
-- **Scalable Deployment**: Multiple domain-specific models can coexist efficiently.
-
-## Use Cases
-
-This LoRA-adapted model enables several critical ITS applications:
-
-1. **Safety System Training**: Generate diverse accident scenarios for computer vision model training.
-2. **Traffic Simulation**: Create realistic traffic flow videos for urban planning.
-3. **Incident Analysis**: Reconstruct and visualize potential accident scenarios.
-4. **Emergency Response Planning**: Simulate various incident types for preparedness training.
-5. **Infrastructure Assessment**: Evaluate intersection designs with synthetic traffic scenarios.
-
-## Conclusion
-
-Combining the powerful video generation capabilities of Cosmos Predict 2 with the efficient adaptation mechanism of LoRA provides an ideal solution for ITS-specific synthetic data generation. *Most critically, LoRA enables successful domain adaptation despite the severe scarcity of real accident data*--a fundamental constraint in traffic safety applications.
-
-While traditional fine-tuning would require tens of thousands of examples and risk catastrophic overfitting with limited data, LoRA achieved meaningful adaptation with just over 1,000 incident clips. This data efficiency, combined with reduced computational requirements and deployment flexibility, makes LoRA not just a good choice but arguably the only viable approach for adapting large video models to rare-event domains like traffic accidents.
-
-The result is a system capable of generating unlimited high-quality, physically realistic traffic incident videos from minimal real examples--effectively transforming data scarcity from a blocking constraint into a solved problem. This breakthrough can significantly enhance safety system development, emergency response training, and urban planning initiatives worldwide.
+For more inference options and advanced usage, see the Cosmos Predict2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
