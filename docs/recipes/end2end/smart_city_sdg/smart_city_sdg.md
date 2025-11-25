@@ -243,109 +243,113 @@ python modules/postprocess/postprocess_for_vlm.py \
 
 ## Quickstart (Docker Compose)
 
-1) Clone the repository
+1. Clone the repository
 
-```bash
-git clone https://github.com/NVIDIA/metropolis-sdg-smart-cities.git
-cd metropolis-sdg-smart-cities
-```
+    ```bash
+    git clone https://github.com/NVIDIA/metropolis-sdg-smart-cities.git
+    cd metropolis-sdg-smart-cities
+    ```
 
-2) Download sample CARLA logs
+1. Download sample CARLA logs
 
-> **Note:** Sample logs are provided by Inverted AI. Please review the data [terms of use](https://github.com/inverted-ai/metropolis/blob/master/LICENSE.md) to determine whether they are appropriate for your purposes. If you have your own data you may skip this step and place it under `./data/examples/`
+    > **Note:** Sample logs are provided by Inverted AI. Please review the data [terms of use](https://github.com/inverted-ai/metropolis/blob/master/LICENSE.md) to determine whether they are appropriate for your purposes. If you have your own data you may skip this step and place it under `./data/examples/`
 
-```bash
-git clone https://github.com/inverted-ai/metropolis.git
-mv ./metropolis/examples ./data/examples
-```
+    ```bash
+    git clone https://github.com/inverted-ai/metropolis.git
+    mv ./metropolis/examples ./data/examples
+    ```
 
-3) Set up the deployment configuration. You need to provide your NGC_API_KEY [with access to pull images from build.nvidia](https://build.nvidia.com/settings/api-keys) and Hugging Face Token with access to the checkpoints mentioned under [Prerequisites](#prerequisites). The other parameters are optional to configure GPU IDs that each NIM/service should run on, and ports to launch the NIMs on. By default, they assume a homogeneous deployment to a system with at least 4x RTX 6000 Pro or equivalent.
+1. Set up the deployment configuration.
 
-```bash
-cd deploy/compose
-cp env.example env
-# Edit values for NGC_API_KEY, HF_TOKEN, GPU IDs, ports, etc.
-```
+    You need to provide your NGC_API_KEY [with access to pull images from build.nvidia](https://build.nvidia.com/settings/api-keys) and Hugging Face Token with access to the checkpoints mentioned under [Prerequisites](#prerequisites). The other parameters are optional to configure GPU IDs that each NIM/service should run on, and ports to launch the NIMs on. By default, they assume a homogeneous deployment to a system with at least 4x RTX 6000 Pro or equivalent.
 
-4) Deploy the stack. The deployment script automatically performs prerequisite checks before starting containers:
+    ```bash
+    cd deploy/compose
+    cp env.example env
+    # Edit values for NGC_API_KEY, HF_TOKEN, GPU IDs, ports, etc.
+    ```
 
-- **GPU availability**: Verifies NVIDIA GPUs are detected and accessible
-- **NVIDIA Container Toolkit**: Confirms GPU access from containers is configured
-- **Port availability**: Checks that required ports (8001, 8002, 8080, 8888, 2000-2002) are not already in use
-- **Docker and Docker Compose**: Verifies required tools are installed and Docker daemon is running
+1. Deploy the stack.
 
-If any critical checks fail, the script will exit with clear error messages. Address any issues before retrying deployment.
+    The deployment script automatically performs prerequisite checks before starting containers:
 
-There are two main deployment options available:
+    - **GPU availability**: Verifies NVIDIA GPUs are detected and accessible
+    - **NVIDIA Container Toolkit**: Confirms GPU access from containers is configured
+    - **Port availability**: Checks that required ports (8001, 8002, 8080, 8888, 2000-2002) are not already in use
+    - **Docker and Docker Compose**: Verifies required tools are installed and Docker daemon is running
 
-- **Homogeneous Deployment:** This mode launches all NIM services (VLM, LLM, Cosmos-Transfer) and the Workbench on a single machine (default, no extra arguments). It is recommended for systems with at least 4 suitable GPUs (RTX support and 80+ GB VRAM). Simply run `./deploy.sh` to start the entire stack locally.
+    If any critical checks fail, the script will exit with clear error messages. Address any issues before retrying deployment.
 
-```bash
-# On the target machine
-./deploy.sh
+    There are two main deployment options available:
 
-# This spins up the Cosmos-Reason1, Nemotron NIMs, Cosmos-Transfer2.5 Gradio Server, CARLA Server, and the Jupyter notebook, which users can follow to generate photo-realistic synthetic data for VLMs.
-# By default these are the ports where all of the services get deployed to.
-# Workbench → http://<host>:8888
-# NIMs: VLM http://<host>:8001, LLM http://<host>:8002, Cosmos-Transfer http://<host>:8080
-```
+    - **Homogeneous Deployment:** This mode launches all NIM services (VLM, LLM, Cosmos-Transfer) and the Workbench on a single machine (default, no extra arguments). It is recommended for systems with at least 4 suitable GPUs (RTX support and 80+ GB VRAM). Simply run `./deploy.sh` to start the entire stack locally.
 
-> **Note:** On the first run, you may see warnings such as "pull access denied for `smartcity-sdg-workbench`" or for the Transfer Gradio container. This is expected and harmless—the required images are built locally by `deploy.sh` during initial setup.
+    ```bash
+    # On the target machine
+    ./deploy.sh
 
-- **Heterogeneous Deployment:** This mode allows you to run the NIM stack (VLM, LLM, Cosmos-Transfer) on one machine and the Workbench (with CARLA) on another, using the `nim` and `workbench` arguments respectively. This is useful if you wish to distribute resource usage across multiple hosts. You'll need to set the `NIM_HOST` environment variable on the Workbench node to point to the NIM node.
+    # This spins up the Cosmos-Reason1, Nemotron NIMs, Cosmos-Transfer2.5 Gradio Server, CARLA Server, and the Jupyter notebook, which users can follow to generate photo-realistic synthetic data for VLMs.
+    # By default these are the ports where all of the services get deployed to.
+    # Workbench → http://<host>:8888
+    # NIMs: VLM http://<host>:8001, LLM http://<host>:8002, Cosmos-Transfer http://<host>:8080
+    ```
 
-The NIM stack requires a machine with 3 GPUs with 80+ GB VRAM (Ampere or later) to launch the 3 inference endpoints using the command below:
+    > **Note:** On the first run, you may see warnings such as "pull access denied for `smartcity-sdg-workbench`" or for the Transfer Gradio container. This is expected and harmless—the required images are built locally by `deploy.sh` during initial setup.
 
-```bash
-./deploy.sh nim
-# Note the printed NIM_HOST and use it on the workbench node.
-```
+    - **Heterogeneous Deployment:** This mode allows you to run the NIM stack (VLM, LLM, Cosmos-Transfer) on one machine and the Workbench (with CARLA) on another, using the `nim` and `workbench` arguments respectively. This is useful if you wish to distribute resource usage across multiple hosts. You'll need to set the `NIM_HOST` environment variable on the Workbench node to point to the NIM node.
 
-Once the NIM stack is up, launch the CARLA server and notebook/workbench stack, which requires at least 1 RTX-compatible GPU (L40/RTX 6000 Pro or equivalent) using the following command:
+    The NIM stack requires a machine with 3 GPUs with 80+ GB VRAM (Ampere or later) to launch the 3 inference endpoints using the command below:
 
-```bash
-# On the second machine, ensure steps 1-3 are complete to have the repository and configuration ready before this step.
-# The deployment script sources `deploy/compose/env`, where `NIM_HOST` defaults to `localhost`. This will override any previously exported `NIM_HOST`. Before running `./deploy.sh workbench`, edit `deploy/compose/env` and set `NIM_HOST=<ip_of_nim_node>`. The script will prompt you to confirm the detected value.
-cd deploy/compose
-./deploy.sh workbench
-```
+    ```bash
+    ./deploy.sh nim
+    # Note the printed NIM_HOST and use it on the workbench node.
+    ```
 
-Choose the option that best fits your available hardware and workflow needs.
+    Once the NIM stack is up, launch the CARLA server and notebook/workbench stack, which requires at least 1 RTX-compatible GPU (L40/RTX 6000 Pro or equivalent) using the following command:
 
-5) Verify deployment and start using the system
+    ```bash
+    # On the second machine, ensure steps 1-3 are complete to have the repository and configuration ready before this step.
+    # The deployment script sources `deploy/compose/env`, where `NIM_HOST` defaults to `localhost`. This will override any previously exported `NIM_HOST`. Before running `./deploy.sh workbench`, edit `deploy/compose/env` and set `NIM_HOST=<ip_of_nim_node>`. The script will prompt you to confirm the detected value.
+    cd deploy/compose
+    ./deploy.sh workbench
+    ```
 
-**Note:** On first deployment, NIMs require several minutes to download model checkpoints and initialize. Wait a few minutes before accessing services.
+    Choose the option that best fits your available hardware and workflow needs.
 
-**Check NIM health endpoints:**
+1. Verify deployment and start using the system
 
-```bash
-# If using heterogeneous deployment, set NIM_HOST to the NIM node IP first:
-# export NIM_HOST=<ip_of_nim_node>
-HOST=${NIM_HOST:-localhost}
-curl http://$HOST:8001/v1/health/ready  # VLM should return "Service is live."
-curl http://$HOST:8002/v1/health/ready  # LLM should return "Service is live."
-```
+    **Note:** On first deployment, NIMs require several minutes to download model checkpoints and initialize. Wait a few minutes before accessing services.
 
-- Cosmos-Transfer2.5 Gradio service:
-  - The notebook communicates with the Gradio server via the Gradio client. Opening `http://localhost:8080` (or `http://$NIM_HOST:8080` in heterogeneous deployments) in a browser is optional and mainly useful to verify the service is up.
+    **Check NIM health endpoints:**
 
-- Open the Workbench (Jupyter):
-  - Visit `http://localhost:8888` (or `http://<WORKBENCH_HOST>:8888` if using heterogeneous deployment).
-  - Open the notebook `notebooks/carla_synthetic_data_generation.ipynb`. It is a self-guided walkthrough covering all three stages using the deployed services:
-    - Stage 1: CARLA ground truth generation
-    - Stage 2: COSMOS photo-realistic augmentation
-    - Stage 3: SoM-aligned post-processing for VLM training
+    ```bash
+    # If using heterogeneous deployment, set NIM_HOST to the NIM node IP first:
+    # export NIM_HOST=<ip_of_nim_node>
+    HOST=${NIM_HOST:-localhost}
+    curl http://$HOST:8001/v1/health/ready  # VLM should return "Service is live."
+    curl http://$HOST:8002/v1/health/ready  # LLM should return "Service is live."
+    ```
 
-6) Cleanup (when finished)
+    - Cosmos-Transfer2.5 Gradio service:
+      - The notebook communicates with the Gradio server via the Gradio client. Opening `http://localhost:8080` (or `http://$NIM_HOST:8080` in heterogeneous deployments) in a browser is optional and mainly useful to verify the service is up.
 
-To stop and remove all containers:
+    - Open the Workbench (Jupyter):
+      - Visit `http://localhost:8888` (or `http://<WORKBENCH_HOST>:8888` if using heterogeneous deployment).
+      - Open the notebook `notebooks/carla_synthetic_data_generation.ipynb`. It is a self-guided walkthrough covering all three stages using the deployed services:
+        - Stage 1: CARLA ground truth generation
+        - Stage 2: COSMOS photo-realistic augmentation
+        - Stage 3: SoM-aligned post-processing for VLM training
 
-```bash
-cd deploy/compose
-./deploy.sh cleanup
-```
+1. Cleanup (when finished)
 
-This will stop and remove all containers from both the NIM and Workbench stacks. For heterogeneous deployments, run this command on both nodes (NIM node and Workbench node) to fully clean up all containers.
+    To stop and remove all containers:
+
+    ```bash
+    cd deploy/compose
+    ./deploy.sh cleanup
+    ```
+
+    This will stop and remove all containers from both the NIM and Workbench stacks. For heterogeneous deployments, run this command on both nodes (NIM node and Workbench node) to fully clean up all containers.
 
 ## Resources
 
@@ -354,7 +358,8 @@ This will stop and remove all containers from both the NIM and Workbench stacks.
 - [Carla Simulator](https://carla.org/)
 
 Models Used:
-  - [Cosmos Transfer](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)
-  - [Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)
-  - [Nemotron](https://developer.nvidia.com/nemotron)
+
+- [Cosmos Transfer](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)
+- [Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)
+- [Nemotron](https://developer.nvidia.com/nemotron)
 - [Fine-tuning VLMs](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html)
