@@ -81,4 +81,5 @@ huggingface-cli login
 
 ## Guides
 
+- [Get started with Cosmos Reason1 on Brev](getting_started/reason1/reason1_on_brev.md)
 - [Get started with Transfer2.5 and Predict2.5 on Brev](getting_started/transfer_and_predict_on_brev.md)
