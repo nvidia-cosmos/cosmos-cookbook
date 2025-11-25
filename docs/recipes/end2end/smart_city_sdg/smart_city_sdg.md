@@ -1,6 +1,6 @@
 # Synthetic Data Generation (SDG) for Traffic Scenarios
 
-> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/)
+> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi]()
 > **Organization:** NVIDIA
 
 ## Overview
@@ -356,10 +356,10 @@ python modules/postprocess/postprocess_for_vlm.py \
 - [SDG for Smart Cities Github](https://github.com/NVIDIA/metropolis-sdg-smart-cities)
 - [Cosmos Transfer 2.5 Sim2Real for Simulator Videos](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html)
 - [Carla Simulator](https://carla.org/)
+- [Fine-tuning VLMs](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html)
 
 Models Used:
 
 - [Cosmos Transfer](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)
 - [Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)
 - [Nemotron](https://developer.nvidia.com/nemotron)
-- [Fine-tuning VLMs](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html)
