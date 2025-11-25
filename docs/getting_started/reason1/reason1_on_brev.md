@@ -1,4 +1,5 @@
 # Get Started with Cosmos Reason1 on Brev: Inference and Post-Training
+>
 > **Author:** Saurav Nanda
 > **Organization:** NVIDIA
 
@@ -20,10 +21,9 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 - See the quickstart to get a feel for the platform: [https://docs.nvidia.com/brev/latest/quick-start.html](https://docs.nvidia.com/brev/latest/quick-start.html). The handy Brev docs are linked from the Brev page too.
 - A Hugging Face account with access to [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B)
 
+## The cheat code: Launchables
 
-## The cheat code: Launchables!
 [Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
-
 
 > **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time.
 
@@ -51,17 +51,21 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 Once your instance is ready, Brev will provide SSH connection details. ![instance](./images/brev-09-access-or-stop.png)
 
 ### Option 1: Open Jupyter Notebook
+
 ![Notebook](./images/brev-10-notebook.png)
 
-### Option 2: Copy the SSH command from your Brev dashboard:
+### Option 2: Copy the SSH command from your Brev dashboard
 
 ```bash
 brev login --token <YOUR_TOKEN>
 ```
+
 Open a terminal locally
+
 ```bash
 brev shell sample-reason1-fa3124
 ```
+
 OR Open in Code Editor
 
 ```bash
@@ -81,7 +85,6 @@ When prompted, enter your Hugging Face token. You can create a token at [https:/
 
 **Important**: Make sure you have access to the [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) model. Request access if needed.
 
-
 ## Step 4: Run Inference and Post-Training
 
 Now you're ready to run inference with Cosmos Reason1!
@@ -89,7 +92,6 @@ Now you're ready to run inference with Cosmos Reason1!
 Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the inference and post-training examples.
 
 ## Troubleshooting
-
 
 ### Model Download Issues
 
@@ -129,7 +131,6 @@ Before stopping your instance:
 scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outputs ./local-outputs
 ```
 
-
 ## Additional Resources
 
 - [Cosmos Reason1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
@@ -141,5 +142,6 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outp
 ## Support
 
 For issues related to:
+
 - **Cosmos Reason1**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason1/issues)
 - **Brev Platform**: Contact [Brev support](https://brev.dev/support)
