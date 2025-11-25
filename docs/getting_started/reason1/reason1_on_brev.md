@@ -25,13 +25,13 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 [Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 
-> **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time. 
+> **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time.
 
 ## Step 1: Create a Brev Instance
 
 1. Log in to your [Brev account](https://brev.dev)
 2. Find the Launchable section of the Brev website.
-![Launchables Menu](./images/brev-01-launchable-menu.png) 
+![Launchables Menu](./images/brev-01-launchable-menu.png)
 3. Click the **Create Launchable** button.
 ![Create Launchable Button](./images/brev-02-create-launchable-button.png)
 4. Enter the Cosmos Reason [GitHub URL](https://github.com/nvidia-cosmos/cosmos-reason1) ![https://github.com/nvidia-cosmos/cosmos-reason1](./images/brev-03-chose-repo.png)
@@ -39,7 +39,7 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 5. Choose H100 GPU instance with 80GB VRAM.
 ![H100 Instance](./images/brev04-choose-compute.png)
 
-6. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup some other custom server(if any). ![Jupyter](./images/brev-05-chosejupyter.png) 
+6. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup some other custom server(if any). ![Jupyter](./images/brev-05-chosejupyter.png)
 
 7. Add a setup script for Cosmos Reason. See [sample setup script](./setup_script.sh) for an example.
 ![Setup Script](./images/brev-06-startup-script.png)
@@ -48,7 +48,7 @@ This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https:
 
 ## Step 2: Connect to Your Instance
 
-Once your instance is ready, Brev will provide SSH connection details. ![instance](./images/brev-09-access-or-stop.png) 
+Once your instance is ready, Brev will provide SSH connection details. ![instance](./images/brev-09-access-or-stop.png)
 
 ### Option 1: Open Jupyter Notebook
 ![Notebook](./images/brev-10-notebook.png)
