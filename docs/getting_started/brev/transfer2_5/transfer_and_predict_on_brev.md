@@ -23,45 +23,45 @@ In this section, we'll walk through building a Launchable for Transfer2.5. The s
 
 1. Find the Launchable section of the Brev website.
 
-    ![Launchables Menu](../assets/images/brev01-launchable-menu.png)
+    ![Launchables Menu](images/brev01-launchable-menu.png)
 
 2. Click the **Create Launchable** button.
 
-    ![Create Launchable Button](../assets/images/brev02-create-launchable-button.png)
+    ![Create Launchable Button](images/brev02-create-launchable-button.png)
 
 3. Enter the Cosmos Transfer URL [https://github.com/nvidia-cosmos/cosmos-transfer2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
-    ![Cosmos Transfer URL](../assets/images/brev03-create-launchable-step1.png)
+    ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
 
 4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example we use the [sample script](#sample-setup-script) from later in this guide which builds the Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container.
 
-    ![Add setup script](../assets/images/brev04-create-launchable-step2.png)
+    ![Add setup script](images/brev04-create-launchable-step2.png)
 
     > Setting up Predict2.5 is nearly identical. See the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
 
 5. If you don't need Jupyter, remove it. Tell Brev which ports to open if you plan to setup the sample Gradio server from the Transfer repo (or some other custom server).
 
-    ![Add ports](../assets/images/brev05-create-launchable-step3.png)
+    ![Add ports](images/brev05-create-launchable-step3.png)
 
 6. Now for the fun part: choosing the compute! Below, we're filtering on 8+ GPUs so that we could run Transfer2.5 AV Multiview.
 
-    ![Choose compute](../assets/images/brev06-create-launchable-step4.png)
+    ![Choose compute](images/brev06-create-launchable-step4.png)
 
 7. Name your Launchable and configure access.
 
-    ![Name and configure access](../assets/images/brev07-create-launchable-step5.png)
+    ![Name and configure access](images/brev07-create-launchable-step5.png)
 
 8. You're ready to deploy! Notice the **View All Options** link. That's how to change the compute.
 
-    ![Ready to deploy](../assets/images/brev08-launchable-ready-to-deploy.png)
+    ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
 
 9. After deploying, visit the instance page where you will find helpful examples of how to connect to the instance. Note the Delete button. Delete your instance when you're done, which can also be done with the `brev delete` command. Instances that support pause & resume can be stopped from this page.
 
-    ![Instance page](../assets/images/brev09-instance-page.png)
+    ![Instance page](images/brev09-instance-page.png)
 
 10. Connect to the instance. In our example, we run the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
 
-    ![Docker prompt](../assets/images/brev10-docker-prompt.png)
+    ![Docker prompt](images/brev10-docker-prompt.png)
 
     > The Docker entrypoint pulls dependencies, and since we share the Python virtual environment (venv) folder with the container, subsequent runs will already have the deps installed.
 

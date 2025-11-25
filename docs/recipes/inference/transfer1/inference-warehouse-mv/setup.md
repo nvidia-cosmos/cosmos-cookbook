@@ -20,7 +20,7 @@ The setup requires both the Cosmos Transfer 1 repository and the Cosmos Cookbook
 
 Set up the Cosmos Cookbook repository and its dependencies by following the comprehensive setup tutorial:
 
-**[Getting Started Guide](../../../../get_started.md)**
+**[Getting Started Guide](../../../../getting_started/overview.md)**
 
 The getting started guide provides detailed instructions for the following:
 

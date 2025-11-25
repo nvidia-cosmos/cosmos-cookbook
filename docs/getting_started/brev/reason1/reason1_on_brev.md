@@ -1,6 +1,6 @@
 # Get Started with Cosmos Reason1 on Brev: Inference and Post-Training
 >
-> **Author:** Saurav Nanda
+> **Author:** [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
 > **Organization:** NVIDIA
 
 This guide walks you through setting up NVIDIA Cosmos Reason1 on a [Brev](https://brev.dev) H100 GPU instance for both inference and post-training workflows. Brev provides on-demand cloud GPUs with pre-configured environments, making it easy to get started with Cosmos models.

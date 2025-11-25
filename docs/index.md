@@ -114,7 +114,7 @@ Visual examples of Cosmos Transfer results across Physical AI domains:
 
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
 
-- **Inference workflows:** [Getting Started](get_started.md) for setup and immediate model deployment
+- **Inference workflows:** [Getting Started](getting_started/overview.md) for setup and immediate model deployment
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
 - **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area
