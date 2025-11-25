@@ -1,5 +1,8 @@
 # Synthetic Data Generation (SDG) for Traffic Scenarios
 
+> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/)
+> **Organization:** NVIDIA
+
 ## Overview
 
 This recipe demonstrates how to utilize cosmos models for generating photorealistic synthetic data for urban traffic scenarios. The workflow is designed to accelerate the development of perception and vision-language models (VLMs) for smart city applications.
@@ -349,7 +352,7 @@ This will stop and remove all containers from both the NIM and Workbench stacks.
 - [Cosmos Transfer 2.5 Sim2Real for Simulator Videos](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html)
 - [Carla Simulator](https://carla.org/)
 - Models Used:
-    - [Cosmos Transfer](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)
-    - [Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)
-    - [Nemotron](https://developer.nvidia.com/nemotron)
+  - [Cosmos Transfer](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)
+  - [Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)
+  - [Nemotron](https://developer.nvidia.com/nemotron)
 - [Fine-tuning VLMs](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html)
