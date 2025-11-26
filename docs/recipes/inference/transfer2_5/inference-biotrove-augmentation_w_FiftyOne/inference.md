@@ -293,5 +293,5 @@ This approach can generalize to:
 - robotics perception domain gaps
 - any scenario lacking real-world diversity
 
-For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
+For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run everything at once.
 For more examples, you can explore other Cosmos-Transfer recipes in the cookbook.
