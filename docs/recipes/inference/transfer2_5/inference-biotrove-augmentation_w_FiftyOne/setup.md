@@ -189,4 +189,4 @@ ffmpeg -loop 1 -i some_image.jpg -t 1 -c:v libx264 -pix_fmt yuv420p test.mp4
 
 ## Next Steps
 
-You can go to the [inference tutorial](inference.md) to complete the Cosmos Transfer 2.5 + FiftyOne workflow. And visit this [tutorial](https://docs.dev.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it directly in your environment.
+You can go to the [inference tutorial](inference.md) to complete the Cosmos Transfer 2.5 + FiftyOne workflow. And visit this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it directly in your environment.

@@ -10,7 +10,7 @@ It shows how to convert static images into realistic agricultural scenarios usin
 
 > This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
 
-> Please visit the [FiftyOne Tutorial](https://docs.dev.voxel51.com/tutorials/cosmos-transfer-integration.html) to run all in once.
+> Please visit the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
 
 | Model | Workload | Use case |
 |-------|----------|----------|
@@ -192,7 +192,7 @@ Each spec controls:
 
 The prompts (```MOTH_PROMPT``` and its variations) are authored once and then expanded with an LLM to create multiple realistic variants (lighting, environment, texture), which we embed into different JSON spec files for the same base video.
 
-> To see that configuration, please review the [FiftyOne Tutorial](https://docs.dev.voxel51.com/tutorials/cosmos-transfer-integration.html)
+> To see that configuration, please review the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html)
 
 ---
 
@@ -293,5 +293,5 @@ This approach can generalize to:
 - robotics perception domain gaps
 - any scenario lacking real-world diversity
 
-For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.dev.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
+For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run everything at once.
 For more examples, you can explore other Cosmos-Transfer recipes in the cookbook.
