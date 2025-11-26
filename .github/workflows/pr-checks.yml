@@ -3,7 +3,7 @@ name: PR Quality Checks
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
+  push:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
