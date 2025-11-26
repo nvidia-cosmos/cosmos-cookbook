@@ -10,7 +10,7 @@ It shows how to convert static images into realistic agricultural scenarios usin
 
 > This recipe uses [FiftyOne](https://docs.voxel51.com/), [Voxel51’s](https://voxel51.com/) open-source toolkit for visualizing, cleaning, and evaluating computer vision datasets. Voxel51 builds tools that help researchers and engineers better understand their data and improve model performance.
 
-> Please visit the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run all in once.
+> Please visit the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
 
 | Model | Workload | Use case |
 |-------|----------|----------|
