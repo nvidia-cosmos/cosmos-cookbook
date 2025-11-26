@@ -71,6 +71,12 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 |--------------|-----------------|----------|
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 
+### **End-to-End Workflows**
+
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
+
 ## Cosmos Models for Physical AI
 
 The Cosmos family of open models consists of five core repositories, each targeting specific capabilities in the AI development workflow:
