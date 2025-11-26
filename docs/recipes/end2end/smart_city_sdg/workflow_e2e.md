@@ -9,7 +9,6 @@
 
 > **Prerequisites**: This workflow requires specific API keys, system requirements, and workflow inputs. See the [Prerequisites](#prerequisites) section below before starting.
 
-
 ## Overview
 
 This recipe demonstrates how to utilize Cosmos models for generating photorealistic synthetic data for urban traffic scenarios. The workflow is designed to accelerate the development of perception and vision-language models (VLMs) for smart city applications.
