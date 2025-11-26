@@ -1,6 +1,6 @@
 # Synthetic Data Generation (SDG) for Traffic Scenarios
 
-> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi]()
+> **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi](https://www.linkedin.com/in/adityan-jothi-23a229105)
 > **Organization:** NVIDIA
 
 ## Overview
