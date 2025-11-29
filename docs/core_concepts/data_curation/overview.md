@@ -1,7 +1,6 @@
 # Data Curation
 
-> **Authors:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) • [Alice Luo](https://www.linkedin.com/in/aliceluoqian)
-> **Organization:** NVIDIA
+> **Authors:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) • [Alice Luo](https://www.linkedin.com/in/aliceluoqian) > **Organization:** NVIDIA
 
 ## Overview
 
@@ -30,12 +29,13 @@ Data curation is a complex, multi-stage process. As shown below, it systematical
 
 ![Comprehensive Data Curation Pipeline](images/data_curation_pipeline.png)
 
-The **Cosmos video curation pipeline**—first established in *Cosmos-Predict1* and later scaled in *Cosmos-Predict2.5*—consists of seven stages:
+The **Cosmos video curation pipeline**—first established in _Cosmos-Predict1_ and later scaled in _Cosmos-Predict2.5_—consists of seven stages:
 
 1. **Shot-Aware Video Splitting** – Long-form videos are segmented into coherent clips using shot boundary detection. Short (<5 s) clips are discarded, while longer ones (5–60 s) form the basis for downstream curation.
 2. **GPU-Based Transcoding** – Each clip is transcoded in parallel to optimize format, frame rate, and compression quality for model ingestion.
 3. **Video Cropping** – Black borders, letterboxing, and spatial padding are removed to ensure consistent aspect ratios.
 4. **Filtering** – A multi-stage filtering pipeline removes unsuitable data. Filters include:
+
    - **Aesthetic Quality Filter** – Screens for poor composition or lighting.
    - **Motion Filter** – Removes clips with excessive or insufficient movement.
    - **OCR Filter** – Detects overlays, watermarks, or subtitles.
@@ -56,13 +56,13 @@ The result is a dataset that is **clean, diverse, and semantically organized**�
 
 ## From Pre-Training to Post-Training
 
-Although *Cosmos-Predict2.5* operates at petabyte scale, its principles directly inform post-training data practices:
+Although _Cosmos-Predict2.5_ operates at petabyte scale, its principles directly inform post-training data practices:
 
 - **Scale down, specialize up:** Post-training uses smaller but more domain-specific datasets.
-- **Refine rather than expand:** Instead of collecting more data, focus on *improving alignment* and *removing noise*.
+- **Refine rather than expand:** Instead of collecting more data, focus on _improving alignment_ and _removing noise_.
 - **Iterate via feedback loops:** Use model evaluation results to guide the next round of curation—closing the loop between data and learning outcomes.
 
-In other words, post-training data curation inherits the *structure* of pre-training pipelines but applies it to **targeted, feedback-driven refinement**.
+In other words, post-training data curation inherits the _structure_ of pre-training pipelines but applies it to **targeted, feedback-driven refinement**.
 
 ---
 
@@ -75,33 +75,44 @@ Data sourcing involves acquiring datasets from diverse locations—internal stor
 
 ### Cloud Storage Tools
 
-| Tool | Purpose | Best For |
-|------|----------|----------|
-| **s5cmd** | High-performance S3-compatible storage client | Large-scale parallel transfers |
-| **AWS CLI** | Official AWS command-line tool | AWS-native workflows |
-| **rclone** | Multi-cloud sync for 70+ providers | Complex multi-cloud setups |
+| Tool        | Purpose                                       | Best For                       |
+| ----------- | --------------------------------------------- | ------------------------------ |
+| **s5cmd**   | High-performance S3-compatible storage client | Large-scale parallel transfers |
+| **AWS CLI** | Official AWS command-line tool                | AWS-native workflows           |
+| **rclone**  | Multi-cloud sync for 70+ providers            | Complex multi-cloud setups     |
 
 ### Web Content Tools
 
-| Tool | Purpose | Best For |
-|------|----------|----------|
-| **HuggingFace CLI** | Access to model/dataset repositories | Community datasets and checkpoints |
-| **yt-dlp** | High-throughput video downloader | Batch ingestion and quality selection |
-| **wget/curl** | General-purpose file downloaders | API retrieval and recursive crawling |
+| Tool                | Purpose                              | Best For                              |
+| ------------------- | ------------------------------------ | ------------------------------------- |
+| **HuggingFace CLI** | Access to model/dataset repositories | Community datasets and checkpoints    |
+| **yt-dlp**          | High-throughput video downloader     | Batch ingestion and quality selection |
+| **wget/curl**       | General-purpose file downloaders     | API retrieval and recursive crawling  |
+
+### Physical AI Datasets
+
+For Physical AI developers working with Cosmos models, NVIDIA provides open,curated, and commercial-grade datasets for Physical AI development in **[NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)** on Hugging Face, including:
+
+- Autonomous vehicle datasets (driving scenes, synthetic data, teleoperation)
+- Robotics datasets (GR00T, manipulation, grasping, navigation)
+- Smart spaces and warehouse datasets
+- Domain-specific training and evaluation datasets
+
+These datasets are designed to work seamlessly with Cosmos models and can serve as starting points for domain-specific post-training workflows.
 
 ### Data Processing Tools
 
-| Tool | Purpose | Best For |
-|------|----------|----------|
-| **ffmpeg** | Video transcoding and frame extraction | Reformatting and quality control |
-| **PIL/Pillow** | Python imaging library | Lightweight image manipulation |
+| Tool           | Purpose                                | Best For                         |
+| -------------- | -------------------------------------- | -------------------------------- |
+| **ffmpeg**     | Video transcoding and frame extraction | Reformatting and quality control |
+| **PIL/Pillow** | Python imaging library                 | Lightweight image manipulation   |
 
 ### Quality Control Tools
 
-| Tool | Purpose | Best For |
-|------|----------|----------|
-| **OpenCV** | Computer vision toolkit | Visual inspection and analysis |
-| **FFprobe** | Metadata extraction | Duration, codec, and resolution stats |
+| Tool        | Purpose                 | Best For                              |
+| ----------- | ----------------------- | ------------------------------------- |
+| **OpenCV**  | Computer vision toolkit | Visual inspection and analysis        |
+| **FFprobe** | Metadata extraction     | Duration, codec, and resolution stats |
 
 ---
 
