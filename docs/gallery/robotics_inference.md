@@ -20,14 +20,119 @@ This example demonstrates how to transform synthetic robotic simulation videos i
 For detailed explanations of control modalities, see [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
 
 <style>
-table td {
-  vertical-align: top;
+.carousel {
+  position: relative;
+  margin-top: 1rem;
+  overflow: visible;
 }
-table {
-  border: none;
+
+.carousel-track {
+  position: relative;
 }
-table td, table th {
+
+.carousel-slide {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest, #e2e8f0);
+  background: var(--md-default-bg-color, #fff);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.06);
+  border-radius: 0px;
+}
+
+.carousel-slide.is-active {
+  display: flex;
+}
+
+.media-wrap {
+  position: relative;
+  overflow: visible;
+  background: #000;
+  margin-bottom: 0.5rem;
+  border-radius: 0px;
+}
+
+.media-wrap video {
+  width: 100%;
+  display: block;
+  border-radius: 0px;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
   border: none;
+  background: var(--md-accent-fg-color, #76b900);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  z-index: 3;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.carousel-btn:hover {
+  opacity: 1;
+}
+
+.carousel-btn.prev {
+  left: -18px;
+}
+
+.carousel-btn.next {
+  right: -18px;
+}
+
+.text-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.text-block .label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--md-default-fg-color--light, #5b6472);
+}
+
+.text-block .preview-text {
+  display: block;
+}
+
+.text-block .full-text {
+  display: none;
+  margin-top: 0.25rem;
+}
+
+.carousel-slide.expanded .preview-text {
+  display: none;
+}
+
+.carousel-slide.expanded .full-text {
+  display: block;
+}
+
+.see-more {
+  align-self: flex-start;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--md-accent-fg-color, #76b900);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--md-accent-fg-color, #76b900);
+  border-radius: 0px;
 }
 </style>
 
@@ -59,74 +164,129 @@ This scene shows a humanoid robot performing a cooking task at a stove. The exam
 
 #### Examples
 
-<table>
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_stove_white.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a glass cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the stainless steel pot. There is steam coming out of the pot.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_stove_red.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a red cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the red pot. There is steam coming out of the pot.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_stove_light_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a stainless steel cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the stainless steel pot. There is steam coming out of the pot.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_stove_dark_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is at a kitchen gold stove picking up a gold cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the gold pot. There is steam coming out of the pot.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_stove.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-</tbody>
-</table>
+<div class="carousel" data-interval="5000">
+  <div class="carousel-track">
+    <article class="carousel-slide is-active">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_stove_white.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a glass cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the stainless steel pot. There is steam coming out of the pot.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_stove_red.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a red cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the red pot. There is steam coming out of the pot.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_stove_light_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is at a kitchen stainless steel stove picking up a stainless steel cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the stainless steel pot. There is steam coming out of the pot.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_stove_dark_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is at a kitchen gold stove picking up a gold cooking pot lid with his left hand and lifting it in the air. The robot is picking up two tomatoes with his right hand and putting them inside the gold pot. There is steam coming out of the pot.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_stove.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+  </div>
+</div>
 
 ### Scene 1b: Kitchen Island - Object Manipulation
 
@@ -156,74 +316,129 @@ This scene shows a robot performing precise object manipulation at a kitchen isl
 
 #### Examples
 
-<table>
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_oranges_white.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright white panels cabinets and an stainless steel countertop. In the middle of the island counter is a large glass bowl of oranges. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is picking up two oranges from either side of a small glass plate, and placing them on the plate.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_oranges_red.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright red panels cabinets and an stainless steel countertop. In the middle of the island counter is a large white bowl of eggs. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is picking up two eggs from either side of a small white plate, and placing them on the plate.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_oranges_light_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with light wood cabinets and an expensive black veined marble countertop. In the middle of the island counter is a large white bowl of lemons. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is picking up two lemons from either side of a small white plate, and placing them on the plate.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_oranges_dark_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with dark wood cabinets and an expensive beige veined marble countertop. In the middle of the island counter is a large white bowl of apples. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is picking up two apples from either side of a small white plate, and placing them on the plate.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_oranges.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-</tbody>
-</table>
+<div class="carousel" data-interval="5000">
+  <div class="carousel-track">
+    <article class="carousel-slide is-active">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_oranges_white.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright white panels cabinets and an stainless steel countertop. In the middle of the island counter is a large glass bowl of oranges. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is picking up two oranges from either side of a small glass plate, and placing them on the plate.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_oranges_red.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright red panels cabinets and an stainless steel countertop. In the middle of the island counter is a large white bowl of eggs. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is picking up two eggs from either side of a small white plate, and placing them on the plate.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_oranges_light_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with light wood cabinets and an expensive black veined marble countertop. In the middle of the island counter is a large white bowl of lemons. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is picking up two lemons from either side of a small white plate, and placing them on the plate.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_oranges_dark_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with dark wood cabinets and an expensive beige veined marble countertop. In the middle of the island counter is a large white bowl of apples. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is picking up two apples from either side of a small white plate, and placing them on the plate.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_oranges.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+  </div>
+</div>
 
 ### Scene 1c: Kitchen Refrigerator - Appliance Interaction
 
@@ -253,74 +468,129 @@ This scene demonstrates robot interaction with appliances, showing the robot ope
 
 #### Examples
 
-<table>
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_fridge_white.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright white panels cabinets and an stainless steel countertop. In the middle of the island counter is a large glass bowl of oranges. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_fridge_red.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright red panels cabinets and an stainless steel countertop. In the middle of the island counter is a large white bowl of eggs. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_fridge_light_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with light wood cabinets and an expensive black veined marble countertop. In the middle of the island counter is a large white bowl of lemons. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_fridge_dark_wood.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with dark wood cabinets and an expensive beige veined marble countertop. In the middle of the island counter is a large white bowl of apples. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-<tr>
-<td></td>
-<td><video width="600" controls>  <source src="assets/kitchen_fridge.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution.</td>
-</tr>
-<tr>
-<td><strong>Parameters</strong></td>
-<td>seed: 1, guidance: 7, edge: 1.0</td>
-</tr>
-</tbody>
-</table>
+<div class="carousel" data-interval="5000">
+  <div class="carousel-track">
+    <article class="carousel-slide is-active">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_fridge_white.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright white panels with chrome accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright white panels cabinets and an stainless steel countertop. In the middle of the island counter is a large glass bowl of oranges. Standing in the kitchen is a humanoid robot. The robot is made of orange polished plastic panels with chrome accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_fridge_red.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all highly polished bright red panels with stainless steel accents and pulls. The kitchen counters are stainless steel. The kitchen walls and backsplash are all white subway tile. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with highly polished bright red panels cabinets and an stainless steel countertop. In the middle of the island counter is a large white bowl of eggs. Standing in the kitchen is a humanoid robot. The robot is made of white polished panels with black accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_fridge_light_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all light wood, with stainless steel accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive black veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with light wood cabinets and an expensive black veined marble countertop. In the middle of the island counter is a large white bowl of lemons. Standing in the kitchen is a humanoid robot. The robot is made of stainless steel polished panels with chrome accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_fridge_dark_wood.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">This scene depicts a photo realistic luxury kitchen with high end professional finishes and lighting. ALL The kitchen cabinets are all dark wood, with chrome accents and pulls. The kitchen counters, kitchen walls and backsplash are all expensive beige veined marble. The kitchen contains an expensive double door stainless steel refrigerator, a stainless steel microwave, a stainless steel oven, a stainless steel coffee machine, a stainless steel toaster, a stainless steel stove top, a stainless steel sink, and stainless steel pots. In the center of the room is a kitchen island. This is also finished with dark wood cabinets and an expensive beige veined marble countertop. In the middle of the island counter is a large white bowl of apples. Standing in the kitchen is a humanoid robot. The robot is made of gold polished reflective panels with shiny black accents. The camera is fixed and steady. The robot is opening the fridge with his right hand and looking inside. The fridge light turns on and it very bright, showing the inside of the fridge filled with food and drink.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/kitchen_fridge.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video captures a stunning, photorealistic scene with remarkable attention to detail, giving it a lifelike appearance that is almost indistinguishable from reality. It appears to be from a high-budget 4K movie, showcasing ultra-high-definition quality with impeccable resolution.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">seed: 1, guidance: 7, edge: 1.0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+  </div>
+</div>
 
 ## Example 2: Multi-Control with Custom Control Videos
 
@@ -466,50 +736,177 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
 
 #### Examples
 
-<table>
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
+<div class="carousel" data-interval="5000">
+  <div class="carousel-track">
+    <article class="carousel-slide is-active">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/robotic_arm_1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">guidance: 3, depth: 0.6, edge: 1.0, seg: 0.4, vis: 0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
 
-<tr>
-<td><strong>Output Video</strong></td>
-<td><video width="600" controls>  <source src="assets/robotic_arm_1.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light.</td>
-</tr>
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/robotic_arm_2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video features two robotic arms with brushed bronze bodies, and contrasting yellow joints, manipulating a small purple plastic cube. They are positioned on a granite table, with urban rooftop in the background, illuminated by natural light.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">guidance: 3, depth: 0.6, edge: 1.0, seg: 0.4, vis: 0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
 
-<tr>
-<td><strong>Output Video</strong></td>
-<td><video width="600" controls>  <source src="assets/robotic_arm_2.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video features two robotic arms with brushed bronze bodies, and contrasting yellow joints, manipulating a small purple plastic cube. They are positioned on a granite table, with urban rooftop in the background, illuminated by natural light</td>
-</tr>
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/robotic_arm_3.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video features two robotic arms with matte matte black bodies, and contrasting blue joints, manipulating a small white plastic cube. They are positioned on a marble table, with industrial warehouse in the background, illuminated by colored ambient light (blue).</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">guidance: 3, depth: 0.6, edge: 1.0, seg: 0.4, vis: 0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
 
-<tr>
-<td><strong>Output Video</strong></td>
-<td><video width="600" controls>  <source src="assets/robotic_arm_3.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video features two robotic arms with matte matte black bodies, and contrasting blue joints, manipulating a small white plastic cube. They are positioned on a marble table, with industrial warehouse in the background, illuminated by colored ambient light (blue).</td>
-</tr>
+    <article class="carousel-slide">
+      <div class="media-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="assets/robotic_arm_4.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <button class="carousel-btn prev" type="button" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next">›</button>
+      </div>
+      <div class="text-stack">
+        <div class="text-block">
+          <div class="label">Input Prompt</div>
+          <span class="preview-text"></span>
+          <span class="full-text">The video features two robotic arms with matte white bodies, and contrasting black joints, manipulating a small green glass cube. They are positioned on a marble table, with closed room in the background, illuminated by artificial white light.</span>
+        </div>
+        <div class="text-block">
+          <div class="label">Parameters</div>
+          <span class="preview-text"></span>
+          <span class="full-text">guidance: 3, depth: 0.6, edge: 1.0, seg: 0.4, vis: 0</span>
+        </div>
+        <button class="see-more" type="button">Show full prompt</button>
+      </div>
+    </article>
+  </div>
+</div>
 
-<tr>
-<td><strong>Output Video</strong></td>
-<td><video width="600" controls>  <source src="assets/robotic_arm_4.mp4" type="video/mp4">  Your browser does not support the video tag.</video></td>
-</tr>
-<tr>
-<td><strong>Input Prompt</strong></td>
-<td>The video features two robotic arms with matte white bodies, and contrasting black joints, manipulating a small green glass cube. They are positioned on a marble table, with closed room in the background, illuminated by artificial white light.</td>
-</tr>
-</tbody>
-</table>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const firstSentence = (text) => {
+    const trimmed = text.trim();
+    const match = trimmed.match(/.*?[.!?](\s|$)/);
+    return match ? match[0].trim() : trimmed;
+  };
+
+  document.querySelectorAll(".carousel").forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
+    if (!slides.length) return;
+
+    slides.forEach((slide) => {
+      slide.classList.remove("expanded");
+      slide.querySelectorAll(".text-block").forEach((block) => {
+        const full = block.querySelector(".full-text");
+        const preview = block.querySelector(".preview-text");
+        if (full && preview) {
+          preview.textContent = firstSentence(full.textContent || "");
+        }
+      });
+      const toggle = slide.querySelector(".see-more");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          slide.classList.toggle("expanded");
+          const expanded = slide.classList.contains("expanded");
+          toggle.textContent = expanded ? "Hide full prompt" : "Show full prompt";
+        });
+      }
+    });
+
+    let index = slides.findIndex((s) => s.classList.contains("is-active"));
+    if (index < 0) {
+      index = 0;
+      slides[0].classList.add("is-active");
+    }
+
+    const intervalMs = parseInt(carousel.dataset.interval || "5000", 10);
+    const show = (nextIndex) => {
+      slides[index].classList.remove("is-active", "expanded");
+      const priorToggle = slides[index].querySelector(".see-more");
+      if (priorToggle) priorToggle.textContent = "Show full prompt";
+      index = (nextIndex + slides.length) % slides.length;
+      slides[index].classList.add("is-active");
+    };
+
+    const next = () => show(index + 1);
+    const prev = () => show(index - 1);
+
+    let timer = slides.length > 1 ? setInterval(next, intervalMs) : null;
+    const resetTimer = () => {
+      if (!timer) return;
+      clearInterval(timer);
+      timer = setInterval(next, intervalMs);
+    };
+
+    carousel.querySelectorAll(".carousel-btn.next").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        next();
+        resetTimer();
+      });
+    });
+    carousel.querySelectorAll(".carousel-btn.prev").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        prev();
+        resetTimer();
+      });
+    });
+  });
+});
+</script>
 
 ## Quality Enhancements: Transfer 2.5 vs Transfer 1
 
