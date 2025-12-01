@@ -47,7 +47,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 |--------------|-----------------|----------|
 | **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 | **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
-| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/inference-biotrove-augmentation_w_FiftyOne/inference.md) |
+| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
 | **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
 | **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
@@ -70,6 +70,12 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
+
+### **End-to-End Workflows**
+
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
 
 ## Cosmos Models for Physical AI
 
@@ -114,7 +120,7 @@ Visual examples of Cosmos Transfer results across Physical AI domains:
 
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
 
-- **Inference workflows:** [Getting Started](get_started.md) for setup and immediate model deployment
+- **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
 - **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area
