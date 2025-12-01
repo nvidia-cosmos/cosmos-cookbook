@@ -1,0 +1,7 @@
+{
+    "inference_type": "image2world",
+    "input_path": "samples/assets/I3_input.jpg",
+    "guidance": 7,
+    "seed": 0,
+    "prompt": "The video is taken from the perspective of a driver inside a vehicle, with the dashboard visible in the lower part of the frame. The vehicle is moving along a road with multiple lanes, and the surroundings include trees, buildings, and other vehicles. The sky is clear with a few clouds, and the lighting suggests it is either morning or late afternoon. The road signs and traffic lights are visible, indicating a well-regulated traffic system."
+}
