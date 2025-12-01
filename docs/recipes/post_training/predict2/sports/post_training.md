@@ -468,7 +468,6 @@ Generated videos will be saved to the output directory.
 
 ### Example Prompts for Soccer Video Generation
 
-#### Text2World Generation Prompts
 
 #### Image2World/Video2World Generation Example
 
