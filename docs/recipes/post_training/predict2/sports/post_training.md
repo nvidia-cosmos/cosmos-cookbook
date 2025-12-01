@@ -119,7 +119,7 @@ The sports dataset is configured to use videos from:
 /project/cosmos/arslana/codes/sports/sports_v8
 ```
 
-This dataset contains sports video clips in **MP4 format** at 720p resolution (704x1280).
+This dataset contains sports video clips in **MP4 format** at 720p resolution (704x1280). The complete dataset consists of **4,350 training clips** and **50 clips for validation/inference** for both Image2World and Video2World generation tasks.
 
 ### 1.3 Dataset Formats
 
