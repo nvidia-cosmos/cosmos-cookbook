@@ -5,6 +5,10 @@
 
 This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos-Predict2.5 models for sports video generation tasks, supporting Text2World, Image2World, and Video2World generation modes.
 
+## Motivation
+
+While the base Cosmos-Predict2.5 model excels at general video generation, sports content demands specialized understanding of athletic dynamics and game rules. Post-training addresses critical gaps in **player kinematic realism and physics**, ensuring natural body movements and accurate ball trajectories. The adapted model achieves higher **rule-coherence scores** by respecting sport-specific constraints like offside lines, field boundaries, and valid player positions. Additionally, post-training significantly improves **identity consistency**, maintaining stable player appearances, jersey numbers, and team colors throughout generated sequences—essential for realistic sports simulation and analysis applications.
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
