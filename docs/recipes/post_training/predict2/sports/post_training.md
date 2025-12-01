@@ -149,17 +149,6 @@ The system supports two caption formats:
 }
 ```
 
-### 1.4 Video Resolution Requirements
-
-The following are supported resolutions for 720p video:
-
-- **16:9**: 1280x704 (configured for sports dataset)
-- **1:1**: 960x960
-- **4:3**: 960x720
-- **3:4**: 720x960
-- **9:16**: 720x1280
-
-> **Important**: The sports configuration is set for 704x1280 resolution. Ensure all videos match this resolution.
 
 ## 2. LoRA Post-training
 
