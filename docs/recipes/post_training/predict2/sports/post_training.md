@@ -82,12 +82,14 @@ LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning technique that a
 ### When to Use LoRA vs Full Fine-tuning
 
 **Use LoRA when:**
+
 - You have limited compute resources
 - You want to create domain-specific adapters
 - You need to preserve the base model's general capabilities
 - You're working with smaller datasets
 
 **Use full fine-tuning when:**
+
 - You need maximum model adaptation
 - You have sufficient compute and storage
 - You're making fundamental changes to model behavior
@@ -105,6 +107,7 @@ The training approach uses the same video dataset to train all three generation 
 ### 1.2 Dataset Location
 
 The sports dataset is configured to use videos from:
+
 ```
 /project/cosmos/arslana/codes/sports/sports_v8
 ```
@@ -116,11 +119,13 @@ This dataset contains sports video clips in **MP4 format** at 720p resolution (7
 The system supports two caption formats:
 
 #### Text Format (.txt files)
+
 - Simple text files containing one caption per file
 - Files should be placed in a `metas/` directory
 - Filename should match the video filename (e.g., `video1.mp4` → `video1.txt`)
 
 #### JSON Format (.json files)
+
 - More flexible format supporting multiple prompt variations
 - Files should be placed in a `captions/` directory
 - Supports long, short, and medium prompt types
@@ -153,8 +158,8 @@ The following are supported resolutions for 720p video:
 
 ### 2.1 Configuration
 
-
 Two configurations for sports are provided:
+
 - `predict2_lora_training_2b_cosmos_sports_assets_txt` - For text caption format
 - `predict2_lora_training_2b_cosmos_sports_assets_json_rank32` - For JSON caption format with long prompts
 
@@ -213,19 +218,19 @@ _lora_model_config = dict(
         lora_alpha=32,             # LoRA scaling parameter
         lora_target_modules="q_proj,k_proj,v_proj,output_proj,mlp.layer1,mlp.layer2",
         init_lora_weights=True,    # Properly initialize LoRA weights
-        
+
         # Training configuration for all three modes
         # The model will randomly sample between 0, 1, and 2 conditional frames during training
         min_num_conditional_frames=0,  # Allow text2world (0 frames)
         max_num_conditional_frames=2,  # Allow up to video2world (2 frames)
-        
+
         # Probability distribution for sampling number of conditional frames
         # This controls how often each mode is trained:
         # - 0 frames: text2world (33.3%)
         # - 1 frame: image2world (33.3%)
         # - 2 frames: video2world (33.4%)
         conditional_frames_probs={0: 0.333, 1: 0.333, 2: 0.334},
-        
+
         # Optional: set conditional_frame_timestep for better control
         conditional_frame_timestep=-1.0,  # Default -1 means not effective
         # Keep the default conditioning strategy
@@ -344,6 +349,7 @@ torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train \
 ```
 
 Checkpoints are saved to:
+
 - Text format: `${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict_v2p5/lora/2b_cosmos_sports_assets_lora/checkpoints`
 - JSON format: `${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict_v2p5/lora/2b_cosmos_sports_assets_json_lora/checkpoints`
 
@@ -408,7 +414,7 @@ python scripts/convert_distcp_to_pt.py $CHECKPOINT_DIR/model $CHECKPOINT_DIR
 This conversion will create three files:
 
 - `model.pt`: Full checkpoint containing both regular and EMA weights
-- `model_ema_fp32.pt`: EMA weights only in float32 precision  
+- `model_ema_fp32.pt`: EMA weights only in float32 precision
 - `model_ema_bf16.pt`: EMA weights only in bfloat16 precision (recommended for inference)
 
 ### 3.2 Running Inference
@@ -445,7 +451,7 @@ torchrun --nproc_per_node=8 examples/inference.py \
   --experiment predict2_lora_training_2b_cosmos_sports_assets_txt
 ```
 
-#### Video2World Generation  
+#### Video2World Generation
 
 ```bash
 torchrun --nproc_per_node=8 examples/inference.py \
@@ -456,6 +462,7 @@ torchrun --nproc_per_node=8 examples/inference.py \
 ```
 
 The model automatically detects the generation mode based on the input:
+
 - Provide text only → Text2World generation
 - Provide 1 image frame → Image2World generation
 - Provide 2+ video frames → Video2World generation
