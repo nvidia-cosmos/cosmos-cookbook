@@ -159,6 +159,8 @@ Two configurations for sports are provided:
 - `predict2_lora_training_2b_cosmos_sports_assets_txt` - For text caption format
 - `predict2_lora_training_2b_cosmos_sports_assets_json_rank32` - For JSON caption format with long prompts
 
+The configurations can be found in the comsmos predict-2.5 github.
+
 #### Complete Sports Configuration
 
 ```python
