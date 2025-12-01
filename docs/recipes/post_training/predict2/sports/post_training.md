@@ -316,7 +316,6 @@ predict2_lora_training_2b_cosmos_sports_assets_json_rank32 = dict(
 )
 ```
 
-
 ### 2.2 Training
 
 Run the LoRA post-training using one of the following configurations:
