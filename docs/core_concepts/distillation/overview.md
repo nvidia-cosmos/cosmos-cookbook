@@ -23,3 +23,10 @@ In a typical distillation workflow, several variables can be adjusted to optimiz
 - **Hyperparameter Tuning**: Careful optimization of hyperparameters such as learning rate and batch size is essential for achieving optimal distillation results. The relative importance of specific hyperparameters varies by distillation strategy. Systematic small-scale experimentation is recommended to identify optimal configurations before full-scale training.
 
 The distillation process is iterative, with evaluation playing a key role at each stage to verify quality improvements, generalization ability, and alignment with intended deployment conditions.
+
+## Case Studies
+
+Explore practical implementations of distillation techniques for Cosmos models:
+
+- **[Distilling Cosmos Transfer 1](distilling_transfer.md)** - Step-by-step guide to distilling Cosmos Transfer 1 using Knowledge Distillation (KD) and DMD2 for single-step inference
+- **[Distilling Cosmos Predict 2.5](distilling_predict2.5.md)** - Case study demonstrating DMD2 distillation to compress Cosmos Predict 2.5 Video2World model into a 4-step student model
