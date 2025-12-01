@@ -1,5 +1,8 @@
 # LoRA Post-training for Sports Video Generation
 
+> **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)  
+> **Organization:** NVIDIA
+
 This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos-Predict2.5 models for sports video generation tasks, supporting Text2World, Image2World, and Video2World generation modes.
 
 ## Table of Contents
