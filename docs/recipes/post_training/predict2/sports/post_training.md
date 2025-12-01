@@ -413,10 +413,7 @@ This conversion will create three files:
 
 ### 3.2 Running Inference
 
-After converting the checkpoint, you can run inference with your post-trained model. The model can be either run from command-line or from IPython notebooks:
-
-* [inference notebook single GPU](../examples/notebook/inference.ipynb)
-* [inference notebook multi-GPU with server](../examples/notebook/inference_with_server.ipynb)
+After converting the checkpoint, you can run inference with your post-trained model using the command-line interface.
 
 The model can be used for any generation mode. Simply use the appropriate JSON configuration with the corresponding experiment:
 
