@@ -7,7 +7,7 @@
 
 The distillation process compresses a pre-trained "teacher" video diffusion model, which requires many inference steps, into a "student" model capable of few-step inference. Both models typically share the same architecture. A key benefit is that the teacher's classifier-free guidance (CFG) knowledge is distilled into the student, eliminating the need for CFG during the student's inference and providing an additional 2x speedup.
 
-This cookbook presents a case study of how we use the [DMD2 algorithm](https://arxiv.org/abs/2405.14867) to distill the Cosmos Predict2.5 Video2World model into a 4-step student model. The reference code can be found [here](https://github.com/nvidia-cosmos/cosmos-predict2.5/tree/main/cosmos_predict2/_src/predict2/distill).
+This cookbook presents a case study of how we use the [DMD2 algorithm](https://arxiv.org/abs/2405.14867) to distill the Cosmos Predict 2.5 Video2World model into a 4-step student model. The reference code can be found [here](https://github.com/nvidia-cosmos/cosmos-predict2.5/tree/main/cosmos_predict2/_src/predict2/distill).
 
 During the distillation training, an auxiliary critic network (often called the 'fake score net' in literature and code) is trained alongside the student. The training process alternates between updating the student and the critic networks.
 The process involves the following steps:
@@ -32,14 +32,14 @@ The following aspects remain the same as standard Cosmos model training:
 
 ## A Quick Peek into the Code
 
-To understand how to add DMD2 distillation support to your custom Cosmos model, here’s a quick peek into the code using the Predict2.5 Video2World model as an example [[code](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/cosmos_predict2/_src/predict2/distill/models/video2world_model_distill_dmd2.py)].
+To understand how to add DMD2 distillation support to your custom Cosmos model, here’s a quick peek into the code using the Predict 2.5 Video2World model as an example [[code](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/cosmos_predict2/_src/predict2/distill/models/video2world_model_distill_dmd2.py)].
 
 ```python
 class Video2WorldModelDistillDMD2TrigFlow(DistillationCoreMixin, TrigFlowMixin, Video2WorldModel):
     ...
 ```
 
-The distillation model inherits common distillation-related codes from the `DistillationCoreMixin`. The `TrigFlowMixin` provides handy training-time timestep sampling functions since we use Trigflow as a unified parameterization for both distillation methods. Then the model then inherits the teacher model class -- in this case the Predict2.5 `Video2WorldModel`, to reuse most of its functions including tokenizer, data handling, conditioner, etc. Note that the order of inheritance matters here.
+The distillation model inherits common distillation-related codes from the `DistillationCoreMixin`. The `TrigFlowMixin` provides handy training-time timestep sampling functions since we use Trigflow as a unified parameterization for both distillation methods. Then the model then inherits the teacher model class -- in this case the Predict 2.5 `Video2WorldModel`, to reuse most of its functions including tokenizer, data handling, conditioner, etc. Note that the order of inheritance matters here.
 
 The key of implementation is to rewrite the training step. The high-level training_step that alternates student and critic phases is in `DistillationCoreMixin`. For DMD2, implement two methods in your model:
 
@@ -66,4 +66,4 @@ Critic phase (`training_step_critic`):
 ## Example Training Progress
 
 The DMD2 distillation process usually achieves quick convergence. For instance, in the given example, satisfactory video quality is obtained from the 4-step student after 1500 iterations, which corresponds to 300 student steps and 1200 critic steps.
-![DMD2 Predict2.5 vis 2k](../../assets/images/distillation/dmd2_predict2.5_step2k.png)
+![DMD2 Predict 2.5 vis 2k](../../assets/images/distillation/dmd2_predict2.5_step2k.png)

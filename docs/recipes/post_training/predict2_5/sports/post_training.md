@@ -3,11 +3,11 @@
 > **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)
 > **Organization:** NVIDIA
 
-This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos-Predict2.5 models for sports video generation tasks, supporting Text2World, Image2World, and Video2World generation modes.
+This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos Predict 2.5 models for sports video generation tasks, supporting Text2World, Image2World, and Video2World generation modes.
 
 ## Motivation
 
-While the base Cosmos-Predict2.5 model excels at general video generation, sports content demands specialized understanding of athletic dynamics and game rules. Post-training addresses critical gaps in **player kinematic realism and physics**, ensuring natural body movements and accurate ball trajectories. The adapted model achieves higher **rule-coherence scores** by respecting sport-specific constraints like offside lines, field boundaries, and valid player positions. Additionally, post-training significantly improves **identity consistency**, maintaining stable player appearances, jersey numbers, and team colors throughout generated sequences—essential for realistic sports simulation and analysis applications.
+While the base Cosmos Predict 2.5 model excels at general video generation, sports content demands specialized understanding of athletic dynamics and game rules. Post-training addresses critical gaps in **player kinematic realism and physics**, ensuring natural body movements and accurate ball trajectories. The adapted model achieves higher **rule-coherence scores** by respecting sport-specific constraints like offside lines, field boundaries, and valid player positions. Additionally, post-training significantly improves **identity consistency**, maintaining stable player appearances, jersey numbers, and team colors throughout generated sequences—essential for realistic sports simulation and analysis applications.
 
 ## Table of Contents
 
@@ -538,4 +538,4 @@ These improvements make the post-trained model particularly suitable for:
 - Creating realistic game simulations for tactical analysis
 - Producing content for sports broadcasting and entertainment
 
-For more inference options and advanced usage, see the Cosmos Predict2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
+For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
