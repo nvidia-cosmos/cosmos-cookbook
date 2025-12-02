@@ -12,6 +12,16 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 <https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
 
+## Latest Updates
+
+| **Recipe** | **Model** | **Description** |
+|------------|-----------|-----------------|
+| [Sports Video Generation](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html) | Cosmos Predict 2.5 | LoRA post-training for sports video generation with improved player dynamics and rule coherence |
+| [Distilling Cosmos Predict 2.5](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html) | Cosmos Predict 2.5 | Model distillation using DMD2 to create a 4-step student model |
+| [Smart City SDG Pipeline](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html) | Cosmos Transfer 2.5 + Reason 1 | End-to-end synthetic data generation for traffic scenarios with CARLA |
+| [Temporal Localization for MimicGen](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html) | Cosmos Reason 1 | Automated timestamp annotation for robot learning data generation |
+| [BioTrove Moths Augmentation](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html) | Cosmos Transfer 2.5 | Domain transfer pipeline for scarce biological datasets using FiftyOne |
+
 ## Overview
 
 This cookbook provides step-by-step workflows, technical recipes, and comprehensive guides for the complete AI development lifecycle with Cosmos models:

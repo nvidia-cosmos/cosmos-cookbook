@@ -17,6 +17,16 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 - Advanced post-training workflows for domain-specific fine-tuning.
 - Proven recipes for scalable, production-ready deployments.
 
+## Latest Updates
+
+| **Recipe** | **Model** | **Description** |
+|------------|-----------|-----------------|
+| [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) | Cosmos Predict 2.5 | LoRA post-training for sports video generation with improved player dynamics and rule coherence |
+| [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) | Cosmos Predict 2.5 | Model distillation using DMD2 to create a 4-step student model |
+| [Smart City SDG Pipeline](recipes/end2end/smart_city_sdg/workflow_e2e.md) | Cosmos Transfer 2.5 + Reason 1 | End-to-end synthetic data generation for traffic scenarios with CARLA |
+| [Temporal Localization for MimicGen](recipes/post_training/reason1/temporal_localization/post_training.md) | Cosmos Reason 1 | Automated timestamp annotation for robot learning data generation |
+| [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) | Cosmos Transfer 2.5 | Domain transfer pipeline for scarce biological datasets using FiftyOne |
+
 ## Open Source Community Platform
 
 The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
