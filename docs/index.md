@@ -35,25 +35,28 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 #### Future state prediction and generation
 
-| **Workflow**  | **Description**                                                             | **Link**                                                                                   |
-| ------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md)     |
-| **Training**  | Traffic anomaly generation with improved realism and prompt alignment       | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
-| **Training**  | Synthetic trajectory data generation for humanoid robot learning            | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md)               |
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md) |
+| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
+| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
+| **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
+
+> **Advanced Topics:** For model compression and deployment optimization, see [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
 ### **Cosmos Transfer**
 
 #### Multi-control video generation and augmentation
 
-| **Workflow**  | **Description**                                                                               | **Link**                                                                                                             |
-| ------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios                            | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md)                        |
-| **Inference** | Multi-control video editing for background replacement, lighting, and object transformation   | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md)              |
-| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/inference-biotrove-augmentation_w_FiftyOne/inference.md) |
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls                  | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md)                  |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments                                   | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md)                              |
-| **Inference** | Sim2Real data augmentation for robotics navigation tasks                                      | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md)                               |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots                                  | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md)                                                  |
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
+| **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
+| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
+| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
+| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
+| **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
+| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 
 ### **Cosmos Reason**
 
@@ -72,6 +75,12 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Workflow** | **Description**                                      | **Link**                                                                        |
 | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
+
+### **End-to-End Workflows**
+
+| **Workflow** | **Description** | **Link** |
+|--------------|-----------------|----------|
+| **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
 
 ## Cosmos Models for Physical AI
 
@@ -116,7 +125,7 @@ Visual examples of Cosmos Transfer results across Physical AI domains:
 
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
 
-- **Inference workflows:** [Getting Started](get_started.md) for setup and immediate model deployment
+- **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
 - **Physical AI datasets:** [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face for curated datasets across domains
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
