@@ -9,5 +9,9 @@
 {% block scripts %}
   {{ super() }}
   {# Adobe Launch Footer Script #}
-  <script type="text/javascript">_satellite.pageBottom();</script>
+  <script type="text/javascript">
+    if (window._satellite) {
+      _satellite.pageBottom();
+    }
+  </script>
 {% endblock %}
