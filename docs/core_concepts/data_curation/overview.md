@@ -91,7 +91,7 @@ Data sourcing involves acquiring datasets from diverse locations—internal stor
 
 ### Physical AI Datasets
 
-For Physical AI developers working with Cosmos models, NVIDIA provides open,curated, and commercial-grade datasets for Physical AI development in **[NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)** on Hugging Face, including:
+For Physical AI developers working with Cosmos models, NVIDIA provides open, curated, and commercial-grade datasets for Physical AI development in **[NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai)** on Hugging Face, including:
 
 - Autonomous vehicle datasets (driving scenes, synthetic data, teleoperation)
 - Robotics datasets (GR00T, manipulation, grasping, navigation)
