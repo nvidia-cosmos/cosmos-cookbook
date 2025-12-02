@@ -62,6 +62,17 @@ The Cosmos platform provides the following capabilities:
 
 **Post-training:** Cosmos WFMs are fully customizable to develop downstream vision, robotics or autonomous vehicle foundation models tailored for customer data. Post-training can be done to change output type, output quantity, output quality, output style or output point of view.
 
+### Where can I find datasets for training Physical AI models?
+
+NVIDIA provides curated, open, commercial-grade datasets for Physical AI development on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face. This collection includes datasets for:
+
+- **Autonomous vehicles**: Driving scenes, synthetic data, and teleoperation datasets
+- **Robotics**: GR00T, manipulation, grasping, and navigation datasets
+- **Smart spaces and warehouses**: Multi-camera tracking, detection, and spatial intelligence datasets
+- **Domain-specific training and evaluation**: Specialized datasets for various Physical AI applications
+
+These datasets are designed to work seamlessly with Cosmos models and can serve as starting points for domain-specific post-training workflows.
+
 ### How do Cosmos models differ from other video foundation models?
 
 Cosmos world foundation models are designed specifically for physical AI applications. The models are openly available and customizable, with Cosmos Predict and Cosmos Reason supporting post-training for autonomous vehicle, robotics, and vision-action generation models.
@@ -279,6 +290,7 @@ Existing NVIDIA Omniverse Enterprise (NVOVE) licenses can be used for Cosmos ent
 - **Documentation**: Comprehensive guides in each repository
 - **Examples**: Reference implementations and tutorials
 - **Community Forums**: Engage with other developers
+- **Physical AI Datasets**: Access curated datasets for autonomous vehicles, robotics, smart spaces, and warehouse environments on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face
 
 #### Official Channels
 
