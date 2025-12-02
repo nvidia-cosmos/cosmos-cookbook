@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {# Adobe Launch Header Script #}
+  <script src="//assets.adobedtm.com/5d4962a43b79/814eb6e9b4e1/launch-4bc07f1e0b0b.min.js"></script>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {# Adobe Launch Footer Script #}
+  <script type="text/javascript">_satellite.pageBottom();</script>
+{% endblock %}
