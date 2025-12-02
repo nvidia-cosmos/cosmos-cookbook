@@ -241,7 +241,7 @@ The **reward function** is defined based on prediction accuracy. We use a dense 
 - `0.5` if `|prediction - ground_truth| == 1`
 - `0` otherwise
 
-> **Note**: The reward function is different from the evaluation metrics in the reinforcement learning setting. During training, we use the reward function above to provide feedback to the model. However, during evaluation, we still use the "accuracy" and "correlation" metrics described above.
+> **Note**: Both SFT and RL use the same evaluation metrics: "accuracy" and "correlation." The reward function above is used to provide feedback to the model during training, and is not used during evaluation.
 
 The language instruction prompts the model to generate a structured response with explicit thinking traces before providing a score:
 
