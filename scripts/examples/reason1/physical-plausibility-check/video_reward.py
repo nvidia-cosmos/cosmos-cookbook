@@ -41,7 +41,11 @@
 Example:
 
 ```shell
-./examples/video_critic/video_reward.py --video_path assets/sample.mp4 --prompt_path prompts/video_reward.yaml
+# Print results to terminal only
+./examples/video_critic/video_reward.py --video_path assets/sample.mp4
+
+# Print results to terminal and save as both HTML and JSON (can enable one or both)
+./examples/video_critic/video_reward.py --video_path assets/sample.mp4 --output_html --output_json
 ```
 """
 # ruff: noqa: E402
@@ -52,6 +56,7 @@ init_script()
 
 import argparse
 import base64
+import json
 import os
 import pathlib
 import re
@@ -218,6 +223,27 @@ def build_html_report(video_path, responses):
     return html
 
 
+def build_json_report(video_path, responses):
+    """Build minimal JSON report from responses."""
+    # Parse responses
+    parsed_responses = [parse_response(response) for response in responses]
+
+    # Extract scores (None if parsing failed)
+    scores = [
+        parsed["answer"] if parsed and parsed.get("answer") is not None else None
+        for parsed in parsed_responses
+    ]
+
+    # Build minimal JSON structure
+    report = {
+        "video_path": video_path,
+        "scores": scores,
+        "raw_responses": responses,
+    }
+
+    return report
+
+
 def run_reward_model(llm, args):
     prompt_path = f"{ROOT}/{args.prompt_path}"
     prompt_config = Prompt.model_validate(yaml.safe_load(open(prompt_path, "rb")))
@@ -279,7 +305,7 @@ def run_reward_model(llm, args):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run video reward model inference and save html reports"
+        description="Run video reward model inference and optionally save reports"
     )
     parser.add_argument(
         "--video_path",
@@ -302,7 +328,31 @@ def parse_args():
         default="prompts/video_reward.yaml",
         help="Path to prompt config file",
     )
+    parser.add_argument(
+        "--output_html",
+        action="store_true",
+        help="Save results as HTML file",
+    )
+    parser.add_argument(
+        "--output_json",
+        action="store_true",
+        help="Save results as JSON file",
+    )
     return parser.parse_args()
+
+
+def print_terminal_results(video_path, responses):
+    """Print minimal results to terminal (scores only)."""
+    # Parse responses
+    parsed_responses = [parse_response(response) for response in responses]
+
+    # Extract scores
+    scores = [
+        parsed["answer"] if parsed and parsed.get("answer") is not None else None
+        for parsed in parsed_responses
+    ]
+
+    print(f"\nScores: {scores}")
 
 
 def main():
@@ -315,11 +365,25 @@ def main():
     )
 
     generated_text = run_reward_model(llm, args)
-    html_content = build_html_report(args.video_path, generated_text)
-    html_path = os.path.splitext(args.video_path)[0] + ".html"
-    with open(html_path, "w", encoding="utf-8") as f:
-        f.write(html_content)
-    print(f"Generated HTML report: {html_path}")
+
+    # Always print results to terminal
+    print_terminal_results(args.video_path, generated_text)
+
+    # Optionally save HTML
+    if args.output_html:
+        html_content = build_html_report(args.video_path, generated_text)
+        html_path = os.path.splitext(args.video_path)[0] + ".html"
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print(f"✓ Generated HTML report: {html_path}")
+
+    # Optionally save JSON
+    if args.output_json:
+        json_report = build_json_report(args.video_path, generated_text)
+        json_path = os.path.splitext(args.video_path)[0] + ".json"
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(json_report, f, indent=2)
+        print(f"✓ Generated JSON report: {json_path}")
 
 
 if __name__ == "__main__":
