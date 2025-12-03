@@ -31,7 +31,7 @@ We welcome contributions—from new examples and workflow improvements to bug fi
 
 The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
-### **Cosmos Predict**
+### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
 
 #### Future state prediction and generation
 
@@ -44,7 +44,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 > **Advanced Topics:** For model compression and deployment optimization, see [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
-### **Cosmos Transfer**
+### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
 #### Multi-control video generation and augmentation
 
@@ -58,7 +58,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 
-### **Cosmos Reason**
+### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
 #### Vision-language reasoning and quality control
 
@@ -70,7 +70,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
 | **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
 
-### **Cosmos Curator**
+### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
 
 | **Workflow** | **Description**                                      | **Link**                                                                        |
 | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |

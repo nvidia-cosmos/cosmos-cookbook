@@ -3,9 +3,9 @@
 > **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Yan Chang](https://www.linkedin.com/in/yanchang1/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
 
-| Model | Workload | Use case |
-|------|----------|----------|
-| Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation |
 
 This tutorial demonstrates how to apply Cosmos Transfer to robotics navigation tasks to improve Sim2Real performance.
 

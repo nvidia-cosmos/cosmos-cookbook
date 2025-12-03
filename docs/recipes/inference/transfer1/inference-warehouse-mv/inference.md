@@ -2,9 +2,9 @@
 
 > **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) > **Organization:** NVIDIA
 
-| Model             | Workload  | Use case                      |
-| ----------------- | --------- | ----------------------------- |
-| Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation |
 
 This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
 
