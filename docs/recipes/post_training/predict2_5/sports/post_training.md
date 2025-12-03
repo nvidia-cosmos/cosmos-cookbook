@@ -499,7 +499,7 @@ The LoRA post-training significantly improves the quality and realism of generat
 
 ### Key Improvements After Post-Training
 
-**The post-training experiment was to prove that the model improved with the post-training; despite that it didn't solve all the physics artifacts, it showed improvements with limited data.**
+**The post-training experiment demonstrated model improvements with limited data, despite not solving all physics artifacts.**
 
 The post-trained model demonstrates substantial enhancements in several critical areas:
 
