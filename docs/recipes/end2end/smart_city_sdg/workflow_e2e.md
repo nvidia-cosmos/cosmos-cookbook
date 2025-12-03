@@ -45,6 +45,8 @@ Refer to the Cosmos Cookbook [Intelligent Transportation Fine-tuning Guide](../.
 
 ### Obtain API keys
 
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager). Never commit API keys to source control or share them in plain text.
+
 - [NGC API key](https://org.ngc.nvidia.com/setup/api-keys)
   - Steps to setup [HERE](https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#generating-api-key)
 - [Hugging Face Token](https://huggingface.co/settings/tokens):
