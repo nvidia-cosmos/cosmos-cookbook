@@ -81,6 +81,8 @@ Data sourcing involves acquiring datasets from diverse locations—internal stor
 | **AWS CLI** | Official AWS command-line tool                | AWS-native workflows           |
 | **rclone**  | Multi-cloud sync for 70+ providers            | Complex multi-cloud setups     |
 
+> **Practical guidance:** Use **s5cmd** for high-throughput S3 transfers (10-100x faster than AWS CLI for bulk operations). Use **rclone** when syncing across different cloud providers or when you need advanced features like encryption and bandwidth limiting.
+
 ### Web Content Tools
 
 | Tool                | Purpose                              | Best For                              |
@@ -225,6 +227,8 @@ Success depends on understanding the dataset, establishing clear objectives, and
 - **Use the right tools for the task** — Combine visualization, transcoding, and filtering utilities for efficiency.
 - **Track lineage and versioning** — Maintain reproducibility through consistent metadata and experiment logging.
 - **Consult available references** — Dataset cards, academic papers, and internal documentation often contain valuable curation guidance.
+
+> **Performance tip:** For large-scale filtering runs, enable distributed processing via [Ray](https://docs.ray.io/). Cosmos Curator is built on Ray and supports parallel execution across multiple nodes, significantly accelerating filtering, captioning, and deduplication stages.
 
 ---
 
