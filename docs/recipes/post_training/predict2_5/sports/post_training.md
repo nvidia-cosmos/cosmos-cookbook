@@ -494,7 +494,7 @@ The LoRA post-training significantly improves the quality and realism of generat
 | Sample | Base Model | Post-Trained Model |
 |--------|------------|-------------------|
 | **Sample 1** | <video width="320" controls autoplay loop muted><source src="assets/base/0.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/post_trained/0.mp4" type="video/mp4"></video> |
-| **Sample 2** | <video width="320" controls autoplay loop muted><source src="assets/base/38.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/post_trained/38.mp4" type="video/mp4"></video> |
+| **Sample 2** | <video width="320" controls autoplay loop muted><source src="assets/base/12.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/post_trained/12.mp4" type="video/mp4"></video> |
 | **Sample 3** | <video width="320" controls autoplay loop muted><source src="assets/base/5.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/post_trained/5.mp4" type="video/mp4"></video> |
 
 ### Key Improvements After Post-Training
