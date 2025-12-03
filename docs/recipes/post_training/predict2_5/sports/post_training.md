@@ -117,13 +117,13 @@ The training approach uses the same video dataset to train all three generation 
 
 ### 1.2 Dataset Location
 
-The sports dataset is configured to use videos from:
+The sports dataset should be organized in a directory structure that you'll specify in the configuration. Set your dataset path to point to your video collection:
 
 ```
-/project/cosmos/arslana/codes/sports/sports_v8
+/path/to/sports/videos
 ```
 
-This dataset contains sports video clips in **MP4 format** at 720p resolution (704x1280). The complete dataset consists of **4,350 training clips** and **50 clips for validation/inference** for both Image2World and Video2World generation tasks.
+Replace this path with the actual location of your sports video dataset. The dataset should contain sports video clips in **MP4 format** at 720p resolution (704x1280). For the current training, we prepared approximately **4,350 training clips** and **50 clips for validation/inference** to support both Image2World and Video2World generation tasks.
 
 ### 1.3 Dataset Formats
 
@@ -176,14 +176,14 @@ from projects.cosmos.predict2.datasets.local_datasets.dataset_video import (
 
 # Dataset configuration for sports videos (Text format)
 example_dataset_cosmos_sports_assets_lora_txt = L(VideoDataset)(
-    dataset_dir="/project/cosmos/arslana/codes/sports/sports_v8",
+    dataset_dir="/path/to/sports/videos",
     num_frames=93,
     video_size=(704, 1280),
 )
 
 # Dataset configuration for sports videos (JSON format with long prompts)
 example_dataset_cosmos_sports_assets_lora_json = L(VideoDataset)(
-    dataset_dir="/project/cosmos/arslana/codes/sports/sports_v8",
+    dataset_dir="/path/to/sports/videos",
     num_frames=93,
     video_size=(704, 1280),
     caption_format="json",
