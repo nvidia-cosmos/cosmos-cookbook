@@ -42,6 +42,8 @@ uv pip install poetry && poetry install --extras=local
 
 ### NVCF Configuration
 
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager). Never commit API keys to source control or share them in plain text.
+
 1. **Set up an NGC API key**: If you don't have a valid API key yet, acquire one as follows: Go to <https://org.ngc.nvidia.com/setup>, select **Cosmos API** from the top-left corner, and choose **no team** as the org profile. Click on **Generate API Key**, then select **Generate Personal Key**. Generate a key and save it for the future usage (the key is only readable once).
 
     ```shell
