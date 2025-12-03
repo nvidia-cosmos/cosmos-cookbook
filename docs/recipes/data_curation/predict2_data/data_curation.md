@@ -3,6 +3,10 @@
 > **Authors:** [Hao Wang](https://www.linkedin.com/in/pkuwanghao/) • NVIDIA Cosmos Curator Team
 > **Organization:** NVIDIA
 
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training |
+
 ## Overview
 
 This recipe demonstrates how to curate video data for fine-tuning Cosmos Predict 2 models using Cosmos Curator. You'll learn how to transform raw videos into a structured dataset with semantic scene splits, AI-generated captions, and quality filtering—all in the format required by Cosmos Predict 2.

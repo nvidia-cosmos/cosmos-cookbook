@@ -8,7 +8,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Transfer 1 | Inference | Synthetic manipulation motion generation for humanoid robots |
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Synthetic manipulation motion generation for humanoid robots |
 
 Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic motion trajectories for robot manipulation from minimal human demonstrations. Built on **NVIDIA Omniverse™** and **Cosmos Transfer 1**, this blueprint addresses the challenge of limited real-world data by generating physically accurate synthetic demonstrations.
 
