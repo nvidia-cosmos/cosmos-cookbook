@@ -234,6 +234,8 @@ avha_judge.py --output-dir ./output/sft --score-dir ./scores/sft
 avha_compare_scores.py
 ```
 
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults. Never commit API keys to source control.
+
 ### Results
 
 The results of the fine-tuning experiment were as follows:

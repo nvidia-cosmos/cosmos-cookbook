@@ -74,6 +74,8 @@ To enable full experiment tracking with W&B:
     export WANDB_API_KEY=your_api_key_here
     ```
 
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults. Never commit API keys to source control.
+
 ### Option 2: Disable W&B
 
 Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
