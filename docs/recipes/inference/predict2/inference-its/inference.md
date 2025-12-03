@@ -3,9 +3,9 @@
 > **Authors:** [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/)  • [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
 > **Organization:** NVIDIA
 
-| Model | Workload | Use case |
-|------|----------|----------|
-| Cosmos Predict 2 | Inference | Synthetic Data Generation |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | Inference | Synthetic Data Generation |
 
 This tutorial demonstrates how to use the [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 

@@ -17,16 +17,6 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 - Advanced post-training workflows for domain-specific fine-tuning.
 - Proven recipes for scalable, production-ready deployments.
 
-## Latest Updates
-
-| **Recipe** | **Model** | **Description** |
-|------------|-----------|-----------------|
-| [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) | Cosmos Predict 2.5 | LoRA post-training for sports video generation with improved player dynamics and rule coherence |
-| [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) | Cosmos Predict 2.5 | Model distillation using DMD2 to create a 4-step student model |
-| [Smart City SDG Pipeline](recipes/end2end/smart_city_sdg/workflow_e2e.md) | Cosmos Transfer 2.5 + Reason 1 | End-to-end synthetic data generation for traffic scenarios with CARLA |
-| [Temporal Localization for MimicGen](recipes/post_training/reason1/temporal_localization/post_training.md) | Cosmos Reason 1 | Automated timestamp annotation for robot learning data generation |
-| [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) | Cosmos Transfer 2.5 | Domain transfer pipeline for scarce biological datasets using FiftyOne |
-
 ## Open Source Community Platform
 
 The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
@@ -39,7 +29,7 @@ We welcome contributions—from new examples and workflow improvements to bug fi
 
 The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
-### **Cosmos Predict**
+### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
 
 #### Future state prediction and generation
 
@@ -52,7 +42,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 > **Advanced Topics:** For model compression and deployment optimization, see [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
-### **Cosmos Transfer**
+### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
 #### Multi-control video generation and augmentation
 
@@ -66,7 +56,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 
-### **Cosmos Reason**
+### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
 #### Vision-language reasoning and quality control
 
@@ -78,7 +68,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md) |
 | **Training** | Temporal localization for MimicGen robot learning data generation | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md) |
 
-### **Cosmos Curator**
+### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|

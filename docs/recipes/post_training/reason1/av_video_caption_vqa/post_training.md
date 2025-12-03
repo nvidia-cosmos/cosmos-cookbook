@@ -4,6 +4,10 @@
 [DeLesley Hutchins](https://www.linkedin.com/in/delesley-hutchins-ba48532b) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/) • [Amol Fasale](https://www.linkedin.com/in/amolfasale/) (**NVIDIA**) •
 [Joseph Wang](https://www.linkedin.com/in/josephwangphd/) (**Uber**)
 
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | AV video captioning and visual question answering |
+
 ## Overview
 
 Autonomous vehicles must operate under a variety of different conditions. These conditions include include different kinds of weather, times of day, types of roads, road conditions, driving environments, and traffic situations. Autonomous vehicles must also be able to recognize and respond to traffic signals, posted traffic signs, and road markings. Furthermore, they must be able to identify situations where the safety of human lives are at risk, such as the presence of cyclists and pedestrians.

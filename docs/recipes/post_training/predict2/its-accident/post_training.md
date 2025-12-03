@@ -7,7 +7,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Predict2 | Post-training | Traffic anomaly generation with improved realism and prompt alignment |
+| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Traffic anomaly generation with improved realism and prompt alignment |
 
 In Intelligent Transportation Systems (ITS), collecting real-world data for rare events like traffic accidents, jaywalking, or blocked intersections includes significant challenges:
 

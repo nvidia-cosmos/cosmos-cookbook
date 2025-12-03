@@ -12,9 +12,9 @@ It shows how to convert static images into realistic agricultural scenarios usin
 
 > Please visit the [FiftyOne Tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run it all in one.
 
-| Model | Workload | Use case |
-|-------|----------|----------|
-| **Cosmos Transfer 2.5** | Inference | Domain transfer for scarce biological datasets |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Domain transfer for scarce biological datasets |
 
 ---
 

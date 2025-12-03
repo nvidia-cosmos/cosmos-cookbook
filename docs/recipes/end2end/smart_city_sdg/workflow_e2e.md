@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Transfer 2.5, Cosmos Reason 1, CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning |
 
 > **Prerequisites**: This workflow requires specific API keys, system requirements, and workflow inputs. See the [Prerequisites](#prerequisites) section below before starting.
 
