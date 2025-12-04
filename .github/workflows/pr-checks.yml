@@ -14,8 +14,7 @@ jobs:
         with:
           lfs: true
       - name: Verify Git LFS pointers
-        run: |
-          git lfs fsck
+        run: git lfs fsck --pointers
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
