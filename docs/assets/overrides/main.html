@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<script src="//assets.adobedtm.com/5d4962a43b79/814eb6e9b4e1/launch-4bc07f1e0b0b.min.js"></script>
+<!-- OneTrust Cookies Consent Notice start for nvidia.com -->
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true"
+    type="text/javascript" charset="UTF-8" data-domain-script="3e2b62ff-7ae7-4ac5-87c8-d5949ecafff5"></script>
+<script type="text/javascript">
+    // Helper function to get cookie value
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+        return null;
+    }
+
+    // Helper function to check if consent cookie exists
+    function hasConsentCookie() {
+        return getCookie('OptanonAlertBoxClosed') !== null;
+    }
+
+    // Function to check if analytics consent is given
+    // OneTrust uses cookie groups - C0002 is typically analytics/marketing
+    function hasAnalyticsConsent() {
+        if (typeof OneTrust !== 'undefined' && OneTrust.GetDomainData) {
+            try {
+                var domainData = OneTrust.GetDomainData();
+                // Check if analytics/marketing cookies are consented
+                // C0002 is typically the analytics cookie category
+                if (domainData && domainData.CookieGroups) {
+                    var analyticsGroup = domainData.CookieGroups.find(function (group) {
+                        return group.CustomGroupId === 'C0002' ||
+                            (group.CustomGroupId && group.CustomGroupId.indexOf('analytics') !== -1);
+                    });
+                    if (analyticsGroup) {
+                        return analyticsGroup.Consent;
+                    }
+                }
+                // Fallback: check if all cookies are accepted
+                if (domainData && domainData.ConsentGroups) {
+                    return domainData.ConsentGroups.some(function (group) {
+                        return group.Consent === true;
+                    });
+                }
+            } catch (e) {
+                console.warn('OneTrust consent check error:', e);
+            }
+        }
+        // Fallback: if OneTrust isn't loaded yet, check for consent cookie
+        // This means user has interacted with banner (may have accepted or rejected)
+        return hasConsentCookie();
+    }
+
+    // Function to hide banner if consent already exists
+    function hideBannerIfConsented() {
+        if (hasConsentCookie()) {
+            var banner = document.getElementById('onetrust-banner-sdk');
+            if (banner) {
+                banner.style.display = 'none';
+            }
+        }
+    }
+
+    // Function to control Adobe Analytics based on consent
+    function controlAdobeAnalytics() {
+        if (typeof _satellite === 'undefined') {
+            return;
+        }
+
+        var hasConsent = hasAnalyticsConsent();
+
+        // Set a flag that Adobe Launch can check
+        window.adobeAnalyticsConsent = hasConsent;
+
+        // If consent is given, ensure Adobe can fire
+        // If consent is not given, prevent Adobe from firing
+        if (hasConsent) {
+            // Enable Adobe Analytics
+            if (_satellite.setVar) {
+                _satellite.setVar('analyticsConsent', true);
+            }
+        } else {
+            // Disable Adobe Analytics
+            if (_satellite.setVar) {
+                _satellite.setVar('analyticsConsent', false);
+            }
+        }
+    }
+
+    function OptanonWrapper() {
+        var event = new Event('bannerLoaded');
+        window.dispatchEvent(event);
+
+        // Check if consent already exists and hide banner if it does
+        // This prevents banner from showing on page navigation
+        if (typeof OneTrust !== 'undefined') {
+            hideBannerIfConsented();
+        }
+    }
+
+    // Listen for consent events to hide banner after consent is given
+    document.addEventListener('OneTrustGroupsUpdated', function () {
+        hideBannerIfConsented();
+        // Update Adobe Analytics consent when OneTrust consent changes
+        controlAdobeAnalytics();
+    });
+
+    // Also listen for banner close events
+    document.addEventListener('OneTrustBannerClosed', function () {
+        hideBannerIfConsented();
+        // Update Adobe Analytics consent when banner closes
+        controlAdobeAnalytics();
+    });
+
+    // Check consent status when OneTrust is ready
+    if (typeof OneTrust !== 'undefined') {
+        controlAdobeAnalytics();
+    } else {
+        // Wait for OneTrust to load
+        window.addEventListener('OneTrustLoaded', function () {
+            controlAdobeAnalytics();
+        });
+    }
+</script>
+<!-- OneTrust Cookies Consent Notice end for nvidia.com -->
+<script type="text/javascript" src="https://images.nvidia.com/aem-dam/Solutions/ot-js/ot-custom.js"></script>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    // Check consent before firing Adobe Analytics
+    (function () {
+        // Function to check if analytics consent is given
+        function hasAnalyticsConsent() {
+            if (typeof OneTrust !== 'undefined') {
+                try {
+                    // Method 1: Check using GetDomainData
+                    if (OneTrust.GetDomainData) {
+                        var domainData = OneTrust.GetDomainData();
+                        if (domainData && domainData.CookieGroups) {
+                            // Look for analytics/marketing cookie group (typically C0002)
+                            var analyticsGroup = domainData.CookieGroups.find(function (group) {
+                                return group.CustomGroupId === 'C0002' ||
+                                    (group.CustomGroupId && group.CustomGroupId.toLowerCase().indexOf('analytics') !== -1) ||
+                                    (group.CustomGroupId && group.CustomGroupId.toLowerCase().indexOf('marketing') !== -1);
+                            });
+                            if (analyticsGroup) {
+                                return analyticsGroup.Consent === true;
+                            }
+                        }
+                    }
+
+                    // Method 2: Check using GetCookieConsent
+                    if (OneTrust.GetCookieConsent) {
+                        // C0002 is typically the analytics cookie category
+                        var consent = OneTrust.GetCookieConsent('C0002');
+                        if (consent !== null) {
+                            return consent === true;
+                        }
+                    }
+
+                    // Method 3: Check if any consent groups are accepted
+                    if (OneTrust.GetDomainData) {
+                        var domainData = OneTrust.GetDomainData();
+                        if (domainData && domainData.ConsentGroups) {
+                            return domainData.ConsentGroups.some(function (group) {
+                                return group.Consent === true;
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.warn('OneTrust consent check error:', e);
+                }
+            }
+            // Default: no consent (privacy-first approach)
+            return false;
+        }
+
+        // Function to fire Adobe Analytics only if consent is given
+        function fireAdobeAnalyticsIfConsented() {
+            if (typeof _satellite === 'undefined') {
+                return;
+            }
+
+            var hasConsent = hasAnalyticsConsent();
+
+            // Set global flag for Adobe Launch to check
+            window.adobeAnalyticsConsent = hasConsent;
+
+            if (hasConsent) {
+                // Consent given - fire Adobe Analytics
+                if (typeof _satellite.pageBottom === 'function') {
+                    _satellite.pageBottom();
+                }
+            } else {
+                // No consent - don't fire analytics
+                // Adobe Launch should respect the consent flag
+                console.log('Adobe Analytics blocked: No consent for analytics cookies');
+            }
+        }
+
+        // Check consent and fire analytics when ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                // Wait a bit for OneTrust to initialize
+                setTimeout(fireAdobeAnalyticsIfConsented, 500);
+            });
+        } else {
+            // DOM already loaded
+            setTimeout(fireAdobeAnalyticsIfConsented, 500);
+        }
+
+        // Listen for consent changes
+        document.addEventListener('OneTrustGroupsUpdated', function () {
+            fireAdobeAnalyticsIfConsented();
+        });
+    })();
+</script>
+<!-- OneTrust global script start -->
+<div class="hide" style="display: none;">
+    <script type="text/javascript">
+        (function () {
+            "use strict";
+            if (!window.$) {
+                return;
+            }
+
+            // Helper function to check if consent cookie exists
+            const hasConsentCookie = function () {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith('OptanonAlertBoxClosed=')) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            // Function to hide banner if consent already exists
+            const hideBannerIfConsented = function () {
+                if (hasConsentCookie()) {
+                    const banner = document.getElementById('onetrust-banner-sdk');
+                    if (banner) {
+                        banner.style.display = 'none';
+                    }
+                }
+            };
+
+            // Check on page load - prevents banner from showing if consent already exists
+            $(document).ready(function () {
+                hideBannerIfConsented();
+
+                // Also check periodically in case banner appears after SDK loads
+                const consentCheckInterval = setInterval(function () {
+                    hideBannerIfConsented();
+                }, 100);
+
+                // Clear interval after 5 seconds to avoid infinite checking
+                setTimeout(function () {
+                    clearInterval(consentCheckInterval);
+                }, 5000);
+            });
+
+            const observer = new MutationObserver(function (mutations, mutationInstance) {
+                const otPreferencePanel = document.getElementById('onetrust-pc-sdk');
+
+                if (otPreferencePanel) {
+                    $('#ot-lst-title').find('h3').attr('id', 'nv-ot-lst-title');
+
+                    const style = document.createElement('style');
+                    style.textContent = `
+                                    #filter-btn-handler {
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        padding: 0;
+                                        position: relative;
+                                    }
+                                    #filter-btn-handler svg {
+                                        width: 100%;
+                                        height: 100%;
+                                        transform: translate(-5%, -15%);
+                                    }
+                                `;
+                    document.head.appendChild(style);
+
+                    const replaceTags = [
+                        'ot-pc-title',
+                        'ot-category-title',
+                    ];
+                    for (const tagId of replaceTags) {
+                        replaceTag(tagId);
+                    }
+
+                    const otBanner = document.getElementById('onetrust-banner-sdk');
+                    if (otBanner && navigator.globalPrivacyControl) {
+                        setNvDone();
+                    }
+
+                    // Hide banner if consent already exists
+                    hideBannerIfConsented();
+
+                    mutationInstance.disconnect();
+                }
+
+                // Also observe for banner appearance and hide if consent exists
+                // This prevents banner from reappearing on navigation
+                const otBanner = document.getElementById('onetrust-banner-sdk');
+                if (otBanner && hasConsentCookie()) {
+                    otBanner.style.display = 'none';
+                }
+            });
+
+            observer.observe(document, {
+                childList: true,
+                subtree: true
+            });
+
+            const replaceTag = function (id) {
+                var that = document.getElementById(id);
+                if (that) {
+                    var p = document.createElement('p');
+                    p.setAttribute('id', that.getAttribute('id'));
+                    p.setAttribute('class', that.className ? that.className : '');
+                    while (that.firstChild) {
+                        p.appendChild(that.firstChild);
+                    }
+                    that.parentNode.replaceChild(p, that);
+                }
+            };
+
+            const setNvDone = function () {
+                $('#onetrust-accept-btn-handler').hide();
+                $('#onetrust-reject-all-handler').hide();
+                $('#onetrust-pc-btn-handler').show();
+
+                if (!$('#nv-done-btn-handler').length) {
+                    $('#onetrust-button-group').append('<button id="nv-done-btn-handler">Done</button>');
+                    $('#nv-done-btn-handler').click(function () {
+                        OneTrust.Close();
+                    });
+                }
+            };
+        })();
+    </script>
+    <style>
+        .image-container {
+            position: relative;
+        }
+
+        .image-credit {
+            color: #ccc;
+            font-size: 11px;
+            line-height: 1.4em;
+            position: absolute;
+        }
+
+        .image-credit.credit--dark {
+            color: #333;
+        }
+
+        .image-credit.position--top-left {
+            top: 12px;
+            left: 15px;
+        }
+
+        .image-credit.position--top-right {
+            top: 12px;
+            right: 15px;
+        }
+
+        .image-credit.position--bottom-left {
+            bottom: 27px;
+            left: 15px;
+        }
+
+        .image-credit.position--bottom-right {
+            bottom: 27px;
+            right: 15px;
+        }
+    </style>
+    <script>
+        if (window.$) {
+            $(document).ready(function () {
+                $('.image-credit').each(function () {
+                    var imageOuter = $(this).parent().parent().prev().children('.image-container').append(this);
+                });
+            });
+        }
+    </script>
+</div>
+<!-- OneTrust global script end -->
+{% endblock %}
