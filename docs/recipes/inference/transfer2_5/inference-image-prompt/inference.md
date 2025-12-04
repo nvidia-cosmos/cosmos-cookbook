@@ -50,7 +50,7 @@ input_directory/
 
 ## Results
 
-The following two examples demonstrates how different environmental styles can be applied to the same edge-controlled motion:
+The following two examples demonstrate how different environmental styles can be applied to the same edge-controlled motion:
 
 ### Example 1
 
