@@ -61,8 +61,8 @@ from misc_utils import (
     run_sharded_computation,
     write_text_file,
 )
-from model_reason import LocalModel
 from model_qwen3 import LocalModelQwen3
+from model_reason import LocalModel
 
 SCRIPT_DIR = Path(__file__).parent
 SEPARATOR = "-" * 20

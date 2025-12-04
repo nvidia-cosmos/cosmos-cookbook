@@ -1,4 +1,3 @@
-
 # SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -35,9 +34,11 @@ class LocalModelQwen3:
     Other models can be used by overriding this simple API.
     """
 
-    def __init__(self,
-                 model_path: Optional[str] = "Qwen/Qwen3-VL-8B-Instruct",
-                 gpu_id: Optional[int] = None):
+    def __init__(
+        self,
+        model_path: Optional[str] = "Qwen/Qwen3-VL-8B-Instruct",
+        gpu_id: Optional[int] = None,
+    ):
         """Initialize the model.
 
         Args:
@@ -67,9 +68,7 @@ class LocalModelQwen3:
                 device_map = "auto"
 
             self.model = transformers.AutoModelForImageTextToText.from_pretrained(
-                model_path,
-                dtype="auto",
-                device_map=device_map
+                model_path, dtype="auto", device_map=device_map
             )
             # transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
             #     model_path,
@@ -133,17 +132,12 @@ class LocalModelQwen3:
                 "role": "system",
                 "content": self.system_prompt,
             },
-            {
-                "role": "user",
-                "content": content
-            },
+            {"role": "user", "content": content},
         ]
 
         # Extract text prompt from conversation
         text_prompt = self.processor.apply_chat_template(
-            conversation,
-            tokenize=False,
-            add_generation_prompt=True
+            conversation, tokenize=False, add_generation_prompt=True
         )
 
         # Load videos.
@@ -155,7 +149,7 @@ class LocalModelQwen3:
             conversation,
             image_patch_size=16,
             return_video_kwargs=True,
-            return_video_metadata=True
+            return_video_metadata=True,
         )
         # with return_video_metadata, each item in video_input is pair (video, metadata)
         if video_inputs is not None:
