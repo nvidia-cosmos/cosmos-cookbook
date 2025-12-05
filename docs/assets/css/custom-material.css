@@ -51,13 +51,13 @@
   background-color: var(--md-code-bg-color);
   color: var(--md-code-fg-color);
   padding: 0.2em 0.4em;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 .md-typeset pre {
   background-color: var(--md-code-bg-color);
-  border-radius: 6px;
   padding: 1em;
+  border-radius: 0px;
 }
 
 .md-footer {
@@ -68,7 +68,7 @@
 /* Admonitions */
 .md-typeset .admonition {
   border-left-width: 4px;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .md-typeset .admonition-title {
@@ -82,16 +82,16 @@
 .md-typeset .admonition.oci-only,
 .md-typeset .admonition.azure-only {
   border-left-width: 4px;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .md-typeset .md-button {
   color: var(--md-accent-fg-color);
   border: 1px solid var(--md-accent-fg-color);
-  border-radius: 4px;
   padding: 0.5em 1em;
   font-weight: 600;
   transition: background-color 0.2s, color 0.2s;
+  border-radius: 0px;
 }
 
 .md-typeset .md-button:hover {
@@ -104,8 +104,8 @@
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--md-default-fg-color--lighter);
-  border-radius: 4px;
   overflow: hidden;
+  border-radius: 0px;
 }
 
 .md-typeset table th {
@@ -122,7 +122,7 @@
 /* Images */
 .md-typeset img {
   /* border: 1px solid var(--md-default-fg-color--lighter); */
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .md-footer {
