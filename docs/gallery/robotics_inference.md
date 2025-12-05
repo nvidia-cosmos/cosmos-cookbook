@@ -135,7 +135,7 @@ For detailed explanations of control modalities, see [Control Modalities Overvie
   border-radius: 0px;
 }
 
-/* Format parameters JSON with line breaks */
+/*Format parameters JSON with line breaks*/
 .text-block .full-text {
   white-space: pre-wrap;
   font-family: var(--md-code-font, monospace);
@@ -738,6 +738,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     }
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -783,6 +784,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     }
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -828,6 +830,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     }
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -876,7 +879,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
           <span class="preview-text">{ "name": "robot_multicontrol",</span>
           <span class="full-text">{
     "name": "robot_multicontrol",
-    "video_path": "assets/kitchen2_cg.mp4",
+    "video_path": "assets/robotic_arm_input.mp4",
     "guidance": 3,
     "depth": {
         "control_path": "assets/robotic_arm_input_depth.mp4",
@@ -926,7 +929,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
           <span class="preview-text">{ "name": "robot_multicontrol",</span>
           <span class="full-text">{
     "name": "robot_multicontrol",
-    "video_path": "assets/kitchen2_cg.mp4",
+    "video_path": "assets/robotic_arm_input.mp4",
     "guidance": 3,
     "depth": {
         "control_path": "assets/robotic_arm_input_depth.mp4",
@@ -947,6 +950,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     "prompt": "The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light."
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -977,7 +981,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
           <span class="preview-text">{ "name": "robot_multicontrol",</span>
           <span class="full-text">{
     "name": "robot_multicontrol",
-    "video_path": "assets/kitchen2_cg.mp4",
+    "video_path": "assets/robotic_arm_input.mp4",
     "guidance": 3,
     "depth": {
         "control_path": "assets/robotic_arm_input_depth.mp4",
@@ -998,6 +1002,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     "prompt": "The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light."
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -1028,7 +1033,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
           <span class="preview-text">{ "name": "robot_multicontrol",</span>
           <span class="full-text">{
     "name": "robot_multicontrol",
-    "video_path": "assets/kitchen2_cg.mp4",
+    "video_path": "assets/robotic_arm_input.mp4",
     "guidance": 3,
     "depth": {
         "control_path": "assets/robotic_arm_input_depth.mp4",
@@ -1049,6 +1054,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     "prompt": "The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light."
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -1079,7 +1085,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
           <span class="preview-text">{ "name": "robot_multicontrol",</span>
           <span class="full-text">{
     "name": "robot_multicontrol",
-    "video_path": "assets/kitchen2_cg.mp4",
+    "video_path": "assets/robotic_arm_input.mp4",
     "guidance": 3,
     "depth": {
         "control_path": "assets/robotic_arm_input_depth.mp4",
@@ -1100,6 +1106,7 @@ These examples demonstrate advanced usage where you provide **custom pre-compute
     "prompt": "The video features two robotic arms with brushed matte black bodies, and contrasting black joints, manipulating a small red glass cube. They are positioned on a plastic table, with minimalistic office in the background, illuminated by artificial white light."
 
 }</span>
+
 </div>
 <button class="see-more" type="button">Show full parameters</button>
 </div>
@@ -1300,7 +1307,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
 
-#### Examples
+### Examples
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
