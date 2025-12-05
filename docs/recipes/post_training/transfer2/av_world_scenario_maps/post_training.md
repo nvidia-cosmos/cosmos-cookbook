@@ -57,7 +57,8 @@ Lane detection accuracy on generated videos showed significant deviation from gr
 These limitations confirmed the need for explicit spatial conditioning through visual control inputs rather than relying solely on text descriptions.​
 
 ## Data Curation
-The post-training dataset, MADS (Multiview Autonomous Driving Scenarios) consists of 400K multi-camera clips specifically curated for spatially-conditioned generation:​
+
+The Cosmos Transfer 2.5 Multiview checkpoint available for download was post-trained on the MADS (Multiview Autonomous Driving Scenarios) dataset, consisting of 400K multi-camera clips specifically curated for spatially-conditioned generation:
 
 - Resolution: 720p per camera view
 - Frame rate: 10fps (optimized for LiDAR alignment and computational efficiency)​
@@ -71,6 +72,8 @@ Each clip includes:​
 - **World scenario map videos**: combined spatial representation of lanes and objects
 
 ### Data Processing
+
+To prepare the MADS dataset for multiview training, we apply several strategic processing decisions that balance model capability with computational efficiency:
 
 - Training with variable view ranges to improve model robustness across different camera configurations​
 - Uniform time weighting applied during training to handle AV data quality variations
@@ -101,28 +104,33 @@ Unlike single-view augmentors that process one video stream, `ExtractFramesAndCa
 ## Post-Training Methodology
 
 ### Architecture: ControlNet Integration
-Cosmos Transfer 2.5 Multiview extends the base Predict 2.5 model through a ControlNet architecture:​
+
+Cosmos Transfer 2.5 Multiview extends the base Predict 2.5 Multiview model through a ControlNet architecture, which adds spatial conditioning capabilities while preserving the model's temporal and multi-view consistency.
+
+The architecture consists of two main components:
 
 - Control Branch:
-    - Parallel neural network branch processing spatial conditioning inputs
+    - A parallel neural network branch that processes spatial conditioning inputs
     - Accepts world scenario map visualization videos as inputs
-    - Control features injected into the base model at multiple layers
+    - Injects control features into the base model at multiple layers to guide generation
 - Base Model (Frozen/Fine-tuned):
-    - Cosmos Predict 2.5 Multiview checkpoint serves as initialization​
-    - 2B parameter diffusion transformer architecture
+    - Initialized from the Cosmos Predict 2.5 Multiview checkpoint (2B parameters)
+    - Uses a diffusion transformer architecture
     - Preserves learned multiview video generation capabilities
 
 ### Training Configuration
 
 Control Inputs:
 
-- World scenario maps combining lanes and bounding boxes​
+The model receives world scenario maps that combine lane geometry and bounding box information, providing comprehensive spatial context for each camera view.
 
 Training Strategy:
 
-- Post-training from Predict 2.5 Multiview checkpoint​
-- Train control branch while optionally fine-tuning base model layers
-- Maintain temporal and multi-view consistency through existing attention mechanisms
+Post-training builds on the Predict 2.5 Multiview checkpoint using the following approach:
+
+- Train the control branch to encode spatial conditioning signals
+- Leverage existing attention mechanisms to maintain temporal and multi-view consistency
+
 
 Key Hyperparameters:
 
@@ -131,189 +139,217 @@ Key Hyperparameters:
 - Context window: 29 frames with 8 latent frame state​
 - Variable view sampling: views per training example​
 
-#### Training Configuration Setup
+### Design Decisions
+
+- 10fps vs 30fps: The choice of 10fps aligns with LiDAR sensor frequency in AV systems and provides 3x computational efficiency for 10-second clips without sacrificing quality for target use cases.​
+- Reduced Temporal Window: Using 8 latent frames instead of 24 makes the challenging multiview generation task more manageable while still capturing necessary temporal dynamics.​
+- Variable View Training: Training with variable views in the range of 4 to 7, rather than fixed 7-view inputs improves model flexibility and robustness when deployed with different camera configurations.​
+- Uniform Time Weighting: This training choice helps address quality variations inherent in autonomous vehicle datasets.​
+
+
+## Post-Training with Your Own Data
+
+This section provides instructions for post-training Cosmos Transfer 2.5 Multiview on your own dataset using the released checkpoint and [Cosmos-Transfer2.5 repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5).
+
+### 1. Preparing Data
+
+#### 1.1 Prepare Transfer Multiview Training Dataset
+
+The first step is preparing a dataset with videos.
+
+You must provide a folder containing a collection of videos in **MP4 format**, preferably 720p, as well as a corresponding folder containing a collection of the hdmap control input videos in  **MP4 format**. The views for each samples should be further stratified by subdirectories with the camera name. We have an example dataset that can be used at `assets/multiview_hdmap_posttrain_dataset`
+
+#### 1.2 Verify the dataset folder format
+
+Dataset folder format:
+
+```
+assets/multiview_hdmap_posttrain_dataset/
+├── captions/
+│   └── ftheta_camera_front_wide_120fov/
+│       └── *.json
+├── control_input_hdmap_bbox/
+│   ├── ftheta_camera_cross_left_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_cross_right_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_front_wide_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_front_tele_30fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_left_70fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_right_70fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_tele_30fov/
+│   │   └── *.mp4
+├── videos/
+│   ├── ftheta_camera_cross_left_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_cross_right_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_front_wide_120fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_front_tele_30fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_left_70fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_right_70fov/
+│   │   └── *.mp4
+│   ├── ftheta_camera_rear_tele_30fov/
+│   │   └── *.mp4
+```
+
+### 2. Post-training Execution
+
+Run the following command to execute an example post-training job with multiview data.
+
+```bash
+torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train --config=cosmos_transfer2/_src/transfer2_multiview/configs/vid2vid_transfer/config.py -- experiment=transfer2_auto_multiview_post_train_example job.wandb_mode=disabled
+```
+
+The model will be post-trained using the multiview dataset. 
+
+Checkpoints are saved to `${IMAGINAIRE_OUTPUT_ROOT}/PROJECT/GROUP/NAME/checkpoints`.
+
+Here is the example training experiment configuration:
 
 ```python
-def xiaomi_transfer2p5_2b_mv_7views_res720p_fps10_t8_fromfinetuned12knofpsuniform_mads720pmulticaps29frames_world_scenario_nofps_uniform() -> (
-   dict
-):
-   text_encoder_ckpt_path = "s3://checkpoints-us-east-1/cosmos_reasoning1/sft_exp700/sft_exp721-1_qwen7b_tl_721_5vs5_s3_balanced_n32_resume_16k/checkpoints/iter_000016000/model/"
-   base_load_path = "checkpoints-us-east-1/cosmos_predict2_multiview/cosmos2_mv/xiaomi_predict2p5_2b_7views_res720p_fps30_t8_joint_alpamayo1capviewprefix_allcapsviewprefix_29frames_nofps_uniform_dropoutt0-0/checkpoints/iter_000012000/"
-   base_load_credentials = "credentials/s3_checkpoint.secret"
-
-
-   return dict(
-       defaults=[
-           {"override /data_train": "video_control_mads_multiview_0823_s3_720p_10fps_29frames_7views"},
-           {"override /model": "fsdp_rectified_flow_multiview_control"},
-           {"override /net": "cosmos_v1_2B_multiview_control"},
-           {"override /conditioner": "video_prediction_multiview_control_conditioner"},
-           {"override /ckpt_type": "dcp"},
-           {"override /optimizer": "fusedadamw"},
-           {
-               "override /callbacks": [
-                   "basic",
-                   "wandb",
-                   "cluster_speed",
-                   "load_base_model_callbacks",
-               ]
-           },
-           {"override /checkpoint": "s3"},
-           {"override /tokenizer": "wan2pt1_tokenizer"},
-           "_self_",
-       ],
-       job=dict(
-           group="cosmos2_mv",
-           name="xiaomi_transfer2p5_2b_mv_7views_res720p_fps10_t8_fromfinetuned12knofpsuniform_mads720pmulticaps29frames_world_scenario_nofps_uniform",
-       ),
-       checkpoint=dict(
-           save_iter=500,
-           load_path="",
-           load_from_object_store=dict(
-               enabled=True,
-           ),
-           save_to_object_store=dict(
-               enabled=True,
-           ),
-           strict_resume=False,
-       ),
-       optimizer=dict(
-           lr=8.63e-5,  # 2**(-14.5) = 3.0517578125e-05
-           weight_decay=1e-3,
-           betas=[0.9, 0.999],
-       ),
-       scheduler=dict(
-           f_max=[0.5],
-           f_min=[0.2],
-           warm_up_steps=[1000],
-           cycle_lengths=[100_000],
-       ),
-       model_parallel=dict(
-           context_parallel_size=8,
-       ),
-       model=dict(
-           config=dict(
-               hint_keys="hdmap_bbox",
-               min_num_conditional_frames_per_view=0,  # t2w
-               max_num_conditional_frames_per_view=2,  # i2w or v2v
-               condition_locations=["first_random_n"],
-               train_sample_views_range=[7, 7],
-               conditional_frames_probs={0: 0.5, 1: 0.25, 2: 0.25},
-               state_t=8,
-               online_text_embeddings_as_dict=False,
-               fsdp_shard_size=8,
-               resolution="720p",
-               shift=5,
-               use_dynamic_shift=False,
-               train_time_weight="uniform",
-               train_time_distribution="logitnormal",
-               net=dict(
-                   timestep_scale=0.001,
-                   use_wan_fp32_strategy=True,
-                   concat_view_embedding=True,
-                   view_condition_dim=7,
-                   state_t=8,
-                   n_cameras_emb=7,
-                   vace_has_mask=False,
-                   use_input_hint_block=True,
-                   condition_strategy="spaced",
-                   vace_block_every_n=7,  # 4 layers
-                   rope_enable_fps_modulation=False,
-                   rope_h_extrapolation_ratio=3.0,
-                   rope_w_extrapolation_ratio=3.0,
-                   rope_t_extrapolation_ratio=8.0 / 24.0,
-                   use_crossattn_projection=True,
-                   crossattn_proj_in_channels=100352,
-                   crossattn_emb_channels=1024,
-                   sac_config=dict(
-                       mode="predict2_2b_720_aggressive",
-                   ),
-               ),
-               conditioner=dict(
-                   use_video_condition=dict(
-                       dropout_rate=0.0,
-                   ),
-                   text=dict(
-                       dropout_rate=0.2,
-                       use_empty_string=False,
-                   ),
-               ),
-               tokenizer=dict(
-                   temporal_window=16,
-               ),
-               text_encoder_class="reason1p1_7B",
-               text_encoder_config=dict(
-                   embedding_concat_strategy=str(EmbeddingConcatStrategy.FULL_CONCAT),
-                   compute_online=True,
-                   ckpt_path=text_encoder_ckpt_path,
-               ),
-               base_load_from=dict(
-                   load_path=base_load_path,
-                   credentials=base_load_credentials,
-               ),
-           )
-       ),
-       trainer=dict(
-           max_iter=100_000,
-           logging_iter=100,
-           callbacks=dict(
-               compile_tokenizer=dict(
-                   enabled=False,
-               ),
-               iter_speed=dict(
-                   hit_thres=50,
-                   every_n=100,
-               ),
-               grad_clip=dict(
-                   clip_norm=0.1,
-               ),
-               every_n_sample_reg=L(EveryNDrawSampleMultiviewVideo)(
-                   every_n=2_000,
-                   is_x0=False,
-                   is_ema=False,
-                   num_sampling_step=35,
-                   guidance=[7],
-                   fps=10,
-                   ctrl_hint_keys=["control_input_hdmap_bbox"],
-                   control_weights=[0.0, 1.0],
-               ),
-               every_n_sample_ema=L(EveryNDrawSampleMultiviewVideo)(
-                   every_n=2_000,
-                   is_x0=False,
-                   is_ema=True,
-                   num_sampling_step=35,
-                   guidance=[7],
-                   fps=10,
-                   ctrl_hint_keys=["control_input_hdmap_bbox"],
-                   control_weights=[0.0, 1.0],
-               ),
-           ),
-           straggler_detection=dict(
-               enabled=False,
-           ),
-       ),
-       dataloader_train=dict(
-           augmentation_config=dict(
-               single_caption_camera_name="camera_front_wide_120fov",
-               add_view_prefix_to_caption=True,
-           ),
-       ),
-       upload_reproducible_setup=True,
-   )
+transfer2_auto_multiview_post_train_example = dict(
+    defaults=[
+        f"/experiment/{DEFAULT_CHECKPOINT.experiment}",
+        {"override /data_train": "example_multiview_train_data_control_input_hdmap"},
+    ],
+    job=dict(project="cosmos_transfer_v2p5", group="auto_multiview", name="2b_cosmos_multiview_post_train_example"),
+    checkpoint=dict(
+        save_iter=200,
+        # pyrefly: ignore  # missing-attribute
+        load_path=get_checkpoint_path(DEFAULT_CHECKPOINT.s3.uri),
+        load_training_state=False,
+        strict_resume=False,
+        load_from_object_store=dict(
+            enabled=False,  # Loading from local filesystem, not S3
+        ),
+        save_to_object_store=dict(
+            enabled=False,
+        ),
+    ),
+    model=dict(
+        config=dict(
+            base_load_from=None,
+        ),
+    ),
+    trainer=dict(
+        logging_iter=100,
+        max_iter=5_000,
+        callbacks=dict(
+            heart_beat=dict(
+                save_s3=False,
+            ),
+            iter_speed=dict(
+                hit_thres=200,
+                save_s3=False,
+            ),
+            device_monitor=dict(
+                save_s3=False,
+            ),
+            every_n_sample_reg=dict(
+                every_n=200,
+                save_s3=False,
+            ),
+            every_n_sample_ema=dict(
+                every_n=200,
+                save_s3=False,
+            ),
+            wandb=dict(
+                save_s3=False,
+            ),
+            wandb_10x=dict(
+                save_s3=False,
+            ),
+            dataloader_speed=dict(
+                save_s3=False,
+            ),
+            frame_loss_log=dict(
+                save_s3=False,
+            ),
+        ),
+    ),
+    model_parallel=dict(
+        context_parallel_size=int(os.environ.get("WORLD_SIZE", "1")),
+    ),
+)
 ```
 
-#### Training Execution
-```bash
-torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train --config=projects/cosmos/transfer2_multiview/configs/vid2vid_transfer/config.py -- experiment=transfer2_auto_multiview_post_train_example job.wandb_mode=disabled
-```
+### 3. Inference with the Post-trained checkpoint
 
-## Inference with Transfer2.5 Multiview
+#### 3.1 Converting DCP Checkpoint to Consolidated PyTorch Format
 
-Run multiview2world:
+Since the checkpoints are saved in DCP format during training, you need to convert them to consolidated PyTorch format (.pt) for inference. Use the `convert_distcp_to_pt.py` script:
 
 ```bash
-torchrun --nproc_per_node=8 --master_port=12341 examples/multiview.py -i assets/multiview_example/multiview_spec.json -o outputs/multiview/
+# Get path to the latest checkpoint
+CHECKPOINTS_DIR=${IMAGINAIRE_OUTPUT_ROOT:-/tmp/imaginaire4-output}/cosmos_transfer_v2p5/auto_multiview/2b_cosmos_multiview_post_train_example/checkpoints
+CHECKPOINT_ITER=$(cat $CHECKPOINTS_DIR/latest_checkpoint.txt)
+CHECKPOINT_DIR=$CHECKPOINTS_DIR/$CHECKPOINT_ITER
+
+# Convert DCP checkpoint to PyTorch format
+python scripts/convert_distcp_to_pt.py $CHECKPOINT_DIR/model $CHECKPOINT_DIR
 ```
+
+This conversion will create three files:
+
+- `model.pt`: Full checkpoint containing both regular and EMA weights
+- `model_ema_fp32.pt`: EMA weights only in float32 precision
+- `model_ema_bf16.pt`: EMA weights only in bfloat16 precision (recommended for inference)
+
+#### 3.2 Running Inference
+
+After converting the checkpoint, you can run inference with your post-trained model using a JSON configuration file that specifies the inference parameters (see below for an example).
+
+```json
+{
+    "name": "auto_multiview",
+    "prompt_path": "prompt.txt",
+    "fps": 10,
+    "front_wide":{
+        "input_path": "input_videos/night_front_wide_120fov.mp4",
+        "control_path": "world_scenario_videos/ws_front_wide_120fov.mp4"
+    },
+    "cross_left":{
+        "input_path": "input_videos/night_cross_left_120fov.mp4",
+        "control_path": "world_scenario_videos/ws_cross_left_120fov.mp4"
+    },
+    "cross_right":{
+        "input_path": "input_videos/night_cross_right_120fov.mp4",
+        "control_path": "world_scenario_videos/ws_cross_right_120fov.mp4"
+    },
+    "rear_left":{
+        "input_path": "input_videos/night_rear_left_70fov.mp4",
+        "control_path": "world_scenario_videos/ws_rear_left_70fov.mp4"
+    },
+    "rear_right":{
+        "input_path": "input_videos/night_rear_right_70fov.mp4",
+        "control_path": "world_scenario_videos/ws_rear_right_70fov.mp4"
+    },
+    "rear":{
+        "input_path": "input_videos/night_rear_30fov.mp4",
+        "control_path": "world_scenario_videos/ws_rear_30fov.mp4"
+    },
+    "front_tele":{
+        "input_path": "input_videos/night_front_tele_30fov.mp4",
+        "control_path": "world_scenario_videos/ws_front_tele_30fov.mp4"
+    }
+}
+```
+
+
+```bash
+export NUM_GPUS=8
+torchrun --nproc_per_node=$NUM_GPUS --master_port=12341 -m examples.multiview -i assets/multiview_example/multiview_spec.json -o outputs/postrained-auto-mv --checkpoint_path $CHECKPOINT_DIR/model_ema_bf16.pt --experiment transfer2_auto_multiview_post_train_example
+```
+
+Generated videos will be saved to the output directory (e.g., `outputs/postrained-auto-mv/`).
 
 For an explanation of all the available parameters run:
 
@@ -327,14 +363,6 @@ Run autoregressive multiview (for generating longer videos):
 ```bash
 torchrun --nproc_per_node=8 --master_port=12341 -m examples.multiview -i assets/multiview_example/multiview_autoregressive_spec.json -o outputs/multiview_autoregressive
 ```
-
-### Design Decisions
-
-- 10fps vs 30fps: The choice of 10fps aligns with LiDAR sensor frequency in AV systems and provides 3x computational efficiency for 10-second clips without sacrificing quality for target use cases.​
-- Reduced Temporal Window: Using 8 latent frames instead of 24 makes the challenging multiview generation task more manageable while still capturing necessary temporal dynamics.​
-- Variable View Training: Training with variable views in the range of 4 to 7, rather than fixed 7-view inputs improves model flexibility and robustness when deployed with different camera configurations.​
-- Uniform Time Weighting: This training choice helps address quality variations inherent in autonomous vehicle datasets.​
-
  
 ## Results
 
