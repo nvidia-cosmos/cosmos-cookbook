@@ -58,12 +58,30 @@ These limitations confirmed the need for explicit spatial conditioning through v
 
 ## Data Curation
 
-The Cosmos Transfer 2.5 Multiview checkpoint available for download was post-trained on the MADS (Multiview Autonomous Driving Scenarios) dataset, consisting of 400K multi-camera clips specifically curated for spatially-conditioned generation:
+The Cosmos Transfer 2.5 Multiview checkpoint available for download was trained using a two-stage approach with distinct datasets:
+
+#### Base Model Training: Cosmos Predict 2.5 Multiview
+For Cosmos-Predict2.5-2B/auto/multiview, we curated a multi-view captioned dataset of 1.5 million clips, each containing 20-second-long scenarios with 7 synchronized cameras recording at 30FPS (front-wide, front-tele, front-left, front-right, rear-left, rear-right, rear-tele). To facilitate training with text conditioning, we generated captions at 150-frame intervals using Qwen2.5-7B-Instruct with three different lengths (short, medium, and long).​
+
+#### ControlNet Post-Training: Cosmos Transfer 2.5 Multiview
+For Cosmos-Transfer2.5-2B/auto/multiview, we used the RDS-HQ dataset (Ren et al., 2025), which consists of 140,000 20-second multi-view driving scenes and HD map metadata covering a diverse set of traffic scenarios. The post-training process introduces spatial conditioning through "world scenario maps" that provide comprehensive control over the generated videos.
+
+#### World Scenario Map Control Signal
+World scenario maps project HD maps and dynamic objects in the scene onto the seven camera views as the control input (see the below image). The world scenario map includes:​
+
+- **Map elements**: Lane lines (with fine-grained types such as dashed line, dotted line, double yellow line), poles, road boundaries, traffic lights with state, all directly rendered with appropriate colors and geometry patterns​
+- **Dynamic 3D bounding boxes**: Indicate positions of vehicles and pedestrians with occlusion-aware and heading-aware representations​
+- **Color coding**: Each object type is color-coded, with bounding boxes shaded according to the direction of motion, providing both semantic and motion cues​
+- **Complex road topologies**: Can represent overpasses and intricate road structures​
+
+<img width="818" height="957" alt="Screenshot 2025-12-05 at 4 40 45 PM" src="https://github.com/user-attachments/assets/d83a1cb3-1e9c-4ea2-bd03-3d51adb9dca4" />
+
+Compared to previous control video approaches, the world scenario map improves control signal quality through fine-grained lane line type representation and more accurate dynamic object positioning.
 
 - Resolution: 720p per camera view
 - Frame rate: 10fps (optimized for LiDAR alignment and computational efficiency)​
 - Camera configuration: Up to 7 synchronized views per clip
-- Duration: Variable length clips
+- Duration: 20 length clips
 
 Each clip includes:​
 
@@ -73,7 +91,7 @@ Each clip includes:​
 
 ### Data Processing
 
-To prepare the MADS dataset for multiview training, we apply several strategic processing decisions that balance model capability with computational efficiency:
+To prepare the RDS-HQ dataset for multiview training, we apply several strategic processing decisions that balance model capability with computational efficiency:
 
 - Training with variable view ranges to improve model robustness across different camera configurations​
 - Uniform time weighting applied during training to handle AV data quality variations
@@ -367,41 +385,70 @@ torchrun --nproc_per_node=8 --master_port=12341 -m examples.multiview -i assets/
 ## Results
 
 ### Evaluation Metrics
-Unlike standard video generation models evaluated with just FID/FVD, Transfer models require spatial accuracy metrics:​
 
-- Lane Detection Accuracy:
+For evaluation, we used a 1000 multi-view clip dataset from RQS-HQ (Ren et al., 2025), which includes HD maps as well as human-labeled lanes and cuboids. These clips are disjoint from the datasets used in training, ensuring unbiased evaluation.​
 
-    - Run lane detection models on generated videos
+Our evaluation framework consists of two complementary approaches:
 
-    - Compare detected lanes against input HD map ground truth
+#### Standard Video Quality Metrics
+We measure perceptual quality and temporal consistency using:
 
-    - Measure geometric accuracy and consistency across views​
+- **FVD (Fréchet Video Distance)**: Evaluates visual quality and temporal coherence
+- **FID (Fréchet Inception Distance)**: Measures frame-level visual quality
+- **Temporal Sampson Error**: Assesses temporal consistency within each camera view
+- **Cross-Camera Sampson Error**: Measures geometric consistency across multiple camera views
 
-- 3D Cuboid Evaluation:
+#### Spatial Accuracy Metrics
+To test adherence to the control signals, we measure the detection performance of 3D-cuboid and lane detection models on generated videos and compare these with ground truth labels. Following the protocol described in Ren et al. (2025), we use:​
 
-    - Assess object placement accuracy relative to input bounding boxes
+- **LATR (Luo et al., 2023)**: A monocular 3D lane detector for evaluating 3D lane detection tasks​
+- **BEVFormer (Li et al., 2022)**: A temporal 3D object detector for evaluating 3D cuboid detection tasks​
 
-    - Evaluate geometric consistency of 3D objects across camera views
-
-    - Measure adherence to specified object trajectories​
+This dual evaluation approach ensures that generated videos maintain both high visual quality and accurate spatial alignment with the control inputs.
 
 #### Quantitative Results
 
-The trained Cosmos Transfer 2.5 Multiview model demonstrates:
+The Cosmos Transfer 2.5 Multiview model demonstrates substantial improvements over the previous generation Transfer1-7B-Sample-AV baseline:
 
-- Significant improvement in lane geometry accuracy compared to text-only baseline​
-- High spatial fidelity to input HD maps and scenario specifications
-- Maintained temporal consistency and video quality from base Predict model
-- Robust performance across variable camera configurations (4-7 views)
+**Video Quality Improvements**:
 
-Detailed evaluation results and methodology are available in the [paper](https://arxiv.org/abs/2511.00062).
+<img width="675" height="166" alt="Screenshot 2025-12-05 at 4 46 04 PM" src="https://github.com/user-attachments/assets/f3f8d209-dd1a-49c0-a92f-0260f49eed34" />
 
-#### Qualitative Observations
+We observe a significant boost (up to 2.3x improvement) in FVD/FID scores while remaining competitive in temporal and cross-camera Sampson error. This indicates that the model generates higher-quality, more realistic videos without sacrificing temporal consistency or multi-view geometric coherence.
 
-- Generated videos accurately reflect input HD map lane layouts
-- Objects appear at specified positions with correct 3D geometry across views
-- Natural appearance and dynamics consistent with real AV footage
-- Successful generation of diverse scenarios while maintaining spatial control
+**Spatial Accuracy Improvements**:
+
+<img width="789" height="145" alt="Screenshot 2025-12-05 at 4 47 15 PM" src="https://github.com/user-attachments/assets/ea4829cf-61e1-4cdf-aeb9-0446564783aa" />
+
+We observe a substantial improvement (up to 60%) in detection metrics compared to Transfer1-7B-Sample-AV. The enhanced performance on both lane detection and 3D cuboid detection tasks demonstrates that the model generates videos with significantly better adherence to the spatial control signals provided by world scenario maps.
+
+#### Qualitative Analysis
+
+Visual comparisons between Cosmos-Transfer1-7B-Sample-AV and Cosmos-Transfer2.5-2B/auto/multiview reveal significant quality improvements.
+
+<img width="828" height="634" alt="Screenshot 2025-12-05 at 4 48 24 PM" src="https://github.com/user-attachments/assets/c0332162-a38a-4bd0-bebf-5ab18ea25166" />
+
+Example (1) - Hallucination Reduction:
+
+- Previous model Cosmos-Transfer1-7B-Sample-AV hallucinates a distorted black car behind the silver vehicle, which is described neither in the text prompt nor in the control video​
+- Lack of alignment to the control signal when generating parked vehicles behind grassy mounds​
+- Current model Cosmos-Transfer2.5-2B/auto/multiview correctly adheres to both text and spatial control inputs​
+
+Example (2) - Spatial Consistency Improvements:
+
+- Previous model renders the vehicle in the central lane driving on the wrong side of the street with incorrect orientation​
+- Generates a truck instead of a pedestrian close to the sidewalk, contradicting the control input​
+- Current model resolves all these inconsistencies, accurately representing vehicle positions, orientations, and object types​
+
+#### Key Findings
+
+The evaluation demonstrates that Cosmos Transfer 2.5 Multiview achieves:
+
+- **Superior visual quality**: 2.3x improvement in perceptual metrics​
+- **Enhanced spatial control**: 60% better detection performance on controlled elements​
+- **Reduced hallucinations**: Fewer spurious objects not specified in prompts or control signals​
+- **Improved consistency**: Better adherence to both semantic (text) and geometric (world scenario map) conditioning​
+- **Maintained geometric coherence**: Competitive temporal and cross-camera consistency
 
 ## Conclusion
 Cosmos Transfer 2.5 Multiview successfully addresses the spatial control requirements of autonomous vehicle development by extending Cosmos Predict 2.5 Multiview with ControlNet-based conditioning. The resulting system generates photorealistic multi-camera driving scenarios that accurately reflect specific HD map layouts and object configurations, combining visual quality with the deterministic spatial properties necessary for systematic testing and simulation workflows.
