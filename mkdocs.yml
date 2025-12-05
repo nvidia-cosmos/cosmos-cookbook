@@ -16,7 +16,8 @@ plugins:
   - literate-nav:
       nav_file: SUMMARY.md
   - exclude-unused-files:
-      enabled_on_serve: true
+      enabled: false
+      enabled_on_serve: false
 markdown_extensions:
   # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
   - pymdownx.highlight:
