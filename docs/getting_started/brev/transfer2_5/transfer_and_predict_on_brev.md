@@ -86,8 +86,15 @@ else
 fi
 
 sudo -u $RUN_USER bash -lc '
+# Install required packages
+sudo apt-get update && sudo apt-get install -y git-lfs bc
+
 # Move into $HOME/cosmos-transfer2.5
 cd $HOME/cosmos-transfer2.5
+
+# Initialize git-lfs and pull LFS files to ensure complete clone
+git lfs install
+git lfs pull
 
 # Build the Cosmos Transfer 2.5 docker image
 docker build --ulimit nofile=131071:131071 -f Dockerfile . -t transfer2.5
@@ -103,7 +110,6 @@ NUM_GPUS=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
 NUM_CPUS=$(nproc)
 
 # Set OMP_NUM_THREADS to FLOOR(NUM_CPUS/NUM_GPUS)
-sudo apt-get update && sudo apt-get install -y bc # ensure bc is installed
 OMP_NUM_THREADS=$(echo "scale=0; $NUM_CPUS/$NUM_GPUS" | bc)
 
 # Create script to run the container
