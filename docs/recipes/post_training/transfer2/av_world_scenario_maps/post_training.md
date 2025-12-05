@@ -89,6 +89,12 @@ Each clip includes:​
 - **Raw RGB videos**
 - **World scenario map videos**: combined spatial representation of lanes and objects
 
+| Camera View | Raw RGB Videos | World Scenario Map Videos |
+|-------------|----------------|---------------------------|
+| **Front Wide** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/998c4e06-a077-4834-a19e-a427cac7e4cb" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/0a973854-4a48-4803-a911-5f040dbaa520" type="video/mp4"></video> |
+| **Cross Left** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/21930d1f-b98f-48ac-8564-f3235294d0d7" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/a3831026-2a2c-4a41-bea3-f118d21de78e" type="video/mp4"></video> |
+| **Cross Right** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/1ce0f192-913b-41f4-b677-aa5da43a1786" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/69e3aa5a-072f-4603-b9cc-1a6d4669ee4d" type="video/mp4"></video> |
+
 ### Data Processing
 
 To prepare the RDS-HQ dataset for multiview training, we apply several strategic processing decisions that balance model capability with computational efficiency:
