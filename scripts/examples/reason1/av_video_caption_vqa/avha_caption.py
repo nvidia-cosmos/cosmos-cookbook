@@ -22,9 +22,9 @@
 #   "accelerate>=1.10.1",
 #   "torchvision>=0.23.0",
 #   "torchcodec>=0.6.0",
-#   "qwen-vl-utils>=0.0.11",
+#   "qwen-vl-utils>=0.0.14",
 #   "torch>=2.7.1",
-#   "transformers>=4.51.3",
+#   "transformers>=4.57.0",
 # ]
 # [tool.uv.sources]
 # torch = [
@@ -44,9 +44,9 @@
 Example:
 
 ```shell
-./examples/benchmark/tools/eval2/evaluate.py --config config_baseline.json
-./examples/benchmark/tools/eval2/evaluate.py --config config_baseline.json --output-dir ./output_dir
-./examples/benchmark/tools/eval2/evaluate.py --config config_baseline.json --video_dir ./videos --output-dir ./output_dir
+./avha_caption.py
+./avha_caption.py --output-dir ./output_dir
+./avha_caption.py --video_dir ./videos --output-dir ./output_dir
 ```
 """
 
@@ -61,10 +61,20 @@ from misc_utils import (
     run_sharded_computation,
     write_text_file,
 )
+from model_qwen3 import LocalModelQwen3
 from model_reason import LocalModel
 
 SCRIPT_DIR = Path(__file__).parent
 SEPARATOR = "-" * 20
+
+
+def open_model(model_path: str, gpu_id):
+    """Return an object that encapsulates the model."""
+    print(f"Loading model from path {model_path}.")
+    if model_path.startswith("Qwen/Qwen3"):
+        return LocalModelQwen3(model_path, gpu_id=gpu_id)
+    else:
+        return LocalModel(model_path, gpu_id=gpu_id)
 
 
 def process_videos(
@@ -94,7 +104,7 @@ def process_videos(
 
     prefix_str = "" if gpu_id is None else f"s{gpu_id}: "
 
-    model = LocalModel(model_path, gpu_id=gpu_id)
+    model = open_model(model_path, gpu_id)
     model.set_system_prompt(system_prompt)
 
     def process_video_fn(video_filename: str) -> bool:
@@ -173,6 +183,9 @@ def main():
         "--model-path",
         "-m",
         default="nvidia/Cosmos-Reason1-7B",
+        # Also try:
+        #   "Qwen/Qwen3-VL-8B-Instruct",
+        #   "Qwen/Qwen3-VL-30B-A3B-Instruct",
         help=(
             "Path to the model.  This can be a huggingface model name, "
             "or a file path to the pretrained weights in safetensor format."

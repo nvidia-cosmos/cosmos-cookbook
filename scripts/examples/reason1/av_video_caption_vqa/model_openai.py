@@ -56,7 +56,7 @@ class OpenAIModel:
         """Query the model."""
 
         print("Querying LLM...")
-        time.sleep(0.025)  # Keep us under the query limit.
+        time.sleep(0.1)  # Keep us under the query limit.
         messages = []
         if self.system_prompt:
             messages.append(
@@ -72,10 +72,25 @@ class OpenAIModel:
             }
         )
 
-        response = self.client.chat.completions.create(
-            model="gpt-5",
-            messages=messages,
-        )
+        # Keep retrying for a while, because timeouts are common.
+        retry_count = 0
+        response = None
+        while response is None:
+            try:
+                response = self.client.chat.completions.create(
+                    model="gpt-5",
+                    messages=messages,
+                )
+                break
+            except Exception as e:
+                print(f"ERROR: Call to model failed with exception {e}")
+                print(f"{prompt=}")
+                if retry_count > 60:
+                    raise
+                retry_count += 1
+                print(f"Retrying... count = {retry_count}.")
+                time.sleep(10)
+
         response_text = response.choices[0].message.content
         return response_text
 

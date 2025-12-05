@@ -25,16 +25,20 @@ FPS = 2
 # Max pixels per frame for Qwen models
 # Default patch size is 28 x 28 -- maintain 16:9 aspect ratio.
 # +1 to account for floating point error.
-MAX_PIXELS = (16 * 9 * 28 * 28) + 1
+MAX_PIXELS = (16 * 9 * 32 * 32) + 1
 
 
-class LocalModel:
-    """A thin wrapper class around a local instance of the Reason 1 model.
+class LocalModelQwen3:
+    """A thin wrapper class around a local instance of the Qwen3 model.
 
     Other models can be used by overriding this simple API.
     """
 
-    def __init__(self, model_path: Optional[str], gpu_id: Optional[int] = None):
+    def __init__(
+        self,
+        model_path: Optional[str] = "Qwen/Qwen3-VL-8B-Instruct",
+        gpu_id: Optional[int] = None,
+    ):
         """Initialize the model.
 
         Args:
@@ -55,7 +59,7 @@ class LocalModel:
         self.system_prompt = ""
         self.gpu_id = gpu_id
 
-        print(f"Loading Cosmos Reason model on GPU {gpu_id}...")
+        print(f"Loading Qwen3 model on GPU {gpu_id}...")
         try:
             if gpu_id is not None:
                 torch.cuda.set_device(gpu_id)
@@ -63,14 +67,15 @@ class LocalModel:
             else:
                 device_map = "auto"
 
-            self.model = (
-                transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
-                    model_path,
-                    dtype="auto",
-                    device_map=device_map,
-                    trust_remote_code=True,
-                )
+            self.model = transformers.AutoModelForImageTextToText.from_pretrained(
+                model_path, dtype="auto", device_map=device_map
             )
+            # transformers.Qwen2_5_VLForConditionalGeneration.from_pretrained(
+            #     model_path,
+            #     dtype="auto",
+            #     device_map=device_map,
+            #     trust_remote_code=True,
+            # )
             # The processor is a transformers.Qwen2_5_VLProcessor
             self.processor = transformers.AutoProcessor.from_pretrained(model_path)
             print(f"Model loaded successfully on GPU {gpu_id}")
@@ -108,7 +113,7 @@ class LocalModel:
             content.append(
                 {
                     "type": "video",
-                    "video": video_path,
+                    "video": "file://" + video_path,
                     "fps": FPS,
                     "max_pixels": MAX_PIXELS,
                 }
@@ -130,17 +135,41 @@ class LocalModel:
             {"role": "user", "content": content},
         ]
 
-        # Process conversation and load videos.
+        # Extract text prompt from conversation
         text_prompt = self.processor.apply_chat_template(
             conversation, tokenize=False, add_generation_prompt=True
         )
-        (image_inputs, video_inputs) = qwen_vl_utils.process_vision_info(conversation)
+
+        # Load videos.
+        # for Qwen2.5VL, you can simply call
+        # (image_inputs, video_inputs) = qwen_vl_utils.process_vision_info(conversation)
+        # images, videos, video_kwargs = process_vision_info(messages, return_video_kwargs=True)
+        # For Qwen3VL series, you should call:
+        image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(
+            conversation,
+            image_patch_size=16,
+            return_video_kwargs=True,
+            return_video_metadata=True,
+        )
+        # with return_video_metadata, each item in video_input is pair (video, metadata)
+        if video_inputs is not None:
+            video_inputs, video_metadata = zip(*video_inputs)
+            video_inputs, video_metadata = list(video_inputs), list(video_metadata)
+        else:
+            video_metadata = None
+        # print(f"{video_kwargs=}")
+        # print(f"{video_metadata=}")
+
+        # Process the prompt (tokenize, combine with videos).
         inputs = self.processor(
             text=[text_prompt],
             images=image_inputs,
             videos=video_inputs,
-            padding=True,
+            video_metadata=video_metadata,
+            # do_resize=False,
+            # padding=True,
             return_tensors="pt",
+            **video_kwargs,
         )
         inputs = inputs.to(self.model.device)
 
@@ -155,7 +184,7 @@ class LocalModel:
             pad_token_id=self.processor.tokenizer.eos_token_id,
         )
 
-        # Decode the results.
+        # Decode the results. (Same as Qwen 2.5)
         generated_ids_trimmed = [
             out_ids[len(in_ids) :]
             for in_ids, out_ids in zip(inputs.input_ids, generated_ids, strict=False)
