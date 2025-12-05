@@ -25,11 +25,13 @@ The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Phys
 
 We welcome contributions—from new examples and workflow improvements to bug fixes and documentation updates. Together, we can evolve best practices and accelerate the adoption of Cosmos models across domains.
 
+**📊 Physical AI Datasets:** Access curated datasets for autonomous vehicles, intelligent transportation systems, robotics, smart spaces, and warehouse environments on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face.
+
 ## Case Study Recipes
 
 The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
-### **Cosmos Predict**
+### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
 
 #### Future state prediction and generation
 
@@ -38,8 +40,11 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md) |
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
 | **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
+| **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
 
-### **Cosmos Transfer**
+> **Advanced Topics:** For model compression and deployment optimization, see [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
+
+### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
 #### Multi-control video generation and augmentation
 
@@ -53,22 +58,22 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 
-### **Cosmos Reason**
+### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
 #### Vision-language reasoning and quality control
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **Training** | Physical plausibility check for video quality assessment | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md) |
-| **Training** | Spatial AI understanding for warehouse environments | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md) |
-| **Training** | Intelligent transportation scene understanding and analysis | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md) |
-| **Training** | Temporal localization for MimicGen robot learning data generation | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md) |
+| **Workflow** | **Description**                                                           | **Link**                                                                                                |
+| ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
+| **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
+| **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
+| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
+| **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
 
-### **Cosmos Curator**
+### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
+| **Workflow** | **Description**                                      | **Link**                                                                        |
+| ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 
 ### **End-to-End Workflows**
@@ -121,6 +126,7 @@ Visual examples of Cosmos Transfer results across Physical AI domains:
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
 
 - **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
+- **Physical AI datasets:** [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face for curated datasets across domains
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
 - **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area

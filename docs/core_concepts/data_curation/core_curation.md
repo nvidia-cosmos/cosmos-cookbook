@@ -42,6 +42,8 @@ uv pip install poetry && poetry install --extras=local
 
 ### NVCF Configuration
 
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager). Never commit API keys to source control or share them in plain text.
+
 1. **Set up an NGC API key**: If you don't have a valid API key yet, acquire one as follows: Go to <https://org.ngc.nvidia.com/setup>, select **Cosmos API** from the top-left corner, and choose **no team** as the org profile. Click on **Generate API Key**, then select **Generate Personal Key**. Generate a key and save it for the future usage (the key is only readable once).
 
     ```shell
@@ -124,6 +126,28 @@ When designing prompts for the captioner, follow these principles:
 - **Domain-Specific Terminology**: Use vocabulary and phrasing that are consistent with the intended use case of the model to promote alignment between training captions and expected inference prompts.
 
 These practices support the creation of high-fidelity, task-aligned captions that improve training effectiveness and model generalization.
+
+### Prompt Tuning and Evaluation Cycle
+
+Caption quality varies significantly across datasets and domains. Rather than assuming a one-size-fits-all prompt will work, **iteratively tune your prompts based on evaluation results**:
+
+1. **Start with a baseline prompt** — Use the examples in this guide as starting points, adapting terminology and structure to your domain.
+
+2. **Generate captions on a small sample** — Run captioning on 50–100 representative clips to quickly assess prompt effectiveness.
+
+3. **Evaluate caption quality** — Manually review the generated captions against your quality criteria:
+   - Are key scene elements (objects, actors, environment) correctly identified?
+   - Is the camera perspective accurately classified?
+   - Are motion dynamics and physical interactions described precisely?
+   - Does the caption use appropriate domain-specific terminology?
+
+4. **Identify systematic errors** — Look for patterns in caption failures (e.g., consistently missing certain object types, incorrect camera labels, hallucinated content).
+
+5. **Refine the prompt** — Update `captioning_prompt_text` to address identified issues. Be specific—if the captioner misclassifies dashcam footage, add explicit criteria for camera angle detection.
+
+6. **Re-caption and re-evaluate** — Use the [Video Re-Captioning](#video-re-captioning) workflow to iterate without reprocessing video splits. Repeat until captions meet your quality standards.
+
+> **Key insight:** The optimal prompt depends on your specific dataset characteristics, target use case, and downstream model requirements. Plan for 2–5 prompt iterations before achieving production-quality captions.
 
 ### Advanced Captioning Example
 

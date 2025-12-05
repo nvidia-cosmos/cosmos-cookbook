@@ -7,12 +7,12 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Reason 1 | Post-training | Physical plausibility prediction |
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Physical plausibility prediction |
 
 In synthetic video generation, it is crucial to determine the quality of the generated videos and filter out videos of bad quality.
 In this case study, we demonstrate using the Cosmos Reason 1 model for physical plausibility prediction. Physics plausibility assessment involves evaluating whether the physical interactions and behaviors observed in videos are consistent with real-world physics laws and constraints.
 
-- [Setup and System Requirement](setup.md)
+- [Setup and System Requirements](setup.md)
 
 We first evaluate the model's ability to predict physical plausibility on an open-source dataset. We then fine-tune the model and evaluate its performance.
 
@@ -97,7 +97,7 @@ We use a script similar to [an existing video critic example](https://github.com
             --video_path [video_path] \
             --prompt_path prompts/video_reward.yaml
 
-The result is saved in an HTML file in the same directory as the video.
+The script prints the score in the terminal. You may add `--output_html` and/or `--output_json` to save the result as an HTML file or a JSON file in the same directory as the video.
 
 ### Evaluation Metrics
 
@@ -169,6 +169,8 @@ We use the following configuration optimized for 8 GPUs:
     --8<-- "docs/recipes/post_training/reason1/physical-plausibility-check/assets/sft_config.toml"
     ```
 
+> **Note**: Set `dp_shard_size` to the number of GPUs you are using. We tested on H100 GPUs where the model fits in the memory of a GPU, so we only use data parallelism. If you use GPUs with less memory, you may increase `tp_size` to enable tensor parallelism.
+
 ### Running Training
 
 We run training with the following steps:
@@ -238,6 +240,8 @@ The **reward function** is defined based on prediction accuracy. We use a dense 
 - `1` if `prediction == ground_truth`
 - `0.5` if `|prediction - ground_truth| == 1`
 - `0` otherwise
+
+> **Note**: Both SFT and RL use the same evaluation metrics: "accuracy" and "correlation." The reward function above is used to provide feedback to the model during training, and is not used during evaluation.
 
 The language instruction prompts the model to generate a structured response with explicit thinking traces before providing a score:
 

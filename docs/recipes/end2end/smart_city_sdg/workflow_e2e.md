@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Transfer 2.5, Cosmos Reason 1, CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning |
 
 > **Prerequisites**: This workflow requires specific API keys, system requirements, and workflow inputs. See the [Prerequisites](#prerequisites) section below before starting.
 
@@ -44,6 +44,8 @@ Refer to the Cosmos Cookbook [Intelligent Transportation Fine-tuning Guide](../.
 ## Prerequisites
 
 ### Obtain API keys
+
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager). Never commit API keys to source control or share them in plain text.
 
 - [NGC API key](https://org.ngc.nvidia.com/setup/api-keys)
   - Steps to setup [HERE](https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#generating-api-key)

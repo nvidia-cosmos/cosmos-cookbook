@@ -3,9 +3,9 @@
 > **Authors:** [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)
 > **Organization:** NVIDIA
 
-| Model | Workload | Use case |
-|------|----------|----------|
-| Cosmos Transfer 1 | Inference | Data augmentation |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Data augmentation |
 
 This tutorial demonstrates how to use the Cosmos Transfer 1 model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 

@@ -1,13 +1,12 @@
 # Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking
 
-> **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
-> **Organization:** NVIDIA
+> **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) > **Organization:** NVIDIA
 
-| Model | Workload | Use case |
-|------|----------|----------|
-| Cosmos Transfer 1 | Inference | Sim to Real data augmentation |
+| **Model** | **Workload** | **Use Case** |
+|-----------|--------------|--------------|
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation |
 
-This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the  sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
+This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the sim-to-real domain gap, specifically targeting multi-view warehouse detection and tracking scenarios.
 
 - [Setup and System Requirement](setup.md)
 
@@ -22,7 +21,7 @@ This use case explores how first time outside-in multi-view world simulation can
 Monitoring of warehouse spaces typically involves multi-camera views to provide comprehensive coverage. Since Cosmos Transfer 1 does not natively support multi-view processing, we adopt an approach to ensure visual consistency across all camera viewpoints:
 
 1. **Multi-view Outside-In Data Generation**: Multi-view synthetic videos and corresponding multi-modal
-ground truth data (e.g., depth, segmentation masks) are prepared by [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html).
+   ground truth data (e.g., depth, segmentation masks) are prepared by [IsaacSim.Replicator.Agent](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html).
 2. **Processing**: For each video, identical text prompts and parameter settings are provided to the Cosmos Transfer 1 model, ensuring uniformity across different camera views. Modalities are carefully chosen and analyzed to enhance object feature consistency across different camera views. Detailed, data-driven text prompts are employed to minimize divergence in object features between views. In the following case, only depth and edge maps (0.5 depth + 0.5 edge) are used as input controls to the Cosmos Transfer 1 model.
 
 This approach guarantees that all camera views receive consistent environmental transformations while maintaining spatial and temporal coherence across the multi-view setup.
@@ -53,6 +52,10 @@ The dataset provides a 6-camera warehouse setup with synchronized data organized
   - **`rgb.mp4`**: RGB video data for the camera view
   - **`depth.mp4`**: Corresponding depth video data for the camera view
 
+### Additional Physical AI Smart Spaces Datasets
+
+For additional multi-camera warehouse datasets, see the [NVIDIA PhysicalAI-SmartSpaces dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-SmartSpaces) on Hugging Face, which includes over 250 hours of synchronized multi-camera video with 2D/3D annotations, depth maps, and calibration data.
+
 ### Warehouse Outside-In Multi-View Input
 
 The RGB video for each camera is processed sequentially through multiple Cosmos Transfer 1 inference runs. We present the concatenated multi-view videos below to demonstrate the combined perspectives.
@@ -79,15 +82,15 @@ We can leverage the Cosmos Transfer 1 model to convert the appearance of synthet
 
 ```json
 {
-    "prompt": "The camera provides a clear view of the warehouse interior, showing rows of shelves stacked with boxes, baskets and other objects. There are workers and robots walking around, moving boxes or operating machinery. The lighting is bright and even, with overhead fluorescent lights illuminating the space. The floor is clean and well-maintained, with clear pathways between the shelves. The atmosphere is busy but organized, with workers and humanoids moving efficiently around the warehouse.",
-    "input_video_path": "/your_video_path/rgb_video.mp4",
-    "edge": {
-        "control_weight": 0.5
-    },
-    "depth": {
-        "control_weight": 0.5,
-        "input_control": "/your_video_path/depth_video.mp4"
-    }
+  "prompt": "The camera provides a clear view of the warehouse interior, showing rows of shelves stacked with boxes, baskets and other objects. There are workers and robots walking around, moving boxes or operating machinery. The lighting is bright and even, with overhead fluorescent lights illuminating the space. The floor is clean and well-maintained, with clear pathways between the shelves. The atmosphere is busy but organized, with workers and humanoids moving efficiently around the warehouse.",
+  "input_video_path": "/your_video_path/rgb_video.mp4",
+  "edge": {
+    "control_weight": 0.5
+  },
+  "depth": {
+    "control_weight": 0.5,
+    "input_control": "/your_video_path/depth_video.mp4"
+  }
 }
 ```
 
@@ -108,12 +111,12 @@ Example control and text prompts:
 
 ```json
 {
-"prompt": "The camera provides a photorealistic view of a dimly lit warehouse shrouded in thick fog, where shelves emerge like silhouettes through the mist, holding crates covered in dew. Workers wear diversed layered clothing in muted tones, including utility jackets, waterproof pants, and sturdy boots, some paired with scarves and beanies to counter the chill. Humanoid robots with matte black finishes and faintly glowing outlines navigate through the haze, their movements slow and deliberate. Forklifts, painted in industrial gray with fog lights attached, glide silently across the damp concrete floor. The lighting is eerie and diffused, with beams from overhead fixtures piercing the mist to create dramatic light shafts. The atmosphere is mysterious and quiet, with the muffled sound of machinery barely audible through the thick air.",
-"prompt_title": "The camera provides a photorealistic",
-"input_video_path": "/your_video_path/rgb_video.mp4",
-"edge": {
+  "prompt": "The camera provides a photorealistic view of a dimly lit warehouse shrouded in thick fog, where shelves emerge like silhouettes through the mist, holding crates covered in dew. Workers wear diversed layered clothing in muted tones, including utility jackets, waterproof pants, and sturdy boots, some paired with scarves and beanies to counter the chill. Humanoid robots with matte black finishes and faintly glowing outlines navigate through the haze, their movements slow and deliberate. Forklifts, painted in industrial gray with fog lights attached, glide silently across the damp concrete floor. The lighting is eerie and diffused, with beams from overhead fixtures piercing the mist to create dramatic light shafts. The atmosphere is mysterious and quiet, with the muffled sound of machinery barely audible through the thick air.",
+  "prompt_title": "The camera provides a photorealistic",
+  "input_video_path": "/your_video_path/rgb_video.mp4",
+  "edge": {
     "control_weight": 1.0
-    }
+  }
 }
 ```
 
@@ -133,26 +136,25 @@ Diversity can be further enhanced by dividing each camera view video into 10 seg
 
 ### Recommended Control Configuration
 
-Similar to the weather augmentation approach, experiments show that controlling only for *edge and depth* produces the best results for warehouse sim-to-real conversion. This configuration maintains structural consistency while allowing realistic appearance changes.
+Similar to the weather augmentation approach, experiments show that controlling only for _edge and depth_ produces the best results for warehouse sim-to-real conversion. This configuration maintains structural consistency while allowing realistic appearance changes.
 
 ```json
-
 {
-    "prompt": "The camera provides a clear view of the warehouse interior, showing rows of shelves stacked with boxes, baskets and other objects. There are workers and robots walking around, moving boxes or operating machinery. The lighting is bright and even, with overhead fluorescent lights illuminating the space. The floor is clean and well-maintained, with clear pathways between the shelves. The atmosphere is busy but organized, with workers and humanoids moving efficiently around the warehouse.",
-    "input_video_path": "/mnt/pvc/gradio/uploads/upload_20250916_152159/rgb.mp4",
-    "edge": {
-        "control_weight": 0.5
-    },
-    "depth": {
-        "control_weight": 0.5,
-        "input_control": "/mnt/pvc/gradio/uploads/upload_20250916_152159/depth.mp4"
-    }
+  "prompt": "The camera provides a clear view of the warehouse interior, showing rows of shelves stacked with boxes, baskets and other objects. There are workers and robots walking around, moving boxes or operating machinery. The lighting is bright and even, with overhead fluorescent lights illuminating the space. The floor is clean and well-maintained, with clear pathways between the shelves. The atmosphere is busy but organized, with workers and humanoids moving efficiently around the warehouse.",
+  "input_video_path": "/mnt/pvc/gradio/uploads/upload_20250916_152159/rgb.mp4",
+  "edge": {
+    "control_weight": 0.5
+  },
+  "depth": {
+    "control_weight": 0.5,
+    "input_control": "/mnt/pvc/gradio/uploads/upload_20250916_152159/depth.mp4"
+  }
 }
 ```
 
 ## 2D Detection Results on Augmented Dataset
 
-To evaluate the effectiveness of Cosmos Transfer 1 for data augmentation, experiments were conducted using carefully selected multi-view scenes from the AI City Challenge dataset. *Eleven distinct scenes* were picked from the [AI City v0.1](https://www.aicitychallenge.org/) dataset, representing diverse warehouse and indoor environments.
+To evaluate the effectiveness of Cosmos Transfer 1 for data augmentation, experiments were conducted using carefully selected multi-view scenes from the AI City Challenge dataset. _Eleven distinct scenes_ were picked from the [AI City v0.1](https://www.aicitychallenge.org/) dataset, representing diverse warehouse and indoor environments.
 
 Each of these 11 baseline scenes was processed through the Cosmos Transfer 1 augmentation pipeline using the multi-view parameter-consistent approach described earlier. This process generated ambient variations, lighting changes, and environmental conditions (including dust and reduced visibility scenarios), while maintaining structural consistency and multi-view coherence across all camera viewpoints.
 
@@ -160,11 +162,11 @@ The resulting augmented dataset, containing both original and Cosmos Transfer-en
 
 ### Detection Performance Results
 
-| Dataset Configuration | Pretrained Checkpoint | Building K Person AP50 | Building K Nova Carter AP50 | Building K mAP50 |
-|----------------------|----------------------|------------------------|----------------------------|------------------|
-| **Baseline: 1-min IsaacSim AICity v0.1** | NVImageNetV2 backbone | 0.776 | 0.478 | 0.627 |
-| **1-min Cosmos AICity v0.1** | NVImageNetV2 backbone | 0.827 (+6.17%) | 0.545 (+12.35%) | 0.686 (+8.60%) |
-| **1-min IsaacSim + 1-min Cosmos AICity v0.1** | NVImageNetV2 backbone | 0.838 (+7.40%) | 0.645 (+25.94%) | 0.742 (+15.50%) |
+| Dataset Configuration                         | Pretrained Checkpoint | Building K Person AP50 | Building K Nova Carter AP50 | Building K mAP50 |
+| --------------------------------------------- | --------------------- | ---------------------- | --------------------------- | ---------------- |
+| **Baseline: 1-min IsaacSim AICity v0.1**      | NVImageNetV2 backbone | 0.776                  | 0.478                       | 0.627            |
+| **1-min Cosmos AICity v0.1**                  | NVImageNetV2 backbone | 0.827 (+6.17%)         | 0.545 (+12.35%)             | 0.686 (+8.60%)   |
+| **1-min IsaacSim + 1-min Cosmos AICity v0.1** | NVImageNetV2 backbone | 0.838 (+7.40%)         | 0.645 (+25.94%)             | 0.742 (+15.50%)  |
 
 ## Conclusion
 
