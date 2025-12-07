@@ -34,7 +34,7 @@ While the pre-trained model excelled at routine traffic scenes, it struggled wit
 Before running training:
 
 1. **Environment setup**: Follow the [Setup guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/setup.md) for installation instructions.
-2. **Model checkpoints**: Download required model weights following the *Downloading Checkpoints* sectiopn in the [Setup guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/setup.md).
+2. **Model checkpoints**: Download required model weights following the *Downloading Checkpoints* section in the [Setup guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/setup.md).
 
 ### Key Dependencies
 
@@ -409,7 +409,7 @@ We employ two primary metrics for objective evaluation of video generation quali
 FID ([Heusel et al., 2017](https://arxiv.org/abs/1706.08500)) measures the similarity between the distribution of generated videos and real videos by comparing features extracted from a pre-trained Inception network.
 
 - **What values indicate**: Values closer to 0 indicate better quality.
-- **Typical ranges**: Excellent (< 10), Good (10-30), Acceptable (30-50), Poor (> 50
+- **Typical ranges**: Excellent (< 10), Good (10-30), Acceptable (30-50), Poor (> 50)
 - **What it measures**: Visual quality and realism at the frame level
 
 ##### 2. FVD (Fréchet Video Distance)
@@ -422,8 +422,8 @@ FVD ([Unterthiner et al., 2018](https://arxiv.org/abs/1812.01717)) extends FID t
 
 #### Why These Metrics Matter for ITS
 
-- **FID**: Validates visual realism of individual frames from a single camera view,
-- **FVD**: Ensures temporal consistency and realistic motion dynamics,
+- **FID**: Validates visual realism of individual frames from a single camera view.
+- **FVD**: Ensures temporal consistency and realistic motion dynamics.
 
 Together, these metrics quantify improvements in single-view traffic video generation.
 
