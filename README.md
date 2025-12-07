@@ -60,6 +60,7 @@ git lfs install
 ```
 
 > 💡 **Alternative**: If you prefer system package managers:
+>
 > - Ubuntu/Debian: `sudo apt-get install git-lfs`
 > - Fedora: `sudo dnf install git-lfs`
 > - Windows: `choco install git-lfs`
@@ -143,6 +144,7 @@ When contributing or working with media files in this repository:
 ### Recommended Format: MP4 with H.264
 
 While `.gif` files offer universal browser compatibility, they suffer from:
+
 - **Lower quality** due to limited 256-color palette
 - **Larger file sizes** compared to modern video codecs
 - **No audio support**
