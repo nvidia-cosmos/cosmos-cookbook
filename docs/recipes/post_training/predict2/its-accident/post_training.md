@@ -29,6 +29,24 @@ Initial evaluations of the pre-trained Cosmos Predict 2 model revealed gaps in g
 
 While the pre-trained model excelled at routine traffic scenes, it struggled with collision scenarios when tested on ITS-specific prompts. This confirmed the need for targeted post-training using anomaly-rich data featuring accidents from fixed CCTV perspectives.
 
+## Prerequisites
+
+Before running training:
+
+1. **Environment setup**: Follow the [Setup guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/setup.md) for installation instructions.
+2. **Model checkpoints**: Download required model weights following the *Downloading Checkpoints* sectiopn in the [Setup guide](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/setup.md).
+
+### Key Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `torch` | >=2.5.0 | Deep learning framework |
+| `megatron-core` | >=0.11.0 | Distributed training utilities |
+| `transformers` | >=4.45.0 | Hugging Face model loading |
+| `peft` | >=0.13.0 | LoRA implementation |
+| `einops` | >=0.8.0 | Tensor operations |
+| `hydra-core` | >=1.3.0 | Configuration management |
+
 ## Our Approach: LoRA-Based Domain Adaptation
 
 This case study documents a detailed post-training workflow using Cosmos Predict 2 Video2World with **Low-Rank Adaptation (LoRA)**, with a focus on enhancing model capabilities for generating traffic anomaly videos from a fixed CCTV perspective. Rather than fine-tuning the entire model, we employ LoRA to efficiently adapt the pre-trained foundation model for ITS-specific requirements.
@@ -135,9 +153,9 @@ For post-training, we selected 1,000 samples from each dataset (1:1 ratio):
 
 ### Video Resolution Requirements
 
-The following are supported resolutions for 720p video:
+The following are supported resolutions:
 
-- **16:9**: 1280x720 (recommended for ITS footage)
+- **16:9**: 1280x720
 - **1:1**: 960x960
 - **4:3**: 960x720
 - **3:4**: 720x960
@@ -164,6 +182,47 @@ An overfitting test on four samples verified pipeline correctness before trainin
 We also experimented with both Full Model post-training and PEFT post-training. The process is detailed below:
 
 ### LoRA Post-Training Workflow
+
+#### Dataset and Dataloader Configuration
+
+First, define the dataset and dataloader for ITS training data:
+
+```python
+from megatron.core import parallel_state
+from torch.utils.data import DataLoader, DistributedSampler
+
+from cosmos_predict2.data.dataset_video import Dataset
+from imaginaire.lazy_config import LazyCall as L
+
+
+def get_sampler(dataset) -> DistributedSampler:
+    """Create a distributed sampler for multi-GPU training."""
+    return DistributedSampler(
+        dataset,
+        num_replicas=parallel_state.get_data_parallel_world_size(),
+        rank=parallel_state.get_data_parallel_rank(),
+        shuffle=True,
+        seed=0,
+    )
+
+
+# ITS dataset configuration (1:1 mixture of normal and accident scenes)
+example_video_dataset_its = L(Dataset)(
+    dataset_dir="/path/to/its/combined_dataset/",  # Update with your dataset path
+    num_frames=93,
+    video_size=(720, 1280),
+)
+
+# Dataloader for ITS training
+dataloader_train_its = L(DataLoader)(
+    dataset=example_video_dataset_its,
+    sampler=L(get_sampler)(dataset=example_video_dataset_its),
+    batch_size=1,
+    drop_last=True,
+    num_workers=8,
+    pin_memory=True,
+)
+```
 
 #### LoRA Configuration Setup (2B Model)
 
@@ -204,7 +263,7 @@ predict2_video2world_lora_training_2b_its = dict(
         callbacks=dict(
             iter_speed=dict(hit_thres=10),                # Report speed every 10 iterations
         ),
-        max_iter=2000,                                   # Total training iterations
+        max_iter=10000,                                   # Total training iterations
     ),
     checkpoint=dict(
         save_iter=500,                                    # Save checkpoint every 500 iterations
@@ -281,7 +340,7 @@ export NUM_GPUS=8
 torchrun --nproc_per_node=${NUM_GPUS} examples/video2world_lora.py \
     --model_size 2B \
     --dit_path "checkpoints/posttraining/video2world/2b_metropolis/checkpoints/model/iter_000001000.pt" \
-    --input_path "benchmark/frames_1280x704/intersection_view.jpg" \
+    --input_path "benchmark/frames/intersection_view.jpg" \
     --prompt 'A static traffic CCTV camera captures an urban street scene, where two cars are speeding down the road. Suddenly, a white sedan abruptly enters from an intersection, cutting across traffic and colliding with one of the vehicles. The impact causes significant damage. Both vehicles come to a halt following the crash.' \
     --save_path output/collision_scenario.mp4 \
     --num_gpus ${NUM_GPUS} \
