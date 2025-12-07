@@ -46,8 +46,9 @@ Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
 
 ```bash
 # Linux (no sudo required - installs to ~/.local/bin)
-curl -sL https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz | tar xz
-./git-lfs-3.6.1/install.sh --local
+LATEST=$(curl -s https://api.github.com/repos/git-lfs/git-lfs/releases/latest | grep tag_name | cut -d '"' -f 4)
+curl -sL https://github.com/git-lfs/git-lfs/releases/download/$LATEST/git-lfs-linux-amd64-$LATEST.tar.gz | tar xz
+./git-lfs-$LATEST/install.sh --local
 
 # macOS (using Homebrew)
 brew install git-lfs
@@ -55,7 +56,7 @@ brew install git-lfs
 # Windows (using winget)
 winget install GitHub.GitLFS
 
-# After installation, enable Git LFS globally
+# After LFS installation, enable Git LFS globally
 git lfs install
 ```
 
@@ -84,11 +85,6 @@ source $HOME/.local/bin/env
 
 # Install just (command runner) - all platforms
 uv tool install -U rust-just
-
-# Optional useful tools
-uv tool install -U s5cmd      # High-performance S3 operations
-uv tool install -U streamlit  # Web app framework
-uv tool install -U yt-dlp     # Video downloading
 ```
 
 ### 3. Clone and Setup Repository
@@ -152,7 +148,13 @@ While `.gif` files offer universal browser compatibility, they suffer from:
 **We strongly recommend using `.mp4` files** with the following encoding settings for optimal quality, file size, and cross-browser compatibility:
 
 ```bash
-# Recommended FFmpeg encoding for maximum compatibility
+# For silent videos (screen recordings, demos) - most common for documentation
+ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 \
+       -an \
+       -pix_fmt yuv420p -movflags +faststart \
+       output.mp4
+
+# For videos with audio (tutorials with narration)
 ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 \
        -c:a aac -b:a 128k \
        -pix_fmt yuv420p -movflags +faststart \
@@ -166,8 +168,10 @@ ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 \
 | `-crf 23` | Quality factor | Range 18-28; lower = higher quality (23 is balanced) |
 | `-pix_fmt yuv420p` | Pixel format | Required for browser/QuickTime compatibility |
 | `-movflags +faststart` | Fast start | Enables progressive playback before full download |
+| `-an` | No audio | Strips audio track (smaller file size) |
+| `-c:a aac -b:a 128k` | AAC audio | Include when narration/audio is needed |
 
-> 💡 **Tip**: For documentation demos and tutorials, a CRF value of 23-26 provides excellent quality at reasonable file sizes. For high-fidelity showcases, use CRF 18-20.
+> 💡 **Tip**: Most documentation demos are silent—use `-an` to skip audio encoding for smaller files. For tutorials with narration, include the audio parameters.
 
 ## Available Commands
 
