@@ -350,7 +350,7 @@ When object and background contours are too similar, edges may not be detected r
 
 ## Generating Realistic Data from Omniverse
 
-An important robotics workflow is "Sim-to-Real." NVIDIA Omniverse can generate synthetic data, but we can use CT 2.5 to add real-world domain randomization (new lighting, textures, backgrounds) and generate photorealistic scenes.
+An important robotics workflow is "Sim-to-Real." NVIDIA Omniverse can generate synthetic data, but we can use CT 2.5 to add real-world domain randomization (new lighting, textures, backgrounds) and generate photorealistic scenes. [Here's some documentation](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/introduction/quickstart_index.html) to get started with IsaacSim, which is built on top of NVIDIA Omniverse.
 
 The Workflow:
 
