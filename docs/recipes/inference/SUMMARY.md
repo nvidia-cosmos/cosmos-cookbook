@@ -8,3 +8,4 @@
 - [Transfer for Robotics Navigation Tasks](./transfer1/inference-x-mobility/inference.md)
 - [Transfer Multi-Control Video Editing](./transfer2_5/inference-real-augmentation/inference.md)
 - [Transfer Style-Guided Video Generation](./transfer2_5/inference-image-prompt/inference.md)
+- [Transfer for Data Augmentation in Biodiversity](./transfer2_5/biotrove_augmentation/inference.md)

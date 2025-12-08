@@ -55,7 +55,7 @@ class LocalModel:
         self.system_prompt = ""
         self.gpu_id = gpu_id
 
-        print(f"Loading model on GPU {gpu_id}...")
+        print(f"Loading Cosmos Reason model on GPU {gpu_id}...")
         try:
             if gpu_id is not None:
                 torch.cuda.set_device(gpu_id)

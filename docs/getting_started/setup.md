@@ -78,3 +78,11 @@ huggingface-cli login
 ```
 
 **Note:** You'll need a Hugging Face account and access token for authentication.
+
+## Cloud Platform Quick Start
+
+These cloud platform guides help you deploy and run Cosmos models without local infrastructure setup.
+
+- **[Get started with Cosmos Reason1 on Brev](brev/reason1/reason1_on_brev.md)** - Deploy Cosmos Reason1 for physical AI reasoning on Brev's cloud GPU platform. Covers provisioning, setup, and first inference.
+
+- **[Get started with Transfer2.5 and Predict2.5 on Brev](brev/transfer2_5/transfer_and_predict_on_brev.md)** - Set up Transfer2.5 (video generation) and Predict2.5 (world prediction) on Brev cloud infrastructure with example workflows.

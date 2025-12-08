@@ -3,7 +3,7 @@ name: PR Quality Checks
 on:
   pull_request:
     branches: [main]
-  push:
+  workflow_dispatch:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Verify Git LFS pointers
+        run: git lfs fsck --pointers
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -28,6 +32,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: true
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
