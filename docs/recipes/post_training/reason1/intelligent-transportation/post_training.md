@@ -44,7 +44,7 @@ We performed the following steps to pre-process the dataset:
 
 1. Download the dataset from the WTS Dataset [homepage](https://woven-visionai.github.io/wts-dataset-homepage/). This dataset is owned and managed by “Woven by Toyota”. To use this dataset for your own applications, you must request access directly from the “Woven by Toyota” organization.
 
-2. Pre-process the VQA annotations into Llava format.
+2. Pre-process the VQA annotations into [Llava dataset format](https://github.com/haotian-liu/LLaVA/blob/main/docs/Finetune_Custom_Data.md). This format is a JSON-based structure commonly used for visual SFT on VLMs. Each entry contains an id, a reference to the media (e.g., video or image) and a conversation between query from a human and the expected answer from the assistant.
 
    ```shell
    # From scripts/examples/reason1/intelligent-transportation directory
@@ -166,7 +166,7 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
 3. Run the `quantize_fp8.py` script.
 
    ```shell
-   python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos Reason 1-7B' --save_dir 'Cosmos Reason 1-7B-W8A8-FP8'
+   python ./scripts/quantize_fp8.py --model_id 'nvidia/Cosmos-Reason-1-7B' --save_dir 'Cosmos-Reason-1-7B-W8A8-FP8'
    ```
 
 Before deploying the quantized model for inference, we ran an evaluation on the model for accuracy and ensured quantization doesn’t introduce any accuracy regression.
