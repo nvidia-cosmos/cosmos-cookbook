@@ -45,28 +45,16 @@ Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
 > ⚠️ **Important**: This repository contains many media files (videos, images, demonstrations). Git LFS is **required** to clone and work with this repository properly.
 
 ```bash
-# Linux (no sudo required - installs to ~/.local/bin)
-LATEST=$(curl -s https://api.github.com/repos/git-lfs/git-lfs/releases/latest | grep tag_name | cut -d '"' -f 4)
-curl -sL https://github.com/git-lfs/git-lfs/releases/download/$LATEST/git-lfs-linux-amd64-$LATEST.tar.gz | tar xz
-./git-lfs-$LATEST/install.sh --local
+# Ubuntu/Debian (recommended)
+sudo apt update && sudo apt install git-lfs
 
-# macOS (using Homebrew)
-brew install git-lfs
-
-# Windows (using winget)
-winget install GitHub.GitLFS
-
-# After LFS installation, enable Git LFS globally
+# Enable Git LFS globally
 git lfs install
 ```
 
-> 💡 **Alternative**: If you prefer system package managers:
->
-> - Ubuntu/Debian: `sudo apt-get install git-lfs`
-> - Fedora: `sudo dnf install git-lfs`
-> - Windows: `choco install git-lfs`
+For other platforms (macOS, Windows, Fedora), see the official installation guide at **[git-lfs.com](https://git-lfs.com/)**.
 
-If you've already cloned without LFS, run the following to fetch the media files:
+If you've already cloned without LFS, fetch the media files with:
 
 ```bash
 git lfs pull
