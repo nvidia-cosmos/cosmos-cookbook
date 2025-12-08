@@ -44,7 +44,27 @@ We performed the following steps to pre-process the dataset:
 
 1. Download the dataset from the WTS Dataset [homepage](https://woven-visionai.github.io/wts-dataset-homepage/). This dataset is owned and managed by “Woven by Toyota”. To use this dataset for your own applications, you must request access directly from the “Woven by Toyota” organization.
 
-2. Pre-process the VQA annotations into [Llava dataset format](https://github.com/haotian-liu/LLaVA/blob/main/docs/Finetune_Custom_Data.md). This format is a JSON-based structure commonly used for visual SFT on VLMs. Each entry contains an id, a reference to the media (e.g., video or image) and a conversation between query from a human and the expected answer from the assistant.
+2. Pre-process the VQA annotations into [Llava dataset format](https://github.com/haotian-liu/LLaVA/blob/main/docs/Finetune_Custom_Data.md).
+This format is a JSON-based structure commonly used for visual SFT on VLMs, including Llava and Qwen-VL families. Each entry contains an id, a reference to the media (video or image), and a conversation between query from a human and the expected answer from the VLM model. Here is an example:
+
+  ```json
+  {
+      "id": "question_id",
+      "video": "path/to/video.mp4",
+      "conversations": [
+          {
+              "from": "human",
+              "value": "<video>\n What is the weather in the video?"
+          },
+          {
+              "from": "gpt",
+              "value": "The weather in the video is sunny."
+          }
+      ]
+  }
+  ```
+
+To pre-process the dataset, run the following command:
 
    ```shell
    # From scripts/examples/reason1/intelligent-transportation directory
@@ -55,7 +75,7 @@ We performed the following steps to pre-process the dataset:
 
 ## Post-Training with Supervised Fine-Tuning (SFT)
 
-After preprocessing, the WTS dataset is in Llava format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava):
+After preprocessing, the WTS dataset is in Llava dataset format and ready for training. To launch training, we follow the default cosmos-rl training command in [Cosmos Reason 1 Post-Training Llava Example](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_llava):
 
 ```shell
 # From scripts/examples/reason1/intelligent-transportation directory
@@ -156,12 +176,12 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
 
 2. To run post-training quantization (PTQ), install the following dependencies:
 
-   ```shell
-   "vllm==0.9.2"
-   "transformers>=4.53.1"
-   "qwen-vl-utils[decord]"
-   "llmcompressor>=0.6.0"
-   ```
+    ```shell
+    "vllm==0.9.2"
+    "transformers>=4.53.1"
+    "qwen-vl-utils[decord]"
+    "llmcompressor>=0.6.0"
+    ```
 
 3. Run the `quantize_fp8.py` script.
 
