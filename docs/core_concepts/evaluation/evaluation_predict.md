@@ -3,7 +3,6 @@
 > **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)
 > **Organization:** NVIDIA
 
-
 This page focuses on evaluation of Predict (generative video) models. It introduces commonly used quality metrics, explains what each metric measures and how it works, and then provides source implementations with step‑by‑step instructions to run them.
 
 ## Key Terms
