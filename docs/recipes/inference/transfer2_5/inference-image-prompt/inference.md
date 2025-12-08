@@ -111,17 +111,17 @@ The following two examples demonstrate how different environmental styles can be
 
 ### Basic Style-Guided Generation
 
+Below is an example JSON input to run the released code and generate the sunset output shown in example 1.
+
 ```json
 {
-  "video_path": "input_video.mp4",
-  "image_context_path": "style_reference.jpg",
-  "output_dir": "output/styled_video",
-  "prompt": "A person walking in a park with sunny atmosphere",
-  "edge": {
-    "control_weight": 1.0,
-    "control_path": "edge_control.mp4"
-  },
-  "guidance": 3.0
+    "name": "image_style",
+    "prompt": "The camera moves steadily forward, simulating the perspective of a vehicle driving down the street. This forward motion is smooth, without any noticeable shaking or abrupt changes in direction, providing a continuous view of the urban landscape. The video maintains a consistent focus on the road ahead, with the buildings gradually receding into the distance as the camera progresses. The overall atmosphere is calm and quiet, with no pedestrians or vehicles in sight, emphasizing the emptiness of the street.",
+    "video_path": "calm_street.mp4",
+    "image_context_path": "sunset.jpg",
+    "seed": 1,
+    "edge": {
+    }
 }
 ```
 
