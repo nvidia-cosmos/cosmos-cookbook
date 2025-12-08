@@ -23,7 +23,7 @@ Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that
 ## How It Works
 
 1. **Input Control Video**: Provide structural guidance through edge, blur, depth, or segmentation
-2. **Style Reference Image**: Supply an image that defines the desired visual style, but will not change the structure guided by input control video
+2. **Style Reference Image**: Supply an image that defines the desired visual style without changing the structure guided by the input control video
 3. **Text Prompt**: Describe the scene and desired output
 4. **Model Processing**: Transfer 2.5 combines all inputs to generate stylized video
 
