@@ -23,7 +23,7 @@ Our recipe is a two-stage distillation pipeline.
 
 #### Stage 2: Improved Distribution Matching Distillation (DMD2)
 
-- We applied DMD2, a state-of-the-art distribution-based distillation approach that blends adversarial distillation with variational score distillation.
+- We applied [DMD2](https://arxiv.org/abs/2405.14867), a state-of-the-art distribution-based distillation approach that blends adversarial distillation with variational score distillation.
 - The primary challenge was memory constraints from concurrent network copies (student model, teacher model, fake score network, and discriminator). We addressed this through FSDP, CP8, gradient checkpointing, and gradient accumulation to achieve an effective batch size of 64 on 16 nodes.
 - We trained the DMD2 phase using a learning rate of 5e-7, guidance scale of 5, GAN loss weight of 1e-3, student update frequency of 5, and global batch size of 64 for 24,000 iterations.
 
