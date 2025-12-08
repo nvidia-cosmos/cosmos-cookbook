@@ -45,7 +45,7 @@ The pipeline expects inputs in the following format:
 input_directory/
 ├── control_video.mp4    # Edge/blur/depth/segmentation video
 ├── style_image.jpg      # Reference image for style
-└── prompt.txt          # Text description
+└── prompt.txt           # Text description
 ```
 
 ## Results
