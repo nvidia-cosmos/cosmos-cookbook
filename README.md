@@ -123,43 +123,13 @@ This structure separates documentation from implementation, making it easy to na
 
 ## Media File Guidelines
 
-When contributing or working with media files in this repository:
+When contributing media files, prefer `.mp4` over `.gif`:
 
-### Recommended Format: MP4 with H.264
+- **Better quality** — MP4 supports full color depth vs GIF's 256-color limit
+- **Smaller file size** — Modern video codecs compress far more efficiently
+- **Audio support** — MP4 can include narration when needed
 
-While `.gif` files offer universal browser compatibility, they suffer from:
-
-- **Lower quality** due to limited 256-color palette
-- **Larger file sizes** compared to modern video codecs
-- **No audio support**
-
-**We strongly recommend using `.mp4` files** with the following encoding settings for optimal quality, file size, and cross-browser compatibility:
-
-```bash
-# For silent videos (screen recordings, demos) - most common for documentation
-ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 \
-       -an \
-       -pix_fmt yuv420p -movflags +faststart \
-       output.mp4
-
-# For videos with audio (tutorials with narration)
-ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 \
-       -c:a aac -b:a 128k \
-       -pix_fmt yuv420p -movflags +faststart \
-       output.mp4
-```
-
-| Parameter | Value | Purpose |
-|-----------|-------|---------|
-| `-c:v libx264` | H.264 codec | Universal browser support (Chrome, Firefox, Safari, Edge) |
-| `-preset slow` | Encoding speed | Better compression (use `medium` for faster encoding) |
-| `-crf 23` | Quality factor | Range 18-28; lower = higher quality (23 is balanced) |
-| `-pix_fmt yuv420p` | Pixel format | Required for browser/QuickTime compatibility |
-| `-movflags +faststart` | Fast start | Enables progressive playback before full download |
-| `-an` | No audio | Strips audio track (smaller file size) |
-| `-c:a aac -b:a 128k` | AAC audio | Include when narration/audio is needed |
-
-> 💡 **Tip**: Most documentation demos are silent—use `-an` to skip audio encoding for smaller files. For tutorials with narration, include the audio parameters.
+Use **H.264** encoding for universal browser compatibility.
 
 ## Available Commands
 
