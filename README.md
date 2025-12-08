@@ -5,10 +5,7 @@
 
 A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite of World Foundation Models (WFMs) for real-world, domain-specific applications across robotics, simulation, autonomous systems, and physical scene understanding.
 
-**📚 [View the Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)**
-
-> The complete Cosmos Cookbook with step-by-step workflows, technical recipes, and comprehensive guides is available at:
-> **<https://nvidia-cosmos.github.io/cosmos-cookbook/>**
+**📚 [View the Full Documentation →](https://nvidia-cosmos.github.io/cosmos-cookbook/)** — Step-by-step workflows, case studies, and technical recipes
 
 <https://github.com/user-attachments/assets/bb444b93-d6af-4e25-8bd0-ca5891b26276>
 
@@ -22,38 +19,48 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 | [Temporal Localization for MimicGen](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html) | Cosmos Reason 1 | Automated timestamp annotation for robot learning data generation |
 | [BioTrove Moths Augmentation](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html) | Cosmos Transfer 2.5 | Domain transfer pipeline for scarce biological datasets using FiftyOne |
 
-## Overview
-
-This cookbook provides step-by-step workflows, technical recipes, and comprehensive guides for the complete AI development lifecycle with Cosmos models:
-
-- **Inference**: Quick-start examples with pre-trained models
-- **Gallery**: Visual showcase of Cosmos results across different domains
-- **Data Curation**: Scalable data processing pipelines with Cosmos Curator
-- **Post-Training**: Custom fine-tuning for domain-specific adaptation
-- **Evaluation**: Quality control and model assessment workflows
-
-The Cosmos ecosystem includes core model families: **Curator**, **Predict** (versions 2 and 2.5), **Transfer** (versions 1 and 2.5), **Reason 1**, and **RL**, each targeting specific capabilities in the AI development workflow.
-
 ## Prerequisites
 
-Before getting started, ensure you have the following requirements:
+| Use Case | Linux (Ubuntu) | macOS | Windows |
+|----------|----------------|-------|---------|
+| Running cookbook recipes (GPU workflows) | ✅ Supported | ❌ | ❌ |
+| Local documentation & contribution | ✅ Supported | ✅ Supported | ⚠️ WSL recommended |
 
-### Hardware
+### For Documentation & Contribution (All Platforms)
 
-**NVIDIA GPUs**: Not required for local documentation rendering. For running cookbook recipes and workflows: Ampere architecture or newer (A100, H100) - minimum 1 GPU, recommended 8 GPUs
-
-### Software
-
-- **Operating System**: Ubuntu 24.04, 22.04, or 20.04
+- **Git** with [Git LFS](#1-install-git-lfs-required)
 - **Python**: Version 3.10+
-- **NVIDIA Container Toolkit**: 1.16.2 or later
-- **CUDA**: 12.4 or later
-- **Docker Engine**
-- **Access**: Internet connection for downloading models and dependencies
+- **Internet access** for cloning and dependencies
+
+### For Running Cookbook Recipes (Ubuntu Only)
+
+Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
+
+→ See **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/setup.html)** for complete hardware and software requirements.
 
 ## Quick Start
 
-### 1. Install System Dependencies
+### 1. Install Git LFS (Required)
+
+> ⚠️ **Important**: This repository contains many media files (videos, images, demonstrations). Git LFS is **required** to clone and work with this repository properly.
+
+```bash
+# Ubuntu/Debian (recommended)
+sudo apt update && sudo apt install git-lfs
+
+# Enable Git LFS globally
+git lfs install
+```
+
+For other platforms (macOS, Windows, Fedora), see the official installation guide at **[git-lfs.com](https://git-lfs.com/)**.
+
+If you've already cloned without LFS, fetch the media files with:
+
+```bash
+git lfs pull
+```
+
+### 2. Install System Dependencies
 
 ```bash
 # Install uv (fast Python package manager)
@@ -62,14 +69,11 @@ source $HOME/.local/bin/env
 
 # Install just (command runner)
 uv tool install -U rust-just
-
-# Optional useful tools
-uv tool install -U s5cmd      # High-performance S3 operations
-uv tool install -U streamlit  # Web app framework
-uv tool install -U yt-dlp     # Video downloading
 ```
 
-### 2. Clone and Setup Repository
+For other platforms, see **[astral.sh/uv](https://astral.sh/uv/)** for installation instructions.
+
+### 3. Clone and Setup Repository
 
 ```bash
 # Clone the repository
@@ -80,7 +84,7 @@ cd cosmos-cookbook
 just install
 ```
 
-### 3. Explore the Documentation
+### 4. Explore the Documentation
 
 ```bash
 # Serve documentation locally
@@ -115,6 +119,16 @@ Contains executable scripts referenced throughout the cookbook:
 
 This structure separates documentation from implementation, making it easy to navigate between reading about workflows and executing the corresponding scripts.
 
+## Media File Guidelines
+
+When contributing media files, prefer `.mp4` over `.gif`:
+
+- **Better quality** — MP4 supports full color depth vs GIF's 256-color limit
+- **Smaller file size** — Modern video codecs compress far more efficiently
+- **Audio support** — MP4 can include narration when needed
+
+Use **H.264** encoding for universal browser compatibility.
+
 ## Available Commands
 
 ```bash
@@ -134,27 +148,11 @@ just ci-deploy-internal         # Deploy internal documentation
 just ci-deploy-external         # Deploy external documentation
 ```
 
-## Key Features
+## Contributing & Support
 
-- **End-to-End Examples**: Complete workflows from data to deployment
-- **Quick Start Templates**: Get up and running in minutes
-- **Modular Scripts**: Reusable components for custom workflows
-- **Evaluation Tools**: Built-in quality assessment and metrics
-- **Production Ready**: Scalable pipelines for real-world deployment
-- **Comprehensive Docs**: Step-by-step workflows and technical recipes
-
-## Documentation
-
-- **[Full Documentation](https://nvidia-cosmos.github.io/cosmos-cookbook/)** - Complete guides and examples
-- **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/get_started.html)** - Environment setup and first steps
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the cookbook
-
-## Community & Support
-
+- **Report Issues**: Use [GitHub Issues](https://github.com/nvidia-cosmos/cosmos-cookbook/issues) for bugs and feature requests
 - **Share Success Stories**: We love hearing how you use Cosmos models creatively
-- **Report Issues**: Use GitHub issues for bugs and feature requests
-- **Discussions**: Join our community discussions
-- **Documentation**: Check our comprehensive guides first
 
 ## License and Contact
 
