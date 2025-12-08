@@ -1,14 +1,58 @@
 # Model Evaluation Predict
 
+> **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)
+> **Organization:** NVIDIA
+
 This page focuses on evaluation of Predict (generative video) models. It introduces commonly used quality metrics, explains what each metric measures and how it works, and then provides source implementations with step‑by‑step instructions to run them.
+
+## Key Terms
+
+| Term | Definition |
+|------|------------|
+| **FID** (Fréchet Inception Distance) | A metric that measures the similarity between two sets of images by comparing their feature distributions extracted from a pre-trained neural network. |
+| **FVD** (Fréchet Video Distance) | An extension of FID for videos that captures both spatial (appearance) and temporal (motion) quality by comparing video feature distributions. |
+| **Fréchet Distance** | A statistical measure of similarity between two probability distributions; used in FID/FVD to quantify how "far apart" generated content is from real content. |
+| **Sampson Error** | A geometric error metric that measures the distance from matched keypoints to their corresponding epipolar lines; used to evaluate multi-view consistency. |
+| **TSE** (Temporal Sampson Error) | Sampson error computed between consecutive frames within a single camera view; measures temporal stability. |
+| **CSE** (Cross-view Sampson Error) | Sampson error computed between simultaneous frames from different camera views; measures multi-view geometric alignment. |
+| **Epipolar Geometry** | The geometric relationship between two camera views of the same 3D scene; defines constraints on where corresponding points can appear. |
 
 ## Overview: Quality Metrics for Predict Models
 
 Use these metrics to evaluate generative video models (Predict):
 
-- **Qualitative video quality**: FID (image realism/diversity), FVD (spatio‑temporal quality)
-- **Geometric consistency**: Sampson Error; Temporal (TSE) and Cross‑view (CSE)
-- **VLM‑based assessment (Cosmos Reason)**: Zero‑shot critique and reward scoring; refer to the [Cosmos Reason as Reward](reason_as_reward.md) and the [Cosmos Reason Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md) sections for more details.
+| Metric | Measures | Use Case | Better Direction |
+|--------|----------|----------|------------------|
+| **FID** | Image realism and diversity | Single-frame quality assessment | Lower ↓ |
+| **FVD** | Spatio-temporal video quality | Overall video quality with motion coherence | Lower ↓ |
+| **TSE** | Temporal geometric consistency | Detecting flickering, jitter, or drift within views | Lower ↓ |
+| **CSE** | Cross-view geometric consistency | Multi-camera alignment and 3D consistency | Lower ↓ |
+
+For VLM-based assessment details, refer to [Cosmos Reason as Reward](reason_as_reward.md) and the [Cosmos Reason Benchmark Example](https://github.com/nvidia-cosmos/cosmos-reason1/blob/main/examples/benchmark/README.md).
+
+## Metrics Cheat Sheet
+
+Use this quick reference to interpret your evaluation scores:
+
+### Video Quality (FID/FVD)
+
+| Rating | FID Score | FVD Score | Interpretation |
+|--------|-----------|-----------|----------------|
+| Excellent | < 30 | < 100 | High-quality generation, close to ground truth |
+| Good | 30 – 50 | 100 – 200 | Acceptable quality for most applications |
+| Fair | 50 – 100 | 200 – 400 | Noticeable quality gaps; consider improvements |
+| Poor | > 100 | > 400 | Significant quality issues; requires attention |
+
+### Geometric Consistency (Sampson Error)
+
+| Rating | TSE/CSE (pixels) | Interpretation |
+|--------|------------------|----------------|
+| Excellent | < 1.0 | Very high geometric consistency |
+| Good | 1.0 – 3.0 | Acceptable for most applications |
+| Fair | 3.0 – 5.0 | Noticeable inconsistencies; may need improvement |
+| Poor | > 5.0 | Significant geometric errors |
+
+> **Note**: These thresholds are general guidelines. Acceptable ranges may vary depending on your specific use case, dataset characteristics, and downstream application requirements.
 
 ## Video Quality Metrics (FID/FVD)
 
