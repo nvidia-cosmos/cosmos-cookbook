@@ -64,16 +64,14 @@ git lfs pull
 
 ```bash
 # Install uv (fast Python package manager)
-# Linux/macOS:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 
-# Windows (PowerShell):
-# powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# Install just (command runner) - all platforms
+# Install just (command runner)
 uv tool install -U rust-just
 ```
+
+For other platforms, see **[astral.sh/uv](https://astral.sh/uv/)** for installation instructions.
 
 ### 3. Clone and Setup Repository
 
