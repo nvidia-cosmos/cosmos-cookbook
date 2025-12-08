@@ -86,11 +86,7 @@ The following two examples demonstrate how different environmental styles can be
     <td colspan="3" align="center"><strong>Input</strong></td>
   </tr>
   <tr>
-    <td align="center">Edge Control<br>
-      <video autoplay loop muted width="300">
-        <source src="assets/example2_input_edge.mp4" type="video/mp4">
-      </video>
-    </td>
+    <td align="center">Edge Control<br><video controls width="300"><source src="./assets/example2_input_edge.mp4" type="video/mp4"></video></td>
     <td align="center">Darker Style<br><img src="./assets/example2_input_darker.png" width="300"></td>
     <td align="center">Greener Style<br><img src="./assets/example2_input_greener.png" width="300"></td>
   </tr>
@@ -115,17 +111,17 @@ The following two examples demonstrate how different environmental styles can be
 
 ### Basic Style-Guided Generation
 
-The JSON below is the actual params used to generate the sunset result with our released code for the example 1 shown above.
-
 ```json
 {
-    "name": "image_style",
-    "prompt": "The camera moves steadily forward, simulating the perspective of a vehicle driving down the street. This forward motion is smooth, without any noticeable shaking or abrupt changes in direction, providing a continuous view of the urban landscape. The video maintains a consistent focus on the road ahead, with the buildings gradually receding into the distance as the camera progresses. The overall atmosphere is calm and quiet, with no pedestrians or vehicles in sight, emphasizing the emptiness of the street.",
-    "video_path": "calm_street.mp4",
-    "image_context_path": "sunset.jpg",
-    "seed": 1,
-    "edge": {
-    }
+  "video_path": "input_video.mp4",
+  "image_context_path": "style_reference.jpg",
+  "output_dir": "output/styled_video",
+  "prompt": "A person walking in a park with sunny atmosphere",
+  "edge": {
+    "control_weight": 1.0,
+    "control_path": "edge_control.mp4"
+  },
+  "guidance": 3.0
 }
 ```
 
@@ -145,7 +141,7 @@ The JSON below is the actual params used to generate the sunset result with our 
   - Lower for more artistic interpretation
 
 - **Guidance Scale**: Affects adherence to both the text prompt and reference image
-  - Higher values (e.g., 7 as used in the examples above): Increased influence from both text prompt and reference image
+  - Higher values: Increased influence from both text prompt and reference image
 
 ## Applications
 
