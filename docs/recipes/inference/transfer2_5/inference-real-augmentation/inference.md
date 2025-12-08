@@ -5,6 +5,8 @@
 
 ## Overview
 
+You can experiment with these recipes and customize them for your own videos using this [Brev instance](https://brev.nvidia.com/launchable/deploy?launchableID=env-36ZkptMd4kDDzFGMYN9lz9Ixnel). It comes fully pre-configured and will automatically provision the necessary compute so you can get started right away.
+
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
 | [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes |
@@ -346,8 +348,113 @@ When object and background contours are too similar, edges may not be detected r
 
 <!-- An example implementation of this preprocessing step can be found [here](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing/blob/main/control_net_generation/get_object_edges.py). -->
 
+## Generating Realistic Data from Omniverse
+
+An important robotics workflow is "Sim-to-Real." NVIDIA Omniverse can generate synthetic data, but we can use CT 2.5 to add real-world domain randomization (new lighting, textures, backgrounds) and generate photorealistic scenes.
+
+The Workflow:
+
+1. Generate in Omniverse: Create a base scenario (e.g., robot picking a block) and export the video.
+2. Extract Ground Truth: From Omniverse, also export the perfect ground-truth modalities (Depth, Segmentation, Edge).
+3. Augment with CT 2.5: Use these perfect synthetic controls to run CT 2.5 with a new prompt (e.g., "in a dimly lit warehouse").
+4. Package with Cosmos Writer: Save the new, augmented video alongside the original, ground-truth controls. This teaches a downstream model to associate the ground-truth controls with the new, realistic style.
+
+| Task | Suggested Controls & Settings|
+|--|--|
+|Photorealistic Generation|Edge: 1.0 + Seg (Mask Prompt): 0.9 + Depth: 0.9, Guidance: 7|
+|Creating a realistic background|Filtered Edge: 1.0 + Seg (Mask Inverted): 0.6 + vis: 0.2, Guidance: 3|
+
+### Omniverse Control Modalities
+
+From the previous excersize, we learned how to extract the control modalities from Omniverse. We start with the following control modalities:
+
+| Original Video | Edge | Seg | Mask |
+|----------|----------|----------|----------|
+| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/generated_edges.mp4" controls width="300"></video> | <video src="./assets/segmentation_video.mp4" controls width="300"></video> | <video src="./assets/bw_seg_video.mp4" controls width="300"></video> |
+
+### Photorealistic Generation
+
+Let us change our simulated environment to look realistic
+
+```json
+{
+  "name": "omniverse_photorealistic",
+  "prompt_path": "prompt.txt",
+  "video_path": "original.mp4",
+  "guidance": 7,
+  "edge": {
+    "control_weight": 1.0,
+    "control_path": "edges.mp4"
+  },
+  "seg": {
+    "control_weight": 0.9,
+    "control_path": "segmentation.mp4",
+    "mask_prompt": "battered orange safety cone"​
+  },
+  "depth": {
+    "control_weight": 0.9,
+    "control_path": "segmentation.mp4",
+    "mask_path": "mask_inverted.mp4"
+  }
+}
+```
+
+#### Recipe
+
+<img src="./assets/omniverse_photorealistic_recipe.png" width=1300/>
+
+For reference, this is the prompt:
+
+```txt
+A humanoid robot walks over to a box and grabs it with its grippers. The warehouse is lit by warm sunlight filtering through windows behind the camera. The floor is beautiful rich walnut flooring. The robot is made of brushed aluminium. Some green boxes are stacked on the left side of the warehouse. Everything in the warehouse is well organized and tidy.
+```
+
+### Photorealistic Generation Results
+
+| Original | Background Changed |
+|----------|----------|
+| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/omniverse_photorealistic.mp4" controls width="300"></video>  |
+
+### Creating a Realistic Background
+
+Lets now modify the background with the following configuration
+
+```json
+{
+  "name": "omniverse_change_background",
+  "prompt_path": "prompt.txt",
+  "video_path": "original.mp4",
+  "guidance": 3,
+  "edge": {
+    "control_weight": 1.0,
+    "control_path": "filtered_edge.mp4"
+  },
+  "seg": {
+    "control_weight": 0.6,
+    "control_path": "segmentation.mp4",
+    "mask_path": "mask_inverted.mp4"
+  }
+}
+```
+
+#### Recipe
+
+<img src="./assets/omniverse_background_change_recipe.png" width="80%"/>
+
+For reference, this is the prompt:
+
+```txt
+In this video, a humanoid robot stands on a busy street sidewalk, approaching a red box on a small metal stand amid storefronts, street signs, and warm sunlight reflecting off nearby buildings.
+```
+
+### OV Background Generation Results
+
+| Original | Background Changed |
+|----------|----------|
+| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/omniverse_background_change.mp4" controls width="300"></video>  |
+
 ## Resources
 
 1. [Cosmos Transfer 2.5 Model](https://github.com/nvidia-cosmos/cosmos-transfer2.5) - Model weights and documentation.
 2. [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) - Summary of the role of each control modality.
-<!-- 2. [Control Extraction Tools](https://github.com/aiden200/cosmos_transfer_2.5_data_preprocessing) - Scripts for generating control modalities. -->
+3. You can experiment with these recipes and customize them for your own videos using this [Brev instance](https://brev.nvidia.com/launchable/deploy?launchableID=env-36ZkptMd4kDDzFGMYN9lz9Ixnel). It comes fully pre-configured and will automatically provision the necessary compute so you can get started right away.
