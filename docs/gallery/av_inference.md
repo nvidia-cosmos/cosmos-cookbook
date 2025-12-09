@@ -255,7 +255,7 @@ This scene shows a driving video captured from a dashcam perspective. The exampl
 
 .masonry-card:hover .masonry-overlay .prompt,
 .masonry-card:hover .masonry-overlay .params {
-  font-size: 0.5rem;
+  font-size: 0.75rem;
 }
 
 </style>
