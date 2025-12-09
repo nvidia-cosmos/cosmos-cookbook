@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const full = block.querySelector(".full-text");
         const preview = block.querySelector(".preview-text");
         if (full && preview) {
-          // Only set preview if it's empty (preserve things like `{ "seed": 1,`)
+          // Only set preview if it's empty (preserve values like `{ "seed": 1,`)
           if (!preview.textContent.trim()) {
             preview.textContent = firstSentence(full.textContent || "");
           }
