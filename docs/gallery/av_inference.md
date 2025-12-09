@@ -142,7 +142,7 @@ For detailed explanations of control modalities, see [Control Modalities Overvie
 
 ### Input Video
 
-This scene shows a driving video captured from a dashcam perspective. The examples demonstrate how different environmental conditions (weather, lighting, time of day) can be generated from the same input video while preserving the structure and motion of the driving scene.
+This scene shows a driving video captured from a dashcam perspective. The example below demonstrates how different environmental conditions (weather, lighting, time of day) can be generated from the same input video while preserving the structure and motion of the driving scene.
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
