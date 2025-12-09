@@ -37,7 +37,6 @@ For detailed explanations of control modalities, see [Control Modalities Overvie
   border: 1px solid var(--md-default-fg-color--lightest, #e2e8f0);
   background: var(--md-default-bg-color, #fff);
   box-shadow: 0 10px 34px rgba(0, 0, 0, 0.06);
-  border-radius: 0px;
 }
 
 .carousel-slide.is-active {
@@ -49,12 +48,19 @@ For detailed explanations of control modalities, see [Control Modalities Overvie
   overflow: visible;
   background: #000;
   margin-bottom: 0.5rem;
-  border-radius: 0px;
 }
 
 .media-wrap video {
   width: 100%;
   display: block;
+}
+
+/*Override Material theme default border-radius*/
+.carousel-slide,
+.media-wrap,
+.media-wrap video,
+.see-more,
+.masonry-card {
   border-radius: 0px;
 }
 
@@ -136,7 +142,6 @@ For detailed explanations of control modalities, see [Control Modalities Overvie
   cursor: pointer;
   font-weight: 600;
   color: var(--md-accent-fg-color, #76b900);
-  border-radius: 0px;
 }
 </style>
 
@@ -205,7 +210,6 @@ This scene shows a driving video captured from a dashcam perspective. The exampl
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   background: #000;
-  border-radius: 0px;
 }
 
 .masonry-card video {
