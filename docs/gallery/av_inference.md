@@ -194,11 +194,7 @@ This scene shows a driving video captured from a dashcam perspective. The exampl
   gap: 0.1rem;
 }
 
-@media (max-width: 1200px) {
-  .masonry-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+
 
 @media (max-width: 720px) {
   .masonry-grid {
