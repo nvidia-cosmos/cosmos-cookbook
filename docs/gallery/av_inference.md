@@ -160,7 +160,7 @@ This scene shows a driving video captured from a dashcam perspective. The exampl
   "seed": 5000,
 }</span>
           <span class="full-text">{
-    // Update the paramater values for control weights, seed, guidance in below json file
+    // Update the parameter values for control weights, seed, guidance in below json file
     "seed": 5000,
     "prompt_path": "assets/prompt_av.json",           // Update the prompt in the json file accordingly
     "video_path": "assets/av_car_input.mp4",
