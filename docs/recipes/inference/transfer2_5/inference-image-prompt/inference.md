@@ -1,6 +1,6 @@
 # Style-Guided Video Generation with Cosmos Transfer 2.5
 
-> **Authors:** [Fangyin Wei](https://weify627.github.io/)
+> **Authors:** [Fangyin Wei](https://weify627.github.io/) • [Aryaman Gupta](https://www.linkedin.com/in/aryamang/)
 > **Organization:** NVIDIA
 
 ## Overview
