@@ -8,7 +8,7 @@
 |-----------|--------------|--------------|
 | [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Wafer Map Anomaly Classification |
 
-In the heart of every modern electronic device lies a silicon chip, the product of a manufacturing process so intricate that even a microscopic defect can mean the difference between success and failure. As semiconductor devices become more complex, the challenge of reliably detecting and classifying defects has become a critical bottleneck for the industry. 
+In the heart of every modern electronic device lies a silicon chip, the product of a manufacturing process so intricate that even a microscopic defect can mean the difference between success and failure. As semiconductor devices become more complex, the challenge of reliably is detecting and classifying defects has become a critical bottleneck for the industry. 
 
 Wafer maps provide a spatial view of defect distributions across an entire wafer. Historically, chipmakers have relied on [convolutional neural networks (CNNs)](https://www.nvidia.com/en-us/glossary/convolutional-neural-network/) to automate defect classification (ADC). But as the scale and variety of manufacturing requirements increase – CNNs are reaching their limits requiring vast labeled datasets and frequent retraining. 
 
