@@ -51,7 +51,7 @@ You will need the following software components:
     - `gradio` (optional UI)
     - `easyio` (for multi-storage backends)
 
-> For the most accurate list of Cosmos Transfer 2.5 dependencies, always refer to the official **Cosmos Transfer 2.5 Setup Guide**.
+> For the most accurate list of Cosmos Transfer 2.5 dependencies, always refer to the official [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md).
 
 ---
 
