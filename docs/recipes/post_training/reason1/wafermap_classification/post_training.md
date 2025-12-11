@@ -132,8 +132,8 @@ After training, we evaluate the model on the validation split of the WM811K subs
 We begin by reviewing the quantitative results of our classification experiment on the WM811K dataset. The test set includes eight wafer defect categories—center, donut, edge-loc, edge-ring, loc, near-full, random, and scratch—with 20 test images per category.
 
 <div style="display:flex; justify-content:center; align-items:center; gap:12px;">
-  <img src="./assets/Picture5.png" alt="P1" style="width:300px; height:auto; display:block;" />
-  <img src="./assets/Picture6.png" alt="P2" style="width:300px; height:auto; display:block;" />
+  <img src="./assets/Picture5.png" alt="P1" style="height:300px; width:auto; display:block;" />
+  <img src="./assets/Picture6.png" alt="P2" style="height:300px; width:auto; display:block;" />
 </div>
 
 Above are the confusion matrix and the bar chart of the evaluation results between zero-shot and fine-tuned. After fine-tuning, the classification accuracy reached **96.8%**, whereas the zero-shot accuracy was only **14.37%**. This demonstrates that supervised fine-tuning greatly improved the model’s performance on the anomaly classification task.
