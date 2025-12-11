@@ -9,23 +9,25 @@
 |-----------|--------------|--------------|
 | Cosmos Transfer 2.5 | Inference | Style-guided video generation using image references |
 
-Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that combine structural control (edge/blur/depth/segmentation) with style guidance from reference images. This enables users to create videos that maintain specific visual aesthetics while following precise motion and structure patterns.
+Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that combine structural control (edge/depth/segmentation) with style guidance from reference images. This enables users to create videos that maintain specific visual aesthetics while following precise motion and structure patterns.
 
 - [Setup and System Requirements](../inference-carla-sdg-augmentation/setup.md)
 
 ## Key Features
 
 - **Image-Guided Style Transfer**: Use any image as a style reference for video generation
-- **Multi-Modal Control**: Combine edge/blur/depth/segmentation control with image prompts
+- **Multi-Modal Control**: Combine edge/depth/segmentation control with image prompts
 - **Flexible Style Application**: Control how strongly the reference image influences the output
 - **Temporal Consistency**: Maintains coherent style across all video frames
 
 ## How It Works
 
-1. **Input Control Video**: Provide structural guidance through edge, blur, depth, or segmentation
+1. **Input Control Video**: Provide structural guidance through edge, depth, or segmentation
 2. **Style Reference Image**: Supply an image that defines the desired visual style, but will not change the structure guided by input control video
 3. **Text Prompt**: Describe the scene and desired output
 4. **Model Processing**: Transfer 2.5 combines all inputs to generate stylized video
+
+> **Note:** While Cosmos Transfer 2.5 includes four control checkpoints (edge, blur, depth, and segmentation), the image prompt feature is only supported for edge, depth, and segmentation controls. Blur control is not compatible with image prompts as it already incorporates color and style guidance, making additional image prompts redundant and potentially conflicting.
 
 ## Dataset and Setup
 
@@ -33,7 +35,7 @@ Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that
 
 For style-guided video generation, you need:
 
-- A control video (edge, blur, depth, or segmentation)
+- A control video (edge, depth, or segmentation)
 - A style reference image (JPEG/PNG)
 - A text prompt describing the desired output
 
@@ -43,9 +45,9 @@ The pipeline expects inputs in the following format:
 
 ```
 input_directory/
-├── control_video.mp4    # Edge/blur/depth/segmentation video
+├── control_video.mp4    # Edge/depth/segmentation video
 ├── style_image.jpg      # Reference image for style
-└── prompt.txt          # Text description
+└── prompt.txt           # Text description
 ```
 
 ## Results
@@ -161,7 +163,7 @@ Below is an example JSON input to run the released code and generate the sunset 
    - Adjust prompt to emphasize style elements
 
 2. **Loss of Motion Coherence**
-   - Increase control_weight for edge/blur/depth/segmentation
+   - Increase control_weight for edge/depth/segmentation
    - Reduce guidance if it's too dominant
    - Ensure control video quality is high
 
