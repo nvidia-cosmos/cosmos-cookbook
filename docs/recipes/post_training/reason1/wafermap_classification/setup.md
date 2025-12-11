@@ -1,8 +1,3 @@
----
-title: setup
-
----
-
 # Setup and System Requirements
 
 This guide covers the setup requirements for running Cosmos Reason 1 for wafer map classification task and post-training workflows.
