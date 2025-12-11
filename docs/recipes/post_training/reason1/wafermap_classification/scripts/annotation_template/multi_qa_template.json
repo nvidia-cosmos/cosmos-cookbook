@@ -1,0 +1,4 @@
+{
+    "multiple_human_list":["There are 8 possible types of defect of wafer map (1) loc.  (2) edge-loc.  (3) center.  (4) edge-ring.   (5) scratch.  (6) near-full.  (7) donut.  (8) random.  What type of anolamy does the provided image present?"],
+    "multiple_ans_list": ["(1) loc. ", "(2) edge-loc. ", "(3) center. ", "(4) edge-ring. ", "(5) scratch. ", "(6) near-full. ", "(7) donut. ", "(8) random. "]
+}

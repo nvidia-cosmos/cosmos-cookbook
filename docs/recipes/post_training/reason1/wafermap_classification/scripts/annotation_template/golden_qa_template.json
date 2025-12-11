@@ -1,0 +1,4 @@
+{
+    "golden_human_list":["Please analyze this wafer map image and identify the defect type."],
+    "golden_ans_list":["The wafer map image indicates the presence of [label] defect."]
+}
