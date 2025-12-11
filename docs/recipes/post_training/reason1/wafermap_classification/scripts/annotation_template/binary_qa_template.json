@@ -1,0 +1,4 @@
+{
+    "binary_human_list" : ["Does the wafer map image have the defect type of [label]"],
+    "binary_ans_list" : ["Yes, this wafer map image present the defect type of [label].", "No, this wafer map image present the defect type of [label]."]
+}
