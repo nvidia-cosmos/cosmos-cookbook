@@ -69,6 +69,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
 | **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
 | **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
+| **Training** | Wafer map anomaly classification with supervised fine-tuning on WM-811k  | [Wafer Map Classification](recipes/post_training/reason1/wafermap_classification/post_training.md)      |
 
 ### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
 
