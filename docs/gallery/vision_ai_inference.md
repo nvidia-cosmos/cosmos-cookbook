@@ -835,12 +835,12 @@ Here are some results from similar other videos.
         <div class="text-block">
           <div class="label">Parameters - Rain Augmentation</div>
           <span class="preview-text"></span>
-          <span class="full-text">guidance: 3, edge: 0.5, depth: 1.0</span>
+          <span class="full-text">guidance: 3, edge: 1.0, depth: 0.9</span>
         </div>
         <div class="text-block">
           <div class="label">Input Prompt</div>
           <span class="preview-text"></span>
-          <span class="full-text">A static, high-angle shot overlooking a wide bridge during steady rain. The roadway is darkened and slick with water, reflecting headlights and taillights across multiple lanes of traffic. Heavy congestion fills the lanes moving away from the camera, where vehicles—including a white sedan in the foreground—are stopped or inching forward slowly. In contrast, the oncoming lanes to the right remain relatively clear with sparse traffic. Raindrops and light mist soften the view of large overhead metal gantries spanning the road in the distance, set against an industrial backdrop beneath a low, overcast sky.</span>
+          <span class="full-text">A video overlooking a wide bridge during steady rain. The roadway is darkened and slick with water, reflecting headlights and taillights across multiple lanes of traffic. The weather is gloomy and rainy. </span>
         </div>
         <button class="see-more" type="button">Show full prompt</button>
       </div>
