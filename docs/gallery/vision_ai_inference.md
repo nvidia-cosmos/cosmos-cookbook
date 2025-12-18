@@ -6,7 +6,7 @@
 
 We provide a dedicated Brev instance to help you follow along with these examples. The default configuration uses 8× H100 GPUs, but you can switch to 1× H100 to reduce costs (with slower inference performance).
 
-[![Brev Instance](./vs_assets/nv-lb-dark.svg)](https://brev.nvidia.com/launchable/deploy?launchableID=env-36KJKKHoOQkFr3FJPpDtinC7QuX)
+[![Brev Instance](./vs_assets/nv-lb-dark.svg)](https://brev.nvidia.com/launchable/deploy/now?launchableID=env-36zmq6sDzikZ1gBSN5Fu3sKezJC)
 
 ## Overview
 
