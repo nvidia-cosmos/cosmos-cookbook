@@ -160,4 +160,3 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outp
 For issues related to Cosmos Reason 1 or Brev, you can use the following resources:
 
 - **Cosmos Reason 1**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason1/issues)
-- **Brev Platform**: Contact [Brev support](https://brev.dev/support)
