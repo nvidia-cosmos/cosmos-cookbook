@@ -184,22 +184,21 @@ You can use different control types depending on your needs. Only **edge**, **de
 
 ### Common Issues and Solutions
 
-1. **Style Not Applying Strongly Enough**
-   - Increase guidance parameter
-   - Use more distinctive reference images
-   - Adjust prompt to emphasize style elements
+#### Style Not Applying Strongly Enough
+- Increase guidance parameter
+- Use more distinctive reference images
+- Adjust prompt to emphasize style elements
 
-2. **Loss of Motion Coherence**
-   - Increase control_weight for edge/depth/segmentation
-   - Reduce guidance if it's too dominant
-   - Ensure control video quality is high
+#### Loss of Motion Coherence
+- Increase control_weight for edge/depth/segmentation
+- Reduce guidance if it's too dominant
+- Ensure control video quality is high
 
-3. **Color Bleeding or Artifacts**
-   - Check reference image quality
-   - Reduce guidance scale
-   - Adjust guidance and control weight balance
+#### Color Bleeding or Artifacts
+- Check reference image quality
+- Reduce guidance scale
+- Adjust guidance and control weight balance
 
 ## Resources
-
 - **[Cosmos Transfer 2.5 Model](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - Model weights and documentation
 - **[Control Modalities Guide](../../../../core_concepts/control_modalities/overview.md)** - Understanding different control types
