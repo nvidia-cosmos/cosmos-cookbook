@@ -50,6 +50,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
+| **Inference** | Style-guided video generation using image references with edge/depth/segmentation control | [Style-Guided Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) |
 | **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
 | **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
 | **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
