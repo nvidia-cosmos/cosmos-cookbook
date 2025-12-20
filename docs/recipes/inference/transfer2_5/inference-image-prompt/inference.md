@@ -64,7 +64,7 @@ The following two examples demonstrate how different environmental styles can be
     <td colspan="3" align="center"><strong>Input</strong></td>
   </tr>
   <tr>
-    <td align="center">Edge Control<br><video controls width="300"><source src="./assets/example1_input_edge.mp4" type="video/mp4"></video></td>
+    <td align="center">Edge Control<br><video controls autoplay muted loop width="300"><source src="./assets/example1_input_edge.mp4" type="video/mp4"></video></td>
     <td align="center">Sunny Style<br><img src="./assets/example1_input_sunny.jpg" width="300"></td>
     <td align="center">Sunset Style<br><img src="./assets/example1_input_sunset.jpg" width="300"></td>
   </tr>
@@ -72,9 +72,9 @@ The following two examples demonstrate how different environmental styles can be
     <td colspan="3" align="center"><strong>Output</strong></td>
   </tr>
   <tr>
-    <td align="center">Base Generation<br><video controls width="300"><source src="./assets/example1_generation-from-edge.mp4" type="video/mp4"></video></td>
-    <td align="center">Sunny Style Applied<br><video controls width="300"><source src="./assets/example1_generation-from-edge-sunny.mp4" type="video/mp4"></video></td>
-    <td align="center">Sunset Style Applied<br><video controls width="300"><source src="./assets/example1_generation-from-edge-sunset.mp4" type="video/mp4"></video></td>
+    <td align="center">Base Generation<br><video controls autoplay muted loop width="300"><source src="./assets/example1_generation-from-edge.mp4" type="video/mp4"></video></td>
+    <td align="center">Sunny Style Applied<br><video controls autoplay muted loop width="300"><source src="./assets/example1_generation-from-edge-sunny.mp4" type="video/mp4"></video></td>
+    <td align="center">Sunset Style Applied<br><video controls autoplay muted loop width="300"><source src="./assets/example1_generation-from-edge-sunset.mp4" type="video/mp4"></video></td>
   </tr>
 </table>
 
@@ -88,7 +88,7 @@ The following two examples demonstrate how different environmental styles can be
     <td colspan="3" align="center"><strong>Input</strong></td>
   </tr>
   <tr>
-    <td align="center">Edge Control<br><video controls width="300"><source src="./assets/example2_input_edge.mp4" type="video/mp4"></video></td>
+    <td align="center">Edge Control<br><video controls autoplay muted loop width="300"><source src="./assets/example2_input_edge.mp4" type="video/mp4"></video></td>
     <td align="center">Darker Style<br><img src="./assets/example2_input_darker.png" width="300"></td>
     <td align="center">Greener Style<br><img src="./assets/example2_input_greener.png" width="300"></td>
   </tr>
@@ -96,9 +96,9 @@ The following two examples demonstrate how different environmental styles can be
     <td colspan="3" align="center"><strong>Output</strong></td>
   </tr>
   <tr>
-    <td align="center">Base Generation<br><video controls width="300"><source src="./assets/example2_generation-from-edge.mp4" type="video/mp4"></video></td>
-    <td align="center">Darker Mood Applied<br><video controls width="300"><source src="./assets/example2_generation-from-edge-darker.mp4" type="video/mp4"></video></td>
-    <td align="center">Greener Tone Applied<br><video controls width="300"><source src="./assets/example2_generation-from-edge-greener.mp4" type="video/mp4"></video></td>
+    <td align="center">Base Generation<br><video controls autoplay muted loop width="300"><source src="./assets/example2_generation-from-edge.mp4" type="video/mp4"></video></td>
+    <td align="center">Darker Mood Applied<br><video controls autoplay muted loop width="300"><source src="./assets/example2_generation-from-edge-darker.mp4" type="video/mp4"></video></td>
+    <td align="center">Greener Tone Applied<br><video controls autoplay muted loop width="300"><source src="./assets/example2_generation-from-edge-greener.mp4" type="video/mp4"></video></td>
   </tr>
 </table>
 
@@ -125,6 +125,33 @@ Below is an example JSON input to run the released code and generate the sunset 
     "edge": {
     }
 }
+```
+
+### Configuration Parameters
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `name` | Identifier for this generation job | Yes |
+| `prompt` | Text description of the desired output scene | Yes |
+| `video_path` | Path to the input RGB video (used to generate control signals) | Yes |
+| `image_context_path` | Path to the style reference image (JPEG/PNG) | Yes |
+| `seed` | Random seed for reproducibility | No |
+| `edge` / `depth` / `seg` | Control modality configuration (use one) | Yes |
+| `control_weight` | Strength of structural control (0.0-1.0, default: 1.0) | No |
+
+### Control Modality Options
+
+You can use different control types depending on your needs. Only **edge**, **depth**, and **segmentation** support image prompts:
+
+```json
+// Edge control - preserves structure and shape
+{ "edge": { "control_weight": 1.0 } }
+
+// Depth control - maintains 3D spatial consistency
+{ "depth": { "control_weight": 1.0 } }
+
+// Segmentation control - enables semantic replacement
+{ "seg": { "control_weight": 0.8 } }
 ```
 
 ## Best Practices
