@@ -1,4 +1,4 @@
-# Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2 Multiview
+# Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview
 
 > **Authors:** [Tiffany Cai](https://www.linkedin.com/in/tiffany-cai-57681211a/) • [Francesco Ferroni](https://www.linkedin.com/in/francesco-ferroni-44708137/)
 > **Organization:** [NVIDIA]
@@ -26,12 +26,12 @@ The number of GPUs (context parallel size) must be greater than or equal to the 
 
 Software Dependencies:
 
-- [Cosmos framework]((https://github.com/nvidia-cosmos/cosmos-cookbook/blob/main/docs/recipes/post_training/predict2_5/sports/setup.md))
+- [Cosmos framework](../../../post_training/predict2_5/sports/setup.md)
 - Reason 1.1 7B text encoder​
 
 Pre-trained Models:
 
-- [Cosmos Predict 2.5 Multiview](https://github.com/nvidia-cosmos/cosmos-cookbook/blob/main/docs/recipes/post_training/predict2_5/sports/setup.md#downloading-checkpoints) (2B parameters)​ 
+- [Cosmos Predict 2.5 Multiview](../../../post_training/predict2_5/sports/setup.md#downloading-checkpoints) (2B parameters)​
 
 ## Problem
 
@@ -44,6 +44,7 @@ Autonomous vehicle development requires generating diverse driving scenarios wit
 Standard text-to-video models cannot provide this level of spatial control, making them unsuitable for AV simulation workflows that require deterministic scene geometry.
 
 ### Zero-Shot Evaluation
+
 Before post-training, we evaluated Cosmos Predict 2.5 Multiview's ability to follow spatial instructions through text prompts alone. The base model:​
 
 - Generated visually plausible multiview AV videos with reasonable temporal consistency
@@ -51,20 +52,24 @@ Before post-training, we evaluated Cosmos Predict 2.5 Multiview's ability to fol
 - Could not guarantee precise object placements or maintain strict spatial relationships across views
 - Showed inconsistent adherence to complex spatial constraints described in prompts
 
-#### Evaluation Metrics:
+#### Evaluation Metrics
+
 We use [FVD StyleGAN, FVD I3D, and FID](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/metrics/qualitative/fvd_fid) for visual quality and [TSE and CSE](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/metrics/geometrical_consistency/sampson) for multi-view consistency. Geometric consistency on generated videos showed significant deviation from ground truth layouts​ before transfer posttraining. Evaluation revealed geometric inconsistencies in object placement across viewpoints. These limitations confirmed the need for explicit spatial conditioning through visual control inputs rather than relying solely on text descriptions.​
 
 ## Data Curation
 
 The Cosmos Transfer 2.5 Multiview checkpoint available for download was trained using a two-stage approach with distinct datasets:
 
-#### Base Model Training: Cosmos Predict 2.5 Multiview
+### Base Model Training: Cosmos Predict 2.5 Multiview
+
 For Cosmos-Predict2.5-2B/auto/multiview, we curated a multi-view captioned dataset of 1.5 million clips, each containing 20-second-long scenarios with 7 synchronized cameras recording at 30FPS (front-wide, front-tele, front-left, front-right, rear-left, rear-right, rear-tele). To facilitate training with text conditioning, we generated captions at 150-frame intervals using Qwen2.5-7B-Instruct with three different lengths (short, medium, and long).​
 
-#### ControlNet Post-Training: Cosmos Transfer 2.5 Multiview
+### ControlNet Post-Training: Cosmos Transfer 2.5 Multiview
+
 For Cosmos-Transfer2.5-2B/auto/multiview, we used the RDS-HQ dataset (Ren et al., 2025), which consists of 140,000 20-second multi-view driving scenes and HD map metadata covering a diverse set of traffic scenarios. The post-training process introduces spatial conditioning through "world scenario maps" that provide comprehensive control over the generated videos.
 
-#### World Scenario Map Control Signal
+### World Scenario Map Control Signal
+
 World scenario maps project HD maps and dynamic objects in the scene onto the seven camera views as the control input (see the below image). The world scenario map includes:​
 
 - **Map elements**: Lane lines (with fine-grained types such as dashed line, dotted line, double yellow line), poles, road boundaries, traffic lights with state, all directly rendered with appropriate colors and geometry patterns​
@@ -89,9 +94,9 @@ Each clip includes:​
 
 | Camera View | Raw RGB Videos | World Scenario Map Videos |
 |-------------|----------------|---------------------------|
-| **Front Wide** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/998c4e06-a077-4834-a19e-a427cac7e4cb" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/0a973854-4a48-4803-a911-5f040dbaa520" type="video/mp4"></video> |
-| **Cross Left** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/21930d1f-b98f-48ac-8564-f3235294d0d7" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/a3831026-2a2c-4a41-bea3-f118d21de78e" type="video/mp4"></video> |
-| **Cross Right** | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/1ce0f192-913b-41f4-b677-aa5da43a1786" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="https://github.com/user-attachments/assets/69e3aa5a-072f-4603-b9cc-1a6d4669ee4d" type="video/mp4"></video> |
+| **Front Wide** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/998c4e06-a077-4834-a19e-a427cac7e4cb"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/0a973854-4a48-4803-a911-5f040dbaa520"></video> |
+| **Cross Left** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/21930d1f-b98f-48ac-8564-f3235294d0d7"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/a3831026-2a2c-4a41-bea3-f118d21de78e"></video> |
+| **Cross Right** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/1ce0f192-913b-41f4-b677-aa5da43a1786"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/69e3aa5a-072f-4603-b9cc-1a6d4669ee4d"></video> |
 
 ### Data Processing
 
@@ -106,20 +111,20 @@ The key difference from single-view Cosmos models is the use of a specialized [E
 - Synchronized multi-camera extraction: Processes frames from multiple camera views simultaneously while ensuring temporal alignment
 - View index tracking: Maintains geometric relationships between cameras via `view_indices` and `view_indices_selection` tensors
 - Camera-specific mappings:
-    - `camera_video_key_mapping`: Maps camera names to video data sources
-    - `camera_caption_key_mapping`: Maps camera names to caption sources
-    - `camera_control_key_mapping`: Maps camera names to control inputs (HD maps, bounding boxes)​
+  - `camera_video_key_mapping`: Maps camera names to video data sources
+  - `camera_caption_key_mapping`: Maps camera names to caption sources
+  - `camera_control_key_mapping`: Maps camera names to control inputs (HD maps, bounding boxes)​
 - Caption conditioning flexibility:
-    - Single caption mode: Uses one caption (e.g., from front camera) for all views
-    - Per-view captions: Supports unique descriptions for each camera
-    - Optional view prefixes: Can add camera-specific prefixes to captions for explicit view identification
+  - Single caption mode: Uses one caption (e.g., from front camera) for all views
+  - Per-view captions: Supports unique descriptions for each camera
+  - Optional view prefixes: Can add camera-specific prefixes to captions for explicit view identification
 - Control input extraction: For Transfer models, extracts spatially-aligned HD map and bounding box frames in the `control_input_hdmap_bbox` key​
 - Consistency validation: Verifies frame indices and FPS match across all synchronized cameras
 - Output keys specific to multiview:
-    - `sample_n_views`: Number of cameras in this sample
-    - `camera_keys_selection`: Which cameras were selected
-    - `num_video_frames_per_view`: Frames per camera view
-    - `front_cam_view_idx_sample_position`: Reference camera index for caption conditioning
+  - `sample_n_views`: Number of cameras in this sample
+  - `camera_keys_selection`: Which cameras were selected
+  - `num_video_frames_per_view`: Frames per camera view
+  - `front_cam_view_idx_sample_position`: Reference camera index for caption conditioning
 
 Unlike single-view augmentors that process one video stream, `ExtractFramesAndCaptions` coordinates extraction across multiple synchronized cameras while maintaining strict temporal and spatial alignment requirements for multiview consistency.
 
@@ -132,13 +137,13 @@ Cosmos Transfer 2.5 Multiview extends the base Predict 2.5 Multiview model throu
 The architecture consists of two main components:
 
 - Control Branch:
-    - A parallel neural network branch that processes spatial conditioning inputs
-    - Accepts world scenario map visualization videos as inputs
-    - Injects control features into the base model at multiple layers to guide generation
+  - A parallel neural network branch that processes spatial conditioning inputs
+  - Accepts world scenario map visualization videos as inputs
+  - Injects control features into the base model at multiple layers to guide generation
 - Base Model (Frozen/Fine-tuned):
-    - Initialized from the Cosmos Predict 2.5 Multiview checkpoint (2B parameters)
-    - Uses a diffusion transformer architecture
-    - Preserves learned multiview video generation capabilities
+  - Initialized from the Cosmos Predict 2.5 Multiview checkpoint (2B parameters)
+  - Uses a diffusion transformer architecture
+  - Preserves learned multiview video generation capabilities
 
 ### Training Configuration
 
@@ -153,7 +158,6 @@ Post-training builds on the Predict 2.5 Multiview checkpoint using the following
 - Train the control branch to encode spatial conditioning signals
 - Leverage existing attention mechanisms to maintain temporal and multi-view consistency
 
-
 Key Hyperparameters:
 
 - Resolution: 720p per view
@@ -167,7 +171,6 @@ Key Hyperparameters:
 - Reduced Temporal Window: Using 8 latent frames instead of 24 makes the challenging multiview generation task more manageable while still capturing necessary temporal dynamics.​
 - Variable View Training: Training with variable views in the range of 4 to 7, rather than fixed 7-view inputs improves model flexibility and robustness when deployed with different camera configurations.​
 - Uniform Time Weighting: This training choice helps address quality variations inherent in autonomous vehicle datasets.​
-
 
 ## Post-Training with Your Own Data
 
@@ -230,7 +233,7 @@ Run the following command to execute an example post-training job with multiview
 torchrun --nproc_per_node=8 --master_port=12341 -m scripts.train --config=cosmos_transfer2/_src/transfer2_multiview/configs/vid2vid_transfer/config.py -- experiment=transfer2_auto_multiview_post_train_example job.wandb_mode=disabled
 ```
 
-The model will be post-trained using the multiview dataset. 
+The model will be post-trained using the multiview dataset.
 
 Checkpoints are saved to `${IMAGINAIRE_OUTPUT_ROOT}/PROJECT/GROUP/NAME/checkpoints`.
 
@@ -416,7 +419,6 @@ examples `prompt.txt`:
 
 `The video captures a nighttime urban driving scene viewed from inside a vehicle. The street is wet, reflecting the lights from the surrounding buildings and street lamps, creating a moody and atmospheric setting. The camera, positioned inside the vehicle, provides a first-person perspective as the car moves forward. The road is lined with tall, multi-story buildings, their windows illuminated, suggesting it's either late evening or early morning. As the vehicle progresses, the camera passes by parked cars on both sides of the street, including a white SUV and a black Jeep. The street is relatively quiet, with minimal pedestrian activity, and the occasional passing car can be seen in the distance. The traffic lights ahead are green, allowing the vehicle to continue moving smoothly. The wet pavement reflects the lights, adding a shimmering effect to the scene. The environment is characterized by a mix of residential and commercial buildings, with some shops visible along the sidewalk. The overall ambiance is calm and serene, with the soft glow of the streetlights and building lights providing a sense of safety and order. The camera remains steady throughout, capturing the continuous forward motion of the vehicle as it navigates through this urban landscape.`
 
-
 ```bash
 export NUM_GPUS=8
 torchrun --nproc_per_node=$NUM_GPUS --master_port=12341 -m examples.multiview -i assets/multiview_example/multiview_spec.json -o outputs/postrained-auto-mv --checkpoint_path $CHECKPOINT_DIR/model_ema_bf16.pt --experiment transfer2_auto_multiview_post_train_example
@@ -436,7 +438,7 @@ Run autoregressive multiview (for generating longer videos):
 ```bash
 torchrun --nproc_per_node=8 --master_port=12341 -m examples.multiview -i assets/multiview_example/multiview_autoregressive_spec.json -o outputs/multiview_autoregressive
 ```
- 
+
 ## Results
 
 ### Evaluation Metrics
@@ -446,6 +448,7 @@ For evaluation, we used a 1000 multi-view clip dataset from RQS-HQ (Ren et al., 
 Our evaluation framework consists of two complementary approaches:
 
 #### Standard Video Quality Metrics
+
 We measure perceptual quality and temporal consistency using the following [metrics](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/metrics):
 
 - **FVD (Fréchet Video Distance)**: Evaluates visual quality and temporal coherence
@@ -454,6 +457,7 @@ We measure perceptual quality and temporal consistency using the following [metr
 - **Cross-Camera Sampson Error**: Measures geometric consistency across multiple camera views
 
 #### Spatial Accuracy Metrics
+
 To test adherence to the control signals, we measure the detection performance of 3D-cuboid and lane detection models on generated videos and compare these with ground truth labels. Following the protocol described in Ren et al. (2025), we use:​
 
 - **LATR (Luo et al., 2023)**: A monocular 3D lane detector for evaluating 3D lane detection tasks​
@@ -506,6 +510,7 @@ The evaluation demonstrates that Cosmos Transfer 2.5 Multiview achieves:
 - **Maintained geometric coherence**: Competitive temporal and cross-camera consistency
 
 ## Conclusion
+
 Cosmos Transfer 2.5 Multiview successfully addresses the spatial control requirements of autonomous vehicle development by extending Cosmos Predict 2.5 Multiview with ControlNet-based conditioning. The resulting system generates photorealistic multi-camera driving scenarios that accurately reflect specific HD map layouts and object configurations, combining visual quality with the deterministic spatial properties necessary for systematic testing and simulation workflows.
 
 The key innovation lies in maintaining multiview consistency and temporal dynamics while respecting spatial constraints encoded in world scenario maps. Lane detection and 3D cuboid evaluation demonstrate high spatial accuracy, transforming video generation from a creative tool into a precision instrument suitable for engineering applications where spatial fidelity directly impacts testing validity. Critical design decisions—operating at 10 fps for LiDAR alignment, using 8 latent frames for tractability, and training with variable view counts for robustness—reflect pragmatic choices that balance real-world constraints with quality requirements.
