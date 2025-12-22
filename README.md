@@ -19,7 +19,6 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 | Dec 17 | [Wafer Map Anomaly Classification](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html) | Cosmos Reason 1 | Supervised fine-tuning for wafer map anomaly classification using WM-811k |
 | Dec 12 | [Sports Video Generation](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html) | Cosmos Predict 2.5 | LoRA post-training for sports video generation with improved player dynamics and rule coherence |
 | Dec 10 | [Distilling Cosmos Predict 2.5](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html) | Cosmos Predict 2.5 | Model distillation using DMD2 to create a 4-step student model |
-| Dec 5 | [Smart City SDG Pipeline](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html) | Cosmos Transfer 2.5 + Reason 1 | End-to-end synthetic data generation for traffic scenarios with CARLA |
 
 ## Prerequisites
 
