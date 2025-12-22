@@ -94,9 +94,9 @@ Each clip includes:​
 
 | Camera View | Raw RGB Videos | World Scenario Map Videos |
 |-------------|----------------|---------------------------|
-| **Front Wide** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/998c4e06-a077-4834-a19e-a427cac7e4cb"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/0a973854-4a48-4803-a911-5f040dbaa520"></video> |
-| **Cross Left** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/21930d1f-b98f-48ac-8564-f3235294d0d7"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/a3831026-2a2c-4a41-bea3-f118d21de78e"></video> |
-| **Cross Right** | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/1ce0f192-913b-41f4-b677-aa5da43a1786"></video> | <video width="320" controls autoplay loop muted src="https://github.com/user-attachments/assets/69e3aa5a-072f-4603-b9cc-1a6d4669ee4d"></video> |
+| **Front Wide** | <video width="320" controls autoplay loop muted playsinline src="./assets/av_rgb_front_wide.mp4"></video> | <video width="320" controls autoplay loop muted playsinline src="./assets/av_hdmap_front_wide.mp4"></video> |
+| **Cross Left** | <video width="320" controls autoplay loop muted playsinline src="./assets/av_rgb_cross_left.mp4"></video> | <video width="320" controls autoplay loop muted playsinline src="./assets/av_hdmap_cross_left.mp4"></video> |
+| **Cross Right** | <video width="320" controls autoplay loop muted playsinline src="./assets/av_rgb_cross_right.mp4"></video> | <video width="320" controls autoplay loop muted playsinline src="./assets/av_hdmap_cross_right.mp4"></video> |
 
 ### Data Processing
 

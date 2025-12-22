@@ -58,6 +58,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
+| **Training** | ControlNet post-training for spatially-conditioned multiview AV video generation with world scenario maps | [Multiview AV Generation](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
 
 ### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
