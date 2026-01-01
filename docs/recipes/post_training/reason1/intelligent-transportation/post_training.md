@@ -13,7 +13,7 @@ Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained mo
 
 Before fine-tuning the model, let's review the zero-shot performance of the model. The model spots some of the content correctly while identifying one of the pedestrians crossing the road incorrectly.
 
-<video controls width="960">
+<video controls autoplay loop muted width="960">
   <source src="assets/example_video.mp4" type="video/mp4">
 </video>
 <img src="assets/before_qa.png" width="960"/>
@@ -157,7 +157,7 @@ We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures 
 
 After SFT training with multiple choice questions (MCQ), the model achieves a significant accuracy improvement on the validation set MCQs on WTS videos. Additionally, the model is also able to answer open-ended questions more accurately than zero shot on external videos. Below is a qualitative comparison of open-ended questions on an unseen video outside of WTS dataset.
 
-<video controls width="960">
+<video controls autoplay loop muted width="960">
   <source src="assets/example_video.mp4" type="video/mp4">
 </video>
 <img src="assets/after_qa.png" width="960"/>

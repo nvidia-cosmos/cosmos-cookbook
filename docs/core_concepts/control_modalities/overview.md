@@ -121,10 +121,10 @@ The figures below illustrate the different control modalities generated from the
 
 | **Control Type** | **Description** | **Example** |
 |-----------------|-----------------|-------------|
-| **Original Video** | Source video input | <video src="assets/wave.mp4" controls width="300"></video> |
-| **Edge** | Geometric boundaries of objects and infrastructure | <video src="assets/edge.mp4" controls width="300"></video> |
-| **Segmentation** | Semantic segmentation of the scene | <video src="assets/seg.mp4" controls width="300"></video> |
-| **Vis** | Blurred representation preserving background and lighting | <video src="assets/vis.mp4" controls width="300"></video> |
+| **Original Video** | Source video input | <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> |
+| **Edge** | Geometric boundaries of objects and infrastructure | <video src="assets/edge.mp4" controls autoplay loop muted width="300"></video> |
+| **Segmentation** | Semantic segmentation of the scene | <video src="assets/seg.mp4" controls autoplay loop muted width="300"></video> |
+| **Vis** | Blurred representation preserving background and lighting | <video src="assets/vis.mp4" controls autoplay loop muted width="300"></video> |
 
 ---
 
@@ -138,7 +138,7 @@ Masking is the technique used to apply a control modality to specific areas of t
 - **Seg Masking (Standard):** This is an **effective** and standard use of masking. You supply a mask to the Seg control input to tell it exactly where to perform the semantic replacement.
 - **Vis Masking (Avoid):** Masking Vis control is known to cause visual **hallucinations** and is generally discouraged. Use Vis globally with a low weight instead.
 
-<video width="720" controls>
+<video width="720" controls autoplay loop muted>
   <source src="assets/mask.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -168,7 +168,7 @@ The first step is often applying **Edge control** to keep the core structure (e.
 - **Action:** Apply Edge control using a **filtered edge map** (edges of only the human).
 - **Result Intuition:** The human's motion is preserved, but the background still looks unrealistic and distorted. This shows that **Edge only controls shape, not *visual fidelity***.
 
-<video width="500" controls>
+<video width="500" controls autoplay loop muted>
 <strong>Mask Video</strong>
   <source src="assets/only_edge.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -181,7 +181,7 @@ To fix the unrealistic look and preserve camera effects, **Vis control** is adde
 - **Action:** Add **Vis control** with a medium weight (e.g., 0.6).
 - **Result Intuition:** The fisheye distortion is more accurate, and the background is less blurry. This confirms **Vis**'s role in **preserving overall *visual feel* and camera properties**. However, overall realism is still lacking.
 
-<video width="500" controls>
+<video width="500" controls autoplay loop muted>
 <strong>Mask Video</strong>
   <source src="assets/edge_with_vis.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -194,7 +194,7 @@ To generate a *completely new and realistic* background, **Segmentation control*
 - **Action:** Add **Seg control** with a moderate weight (e.g., 0.4), using an **mask** (white on the background) to direct the semantic replacement only to the background.
 - **Result Intuition:** The final output is visually sharp and consistent. **Seg** provides the **semantic information** necessary to generate a plausible, new environment, while **Edge** and **Vis** ensure the subject and lighting remain consistent.
 
-<video width="500" controls>
+<video width="500" controls autoplay loop muted>
 <strong>Mask Video</strong>
   <source src="assets/street_background.mp4" type="video/mp4">
   Your browser does not support the video tag.

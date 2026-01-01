@@ -55,7 +55,7 @@ The dataset highlights critical challenges for generative models in understandin
 
 #### Low Physical Plausibility (Score: 2/5)
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
   <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/hunyuan_xedit_train/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
 </video>
 
@@ -67,7 +67,7 @@ The dataset highlights critical challenges for generative models in understandin
 
 #### High Physical Plausibility (Score: 4/5)
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
   <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/cosmos_videophy2_train_challenging/A_robotic_arm_pushes_a_metal_cube_off_a_steel_table;_the_cube_lands_precisely_on_a_marked_spot.mp4" type="video/mp4">
 </video>
 
@@ -118,7 +118,7 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 
 #### Car Crashes into Stack of Cardboard Boxes
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
   <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
 </video>
 
@@ -127,7 +127,7 @@ The following examples demonstrate zero-shot predictions from the Cosmos Reason 
 
 #### Robotic Arm Operates on Circuit Board
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
   <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/wan_videophy2_test_hard_upsampled/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
 </video>
 
@@ -204,7 +204,7 @@ The following examples show prediction improvements from fine-tuning:
 
 #### Robotic Arm Operates on Circuit Board
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
     <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/cosmos_videophy2_test_challenging/A_robotic_arm_uses_a_slender_tool_to_carefully_reposition_a_circuit_board,_nudging_it_a_fraction_of_an_inch.mp4" type="video/mp4">
 </video>
 
@@ -214,7 +214,7 @@ The following examples show prediction improvements from fine-tuning:
 
 #### Robot Shovels Snow
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
     <source src="https://storage.cdn-luma.com/dream_machine/fb2b34ac-ed7a-4773-8382-9786890a6056/ed9bc667-9b64-4224-8860-8108a42c8823_result.mp4" type="video/mp4">
 </video>
 
@@ -311,7 +311,7 @@ After RL training, we evaluate the model on the VideoPhy-2 evaluation set using 
 
 #### Pizza Dough Tossed and Caught
 
-<video controls width="480">
+<video controls autoplay loop muted width="480">
   <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/videocrafter_videophy2_hard/A_pizza_dough_is_tossed_up__its_edges_become_thinner_as_it_rotates_in_the_air__and_it_s_caught_by_a_second_person_.mp4" type="video/mp4">
 </video>
 * **Ground truth**: 2 (poor adherence to physical laws)

@@ -61,14 +61,14 @@ The simulator provides comprehensive ground truth data for each frame:
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
   <div style="flex: 1 1 45%; min-width: 300px;">
     <strong>RGB Video</strong>: The original synthetic rendering showing the traffic scenario
-    <video controls width="100%" aria-label="RGB video showing traffic intersection with wrong-way vehicle anomaly">
+    <video controls autoplay loop muted width="100%" aria-label="RGB video showing traffic intersection with wrong-way vehicle anomaly">
       <source src="./assets/simulator_rgb_input.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
   <div style="flex: 1 1 45%; min-width: 300px;">
     <strong>Depth Map</strong>: Precise distance information for every pixel in the scene
-    <video controls width="100%" aria-label="Depth map video showing distance information for traffic scene">
+    <video controls autoplay loop muted width="100%" aria-label="Depth map video showing distance information for traffic scene">
       <source src="./assets/simulator_depth.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -78,14 +78,14 @@ The simulator provides comprehensive ground truth data for each frame:
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; margin-top: 20px;">
   <div style="flex: 1 1 45%; min-width: 300px;">
     <strong>Edge Detection</strong>: Geometric boundaries of all objects and road infrastructure
-    <video controls width="100%" aria-label="Edge detection video showing geometric boundaries of objects and infrastructure">
+    <video controls autoplay loop muted width="100%" aria-label="Edge detection video showing geometric boundaries of objects and infrastructure">
       <source src="./assets/simulator_edge.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
   <div style="flex: 1 1 45%; min-width: 300px;">
     <strong>Semantic Segmentation</strong>: Pixel-perfect labels for vehicles, roads, sidewalks, and other scene elements
-    <video controls width="100%" aria-label="Semantic segmentation video showing labeled scene elements including vehicles and roads">
+    <video controls autoplay loop muted width="100%" aria-label="Semantic segmentation video showing labeled scene elements including vehicles and roads">
       <source src="./assets/simulator_segmentation.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -178,7 +178,7 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 
 #### 1. Night Augmentation (Using Depth Control)
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Night augmentation showing traffic scene with street lighting and vehicle headlights">
+<video controls autoplay loop muted width="100%" style="max-width: 800px;" aria-label="Night augmentation showing traffic scene with street lighting and vehicle headlights">
   <source src="./assets/night_depth_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -186,7 +186,7 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 
 #### 2. Mid-Morning Augmentation (Using Segmentation Control)
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Mid-morning augmentation showing traffic scene in bright daylight conditions">
+<video controls autoplay loop muted width="100%" style="max-width: 800px;" aria-label="Mid-morning augmentation showing traffic scene in bright daylight conditions">
   <source src="./assets/mid_morning_seg_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -194,7 +194,7 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 
 #### 3. Snow Falling Augmentation (Using Edge Control)
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Snow falling augmentation showing traffic scene with heavy snowfall">
+<video controls autoplay loop muted width="100%" style="max-width: 800px;" aria-label="Snow falling augmentation showing traffic scene with heavy snowfall">
   <source src="./assets/snow_falling_edge_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -202,7 +202,7 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 
 #### 4. Fog Augmentation (Using Depth Control)
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Fog augmentation showing traffic scene with reduced visibility due to fog">
+<video controls autoplay loop muted width="100%" style="max-width: 800px;" aria-label="Fog augmentation showing traffic scene with reduced visibility due to fog">
   <source src="./assets/fog_depth_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -210,7 +210,7 @@ To showcase the versatility of Cosmos Transfer 2.5, we present five representati
 
 #### 5. Twilight Augmentation (Using Depth Control)
 
-<video controls width="100%" style="max-width: 800px;" aria-label="Twilight augmentation showing traffic scene during dusk with transitional lighting">
+<video controls autoplay loop muted width="100%" style="max-width: 800px;" aria-label="Twilight augmentation showing traffic scene during dusk with transitional lighting">
   <source src="./assets/twilight_depth_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>

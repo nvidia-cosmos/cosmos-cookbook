@@ -30,7 +30,7 @@ For this recipe, we use an internal NVIDIA dataset, which consists of short vide
 
 Here's an example video clip:
 
-<video controls width="1280">
+<video controls autoplay loop muted width="1280">
   <source src="assets/01a6de83-ac02-4689-a901-f0d1dfc0672d.small.mp4" type="video/mp4">
 </video>
 
