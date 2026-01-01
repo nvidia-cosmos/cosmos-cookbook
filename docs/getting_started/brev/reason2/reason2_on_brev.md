@@ -11,7 +11,7 @@ This guide walks you through setting up NVIDIA [Cosmos Reason 2](https://hugging
 
 1. Set up a Brev instance with H100 GPU
 2. Configure the environment for Cosmos Reason 2
-3. Run inference on the Reason1 model
+3. Run inference on the Reason 2 model
 4. Perform post-training (SFT) on custom datasets
 
 ## Prerequisites
