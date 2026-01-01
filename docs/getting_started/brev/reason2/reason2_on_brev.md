@@ -57,7 +57,7 @@ This guide walks you through setting up NVIDIA [Cosmos Reason2](https://huggingf
 3. Click "Go to Instance Page" button.
 ![Go to Instance Page](./images/brev-08-deploy-launchable.png)
 
-4. Once your instance is ready, Brev will provide SSH connection details. 
+4. Once your instance is ready, Brev will provide SSH connection details.
 ![instance](./images/brev-09-access-or-stop.png)
 
 ### Option 1: Open Jupyter Notebook
