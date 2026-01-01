@@ -1,16 +1,16 @@
-# Get Started with Cosmos Reason2 on Brev: Inference and Post-Training
+# Get Started with Cosmos Reason 2 on Brev: Inference and Post-Training
 >
 > **Author:** [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
 > **Organization:** NVIDIA
 
-This guide walks you through setting up NVIDIA [Cosmos Reason2](https://huggingface.co/nvidia/Cosmos-Reason2-8B) on a [Brev](https://brev.dev) H100 GPU instance for both inference and post-training workflows. Brev provides on-demand cloud GPUs with pre-configured environments, making it easy to get started with Cosmos models.
+This guide walks you through setting up NVIDIA [Cosmos Reason 2](https://huggingface.co/nvidia/Cosmos-Reason2-8B) on a [Brev](https://brev.dev) H100 GPU instance for both inference and post-training workflows. Brev provides on-demand cloud GPUs with pre-configured environments, making it easy to get started with Cosmos models.
 
 ## Overview
 
 [Brev.dev](https://brev.dev) is a cloud GPU platform that provides instant access to high-performance GPUs like the H100. This guide will help you:
 
 1. Set up a Brev instance with H100 GPU
-2. Configure the environment for Cosmos Reason2
+2. Configure the environment for Cosmos Reason 2
 3. Run inference on the Reason1 model
 4. Perform post-training (SFT) on custom datasets
 
@@ -19,7 +19,7 @@ This guide walks you through setting up NVIDIA [Cosmos Reason2](https://huggingf
 - A Brev account ([sign up here](https://brev.dev))
 - Install the CLI as shown in [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html)
 - See the quickstart to get a feel for the platform: [https://docs.nvidia.com/brev/latest/quick-start.html](https://docs.nvidia.com/brev/latest/quick-start.html). The handy Brev docs are linked from the Brev page too.
-- A Hugging Face account with access to [Cosmos Reason2](https://huggingface.co/nvidia/Cosmos-Reason2-8B)
+- A Hugging Face account with access to [Cosmos Reason 2](https://huggingface.co/nvidia/Cosmos-Reason2-8B)
 
 ## The cheat code: Launchables
 
@@ -143,8 +143,8 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason2/examples/post_training_hf/outp
 
 ## Additional Resources
 
-- [Cosmos Reason2 GitHub Repository](!https://github.com/nvidia-cosmos/cosmos-reason2)
-- [Cosmos Reason2 Model on Hugging Face](!https://huggingface.co/nvidia/Cosmos-Reason2-8B)
+- [Cosmos Reason 2 GitHub Repository](!https://github.com/nvidia-cosmos/cosmos-reason2)
+- [Cosmos Reason 2 Model on Hugging Face](!https://huggingface.co/nvidia/Cosmos-Reason2-8B)
 - [Brev Documentation](https://docs.brev.dev)
 - [Cosmos Cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
@@ -152,5 +152,5 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason2/examples/post_training_hf/outp
 
 For issues related to:
 
-- **Cosmos Reason2**: Open an issue on the [GitHub repository](!https://github.com/nvidia-cosmos/cosmos-reason2/issues)
+- **Cosmos Reason 2**: Open an issue on the [GitHub repository](!https://github.com/nvidia-cosmos/cosmos-reason2/issues)
 - **Brev Platform**: Contact [Brev support](!https://brev.dev/support)
