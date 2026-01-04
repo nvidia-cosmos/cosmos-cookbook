@@ -10,10 +10,6 @@
     // Adobe Launch source (loaded dynamically once analytics consent is granted).
     var ADOBE_LAUNCH_SRC = 'https://assets.adobedtm.com/5d4962a43b79/814eb6e9b4e1/launch-4bc07f1e0b0b.min.js';
 
-    function isConsentTrue(value) {
-        return value === true || value === 1 || value === '1' || value === 'true';
-    }
-
     // Helper function to get cookie value
     function getCookie(name) {
         var value = "; " + document.cookie;
