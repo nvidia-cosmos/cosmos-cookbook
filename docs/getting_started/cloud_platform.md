@@ -1,6 +1,6 @@
 # Cloud Platform
 
-Pick your cloud and access the deployment guide to get started.
+Pick your cloud to get started. Each section below is a horizontal carousel you can scroll through; only Brev is wired up today, while the rest are placeholders for upcoming guides.
 
 <style>
 .platform-board {
@@ -47,8 +47,21 @@ Pick your cloud and access the deployment guide to get started.
   object-fit: contain;
 }
 
+.platform-logo-coreweave,
+.platform-logo-bytedance {
+  max-height: 0.9em;
+}
+
+.platform-logo-crusoe {
+  max-height: 1.1em;
+}
+
 .platform-logo-nvidia {
   max-height: 1.3em;
+}
+
+.platform-logo-yotta {
+  max-height: 1.7em;
 }
 
 .platform-track {
@@ -101,20 +114,19 @@ Pick your cloud and access the deployment guide to get started.
   width: 100%;
   height: 150px;
   border-radius: 0px;
-  background: #fff;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(118, 185, 0, 0.08),
+    rgba(118, 185, 0, 0.08) 12px,
+    rgba(118, 185, 0, 0.16) 12px,
+    rgba(118, 185, 0, 0.16) 24px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--md-default-fg-color--light, #5b6472);
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-.platform-media img,
-.platform-media video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 .platform-title {
@@ -143,29 +155,214 @@ Pick your cloud and access the deployment guide to get started.
     <p>Ready-to-launch notebooks on Brev workspaces.</p>
   </div>
   <div class="platform-track" data-page-size="4">
-    <a class="platform-card" href="./brev/reason2/reason2_on_brev.html">
-      <div class="platform-media" aria-hidden="true">
-        <img src="https://private-user-images.githubusercontent.com/815124/497340553-28f2d612-bbd6-44a3-8795-833d05e9f05f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1NDgyMzgsIm5iZiI6MTc2NzU0NzkzOCwicGF0aCI6Ii84MTUxMjQvNDk3MzQwNTUzLTI4ZjJkNjEyLWJiZDYtNDRhMy04Nzk1LTgzM2QwNWU5ZjA1Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMTA0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDEwNFQxNzMyMThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yOWQ2NzM2NDk0MTAxMDEwYjViZjFkN2FiZGNkZDJmNzhmMTUwYjQwMzQ1ODQzM2U1NjNiNjM5M2Y4MTg5OWUwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.g0G2lIb4nFPIdv_ldSzSpc4p-Lm39H7UrZpWq7_oMZk" alt="Reason 2">
-      </div>
-      <div class="platform-title">Reason 2 on Brev</div>
-    </a>
     <a class="platform-card" href="./brev/reason1/reason1_on_brev.html">
-      <div class="platform-media" aria-hidden="true">
-        <video autoplay loop muted playsinline>
-          <source src="./brev/reason1/images/nvidia-cosmos-reason1.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="platform-title">Reason 1 on Brev</div>
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Brev on Reason1</div>
     </a>
     <a class="platform-card" href="./brev/transfer2_5/transfer_and_predict_on_brev.html">
-      <div class="platform-media" aria-hidden="true">
-        <video autoplay loop muted playsinline>
-          <source src="./brev/transfer2_5/images/nvidia-cosmos-transfer-new.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="platform-title">Transfer &amp; Predict 2.5 on Brev</div>
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Brev on Predict &amp; Transfer2.5</div>
     </a>
   </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="aws">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/aws.svg" alt="AWS logo">AWS</h2>
+    <p>Placeholder for AWS GPU stacks and quickstarts.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="azure">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/azure.svg" alt="Azure logo">Azure</h2>
+    <p>Placeholder for Azure deployment guides.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="gcp">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/gcp.svg" alt="GCP logo">GCP</h2>
+    <p>Placeholder for GCP integrations.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="oci">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/oci.svg" alt="OCI logo">OCI</h2>
+    <p>Placeholder for Oracle Cloud deployments.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="alibaba">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/alibaba.svg" alt="Alibaba Cloud logo">Alibaba</h2>
+    <p>Placeholder for Alibaba Cloud playbooks.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="bytedance">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-bytedance" src="../assets/images/clouds/bytedance.png" alt="ByteDance logo">Bytedance</h2>
+    <p>Placeholder for Bytedance/FDU resources.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="coreweave">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-coreweave" src="../assets/images/clouds/coreweave.png" alt="CoreWeave logo">Coreweave</h2>
+    <p>Placeholder for Coreweave GPU recipes.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="nebius">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/nebius.png" alt="Nebius logo">Nebius</h2>
+    <p>Placeholder for Nebius cloud workflows.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="lambda">
+  <div class="platform-header">
+    <h2><img class="platform-logo" src="../assets/images/clouds/lambda.svg" alt="Lambda logo">Lambda</h2>
+    <p>Placeholder for Lambda Cloud guides.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="yotta">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-yotta" src="../assets/images/clouds/yotta.png" alt="Yotta logo">Yotta</h2>
+    <p>Placeholder for Yotta deployments.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
+</section>
+
+<section class="platform-section" id="crusoe">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-crusoe" src="../assets/images/clouds/crusoe.png" alt="Crusoe logo">Crusoe</h2>
+    <p>Placeholder for Crusoe GPU stacks.</p>
+  </div>
+  <div class="platform-track" data-page-size="4">
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+    <div class="platform-card is-placeholder">
+      <div class="platform-media" aria-hidden="true">Placeholder</div>
+      <div class="platform-title">Coming soon</div>
+    </div>
+  </div>
+  <button class="md-button platform-show-more" type="button">+ Show more</button>
 </section>
 
 </div>
