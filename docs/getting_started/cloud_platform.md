@@ -154,15 +154,3 @@ Pick your cloud and access the deployment guide to get started.
 </section>
 
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add("cloud-nav-open");
-  // Clean up the flag when leaving or if SPA navigation swaps pages
-  const clearFlag = () => document.body.classList.remove("cloud-nav-open");
-  window.addEventListener("beforeunload", clearFlag);
-  window.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") clearFlag();
-  });
-});
-</script>
