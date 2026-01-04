@@ -17,6 +17,17 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 - Advanced post-training workflows for domain-specific fine-tuning.
 - Proven recipes for scalable, production-ready deployments.
 
+## Latest Updates
+
+| **Date** | **Recipe** | **Model** |
+|----------|------------|-----------|
+| Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
+| Jan 1 | [Reason 2 on Brev](getting_started/brev/reason2/reason2_on_brev.md) | Cosmos Reason 2 |
+| Dec 22 | [Multiview AV Generation with World Scenario Maps](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) | Cosmos Transfer 2.5 |
+| Dec 20 | [Vision AI Gallery](gallery/vision_ai_inference.md) | Cosmos Transfer 2.5 |
+| Dec 20 | [Style-Guided Video Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) | Cosmos Transfer 2.5 |
+| Dec 17 | [Wafer Map Anomaly Classification](recipes/post_training/reason1/wafermap_classification/post_training.md) | Cosmos Reason 1 |
+
 ## Open Source Community Platform
 
 The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
@@ -58,6 +69,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
+| **Training** | ControlNet post-training for spatially-conditioned multiview AV video generation with world scenario maps | [Multiview AV Generation](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
 
 ### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 
@@ -65,6 +77,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)                   |
 | **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
 | **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
 | **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
