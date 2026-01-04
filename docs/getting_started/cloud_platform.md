@@ -128,10 +128,10 @@ Pick your cloud and access the deployment guide to get started.
     <h2><img class="platform-logo platform-logo-nvidia" src="../assets/images/clouds/brev.png" alt="Brev logo">Brev</h2>
     <p>Ready-to-launch notebooks on Brev workspaces.</p>
   </div>
-  <div class="platform-track" data-page-size="4">
+  <div class="platform-track">
     <a class="platform-card" href="./brev/reason2/reason2_on_brev.html">
       <div class="platform-media" aria-hidden="true">
-        <img src="https://private-user-images.githubusercontent.com/815124/497340553-28f2d612-bbd6-44a3-8795-833d05e9f05f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1NDgyMzgsIm5iZiI6MTc2NzU0NzkzOCwicGF0aCI6Ii84MTUxMjQvNDk3MzQwNTUzLTI4ZjJkNjEyLWJiZDYtNDRhMy04Nzk1LTgzM2QwNWU5ZjA1Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMTA0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDEwNFQxNzMyMThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yOWQ2NzM2NDk0MTAxMDEwYjViZjFkN2FiZGNkZDJmNzhmMTUwYjQwMzQ1ODQzM2U1NjNiNjM5M2Y4MTg5OWUwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.g0G2lIb4nFPIdv_ldSzSpc4p-Lm39H7UrZpWq7_oMZk" alt="Reason 2">
+        <img src="./brev/reason2/reason2.png" alt="Reason 2 on Brev">
       </div>
       <div class="platform-title">Reason 2 on Brev</div>
     </a>

@@ -137,14 +137,6 @@
   display: var(--md-footer-logo-dark-mode);
 }
 
-#logo_light_mode {
-  display: var(--md-footer-logo-light-mode);
-}
-
-#logo_dark_mode {
-  display: var(--md-footer-logo-dark-mode);
-}
-
 .md-header__button.md-logo svg {
   fill: var(--svg-color);
 }
