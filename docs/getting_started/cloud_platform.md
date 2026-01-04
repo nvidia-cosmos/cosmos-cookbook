@@ -89,14 +89,6 @@ Pick your cloud and access the deployment guide to get started.
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.platform-card.is-placeholder {
-  pointer-events: none;
-}
-
-.platform-card.is-hidden {
-  display: none;
-}
-
 .platform-media {
   width: 100%;
   height: 150px;
@@ -120,12 +112,6 @@ Pick your cloud and access the deployment guide to get started.
 .platform-title {
   font-weight: 700;
   line-height: 1.3;
-}
-
-.platform-show-more {
-  display: inline-flex;
-  margin-top: 0.5rem;
-  margin-left: auto;
 }
 
 @media (max-width: 640px) {
@@ -178,41 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("beforeunload", clearFlag);
   window.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") clearFlag();
-  });
-
-  const defaultPageSize = 4;
-
-  document.querySelectorAll(".platform-section").forEach((section) => {
-    const track = section.querySelector(".platform-track");
-    if (!track) return;
-
-    const cards = Array.from(track.querySelectorAll(".platform-card"));
-    const pageSize = parseInt(track.dataset.pageSize || defaultPageSize, 10);
-    const button = section.querySelector(".platform-show-more");
-
-    if (cards.length <= pageSize) {
-      if (button) button.style.display = "none";
-      return;
-    }
-
-    cards.forEach((card, index) => {
-      if (index >= pageSize) {
-        card.classList.add("is-hidden");
-      }
-    });
-
-    if (!button) return;
-
-    let visibleCount = pageSize;
-
-    button.addEventListener("click", () => {
-      visibleCount = Math.min(visibleCount + pageSize, cards.length);
-      cards.slice(0, visibleCount).forEach((card) => card.classList.remove("is-hidden"));
-
-      if (visibleCount >= cards.length) {
-        button.style.display = "none";
-      }
-    });
   });
 });
 </script>
