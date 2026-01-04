@@ -126,10 +126,10 @@
             }
         } else {
             var attempts = 0;
-            var maxAttempts = 10; // 500ms * 10 = 5s fallback window
+            var MAX_BANNER_POLL_ATTEMPTS = 10; // 500ms * 10 = 5s fallback window
             var pollInterval = setInterval(function () {
                 attempts += 1;
-                if (runCallbackIfReady() || attempts >= maxAttempts) {
+                if (runCallbackIfReady() || attempts >= MAX_BANNER_POLL_ATTEMPTS) {
                     clearInterval(pollInterval);
                 }
             }, 500);
