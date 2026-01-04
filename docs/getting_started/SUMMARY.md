@@ -1,4 +1,4 @@
 #
 
-- [Local Infra](setup.md)
+- [Setup](setup.md)
 - [Cloud Platform](cloud_platform.md)
