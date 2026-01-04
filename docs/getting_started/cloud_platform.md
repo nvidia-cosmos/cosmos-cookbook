@@ -124,7 +124,7 @@ Pick your cloud and access the deployment guide to get started.
 
 <section class="platform-section" id="brev">
   <div class="platform-header">
-    <h2><img class="platform-logo platform-logo-nvidia" src="../assets/images/clouds/brev.png" alt="Brev logo">Brev</h2>
+    <h2><img class="platform-logo platform-logo-nvidia" src="../assets/images/clouds/brev.png" alt="Brev logo"> Brev</h2>
     <p>Ready-to-launch notebooks on Brev workspaces.</p>
   </div>
   <div class="platform-track">
