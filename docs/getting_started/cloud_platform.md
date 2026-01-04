@@ -17,7 +17,6 @@ Pick your cloud and access the deployment guide to get started.
   border: 1px solid var(--md-default-fg-color--lightest, #e2e8f0);
   background: var(--md-default-bg-color, #fff);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-  border-radius: 0px;
 }
 
 .platform-header {
