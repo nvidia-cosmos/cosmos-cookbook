@@ -61,7 +61,7 @@
 
       if (!onCloudPage) return;
 
-      const baseHref = (href.split("#")[0] || "").replace(/\.md$/, ".html");
+      const baseHref = href.split("#")[0].replace(/\.md$/, ".html");
       insertSubitems(parent, baseHref || "getting_started/cloud_platform.html");
     });
   };
