@@ -91,7 +91,6 @@ Pick your cloud and access the deployment guide to get started.
 .platform-media {
   width: 100%;
   height: 150px;
-  border-radius: 0px;
   background: var(--md-default-bg-color, #fff);
   display: flex;
   align-items: center;
