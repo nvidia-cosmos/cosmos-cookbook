@@ -68,6 +68,8 @@
 
   const init = () => window.requestAnimationFrame(syncCloudNav);
 
+  // In Material for MkDocs, `document$` is an observable that emits on each page render.
+  // Use it when available so the nav stays in sync across client-side navigations.
   if (window.document$) {
     document$.subscribe(init);
   } else if (document.readyState === "loading") {
