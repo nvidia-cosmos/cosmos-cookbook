@@ -1,4 +1,4 @@
 #
 
-- [Setup](setup.md)
-- [Brev](./brev/)
+- [Local Infra](setup.md)
+- [Cloud Platform](cloud_platform.md)
