@@ -1,6 +1,6 @@
 (function () {
   const cloudPagePattern = /\/getting_started\/cloud_platform(?:\/|\.html)?(?:#.*)?$/;
-  const cloudParentMatcher = /cloud_platform(?:\/|\.html|\.md)?(?:$|[#/?])/;
+  const cloudParentMatcher = /cloud_platform(?:\/|\.html)?(?:$|[#/?])/;
 
   const removeGeneratedSubitems = () => {
     document.querySelectorAll(".cloud-nav-generated").forEach((el) => el.remove());
