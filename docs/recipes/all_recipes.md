@@ -153,6 +153,8 @@
     /*Match image cards: white background so letterboxing isn't black.*/
     background: #ffffff;
     display: block;
+    /*Ensure the whole card remains clickable; video shouldn't capture pointer events.*/
+    pointer-events: none;
   }
 
   .recipe-title {
@@ -243,6 +245,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./inference/reason2/intbot_showcase/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
         <a class="recipe-card" href="./inference/transfer1/inference-warehouse-mv/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer1/inference-warehouse-mv/assets/multi_world_simulation.png" alt="" loading="lazy" />
@@ -297,6 +306,16 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Autonomous Vehicles recipes">
+        <a class="recipe-card" href="./post_training/transfer2_5/av_world_scenario_maps/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="./post_training/transfer2_5/av_world_scenario_maps/assets/av_rgb_front_wide.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Cosmos Transfer 2.5 Multiview Generation with World Scenario Map Control</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./inference/predict2/inference-its/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/predict2/inference-its/assets/output.jpg" alt="" loading="lazy" />
@@ -358,6 +377,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Vision AI recipes">
+        <a class="recipe-card" href="./inference/transfer2_5/biotrove_augmentation/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/transfer2_5/biotrove_augmentation/assets/moth_biotrove.webp" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
         <a class="recipe-card" href="./inference/transfer2_5/inference-real-augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/inference-real-augmentation/assets/omniverse_background_change_recipe.png" alt="" loading="lazy" />
@@ -367,7 +393,7 @@
         </a>
         <a class="recipe-card" href="./inference/transfer2_5/inference-image-prompt/inference.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
-            <video autoplay loop muted playsinline preload="metadata">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./inference/transfer2_5/inference-image-prompt/assets/example1_generation-from-edge-sunset.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
@@ -375,16 +401,9 @@
           <div class="recipe-title">Style-Guided Video Generation with Cosmos Transfer 2.5</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
-        <a class="recipe-card" href="./inference/transfer2_5/biotrove_augmentation/inference.html">
-          <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="https://cdn.voxel51.com/tutorials/cosmos-transfer2_5/moth_biotrove.webp" alt="" loading="lazy" />
-          </div>
-          <div class="recipe-title">Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5</div>
-          <div class="recipe-tag recipe-tag--inference">Inference</div>
-        </a>
         <a class="recipe-card" href="./post_training/predict2_5/sports/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
-            <video autoplay loop muted playsinline preload="metadata">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
               <source src="./post_training/predict2_5/sports/assets/post_trained/12.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
