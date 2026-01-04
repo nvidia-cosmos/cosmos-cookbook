@@ -83,7 +83,7 @@ Here's an example of the annotation format:
 
 ### Data preprocessing
 
-For this experiment, we fine-tune the Cosmos Reason 1 model on the 80k subset of the Physical AI Spatial Intelligence Warehouse dataset. Refer to [scripts/examples/reason1/spatial-ai-warehouse/](../../../../scripts/examples/reason1/spatial-ai-warehouse/) directory for more details.
+For this experiment, we fine-tune the Cosmos Reason 1 model on the 80k subset of the Physical AI Spatial Intelligence Warehouse dataset. Refer to [scripts/examples/reason1/spatial-ai-warehouse/](../../../../../scripts/examples/reason1/spatial-ai-warehouse/) directory for more details.
 
 #### Step 1: Download Data
 
