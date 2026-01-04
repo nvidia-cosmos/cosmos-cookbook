@@ -148,7 +148,7 @@ Pick your cloud and access the deployment guide to get started.
           <source src="./brev/transfer2_5/images/nvidia-cosmos-transfer-new.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="platform-title">Transfer &amp; Predict 2.5 on Brev</div>
+      <div class="platform-title">Transfer & Predict 2.5 on Brev</div>
     </a>
   </div>
 </section>
