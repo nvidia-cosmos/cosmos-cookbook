@@ -188,20 +188,3 @@
 .md-nav__item:has(a[href="gallery/"]) > .md-nav__link {
   font-weight: bold;
 }
-
-/* Cloud Platform sub-items: hide unless that page is active */
-.cloud-nav-subitem {
-  display: none;
-}
-
-body.cloud-nav-open .cloud-nav-subitem {
-  display: list-item;
-}
-
-.cloud-nav-subitem .md-nav__link {
-  font-size: 0.9em;
-  opacity: 0.9;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
-  padding-left: 1.1rem;
-}
