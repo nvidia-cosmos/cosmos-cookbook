@@ -228,7 +228,7 @@ Targets AV reasoning capability for Cosmos Reason 2. Previously curated for pred
 {
     "response": {
         "description": "I'm driving in a residential area. Driving through a four junction road. I check surroundings for any oncoming traffic. I ensure the junction is clear. I proceed to drive straight. I am being very cautious while driving due to rain. Ahead, I am approaching another T junction with stop sign board. I slow down the vehicle and check surroundings for any oncoming traffic. The junction is clear. I proceed to make a left turn. I notice few vehicles are parked on the private drive space. There are many connecting lanes on to the road. I maintain a constant speed and keep a vigilant eye around for any sudden moments.",
-        "driving difficulity explanation": "I'm driving in rain.",
+        "driving difficulty explanation": "I'm driving in rain.",
         "notice": [
             {
                 "Between time 10.18s and 17.07s": "Approaching a T junction. I slow down the vehicle and make a left turn."
