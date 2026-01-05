@@ -12,12 +12,12 @@ This page showcases results from Cosmos Transfer 2.5 for robotics applications. 
 
 ## Example 1: Edge-Only Control for Environment Variation
 
-This example demonstrates how to transform synthetic robotic simulation videos into photorealistic scenes with different kitchen styles and materials using **edge control**. Edge control preserves the original structure, motion, and geometry of the robot and scene while allowing the visual appearance to change dramatically based on the text prompt.
+This example demonstrates how to transform synthetic robotic simulation videos into photorealistic scenes with different kitchen styles and materials using **edge control**, which preserves the original structure, motion, and geometry of the robot and scene while allowing the visual appearance to change dramatically based on the text prompt.
 
-- **Edge control**: Maintains the structure and layout of objects, robot poses, and camera motion from the simulation while transforming the visual appearance (materials, lighting, colors) according to the prompt.
-- **Why use edge-only**: Ideal when you want to preserve exact robot motions and object positions from simulation while varying environmental aesthetics.
+- **Edge control**: Maintains the structure and layout of objects, robot poses, and camera motion from the simulation, while transforming the visual appearance (materials, lighting, colors) according to the prompt.
+- **Why use edge-only**: To preserve exact robot motions and object positions from simulation while varying environmental aesthetics.
 
-For detailed explanations of control modalities, see [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
+For detailed explanations of control modalities, refer to the [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
 
 <style>
 .carousel {
@@ -639,7 +639,7 @@ This scene demonstrates robot interaction with appliances, showing the robot ope
 
 ## Example 2: Multi-Control with Custom Control Videos
 
-These examples demonstrate advanced usage where you provide **custom pre-computed control videos** (depth, edge, segmentation) alongside the input video. Multi-control gives you fine-grained control over different aspects of the transformation:
+These examples demonstrate advanced usage, where you provide **custom pre-computed control videos** (depth, edge, segmentation) alongside the input video. Multi-control gives you fine-grained control over different aspects of the transformation:
 
 - **depth**: Controls 3D spatial relationships and perspective
 - **edge**: Maintains structural boundaries and object shapes
@@ -1305,7 +1305,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ## Quality Enhancements: Transfer 2.5 vs Transfer 1
 
-Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
+Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality of improvements achieved in the latest version.
 
 ### Examples
 
