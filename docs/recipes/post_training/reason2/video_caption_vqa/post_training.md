@@ -82,7 +82,7 @@ Multiple-choice VQA provides objective accuracy metrics. We constructed a pool o
 
 #### 1.3 LingoQA Benchmark
 
-A standardized external benchmark for AV visual question answering [1](#references). The full benchmark contains 28K video scenarios with 419K annotations, evaluated using Lingo-Judge (0.95 Spearman correlation with human evaluations). For our evaluation, we selected **100 videos** and **_TBD_ questions** most relevant to our use case. This external benchmark validates that improvements generalize beyond our internal benchmark.
+A standardized external benchmark for AV visual question answering [1](#references). The full benchmark contains 28K video scenarios with 419K annotations, evaluated using Lingo-Judge (0.95 Spearman correlation with human evaluations). For our evaluation, we selected **100 videos** and a subset of questions most relevant to our use case. This external benchmark validates that improvements generalize beyond our internal benchmark.
 
 ---
 
