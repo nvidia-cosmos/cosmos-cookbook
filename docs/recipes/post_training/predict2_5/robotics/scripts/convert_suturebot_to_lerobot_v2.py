@@ -325,7 +325,7 @@ def convert_data_to_lerobot(
         image_writer_threads=20,
         tolerance_s=1.0,
         batch_encoding_size=12,
-        video_backend="pyav"  # Use pyav to encode as H.264 (decord-compatible)
+        video_backend="torchcodec"
     )
     # measure time taken to complete the process
     start_time = time.time()

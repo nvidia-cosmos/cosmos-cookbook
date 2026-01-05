@@ -36,32 +36,39 @@ Data Format:
 
 Usage:
 ------
-    python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --output-path /path/to/output --repo-id dataset-name
+    # Default output to HF_LEROBOT_HOME:
+    python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --repo-id dataset-name
+    
+    # Custom output location (set env var before running):
+    export HF_LEROBOT_HOME=/custom/output
+    python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --repo-id dataset-name
 
 Dependencies:
 -------------
-- lerobot >= 0.4.0
+- lerobot == 0.3.3
+- torchcodec
 - tyro
 - pandas
 - PIL
 - numpy
+- scipy
 """
 
 import json
 import shutil
+import traceback
 from pathlib import Path
 from tqdm import tqdm
 import tyro
 import numpy as np
 import os
 import pandas as pd
+import torch
 from PIL import Image
 import time
+from scipy.spatial.transform import Rotation
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
-
-from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.state_action import (
-    compute_rel_actions_local
-)
+from lerobot.constants import HF_LEROBOT_HOME
 
 states_name = [
     "psm1_pose.position.x",
@@ -148,6 +155,87 @@ def quat_to_6d_rotation(quat: np.ndarray) -> np.ndarray:
 
     return np.array([r11, r12, r13, r21, r22, r23], dtype=np.float32)
 
+def rotation_6d_to_matrix(rot6d):
+    """
+    Convert 6D rotation representation to rotation matrix.
+    6D rotation is the first two ROWS of a rotation matrix (row-major format),
+    orthonormalized via Gram-Schmidt.
+
+    This matches the incoming dVRK/SutureBot data format:
+        [r11, r12, r13, r21, r22, r23] = [row1, row2]
+
+    Args:
+        rot6d: Array of shape (..., 6) containing [row1 (3), row2 (3)]
+
+    Returns:
+        Rotation matrices of shape (..., 3, 3)
+    """
+    shape = rot6d.shape[:-1]
+    rot6d = rot6d.reshape(*shape, 2, 3)
+
+    # First row (normalized)
+    row1 = rot6d[..., 0, :]
+    row1 = row1 / (np.linalg.norm(row1, axis=-1, keepdims=True) + 1e-8)
+
+    # Second row (orthogonalized and normalized)
+    row2 = rot6d[..., 1, :]
+    row2 = row2 - np.sum(row1 * row2, axis=-1, keepdims=True) * row1
+    row2 = row2 / (np.linalg.norm(row2, axis=-1, keepdims=True) + 1e-8)
+
+    # Third row (cross product)
+    row3 = np.cross(row1, row2)
+
+    # Stack into rotation matrix (as rows)
+    R = np.stack([row1, row2, row3], axis=-2)
+    return R
+
+def compute_rel_actions_local(actions):
+    """
+    Computes relative actions for a dual-arm robot using SE(3) transformation.
+    Both translation and rotation deltas are in the local (tooltip) frame.
+
+    Follows UMI 'relative' mode: T_rel = T_base^(-1) @ T_action
+    Reference: https://github.com/real-stanford/universal_manipulation_interface
+
+    actions[0] is used as the base pose, actions[1:] are the targets.
+
+    Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
+    Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
+    Output per-arm: [delta_xyz (3), delta_rotvec (3), gripper (1)] = 7
+    Dual-arm output: [n_actions-1, arm1 (7) + arm2 (7)] = [n_actions-1, 14]
+    """
+    if isinstance(actions, torch.Tensor):
+        actions = actions.numpy()
+
+    base = actions[0]
+    targets = actions[1:]
+    n_targets = targets.shape[0]
+    rel_actions = np.zeros((n_targets, 14))
+
+    for arm in range(2):
+        i, o = arm * 10, arm * 7
+
+        # Build 4x4 base pose matrix
+        T_base = np.eye(4)
+        T_base[:3, :3] = rotation_6d_to_matrix(base[i + 3 : i + 9])
+        T_base[:3, 3] = base[i : i + 3]
+
+        # Build 4x4 target pose matrices
+        T_targets = np.zeros((n_targets, 4, 4))
+        T_targets[:, :3, :3] = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
+        T_targets[:, :3, 3] = targets[:, i : i + 3]
+        T_targets[:, 3, 3] = 1.0
+
+        # SE(3) relative: T_rel = T_base^(-1) @ T_target
+        T_base_inv = np.linalg.inv(T_base)
+        T_rel = T_base_inv @ T_targets
+
+        # Extract components
+        rel_actions[:, o : o + 3] = T_rel[:, :3, 3]
+        rel_actions[:, o + 3 : o + 6] = Rotation.from_matrix(T_rel[:, :3, :3]).as_rotvec()
+        rel_actions[:, o + 6] = targets[:, i + 9]
+
+    return rel_actions
 
 def read_images(image_dir: str, file_pattern: str) -> np.ndarray:
     """Reads images from a directory into a NumPy array."""
@@ -209,8 +297,6 @@ def process_episode(dataset, episode_path, states_name, actions_name, subtask_pr
         if left_images.size > 0:
             frame["observation.images.main"] = left_images[i]
         # Use synthetic timestamps (frame_idx / fps) to match video PTS values.
-        # The video is encoded with frame-based PTS, so we must use the same
-        # timestamps for proper frame retrieval by the video backend.
         timestamp_sec = i / 30.0  # fps = 30
         dataset.add_frame(frame, task=subtask_prompt, timestamp=timestamp_sec)
 
@@ -336,27 +422,32 @@ def _discover_episodes(data_path: Path):
 
 
 def convert_data_to_lerobot(
-    data_path: Path, output_path: Path, repo_id: str, *, push_to_hub: bool = False
+    data_path: Path, repo_id: str, *, push_to_hub: bool = False
 ):
     """
     Converts a single Zarr store with episode boundaries to a LeRobotDataset.
 
     Args:
         data_path: The path to the source dataset directory.
-        output_path: The path where the LeRobot dataset will be created.
         repo_id: The repository ID for the dataset on the Hugging Face Hub.
         push_to_hub: Whether to push the dataset to the Hub after conversion.
+    
+    Note:
+        Output location is determined by HF_LEROBOT_HOME environment variable.
+        Set it before running Python to customize the output path:
+            export HF_LEROBOT_HOME=/your/custom/path
     """
-    final_output_path = output_path / repo_id
+    final_output_path = os.path.join(HF_LEROBOT_HOME, repo_id)
     print(f"Output path: {final_output_path}")
-    if final_output_path.exists():
+    print(f"(To change output location, set HF_LEROBOT_HOME env var before running)")
+    
+    if os.path.exists(final_output_path):
         print(f"Removing existing dataset at {final_output_path}")
         shutil.rmtree(final_output_path)
 
     # Initialize a LeRobotDataset with the desired features.
     dataset = LeRobotDataset.create(
         repo_id=repo_id,
-        root=final_output_path,
         use_videos=True,
         robot_type="dvrk",
         fps=30,
@@ -396,7 +487,7 @@ def convert_data_to_lerobot(
         image_writer_threads=20,
         tolerance_s=1.0,
         batch_encoding_size=12,
-        video_backend="pyav"  # Use pyav to encode as H.264 (decord-compatible)
+        video_backend="torchcodec",  # Uses AV1 codec
     )
     # measure time taken to complete the process
     start_time = time.time()
@@ -413,18 +504,18 @@ def convert_data_to_lerobot(
             dataset.save_episode()
         except Exception as e:
             print(f"Error processing episode {episode_dir}: {e}")
+            traceback.print_exc()
             dataset.clear_episode_buffer()
     print(f"Total episodes processed: {len(episodes)}")
 
     # Compute and write normalization stats for relative actions and states
-    _compute_and_write_stats(final_output_path)
+    _compute_and_write_stats(Path(final_output_path))
 
     print(f"suturing processed successful, time taken: {time.time() - start_time}")
 
 
 def main(
     data_path: Path = Path("/path/to/dataset"),
-    output_path: Path = Path("."),
     repo_id: str = "suturebot_lerobot",
     *,
     push_to_hub: bool = False,
@@ -434,16 +525,20 @@ def main(
 
     Args:
         data_path: The path to the source dataset.
-        output_path: The path where the LeRobot dataset will be created.
-        repo_id: The dataset name (used as subdirectory under output_path).
+        repo_id: The dataset name (subdirectory name for the output).
         push_to_hub: If True, uploads the dataset to the Hub after conversion.
+    
+    Note:
+        To customize output location, set HF_LEROBOT_HOME before running:
+            export HF_LEROBOT_HOME=/your/custom/path
+            python convert_suturebot_to_lerobot_v3.py --data-path ...
     """
     if not data_path.exists():
         print(f"Error: The provided path does not exist: {data_path}")
         print("Please provide a valid path to your data.")
         return
 
-    convert_data_to_lerobot(data_path, output_path, repo_id, push_to_hub=push_to_hub)
+    convert_data_to_lerobot(data_path, repo_id, push_to_hub=push_to_hub)
 
 
 if __name__ == "__main__":
