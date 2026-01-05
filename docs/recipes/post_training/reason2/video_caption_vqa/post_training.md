@@ -88,7 +88,7 @@ A standardized external benchmark for AV visual question answering [1](#referenc
 
 ## 2. Zero-Shot Evaluation
 
-We evaluate Cosmos Reason 1, Cosmos Reason 2, and Qwen3-VL models in zero-shot mode to establish baselines and select a base model for post-training. Based on this evaluation, we select **Cosmos Reason 2-8B** as the base model due to its strong reasoning capabilities, competitive VQA performance, and alignment with NVIDIA's Cosmos ecosystem.
+We evaluate Cosmos Reason 2 and Qwen3-VL models in zero-shot mode to establish baselines and select a base model for post-training. Based on this evaluation, we select **Cosmos Reason 2-8B** as the base model due to its strong reasoning capabilities, competitive VQA performance, and alignment with NVIDIA's Cosmos ecosystem.
 
 > **Note:** BLEU scores for the base model are presented in [Section 5: Re-Evaluation](#5-re-evaluation), where we compare zero-shot vs. fine-tuned performance.
 
@@ -96,32 +96,31 @@ We evaluate Cosmos Reason 1, Cosmos Reason 2, and Qwen3-VL models in zero-shot m
 
 The following table shows the performance of different models on the AV-VQA benchmark:
 
-| Category | Cosmos Reason 1-7B | Cosmos Reason 2-2B | Cosmos Reason 2-8B | Qwen3-VL-2B | Qwen3-VL-8B |
-|----------|-------------------|-------------------|-------------------|-------------|-------------|
-| Actions & Motion | 83.4% | 71.0% | 79.6% | 59.4% | 79.6% |
-| Characters & Interactions | 93.3% | 83.6% | 89.5% | 82.9% | 88.2% |
-| Ego Behavior | 79.4% | 76.4% | 75.7% | 58.8% | 72.3% |
-| Key Objects | 87.8% | 76.6% | 86.1% | 63.4% | 81.8% |
-| Scene Description | 80.7% | 80.1% | 81.7% | 66.6% | 80.2% |
-| Spatial Temporal | 65.7% | 57.0% | 65.1% | 51.9% | 58.8% |
-| **Overall** | **82.1%** | **74.7%** | **80.1%** | **64.1%** | **77.5%** |
+| Category | Cosmos Reason 2-2B | Cosmos Reason 2-8B | Qwen3-VL-2B | Qwen3-VL-8B |
+|----------|-------------------|-------------------|-------------|-------------|
+| Actions & Motion | 71.0% | 79.6% | 59.4% | 79.6% |
+| Characters & Interactions | 83.6% | 89.5% | 82.9% | 88.2% |
+| Ego Behavior | 76.4% | 75.7% | 58.8% | 72.3% |
+| Key Objects | 76.6% | 86.1% | 63.4% | 81.8% |
+| Scene Description | 80.1% | 81.7% | 66.6% | 80.2% |
+| Spatial Temporal | 57.0% | 65.1% | 51.9% | 58.8% |
+| **Overall** | **74.7%** | **80.1%** | **64.1%** | **77.5%** |
 
 **Evaluation Details:**
 
 - Total predictions: 5,050
 - Videos evaluated: 455
 - Parseable rate: 100.0%
-- Mean per-video accuracy: 82.0% (±12.8%) for Reason 1-7B, 74.6% (±12.6%) for 2B, 80.1% (±12.9%) for 8B, 64.1% (±14.5%) for Qwen3-VL-2B, 77.4% (±12.8%) for Qwen3-VL-8B
+- Mean per-video accuracy: 74.6% (±12.6%) for Reason 2-2B, 80.1% (±12.9%) for Reason 2-8B, 64.1% (±14.5%) for Qwen3-VL-2B, 77.4% (±12.8%) for Qwen3-VL-8B
 
 ### 2.2 LingoQA Benchmark Results
 
 | Model | LingoQA Score |
 |-------|---------------|
-| Cosmos Reason 1-7B | **0.690** |
 | Cosmos Reason 2-2B | 0.640 |
 | Cosmos Reason 2-8B | 0.632 |
 | Qwen3-VL-2B-Instruct | 0.608 |
-| Qwen3-VL-8B-Instruct | 0.694 |
+| Qwen3-VL-8B-Instruct | **0.694** |
 
 ### Summary
 
