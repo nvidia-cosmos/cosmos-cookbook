@@ -56,11 +56,8 @@ import os
 import pandas as pd
 from PIL import Image
 import time
-import random
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
 from lerobot.constants import HF_LEROBOT_HOME
-
-from lerobot.datasets.utils import write_info
 
 states_name = [
     "psm1_pose.position.x",
@@ -269,23 +266,6 @@ def _discover_episodes(data_path: Path):
     return episodes
 
 
-def _split_test_episodes(episodes, *, seed=42, test_per_instruction=3):
-    random.seed(seed)
-    random.shuffle(episodes)
-    test_bucket = {}
-    test_episodes = []
-    train_episodes = []
-    for episode in episodes:
-        instruction = episode[1]
-        test_bucket.setdefault(instruction, [])
-        if len(test_bucket[instruction]) < test_per_instruction:
-            test_bucket[instruction].append(episode)
-            test_episodes.append(episode)
-        else:
-            train_episodes.append(episode)
-    return test_episodes, train_episodes
-
-
 def convert_data_to_lerobot(
     data_path: Path, repo_id: str, *, push_to_hub: bool = False
 ):
@@ -354,13 +334,7 @@ def convert_data_to_lerobot(
         print("Warning: No episodes found.")
         return
 
-    test_episodes, train_episodes = _split_test_episodes(episodes)
-    ordered_episodes = test_episodes + train_episodes
-
-    total_episode_count = len(ordered_episodes)
-    test_episode_count = len(test_episodes)
-
-    for episode_dir, subtask_prompt in tqdm(ordered_episodes, desc="Processing episodes"):
+    for episode_dir, subtask_prompt in tqdm(episodes, desc="Processing episodes"):
         try:
             dataset = process_episode(
                 dataset, episode_dir, states_name, actions_name, subtask_prompt
@@ -369,15 +343,7 @@ def convert_data_to_lerobot(
         except Exception as e:
             print(f"Error processing episode {episode_dir}: {e}")
             dataset.clear_episode_buffer()
-    print(f"Total episodes processed: {total_episode_count}")
-    ## write split in meta
-    dataset.meta.info["splits"] = {
-        "train": f"{test_episode_count}:{total_episode_count}",
-        "test": f"0:{test_episode_count}",
-    }
-    write_info(dataset.meta.info, dataset.root)
-
-    print("Custom split configuration saved!")
+    print(f"Total episodes processed: {len(episodes)}")
     print(f"suturing processed successful, time taken: {time.time() - start_time}")
 
 
