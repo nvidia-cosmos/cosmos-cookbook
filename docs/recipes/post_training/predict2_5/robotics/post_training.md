@@ -134,194 +134,159 @@ The finetuning wil be performed at 720x960 resolution (to match 720p pre-trainin
 
 Before executing the training script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)), which cover both model configuration and data processing:
 
-### 3.1 embodiment_tags.py
+### 3.1 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
 ```python
-    # file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
-    DVRK = "dvrk"
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
+index e31586f..9133347 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
+@@ -48,3 +48,5 @@ class EmbodimentTag(Enum):
+     """
+     AGIBOT = "agibot"
++
++    DVRK = "dvrk"
 ```
 
-### 3.2 action.py
+### 3.2 cosmos_predict2/experiments/base/action.py
 ```python
-# file: cosmos_predict2/experiments/base/action.py
-import copy
-ac_predict2p5_video2world_2b_suturebot_training = copy.deepcopy(ac_reason_embeddings_rectified_flow_2b_256_320)
-ac_predict2p5_video2world_2b_suturebot_training['job']['name'] = 'def_ac_predict2p5_video2world_2b_suturebot_training'
-ac_predict2p5_video2world_2b_suturebot_training['defaults'] = [
-    DEFAULT_CHECKPOINT.experiment,
-    {"override /model": "action_conditioned_video2world_fsdp_rectified_flow"},
-    {"override /net": "cosmos_v1_2B_action_conditioned"},
-    {"override /conditioner": "action_conditioned_video_conditioner"},
-    {"override /data_train": "suturebot_train"},
-    {"override /data_val": "suturebot_val"},
-    "_self_",
-]
-ac_predict2p5_video2world_2b_suturebot_training['model']['config']['net']['action_dim'] = 20
-ac_predict2p5_video2world_2b_suturebot_training['dataloader_train'] = {'batch_size': 4}
-ac_predict2p5_video2world_2b_suturebot_training['optimizer']['lr'] = 7.5e-6 # assuming 4 nodes
+diff --git a/cosmos_predict2/experiments/base/action.py b/cosmos_predict2/experiments/base/action.py
+index 30dbc91..c219ba0 100644
+--- a/cosmos_predict2/experiments/base/action.py
++++ b/cosmos_predict2/experiments/base/action.py
+@@ -125,9 +125,30 @@ ac_reason_embeddings_rectified_flow_2b_256_320 = LazyDict(
+     flags={"allow_objects": True},
+ )
 
-cs = ConfigStore.instance()
++import copy
++ac_predict2p5_video2world_2b_suturebot_training = copy.deepcopy(ac_reason_embeddings_rectified_flow_2b_256_320)
++ac_predict2p5_video2world_2b_suturebot_training['job']['name'] = 'def_ac_predict2p5_video2world_2b_suturebot_training'
++ac_predict2p5_video2world_2b_suturebot_training['defaults'] = [
++    DEFAULT_CHECKPOINT.experiment,
++    {"override /model": "action_conditioned_video2world_fsdp_rectified_flow"},
++    {"override /net": "cosmos_v1_2B_action_conditioned"},
++    {"override /conditioner": "action_conditioned_video_conditioner"},
++    {"override /data_train": "suturebot_train"},
++    {"override /data_val": "suturebot_val"},
++    "_self_",
++]
++ac_predict2p5_video2world_2b_suturebot_training['model']['config']['net']['action_dim'] = 20
++ac_predict2p5_video2world_2b_suturebot_training['dataloader_train'] = {'batch_size': 4}
++ac_predict2p5_video2world_2b_suturebot_training['optimizer']['lr'] = 7.5e-6 # assuming 4 nodes
++
++print(f"+++++++++++++++++++++++++++++")
++print(ac_predict2p5_video2world_2b_suturebot_training)
++print(f"+++++++++++++++++++++++++++++")
++
++
+ cs = ConfigStore.instance()
 
-for _item in [ac_reason_embeddings_rectified_flow_2b_256_320, ac_predict2p5_video2world_2b_suturebot_training]:
+-for _item in [ac_reason_embeddings_rectified_flow_2b_256_320]:
++for _item in [ac_reason_embeddings_rectified_flow_2b_256_320, ac_predict2p5_video2world_2b_suturebot_training]:
+     # Get the experiment name from the global variable
+     experiment_name = [name.lower() for name, value in globals().items() if value is _item][0]  # noqa: RUF015
 ```
 
-### 3.3 data.py
+### 3.3 cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
 ```python
-# file: cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
+diff --git a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
+index 6b45363..f7316ed 100644
+--- a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
++++ b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
+@@ -93,6 +93,48 @@ bridge_13frame_480_640_val_dataset = L(Dataset_3D)(
+     mode="val",
+ )
 
-# experiment for action-sequence video prediction
-base_path_suturebot_ds = "/SutureBot"
-# Construct modality configs and transforms
-from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import LeRobotDataset
-from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.groot_configs import (
-    construct_modality_config_and_transforms,
-)
-modality_configs, train_transform, test_transform = construct_modality_config_and_transforms(
-    num_frames=13, embodiment="dvrk", downscaled_res=False
-)
++# experiment for action-sequence video prediction
++base_path_suturebot_ds = "/SutureBot"
++# Construct modality configs and transforms
++from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import LeRobotDataset
++from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.groot_configs import (
++    construct_modality_config_and_transforms,
++)
++modality_configs, train_transform, test_transform = construct_modality_config_and_transforms(
++    num_frames=13, embodiment="dvrk", downscaled_res=False
++)
++
++suturebot_train_dataset = L(LeRobotDataset)(
++    num_frames=13,
++    time_division_factor=4,
++    time_division_remainder=1,
++    max_pixels=1920 * 1080,
++    data_file_keys=("video",),
++    image_file_extension=("jpg", "jpeg", "png", "webp"),
++    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
++    repeat=1,
++    args=None,
++    dataset_path=base_path_suturebot_ds,
++    data_split="train",
++    embodiment="dvrk",
++    downscaled_res=False,
++)
++
++suturebot_val_dataset = L(LeRobotDataset)(
++    num_frames=13,
++    time_division_factor=4,
++    time_division_remainder=1,
++    max_pixels=1920 * 1080,
++    data_file_keys=("video",),
++    image_file_extension=("jpg", "jpeg", "png", "webp"),
++    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
++    repeat=1,
++    args=None,
++    dataset_path=base_path_suturebot_ds,
++    data_split="test",
++    embodiment="dvrk",
++    downscaled_res=False,
++)
 
-suturebot_train_dataset = L(LeRobotDataset)(
-    num_frames=13,
-    time_division_factor=4,
-    time_division_remainder=1,
-    max_pixels=1920 * 1080,
-    data_file_keys=("video",),
-    image_file_extension=("jpg", "jpeg", "png", "webp"),
-    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
-    repeat=1,
-    args=None,
-    dataset_path=base_path_suturebot_ds,
-    data_split="train",
-    embodiment="dvrk",
-    downscaled_res=False,
-)
+ # ------------------------------------------------------------
 
-suturebot_val_dataset = L(LeRobotDataset)(
-    num_frames=13,
-    time_division_factor=4,
-    time_division_remainder=1,
-    max_pixels=1920 * 1080,
-    data_file_keys=("video",),
-    image_file_extension=("jpg", "jpeg", "png", "webp"),
-    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
-    repeat=1,
-    args=None,
-    dataset_path=base_path_suturebot_ds,
-    data_split="test",
-    embodiment="dvrk",
-    downscaled_res=False,
-)
+@@ -153,6 +195,19 @@ bridge_13frame_480_640_val_dataloader = L(DataLoader)(
+     drop_last=True,
+ )
 
-...
++suturebot_train_dataloader = L(DataLoader)(
++    dataset=suturebot_train_dataset,
++    sampler=L(get_sampler)(dataset=suturebot_train_dataset),
++    batch_size=1,
++    drop_last=True,
++)
++suturebot_val_dataloader = L(DataLoader)(
++    dataset=suturebot_val_dataset,
++    sampler=L(get_sampler)(dataset=suturebot_val_dataset),
++    batch_size=1,
++    drop_last=True,
++)
++
 
-suturebot_train_dataloader = L(DataLoader)(
-    dataset=suturebot_train_dataset,
-    sampler=L(get_sampler)(dataset=suturebot_train_dataset),
-    batch_size=1,
-    drop_last=True,
-)
-suturebot_val_dataloader = L(DataLoader)(
-    dataset=suturebot_val_dataset,
-    sampler=L(get_sampler)(dataset=suturebot_val_dataset),
-    batch_size=1,
-    drop_last=True,
-)
+ def register_training_and_val_data():
+     cs = ConfigStore.instance()
+@@ -199,6 +254,19 @@ def register_training_and_val_data():
+         node=bridge_13frame_480_640_val_dataloader,
+     )
 
-...
-
-    cs.store(
-        group="data_train",
-        package="dataloader_train",
-        name="suturebot_train",
-        node=suturebot_train_dataloader,
-    )
-    cs.store(
-        group="data_val",
-        package="dataloader_val",
-        name="suturebot_val",
-        node=suturebot_val_dataloader,
-    )
++    cs.store(
++        group="data_train",
++        package="dataloader_train",
++        name="suturebot_train",
++        node=suturebot_train_dataloader,
++    )
++    cs.store(
++        group="data_val",
++        package="dataloader_val",
++        name="suturebot_val",
++        node=suturebot_val_dataloader,
++    )
++
+     # Register gr00t_customized_gr1 data
+     if register_gr00t_customized_gr1_data is not None:
+         register_gr00t_customized_gr1_data()
 ```
 
-### 3.4 groot_configs.py
-```python
-# file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-    elif embodiment == "dvrk":
-        timestep_interval = 3  # LZ: downsampling rate
-        delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
-        config = {
-            "video": ModalityConfig(
-                delta_indices=delta_indices,
-                modality_keys=["video.observation.images.main"],
-            ),
-            "state": ModalityConfig(
-                delta_indices=[0],
-                modality_keys=["state.observation.state"],
-            ),
-            "action": ModalityConfig(
-                delta_indices=delta_indices,
-                modality_keys=['action.action']
-            ),
-        }
-
-...
-
-    elif embodiment == "dvrk":
-        # width = 512 if not downscaled_res else 256
-        # height = 320 if not downscaled_res else 256
-        width = 960 if not downscaled_res else 256
-        height = 720 if not downscaled_res else 256
-
-...
-
-# further, replace "min_max" by "mean_std" (w.r.t. normalization_modes, 4x times):
-    normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
-```
-
-### 3.5 video.py
-```python
-# file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
-# replace line
-split_keys = key.split(".")
-# with
-split_keys = key.split(".", 1)
-```
-
-### 3.6 concat.py
-```python
-# file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
-# replace line
-split_keys = key.split(".")
-# with
-split_keys = key.split(".", 1)
-```
-
-### 3.7 state_action.py
-```python
-# file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
-# replace lines 
-         # Check that all state keys specified in apply_to have their modality_metadata
-         for key in self.apply_to:
--            split_key = key.split(".")
-+            split_key = key.split(".", 1)
-             assert len(split_key) == 2, "State keys should have two parts: 'modality.key'"
-             if key not in self.modality_metadata:
-                 modality, state_key = split_key
-@@ -389,7 +389,7 @@ class StateActionTransform(InvertibleModalityTransform):
-
-         # Check that all state keys specified in normalization_modes have their statistics in state_statistics
-         for key in self.normalization_modes:
--            split_key = key.split(".")
-+            split_key = key.split(".", 1)
-
-         for key in self.normalization_modes:
--            modality, state_key = key.split(".")
-+            modality, state_key = key.split(".", 1)
-```
-
-### 3.8 groot_configs.py (1/3 files in total for relative action computation):
+### 3.4 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-index 24a2c1d..6f14d54 100644
+index 9932214..6f14d54 100644
 --- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
 +++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
 @@ -23,6 +23,7 @@ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset imp
@@ -332,40 +297,431 @@ index 24a2c1d..6f14d54 100644
      StateActionToTensor,
      StateActionTransform,
  )
-@@ -170,6 +171,7 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-                 normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
+@@ -127,6 +128,23 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+                 ],
+             ),
+         }
++    elif embodiment == "dvrk":
++        timestep_interval = 3  # LZ: downsampling rate
++        delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
++        config = {
++            "video": ModalityConfig(
++                delta_indices=delta_indices,
++                modality_keys=["video.observation.images.main"],
++            ),
++            "state": ModalityConfig(
++                delta_indices=[0],
++                modality_keys=["state.observation.state"],
++            ),
++            "action": ModalityConfig(
++                delta_indices=delta_indices,
++                modality_keys=['action.action']
++            ),
++        }
+
+     video_modality, state_modality, action_modality = config["video"], config["state"], config["action"]
+     if embodiment == "gr1" or embodiment == "gr1_video_only":
+@@ -135,6 +153,11 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+     elif embodiment == "agibot":
+         width = 640 if not downscaled_res else 256
+         height = 480 if not downscaled_res else 256
++    elif embodiment == "dvrk":
++        # width = 512 if not downscaled_res else 256
++        # height = 320 if not downscaled_res else 256
++        width = 960 if not downscaled_res else 256
++        height = 720 if not downscaled_res else 256
+
+     train_transform = ComposedModalityTransform(
+         transforms=[
+@@ -145,12 +168,13 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+             StateActionToTensor(apply_to=state_modality.modality_keys),
+             StateActionTransform(
+                 apply_to=state_modality.modality_keys,
+-                normalization_modes={key: "min_max" for key in state_modality.modality_keys},
++                normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
              ),
              StateActionToTensor(apply_to=action_modality.modality_keys),
 +            RelativeActionTransform(apply_to=action_modality.modality_keys),
              StateActionTransform(
                  apply_to=action_modality.modality_keys,
-                 normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
-@@ -191,6 +193,7 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-                 normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
+-                normalization_modes={key: "min_max" for key in action_modality.modality_keys},
++                normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
+             ),
+             ConcatTransform(
+                 video_concat_order=video_modality.modality_keys,
+@@ -166,12 +190,13 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+             StateActionToTensor(apply_to=state_modality.modality_keys),
+             StateActionTransform(
+                 apply_to=state_modality.modality_keys,
+-                normalization_modes={key: "min_max" for key in state_modality.modality_keys},
++                normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
              ),
              StateActionToTensor(apply_to=action_modality.modality_keys),
 +            RelativeActionTransform(apply_to=action_modality.modality_keys),
              StateActionTransform(
                  apply_to=action_modality.modality_keys,
-                 normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
+-                normalization_modes={key: "min_max" for key in action_modality.modality_keys},
++                normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
+             ),
+             ConcatTransform(
+                 video_concat_order=video_modality.modality_keys,
 ```
 
-### 3.9 state_action.py (2/3 files in total for relative action computation):
+### 3.5 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
 ```python
-    # file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py 
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
+index 5eb4a32..5b022a8 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
+@@ -127,7 +127,7 @@ class VideoTransform(ModalityTransform):
+         super().set_metadata(dataset_metadata)
+         self.original_resolutions = {}
+         for key in self.apply_to:
+-            split_keys = key.split(".")
++            split_keys = key.split(".", 1)
+             assert len(split_keys) == 2, f"Invalid key: {key}. Expected format: modality.key"
+             sub_key = split_keys[1]
+             if sub_key in dataset_metadata.modalities.video:
 ```
 
-### 3.10 dataset.py (3/3 files in total for relative action computation):
+### 3.6 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
 ```python
-  # file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
+index 9f9b537..9804503 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
+@@ -73,7 +73,7 @@ class ConcatTransform(InvertibleModalityTransform):
+         grouped_keys = {}
+         for key in data.keys():
+             try:
+-                modality, _ = key.split(".")
++                modality, _ = key.split(".", 1)
+             except:  # noqa: E722
+                 ### Handle language annotation special case
+                 if "annotation" in key:
+@@ -173,7 +173,7 @@ class ConcatTransform(InvertibleModalityTransform):
+         return self.apply(data)
+
+     def get_modality_metadata(self, key: str) -> StateActionMetadata:
+-        modality, subkey = key.split(".")
++        modality, subkey = key.split(".", 1)
+         assert self.dataset_metadata is not None, "Metadata not set"
+         modality_config = getattr(self.dataset_metadata.modalities, modality)
+         assert subkey in modality_config, f"{subkey=} not found in {modality_config=}"
 ```
-next:
+
+### 3.7 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
 ```python
-  # add bugfix in dataset.py
+ diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
+index 06c82d9..6572892 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
+@@ -18,6 +18,7 @@ import random
+ from typing import Any, ClassVar
+
+ import numpy as np
++from scipy.spatial.transform import Rotation
+
+ # import pytorch3d.transforms as pt
+ import torch
+@@ -34,6 +35,131 @@ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.b
+ )
+
+
++def rotation_6d_to_matrix(rot6d):
++    """
++    Convert 6D rotation representation to rotation matrix.
++    6D rotation is the first two ROWS of a rotation matrix (row-major format),
++    orthonormalized via Gram-Schmidt.
++
++    This matches the incoming dVRK/SutureBot data format:
++        [r11, r12, r13, r21, r22, r23] = [row1, row2]
++
++    Args:
++        rot6d: Array of shape (..., 6) containing [row1 (3), row2 (3)]
++
++    Returns:
++        Rotation matrices of shape (..., 3, 3)
++    """
++    shape = rot6d.shape[:-1]
++    rot6d = rot6d.reshape(*shape, 2, 3)
++
++    # First row (normalized)
++    row1 = rot6d[..., 0, :]
++    row1 = row1 / (np.linalg.norm(row1, axis=-1, keepdims=True) + 1e-8)
++
++    # Second row (orthogonalized and normalized)
++    row2 = rot6d[..., 1, :]
++    row2 = row2 - np.sum(row1 * row2, axis=-1, keepdims=True) * row1
++    row2 = row2 / (np.linalg.norm(row2, axis=-1, keepdims=True) + 1e-8)
++
++    # Third row (cross product)
++    row3 = np.cross(row1, row2)
++
++    # Stack into rotation matrix (as rows)
++    R = np.stack([row1, row2, row3], axis=-2)
++    return R
++
++
++def compute_rel_actions(actions):
++    """
++    Computes relative actions for a dual-arm robot.
++    Global translation delta, local (tooltip frame) rotation delta in 6D format.
++
++    Reference: https://github.com/real-stanford/universal_manipulation_interface
++
++    actions[0] is used as the base pose, actions[1:] are the targets.
++
++    Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
++    Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
++    Output per-arm: [delta_xyz (3), delta_rot6d (6), gripper (1)] = 10
++    Dual-arm output: [n_actions-1, arm1 (10) + arm2 (10)] = [n_actions-1, 20]
++
++    The relative rotation R_rel = R_base.T @ R_target is represented in 6D format
++    (first two rows of the rotation matrix, flattened).
++    """
++    if isinstance(actions, torch.Tensor):
++        actions = actions.numpy()
++
++    base = actions[0]
++    targets = actions[1:]
++    n_targets = targets.shape[0]
++    rel_actions = np.zeros((n_targets, 20))
++
++    for arm in range(2):
++        i = arm * 10  # Both input and output use same stride
++        R_base = rotation_6d_to_matrix(base[i + 3 : i + 9])
++        R_tgt = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
++
++        # Global translation delta
++        rel_actions[:, i : i + 3] = targets[:, i : i + 3] - base[i : i + 3]
++        # Relative rotation in 6D format (first 2 rows of R_rel, flattened)
++        R_rel = R_base.T @ R_tgt  # [n_targets, 3, 3]
++        rel_actions[:, i + 3 : i + 9] = R_rel[:, :2, :].reshape(n_targets, 6)
++        # Gripper (absolute value, not delta)
++        rel_actions[:, i + 9] = targets[:, i + 9]
++
++    return rel_actions
++
++
++def compute_rel_actions_local(actions):
++    """
++    Computes relative actions for a dual-arm robot using SE(3) transformation.
++    Both translation and rotation deltas are in the local (tooltip) frame.
++
++    Follows UMI 'relative' mode: T_rel = T_base^(-1) @ T_action
++    Reference: https://github.com/real-stanford/universal_manipulation_interface
++
++    actions[0] is used as the base pose, actions[1:] are the targets.
++
++    Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
++    Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
++    Output per-arm: [delta_xyz (3), delta_rotvec (3), gripper (1)] = 7
++    Dual-arm output: [n_actions-1, arm1 (7) + arm2 (7)] = [n_actions-1, 14]
++    """
++    if isinstance(actions, torch.Tensor):
++        actions = actions.numpy()
++
++    base = actions[0]
++    targets = actions[1:]
++    n_targets = targets.shape[0]
++    rel_actions = np.zeros((n_targets, 14))
++
++    for arm in range(2):
++        i, o = arm * 10, arm * 7
++
++        # Build 4x4 base pose matrix
++        T_base = np.eye(4)
++        T_base[:3, :3] = rotation_6d_to_matrix(base[i + 3 : i + 9])
++        T_base[:3, 3] = base[i : i + 3]
++
++        # Build 4x4 target pose matrices
++        T_targets = np.zeros((n_targets, 4, 4))
++        T_targets[:, :3, :3] = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
++        T_targets[:, :3, 3] = targets[:, i : i + 3]
++        T_targets[:, 3, 3] = 1.0
++
++        # SE(3) relative: T_rel = T_base^(-1) @ T_target
++        T_base_inv = np.linalg.inv(T_base)
++        T_rel = T_base_inv @ T_targets
++
++        # Extract components
++        rel_actions[:, o : o + 3] = T_rel[:, :3, 3]
++        rel_actions[:, o + 3 : o + 6] = Rotation.from_matrix(T_rel[:, :3, :3]).as_rotvec()
++        rel_actions[:, o + 6] = targets[:, i + 9]
++
++    return rel_actions
++
++
+ class RotationTransform:
+     """Adapted from https://github.com/real-stanford/diffusion_policy/blob/548a52bbb105518058e27bf34dcf90bf6f73681a/diffusion_policy/model/common/rotation_transformer.py"""
+
+@@ -379,7 +505,7 @@ class StateActionTransform(InvertibleModalityTransform):
+
+         # Check that all state keys specified in apply_to have their modality_metadata
+         for key in self.apply_to:
+-            split_key = key.split(".")
++            split_key = key.split(".", 1)
+             assert len(split_key) == 2, "State keys should have two parts: 'modality.key'"
+             if key not in self.modality_metadata:
+                 modality, state_key = split_key
+@ -389,7 +515,7 @@ class StateActionTransform(InvertibleModalityTransform):
+
+         # Check that all state keys specified in normalization_modes have their statistics in state_statistics
+         for key in self.normalization_modes:
+-            split_key = key.split(".")
++            split_key = key.split(".", 1)
+             assert len(split_key) == 2, "State keys should have two parts: 'modality.key'"
+             modality, state_key = split_key
+             assert hasattr(dataset_statistics, modality), f"{modality} statistics not found"
+@@ -414,7 +540,7 @@ class StateActionTransform(InvertibleModalityTransform):
+
+         # Initialize the normalizers
+         for key in self.normalization_modes:
+-            modality, state_key = key.split(".")
++            modality, state_key = key.split(".", 1)
+             # If the state has a nontrivial rotation, we need to handle it more carefully
+             # For absolute rotations, we need to convert them to the target representation and normalize them using min_max mode,
+             # since we can infer the bounds by the representation
+@@ -501,6 +627,36 @@ class StateActionTransform(InvertibleModalityTransform):
+         return data
+
+
++class RelativeActionTransform(ModalityTransform):
++    """
++    Converts absolute actions to relative actions using compute_rel_actions.
++
++    This transform is used for dVRK (da Vinci Research Kit) datasets where:
++    - Input: 20D absolute actions [T, 20] (xyz + 6D_rot + gripper per arm)
++    - Output: 20D relative actions [T-1, 20] (delta_xyz + delta_rot6d + gripper per arm)
++
++    The relative actions are computed using global translation delta and local
++    (tooltip frame) rotation delta. The rotation delta is represented in 6D format
++    (first two rows of the relative rotation matrix).
++    """
++
++    apply_to: list[str] = Field(..., description="The action keys to transform to relative actions.")
++
++    def apply(self, data: dict[str, Any]) -> dict[str, Any]:
++        for key in self.apply_to:
++            if key not in data:
++                continue
++            actions = data[key]
++            # Convert to numpy if tensor
++            is_tensor = isinstance(actions, torch.Tensor)
++            actions_np = actions.numpy() if is_tensor else actions
++            # Compute relative actions: [T, 20] -> [T-1, 20]
++            rel_actions = compute_rel_actions(actions_np)
++            # Convert back to tensor if input was tensor
++            data[key] = torch.from_numpy(rel_actions).to(actions.dtype) if is_tensor else rel_actions
++        return data
++
++
+ class StateActionPerturbation(ModalityTransform):
+     """
+     Class for state or action perturbation.
 ```
-next:
+
+### 3.8 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
 ```python
-  # add fix_torchvision_av_timestamp_matching.patch
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
+index 58a777f..9996f36 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
+@@ -107,7 +107,7 @@ def get_frames_by_timestamps(
+         # Note: closest key frame timestamp is usally smaller than `first_ts` (e.g. key frame can be the first frame of the video)
+         # for details on what `seek` is doing see: https://pyav.basswood-io.com/docs/stable/api/container.html?highlight=inputcontainer#av.container.InputContainer.seek
+         reader.seek(first_ts, keyframes_only=True)
+-        # load all frames until last requested frame
++        # load all frames from first to last requested timestamp
+         loaded_frames = []
+         loaded_ts = []
+         for frame in reader:
+@@ -116,11 +116,18 @@ def get_frames_by_timestamps(
+             loaded_ts.append(current_ts)
+             if current_ts >= last_ts:
+                 break
+-            if len(loaded_frames) >= len(timestamps):
+-                break
+         reader.container.close()
+         reader = None
+-        frames = np.array(loaded_frames)
++
++        if len(loaded_frames) == 0:
++            raise ValueError(f"No frames loaded from {video_path} for timestamps {timestamps[0]:.3f} to {timestamps[-1]:.3f}")
++
++        # Match requested timestamps to closest loaded frames (like decord/opencv backends do)
++        loaded_ts = np.array(loaded_ts).reshape(-1, 1)  # (num_loaded, 1)
++        requested_ts = np.array(timestamps)  # (num_requested,)
++        # Find closest loaded frame for each requested timestamp
++        indices = np.abs(loaded_ts - requested_ts).argmin(axis=0)
++        frames = np.array([loaded_frames[i] for i in indices])
+         return frames.transpose(0, 2, 3, 1)
+     else:
+         raise NotImplementedError
+```
+
+
+### 3.9 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+```python
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+index 0aed5bb..7d0c1f0 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+@@ -1066,8 +1066,8 @@ class LeRobotDataset(torch.utils.data.Dataset):
+         self.lerobot_datasets = []
+         for p in self.dataset_path:
+             config, train_transform, test_transform = construct_modality_config_and_transforms(
+-                num_frames=(num_frames + 1), embodiment=embodiment, downscaled_res=downscaled_res
+-            )  # Add an additional prefix frame as baseline to compute delta actions
++                num_frames=num_frames, embodiment=embodiment, downscaled_res=downscaled_res
++            )
+             self.lerobot_datasets.append(
+                 WrappedLeRobotSingleDataset(
+                     dataset_path=p,
+@@ -1098,7 +1098,7 @@ class LeRobotDataset(torch.utils.data.Dataset):
+
+         video = lerobot_data["video"]
+         video_frames = []
+-        for i in range(1, video.shape[1]):  # Skip first frame (used only as action baseline)
++        for i in range(video.shape[1]):
+             frame = video[:, i, :, :]
+             frame = Image.fromarray(frame.permute(1, 2, 0).numpy())
+             video_frames.append(frame)
+@@ -1106,24 +1106,17 @@ class LeRobotDataset(torch.utils.data.Dataset):
+             print(
+                 f"Warning: Expected {self.num_frames} frames, but got {len(video_frames)} frames. Randomly sampling an item instead."
+             )
+-            return self.__getitem__(random.randint(0, len(self) - 1))  # noqa: F821
++            return self.__getitem__(randint(0, len(self) - 1))  # noqa: F821
+         video_frames = np.stack([np.array(frame, dtype=np.uint8) for frame in video_frames])
+
+-        # Cumulative baselined delta actions (old version)
+-        # NOTE: Need to tweak this after (num_frames + 1) change
+-        # delta_actions = lerobot_data["action"][1:] - lerobot_data["action"][[0]]
+-        # Chunked cumulative baselined delta actions (for chunked action architecture)
++        # Actions are now relative after RelativeActionTransform in the pipeline
++        # The transform converts 20D absolute actions to 20D relative actions
+         actions = lerobot_data["action"]
+-        delta_actions = []
+-        for t in range(1, len(actions) - 1, self.time_division_factor):
+-            delta_actions.append(actions[t : t + self.time_division_factor] - actions[t - 1])
+-        delta_actions = torch.cat(delta_actions, dim=0)
+
+         data = {
+             "prompt": prompt,
+             "video": torch.from_numpy(video_frames).permute(3, 0, 1, 2),
+-            # "action": torch.from_numpy(delta_actions),
+-            "action": (delta_actions),
++            "action": actions,
+             "ai_caption": "",
+             "text": prompt,
+             "t5_text_embeddings": torch.zeros(512, 1024, dtype=torch.bfloat16).cuda(),
+@@ -1143,3 +1136,4 @@ class LeRobotDataset(torch.utils.data.Dataset):
+
+     def __len__(self):
+         return sum([len(d) for d in self.lerobot_datasets]) * self.repeat
++
 ```
 
 ## 4. Finetuning
@@ -374,7 +730,6 @@ Now start the finetuning, using 4 nodes (32 GPUs):
 mkdir logs
 sbatch run_finetuning.sh
 ```
-Notice: some checkpoint downloads will occur from nvidia/Cosmos-Experimental on HF. TODO: no public access yet? Ask Jingyi.
 
 Run the finetuning for 20,000 steps.
 
