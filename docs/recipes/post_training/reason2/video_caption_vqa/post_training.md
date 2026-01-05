@@ -107,6 +107,7 @@ The following table shows the performance of different models on the AV-VQA benc
 | **Overall** | **82.1%** | **74.7%** | **80.1%** | **64.1%** | **77.5%** |
 
 **Evaluation Details:**
+
 - Total predictions: 5,050
 - Videos evaluated: 455
 - Parseable rate: 100.0%
@@ -134,19 +135,19 @@ The zero-shot evaluation reveals capability gaps—particularly in Spatial-Tempo
 
 Based on gaps identified in zero-shot evaluation, we curate training data from three sources:
 
-**Source 1: Human-Annotated Captions** [2]
+### Source 1: Human-Annotated Captions [2]
 
-About 12K video clips (20 seconds each) with high-quality human annotations. Each caption is organized into three components: (1) *General description*—ego-vehicle behavior, environmental conditions (scene type, time of day, weather, road conditions), and key road users/infrastructure (vehicles, pedestrians, cyclists, traffic lights, signs); (2) *Driving difficulty*—scenario complexity based on driver attention required and rarity/risk; (3) *Notice*—salient events such as traffic signals, road user interactions, and abnormal behaviors.
+About 12K video clips (20 seconds each) with high-quality human annotations. Each caption is organized into three components: (1) _General description_—ego-vehicle behavior, environmental conditions (scene type, time of day, weather, road conditions), and key road users/infrastructure (vehicles, pedestrians, cyclists, traffic lights, signs); (2) _Driving difficulty_—scenario complexity based on driver attention required and rarity/risk; (3) _Notice_—salient events such as traffic signals, road user interactions, and abnormal behaviors.
 
-**Source 2: Computer Vision Auto-Captioned Data** [3]
+### Source 2: Computer Vision Auto-Captioned Data [3]
 
 Designed for VLA modeling, this labeling framework encodes causal structure through reasoning traces and driving decisions. High-level driving decisions map directly to ego-vehicle trajectories, with reasoning traces capturing only causal factors motivating each decision. We use keyframe-based labeling centered on meta-action transitions.
 
 This source includes ~11K human-labeled and ~1.1M auto-labeled samples. Human annotators identify critical components, filter invalid data (illegal/unsafe behaviors), and produce reasoning traces linking causal factors to decisions. Auto-labeling uses VLMs to generate structured annotations (driving decision, critical components, causal explanation), incorporating video inputs plus auxiliary signals (trajectory, dynamic states, meta-actions).
 
-**Source 3: Reasoning SFT Data**
+### Source 3: Reasoning SFT Data
 
-Targets AV reasoning capability for Cosmos Reason 2. Previously curated for prediction/navigation tasks, this dataset extends perceptual information with explicit reasoning traces. Each annotation follows a structured JSON format: (1) *General description*—ego driving behavior, rationale, environmental context, and critical objects; (2) *Driving difficulty explanation*—scenario complexity assessment; (3) *Timestamped notices*—noteworthy events with temporal annotations (e.g., "Between 8.3s–11.3s: Approaching level crossing"). Emphasizes causal reasoning by linking observations to driving decisions.
+Targets AV reasoning capability for Cosmos Reason 2. Previously curated for prediction/navigation tasks, this dataset extends perceptual information with explicit reasoning traces. Each annotation follows a structured JSON format: (1) _General description_—ego driving behavior, rationale, environmental context, and critical objects; (2) _Driving difficulty explanation_—scenario complexity assessment; (3) _Timestamped notices_—noteworthy events with temporal annotations (e.g., "Between 8.3s–11.3s: Approaching level crossing"). Emphasizes causal reasoning by linking observations to driving decisions.
 
 ### Example Annotations
 
@@ -369,6 +370,7 @@ python run_model_inference.py \
 ```
 
 **Arguments:**
+
 - `--model-name`: Name of the model (e.g., "Cosmos-Reason2-8B")
 - `--checkpoint`: Path to the fine-tuned checkpoint directory (e.g., "outputs/uber/ckpt-250")
 - `--dataset`: Dataset name to evaluate on (e.g., "AV_CAPTION")
@@ -387,6 +389,7 @@ python plot_metric.py \
 ```
 
 **Arguments for `plot_metric.py`:**
+
 - `--dataset`: Dataset name (e.g., "AV_CAPTION")
 - `--base-model`: Base model name for comparison (e.g., "Cosmos-Reason2-8B")
 - `--metric`: Metric to visualize (e.g., "bleu", "vqa_accuracy", "lingoqa")
@@ -399,6 +402,7 @@ python plot_metric.py \
 <img src="assets/bleu_results.png" alt="BLEU Score Results" width="800">
 
 **Key Observations:**
+
 - **Peak Performance**: Checkpoints 200 and 350 achieve the highest BLEU score (0.125), representing a **10.6% improvement** over the zero-shot baseline (0.113).
 - **Stability**: BLEU scores remain relatively stable across checkpoints (range: 0.113–0.125), with most fine-tuned checkpoints exceeding baseline, suggesting consistent lexical quality throughout training.
 - **Training Dynamics**: Rapid improvement from baseline (0.113) to ckpt-100 (0.122), with peak performance at ckpt-200 and 350. Some fluctuation in later checkpoints, with ckpt-500 (0.123) maintaining near-peak performance.
@@ -408,6 +412,7 @@ python plot_metric.py \
 <img src="assets/mcq_vqa_results.png" alt="MCQ-based VQA Results" width="800">
 
 **Key Observations:**
+
 - **Best Checkpoint**: ckpt-250 achieves the highest overall accuracy (80.85%), representing a **0.67 percentage point improvement** over the zero-shot baseline (80.18% for Cosmos Reason 2-8B).
 - **Training Trajectory**: Performance peaks at ckpt-250, then declines through ckpt-500 (75.13%), with clear signs of overfitting beyond checkpoint 250.
 - **Category Range**: Performance varies from 64–89% across categories, with Spatial & Temporal being the most challenging (baseline: 64.35%, peak: 70.00%) and Characters & Interactions the strongest (baseline: 89.49%, peak: 89.49%).
@@ -417,14 +422,16 @@ python plot_metric.py \
 <img src="assets/lingoqa_results.png" alt="LingoQA Benchmark Results" width="800">
 
 **Key Observations:**
+
 - **Peak Performance**: ckpt-350 achieves the highest LingoQA score (77.0%), representing a **13.8 percentage point improvement** over the zero-shot baseline (63.2%).
 - **Training Trajectory**: Non-monotonic pattern—rapid improvement from baseline (63.2%) to ckpt-100 (73.4%), further gain to ckpt-150 (76.4%), dip at ckpt-200–250 (70.4%), recovery to peak at ckpt-350 (77.0%), then stabilization around 71–72%.
 - **Checkpoint Divergence**: Unlike MCQ-based VQA where ckpt-250 performs best, LingoQA peaks at ckpt-350, highlighting different optimal checkpoints for internal vs. external benchmarks.
 - **Generalization**: Substantial improvement from 63.2% to 77.0% demonstrates that fine-tuning significantly enhances performance on external benchmarks, validating generalization beyond the training distribution.
 
 **Summary:**
+
 - **Fine-Tuning Success**: All three metrics show improvements over zero-shot baselines—BLEU (+10.6%), MCQ-based VQA (+0.67pp), and LingoQA (+13.8pp)—demonstrating effective domain adaptation.
-- **Optimal Checkpoints**: 
+- **Optimal Checkpoints**:
   - **ckpt-200 & 350**: Best for BLEU score (0.125)
   - **ckpt-250**: Best for internal MCQ-based VQA (80.85% overall accuracy)
   - **ckpt-350**: Best for external LingoQA benchmark (77.0%)
@@ -459,14 +466,14 @@ These explorations underscore that post-training is fundamentally an iterative r
 
 ## Related Work
 
-This recipe builds upon our earlier exploratory work: [SFT for AV Video Captioning and VQA with Cosmos Reason 1](../reason1/av_video_caption_vqa/post_training.md). That recipe demonstrated the viability of fine-tuning vision-language models for AV captioning using public datasets and LLM-as-judge evaluation. This recipe scales the approach with Uber's production data, a more rigorous multi-metric evaluation benchmark, and Cosmos Reason 2's enhanced spatial reasoning capabilities.
+This recipe builds upon our earlier exploratory work: [SFT for AV Video Captioning and VQA with Cosmos Reason 1](../../reason1/av_video_caption_vqa/post_training.md). That recipe demonstrated the viability of fine-tuning vision-language models for AV captioning using public datasets and LLM-as-judge evaluation. This recipe scales the approach with Uber's production data, a more rigorous multi-metric evaluation benchmark, and Cosmos Reason 2's enhanced spatial reasoning capabilities.
 
 ---
 
 ## References
 
-[1] Marcu, A.-M., Chen, L., Hünermann, J., Karnsund, A., Hanotte, B., Chidananda, P., Nair, S., Badrinarayanan, V., Kendall, A., Shotton, J., Arani, E., & Sinavski, O. (2024). **LingoQA: Visual Question Answering for Autonomous Driving**. *ECCV 2024*.
+[1] Marcu, A.-M., Chen, L., Hünermann, J., Karnsund, A., Hanotte, B., Chidananda, P., Nair, S., Badrinarayanan, V., Kendall, A., Shotton, J., Arani, E., & Sinavski, O. (2024). **LingoQA: Visual Question Answering for Autonomous Driving**. _ECCV 2024_.
 
-[2] NVIDIA. **Cosmos-Reason1: From Physical Common Sense To Embodied Reasoning**. *arxiv:2503.15558*.
+[2] NVIDIA. **Cosmos-Reason1: From Physical Common Sense To Embodied Reasoning**. _arxiv:2503.15558_.
 
-[3] NVIDIA. **Alpamayo-R1: Bridging Reasoning and Action Prediction for Generalizable Autonomous Driving in the Long Tail**. *arxiv:2511.00088*.
+[3] NVIDIA. **Alpamayo-R1: Bridging Reasoning and Action Prediction for Generalizable Autonomous Driving in the Long Tail**. _arxiv:2511.00088_.

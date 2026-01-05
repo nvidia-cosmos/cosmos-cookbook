@@ -28,7 +28,6 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 | Dec 20 | [Vision AI Gallery](gallery/vision_ai_inference.md) | Cosmos Transfer 2.5 |
 | Dec 20 | [Style-Guided Video Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) | Cosmos Transfer 2.5 |
 
-
 ## Open Source Community Platform
 
 The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
