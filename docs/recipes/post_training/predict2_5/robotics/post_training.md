@@ -399,7 +399,58 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python cosmos_predict2/_src/predict2/action/
 
 ### 1.7 Run Inference and Evaluation Script
 
+The `inference_dvrk.py` script runs autoregressive video generation for policy evaluation. It:
 
+1. Loads only the **first frame** from the dataset as initial conditioning
+2. Generates frames using ground-truth actions from the dataset
+3. Uses each chunk's **last predicted frame** as conditioning for the next chunk
+4. Stitches all chunks into a full episode video
+
+This demonstrates policy evaluation: the GT actions serve as a proxy for any action source. Replace them with policy-predicted actions to evaluate a learned policy.
+
+#### Convert Checkpoint
+
+Training produces distributed checkpoints (DCP). Convert to PyTorch format:
+
+```bash
+CHECKPOINTS_DIR=/your/checkpoint/dir
+CHECKPOINT_ITER=iter_000020000
+
+python scripts/convert_distcp_to_pt.py \
+    $CHECKPOINTS_DIR/$CHECKPOINT_ITER \
+    $CHECKPOINTS_DIR/$CHECKPOINT_ITER
+```
+
+This outputs `model.pt`, `model_ema_fp32.pt`, and `model_ema_bf16.pt`. Use `model_ema_bf16.pt` for inference.
+
+#### Run Inference
+
+```bash
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python scripts/inference_dvrk.py \
+    --experiment=ac_predict2p5_video2world_2b_suturebot_training \
+    --ckpt_path $CHECKPOINTS_DIR/$CHECKPOINT_ITER/model_ema_bf16.pt \
+    --dataset_path /path/to/SutureBot-LeRobot \
+    --save_root results/dvrk_eval \
+    --data_split test \
+    --episode_ids 0,1,2 \
+    --save_comparison
+```
+
+The `--save_comparison` flag generates side-by-side videos (GT left, predicted right).
+
+#### Swapping in a Policy
+
+To evaluate a policy instead of GT actions, modify the inference loop in `inference_dvrk.py`:
+
+```python
+# Current (GT actions from dataset):
+actions = data["action"].numpy()
+
+# With a policy:
+actions = policy.predict(current_frame)  # Returns (12, action_dim)
+```
+
+The model accepts **normalized** action sequences matching the expected shape `(chunk_size, action_dim)` and following the **relative action formulation** used in this recipe.
 
 Checkpoints are saved to:
 
