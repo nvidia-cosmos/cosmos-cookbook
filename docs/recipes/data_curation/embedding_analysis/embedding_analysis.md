@@ -38,7 +38,7 @@ Many people are familiar with the [K-Means clustering algorithm](https://en.wiki
 
 **Files**
 
-1. .pkl sample data file
+1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
 2. Jupyter Notebook implementation
 
 **Recipe Steps**
@@ -52,7 +52,7 @@ Many people are familiar with the [K-Means clustering algorithm](https://en.wiki
 
 ### 1 - Input data format / structure
 
-Once you’ve run Cosmos Curator on your target dataset, you will be able to manipulate the embedding vectors produced for each of the subdivided clips into various forms and structures which you may use for analysis. This will work better if the clips are of a fixed stride, so that the clips are consistent, and that the window is fairly short, about the time to take one action, with 5 seconds being a reasonable starting point.
+Once you’ve run Cosmos Curator on your target dataset, you will be able to manipulate the embedding vectors produced for each of the subdivided clips into various forms and structures which you may use for analysis. This will work better if the clips are processed with a fixed stride curator option, and that the window is fairly short.  This way the embedding sequence produced by Cosmos Curator is dense enough.  Five seconds is probably a reasonable starting point, but you may try decreasing the window size if your data contain higher speed movements, or increase it if the movements are slow.
 
 For the simplicity of this demonstration, we assume you can gather the embedding vectors per clip that you are interested into a list of 
 
@@ -81,7 +81,7 @@ To make it easier to follow the example, we’re including a sample real-world d
 import pickle
 from pathlib import Path
 
-pkl_path = Path("trajectories.pkl")
+pkl_path = Path("embedding_analysis_trajectories.pkl")
 trajectories = pickle.load(open(pkl_path, "rb"))
 
 ```
@@ -115,7 +115,7 @@ def subdivide_trajectory(trajectory: np.ndarray, n_points: int) -> np.ndarray:
     return out
 
 interpolated_trajectories = np.asarray(
-    [subdivide_trajectory(np.asarray(all_video_data), 6) for traj in trajectories]
+    [subdivide_trajectory(np.asarray(traj), 6) for traj in trajectories]
 )
 
 
@@ -175,6 +175,8 @@ centers = np.asarray(model.cluster_centers_)
 Finally, let’s check the results. First, we’ll visualize our clusters with [matplotlib](https://matplotlib.org/):
 
 ```py
+import matplotlib.pyplot as plt
+
 flat_points = trajectories_2d.reshape(-1, 2)
 flat_labels = np.repeat(traj_labels, t_len)
 
