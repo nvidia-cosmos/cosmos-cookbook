@@ -9,6 +9,10 @@
 
 This guide provides instructions on running post-training with the action conditioned Cosmos Predict 2.5 model for surgical robotics control and soft tissue simulation.
 
+## Abstract
+
+This recipe demonstrates how to finetune Cosmos Predict 2.5 for action-conditioned video generation in surgical robotics, enabling the model to predict future visual frames based on robot control inputs. We leverage the publicly available [SutureBot dataset](https://huggingface.co/datasets/jchen396/SutureBot), which provides high-quality surgical video data paired with robot state and action sequences from a da Vinci Research Kit (dVRK) platform. The resulting model can generate realistic soft tissue deformation and surgical tool interactions, providing a foundation for simulation-based training and policy learning in autonomous surgical systems.
+
 ## Motivation
 
 TODO While the base Cosmos Predict 2.5 model excels at general video generation, sports content demands specialized understanding of athletic dynamics and game rules. Post-training addresses critical gaps in **player kinematic realism and physics**, ensuring natural body movements and accurate ball trajectories. The adapted model achieves higher **rule-coherence scores** by respecting sport-specific constraints like offside lines, field boundaries, and valid player positions. Additionally, post-training significantly improves **identity consistency**, maintaining stable player appearances, jersey numbers, and team colors throughout generated sequences—essential for realistic sports simulation and analysis applications.
@@ -115,6 +119,9 @@ ls -1 *.zip | parallel 'echo "Unzipping {}"; unzip -q -o "{}"'
 Run the following script to convert the SutureBot dataset to LeRobot format:
 ```bash
 python3 -u convert_suturebot_to_lerobot.py --input-path /path/to/dataset/SutureBot --output-path /path/to/dataset/SutureBot-LeRobot
+
+TODO: replace script with convert_suturebot_to_lerobot_v2.py
+TODO: add script compute_rel_action_stats.py
 ```
 The script creates a training and a test split.
 
@@ -299,7 +306,50 @@ next:
 -            modality, state_key = key.split(".")
 +            modality, state_key = key.split(".", 1)
 ```
+next (3 files in total for relative action computation):
+```python
+diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
+index 24a2c1d..6f14d54 100644
+--- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
++++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
+@@ -23,6 +23,7 @@ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset imp
+ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.base import ComposedModalityTransform
+ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.concat import ConcatTransform
+ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.state_action import (
++    RelativeActionTransform,
+     StateActionToTensor,
+     StateActionTransform,
+ )
+@@ -170,6 +171,7 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+                 normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
+             ),
+             StateActionToTensor(apply_to=action_modality.modality_keys),
++            RelativeActionTransform(apply_to=action_modality.modality_keys),
+             StateActionTransform(
+                 apply_to=action_modality.modality_keys,
+                 normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
+@@ -191,6 +193,7 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
+                 normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
+             ),
+             StateActionToTensor(apply_to=action_modality.modality_keys),
++            RelativeActionTransform(apply_to=action_modality.modality_keys),
+             StateActionTransform(
+                 apply_to=action_modality.modality_keys,
+                 normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
+```
+next:
+```python
+    # file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py 
+```
 
+next:
+```python
+  # file: cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+```
+next:
+```python
+  # add bugfix in dataset.py
+```
 
 Now start the finetuning, using 4 nodes (32 GPUs):
 ```bash
