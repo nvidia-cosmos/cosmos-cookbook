@@ -36,11 +36,11 @@ Data Format:
 
 Usage:
 ------
-    python dvrk_zarr_to_lerobot_v2.py --data-path /path/to/dataset --repo-id username/dataset-name
+    python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --output-path /path/to/output --repo-id dataset-name
 
 Dependencies:
 -------------
-- lerobot v0.3.3
+- lerobot >= 0.4.0
 - tyro
 - pandas
 - PIL
@@ -58,7 +58,6 @@ import pandas as pd
 from PIL import Image
 import time
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
-from lerobot.constants import HF_LEROBOT_HOME
 
 from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.state_action import (
     compute_rel_actions_local
@@ -337,25 +336,27 @@ def _discover_episodes(data_path: Path):
 
 
 def convert_data_to_lerobot(
-    data_path: Path, repo_id: str, *, push_to_hub: bool = False
+    data_path: Path, output_path: Path, repo_id: str, *, push_to_hub: bool = False
 ):
     """
     Converts a single Zarr store with episode boundaries to a LeRobotDataset.
 
     Args:
-        data_path: The path to the Zarr store file/directory.
+        data_path: The path to the source dataset directory.
+        output_path: The path where the LeRobot dataset will be created.
         repo_id: The repository ID for the dataset on the Hugging Face Hub.
         push_to_hub: Whether to push the dataset to the Hub after conversion.
     """
-    final_output_path = os.path.join(HF_LEROBOT_HOME, repo_id)
-    print(final_output_path)
-    if os.path.exists(final_output_path):
+    final_output_path = output_path / repo_id
+    print(f"Output path: {final_output_path}")
+    if final_output_path.exists():
         print(f"Removing existing dataset at {final_output_path}")
         shutil.rmtree(final_output_path)
 
     # Initialize a LeRobotDataset with the desired features.
     dataset = LeRobotDataset.create(
         repo_id=repo_id,
+        root=final_output_path,
         use_videos=True,
         robot_type="dvrk",
         fps=30,
@@ -416,14 +417,15 @@ def convert_data_to_lerobot(
     print(f"Total episodes processed: {len(episodes)}")
 
     # Compute and write normalization stats for relative actions and states
-    _compute_and_write_stats(Path(final_output_path))
+    _compute_and_write_stats(final_output_path)
 
     print(f"suturing processed successful, time taken: {time.time() - start_time}")
 
 
 def main(
     data_path: Path = Path("/path/to/dataset"),
-    repo_id: str = "jchen396/openh_test",
+    output_path: Path = Path("."),
+    repo_id: str = "suturebot_lerobot",
     *,
     push_to_hub: bool = False,
 ):
@@ -431,8 +433,9 @@ def main(
     Main entry point for the conversion script.
 
     Args:
-        data_path: The path to the dataset.
-        repo_id: The desired Hugging Face Hub repository ID (e.g., 'username/dataset-name').
+        data_path: The path to the source dataset.
+        output_path: The path where the LeRobot dataset will be created.
+        repo_id: The dataset name (used as subdirectory under output_path).
         push_to_hub: If True, uploads the dataset to the Hub after conversion.
     """
     if not data_path.exists():
@@ -440,12 +443,7 @@ def main(
         print("Please provide a valid path to your data.")
         return
 
-    if repo_id == "your-username/your-dataset-name":
-        print(
-            "Warning: Using the default repo_id. Please specify your own with --repo-id."
-        )
-
-    convert_data_to_lerobot(data_path, repo_id, push_to_hub=push_to_hub)
+    convert_data_to_lerobot(data_path, output_path, repo_id, push_to_hub=push_to_hub)
 
 
 if __name__ == "__main__":
