@@ -398,7 +398,7 @@ python plot_metric.py \
 
 **BLEU Scores:**
 
-<img src="assets/bleu_results.png" alt="BLEU Score Results" width="800">
+<img src="assets/bleu_results.png" alt="BLEU Score Results" width="400">
 
 **Key Observations:**
 
@@ -418,7 +418,7 @@ python plot_metric.py \
 
 **LingoQA Benchmark Results:**
 
-<img src="assets/lingoqa_results.png" alt="LingoQA Benchmark Results" width="800">
+<img src="assets/lingoqa_results.png" alt="LingoQA Benchmark Results" width="400">
 
 **Key Observations:**
 
