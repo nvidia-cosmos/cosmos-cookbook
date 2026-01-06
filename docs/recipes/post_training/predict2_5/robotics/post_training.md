@@ -9,7 +9,7 @@
 |-----------|--------------|-------------------|
 | [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Surgical Robotics |
 
-This recipe builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/)￼by reproducing its core methodology with the improved Cosmos Predict 2.5 model, replacing the original Cosmos Predict 2 backbone while preserving the overall training approach.
+This recipe builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) by reproducing its core methodology with the improved Cosmos Predict 2.5 model, replacing the original Cosmos Predict 2 backbone while preserving the overall training approach.
 
 Building on this foundation, we post‑train the Cosmos Predict world foundation model (WFM) to function as a learned simulator for policy evaluation. Developers are guided on how to finetune an action‑conditioned variant of Cosmos Predict 2.5 using domain‑specific surgical robotic data, leveraging the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset, which contains endoscopic video paired with kinematic action sequences from the da Vinci Research Kit (dVRK). The resulting model implicitly captures both robot kinematics and task‑relevant environment dynamics, including realistic deformation and tool–deformable object interactions. This learned model forms the basis for simulation‑based policy evaluation, executed via a software‑in‑the‑loop rollout loop for autonomous surgical systems. While demonstrated on a surgical robotic use case, this recipe generalizes to other robotic systems and broader embodied AI applications.
 
@@ -19,7 +19,7 @@ Building on this foundation, we post‑train the Cosmos Predict world foundation
 - [Preparing Data](#2-preparing-data)
 - [Model Configuration](#3-model-configuration)
 - [Finetuning](#4-finetuning)
-- [Inference](#5-run-inference-and-evaluation-script)
+- [Inference & Evaluation](#5-inference--evaluation)
 - [Results](#6-results)
 
 
@@ -82,7 +82,7 @@ Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
 
 ### 2.1 Dataset Location
 
-The SutureBot dataset should be organized in a directory structure that you'll specify in the configuration. Set your dataset path to point to your dataset root folder:
+The [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset should be organized in a directory structure that you'll specify in the configuration. Set your dataset path to point to your dataset root folder:
 
 ```
 /path/to/dataset/SutureBot
@@ -91,7 +91,7 @@ The SutureBot dataset should be organized in a directory structure that you'll s
 Replace this path with the actual download location of the SutureBot dataset. The dataset should contain da Vinci robot 
 video clips stored as individual JPG files at 640x480 resolution.
 
-### 2.2 Dataset Downloads
+### 2.2 Dataset Download
 In your environment (conda, docker, etc.), install the HuggingFace library:
 ```python
 python -m pip install --upgrade huggingface_hub
@@ -117,19 +117,20 @@ cd /path/to/dataset/SutureBot
 ls -1 *.zip | parallel 'echo "Unzipping {}"; unzip -q -o "{}"'
 ```
 
-Then run the following script to convert the SutureBot dataset to LeRobot format (notice lerobot==0.3.3 is expected). The output path is defined by the env variable \$HF_LEROBOT_HOME. Override \$HF_LEROBOT_HOME to change the location of the output.  
+Now run the following script to convert the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset to the LeRobot format (notice lerobot==0.3.3 is expected). Notice that the output path is retrieved from the env variable \$HF_LEROBOT_HOME. Override \$HF_LEROBOT_HOME to change the location of the output.  
 ```bash
 # optional: export HF_LEROBOT_HOME=/path/to/dataset/SutureBot/LeRobot
 python3 -u convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset/SutureBot 
 ```
-The script will save the SutureBot dataset in LeRobot format at whatever was specified in HF_LEROBOT_HOME.
+The script will save the SutureBot dataset in LeRobot format at the location as specified by $HF_LEROBOT_HOME.
 
 ## 3. Model Configuration
 The finetuning wil be performed at 720x960 resolution (to match 720p pre-training) with 12 frames prediction horizon.
 
-Before executing the training script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)), which cover both model configuration and data processing:
+Before executing the finetuning script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)). Those changes will address both model configuration and [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) data processing:
 
 ### 3.1 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
+Rationale: Register the embodiment 'dvrk'.
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
 index e31586f..9133347 100644
@@ -143,6 +144,7 @@ index e31586f..9133347 100644
 ```
 
 ### 3.2 cosmos_predict2/experiments/base/action.py
+Rationale: Configure the 2B Cosmos-predict 2.5 model for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
 ```python
 diff --git a/cosmos_predict2/experiments/base/action.py b/cosmos_predict2/experiments/base/action.py
 index 30dbc91..c219ba0 100644
@@ -182,6 +184,7 @@ index 30dbc91..c219ba0 100644
 ```
 
 ### 3.3 cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
+Rationale: Define the data loading for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
 index 6b45363..f7316ed 100644
@@ -279,6 +282,7 @@ index 6b45363..f7316ed 100644
 ```
 
 ### 3.4 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
+Rationale: Add more configuration required for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset (e.g., resolution, delta action computation, normalization).
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
 index 9932214..6f14d54 100644
@@ -363,6 +367,7 @@ index 9932214..6f14d54 100644
 ```
 
 ### 3.5 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
+Rationale: A small bugfix on the Cosmos OSS code.
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
 index 5eb4a32..5b022a8 100644
@@ -380,6 +385,7 @@ index 5eb4a32..5b022a8 100644
 ```
 
 ### 3.6 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
+Rationale: A small bugfix on the Cosmos OSS code.
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
 index 9f9b537..9804503 100644
@@ -406,6 +412,7 @@ index 9f9b537..9804503 100644
 ```
 
 ### 3.7 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
+Rationale: Functions to compute the kinematic delta action representation following [Stanford's UMI implementation](https://github.com/real-stanford/universal_manipulation_interface). 
 ```python
  diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
 index 06c82d9..6572892 100644
@@ -618,6 +625,7 @@ index 06c82d9..6572892 100644
 ```
 
 ### 3.8 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
+Rationale: A bugfix on the Cosmos OSS code (occurs in case dataset videos in mp4 format use AV1 codec).
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
 index 58a777f..9996f36 100644
@@ -658,6 +666,7 @@ index 58a777f..9996f36 100644
 
 
 ### 3.9 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
+Rationale: Minor code changes to facilitate kinematic delta action representation following [Stanford's UMI implementation](https://github.com/real-stanford/universal_manipulation_interface).
 ```python
 diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
 index 0aed5bb..7d0c1f0 100644
@@ -720,7 +729,7 @@ index 0aed5bb..7d0c1f0 100644
 ```
 
 ## 4. Finetuning
-Now start the finetuning, using 4 nodes (32 GPUs):
+With the code changes applied, we are set to start the finetuning, using 4 nodes (32 GPUs). We recommend using at least 1 node with 8 GPUs for finetuning the 2B Cosmos model.
 ```bash
 mkdir logs
 sbatch run_finetuning.sh
@@ -735,9 +744,9 @@ cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/cosmos_predict_v
 
 ## 5 Inference & Evaluation
 
-This recipe is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates within Cosmos against real-world execution. Across three SutureBot tasks and six VLA models, that approach achieved a strong positive correlation with the real-world dVRK rollouts (Pearson r = 0.718, p < 0.001).
+This recipe is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates in Cosmos simulation against real-world robot execution. Across three SutureBot tasks and six VLA models, that approach achieved a strong positive correlation with the real-world dVRK rollouts (Pearson r = 0.718, p < 0.001).
 
-However, the public SutureBot dataset lacks the failure trajectories used in the original study to balance training. Without this negative data, WFMs tend to hallucinate success (false positives). Therefore, instead of replicating the full policy rollout validation, this recipe demonstrates how to run open-loop inference on held-out test data. This generates video outputs that users can visually compare against ground truth to assess the model's kinematic faithfulness and physical realism.
+Notice that the public SutureBot dataset lacks the failure trajectories used in the [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) to balance training. Without this negative data, WFMs will tend to hallucinate success (false positives). Therefore, instead of replicating the full policy rollout validation, this recipe demonstrates how to run open-loop inference on held-out test data. This generates video outputs that users can visually compare against ground truth to assess the model's kinematic faithfulness and physical realism.
 
 The `inference_dvrk.py` script runs autoregressive video generation for policy evaluation. It:
 
@@ -769,7 +778,7 @@ This conversion will create three files:
 
 
 ### 5.2 Run Inference
-
+Run model inference using the latest checkpoint from the finetuning step above. The script will generate several rollouts given the ground truth kinematic action trajectories and an initial frame, both selected from the dataset test split.
 ```bash
 CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python scripts/inference_dvrk.py \
     --experiment=ac_predict2p5_video2world_2b_suturebot_training \
@@ -785,9 +794,9 @@ The `--save_comparison` flag generates side-by-side videos (GT left, predicted r
 
 > For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
 
-### 5.3 Swapping in a Policy
+### 5.3 Swapping in a Surgical Policy
 
-To evaluate a policy instead of GT actions, modify the inference loop in `inference_dvrk.py`:
+To evaluate a surgical policy (a VLA model) instead of GT actions, modify the inference loop in `inference_dvrk.py` as follows:
 
 ```python
 # Current (GT actions from dataset):
@@ -797,7 +806,7 @@ actions = data["action"].numpy()
 actions = policy.predict(current_frame)  # Returns (12, action_dim)
 ```
 
-The model accepts **normalized** action sequences matching the expected shape `(chunk_size, action_dim)` and following the **relative action formulation** used in this recipe.
+The finetuned Cosmos model expects **normalized** action sequences matching the expected shape `(chunk_size, action_dim)` and following the **relative action formulation** used above in this recipe.
 
 > Note: Running Cosmos with a policy's output actions generates video rollouts (MP4 files) for manual review. To automate this evaluation process, [Cosmos-Reason2](https://github.com/nvidia-cosmos/cosmos-reason2) can be post-trained to serve as a judge, automatically detecting task successes, failures, and physics anomalies.
 
@@ -806,8 +815,7 @@ The model accepts **normalized** action sequences matching the expected shape `(
 ## 6. Results
 
 ### Comparison: Base Model vs Post-Trained Model
-
-The LoRA post-training significantly improves the quality and realism of generated soccer videos. Below is a comparison of videos generated by the base model versus the post-trained model:
+The post-trained Cosmos-predict 2.5 model generates faithful and highly realistic rollouts as compared to the ground truth video. Below is a comparison of videos generated by the post-trained model versus the real-world ground truth videos:
 
 | Sample | Ground Truth                                                                                               | Post-Trained Model |
 |--------|------------------------------------------------------------------------------------------------------------|-------------------|
@@ -822,3 +830,4 @@ The LoRA post-training significantly improves the quality and realism of generat
 
 1. [Cosmos Predict 2.5 Model](https://github.com/nvidia-cosmos/cosmos-predict2.5) - Model weights and documentation.
 2. [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) - A Precision Framework & Benchmark For Autonomous End-to-End Suturing.
+3. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) - World foundation model-based automated online evaluation of surgical robot policy learning
