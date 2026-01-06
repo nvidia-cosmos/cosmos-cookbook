@@ -13,7 +13,7 @@ This recipe shows a minimal, reproducible way to **analyze and visualize precomp
 
 You will:
 
-1. Load `trajectories.pkl`
+1. Load sample data
 2. Interpolate data and reduce embeddings with **2D UMAP** (cosine distance)
 3. Cluster **episode trajectories** using **TimeSeriesKMeans (softDTW)** (tslearn)
 4. Visualize the results with Matplotlib
@@ -38,7 +38,9 @@ Many people are familiar with the [K-Means clustering algorithm](https://en.wiki
 
 **Files**
 
-1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
+1. Pick one of:
+  1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.json)
+  1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
 2. Jupyter Notebook implementation
 
 The instructions below were tested with the following uv + jupyter notebook setup
@@ -86,12 +88,18 @@ Note that each video may have a different number of clips, and so this cannot be
 
 To make it easier to follow the example, we’re including a sample real-world dataset from our work with robotics here, that you can download and use to follow along with our Jupyter Notebook.
 
+Load the correct data file:
+
+JSON version:
+```py
+import json
+trajectories = json.load(open("embedding_analysis_trajectories.json", "r"))
+```
+
+Pickle version:
 ```py
 import pickle
-from pathlib import Path
-
-pkl_path = Path("embedding_analysis_trajectories.pkl")
-trajectories = pickle.load(open(pkl_path, "rb"))
+trajectories = pickle.load(open("embedding_analysis_trajectories.pkl", "rb"))
 ```
 
 ### 2 - Dimensional reduction & interpolation
