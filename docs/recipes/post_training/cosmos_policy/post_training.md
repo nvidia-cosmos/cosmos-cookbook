@@ -4,7 +4,7 @@
 >
 > **Organizations:** NVIDIA, Stanford University
 >
-> Cosmos Policy website: https://research.nvidia.com/labs/dir/cosmos-policy/
+> Cosmos Policy website: <https://research.nvidia.com/labs/dir/cosmos-policy/>
 
 ## Overview
 
@@ -63,11 +63,9 @@ Cosmos Policy encodes new input/output modalities directly as latent frames with
 * **Future state values** (expected cumulative rewards)
 * **Multi-camera viewpoint images** (e.g., from third-person, wrist-mounted cameras)
 
-
 The latent sequence follows the structure $(s, a, s', V(s'))$. Below is an example of the latent sequence for RoboCasa simulation tasks. The green "conditioning subsequence" frames are what condition the model's generations; the red "target subsequence" frames are what the model is trained to denoise/generate via reverse diffusion.
 
 <video width="100%" controls autoplay loop muted playsinline src="assets/cosmos_policy_latent_diffusion_sequence.mp4"></video>
-
 
 | Position | Content | Description |
 | --- | --- | --- |
@@ -205,29 +203,32 @@ Here we discuss how to prepare the datasets for Cosmos Policy training. Skip ahe
 
 ### Downloading Preprocessed Datasets
 
-Preprocessed datasets that are ready for Cosmos Policy training are provided on Hugging Face: 
+Preprocessed datasets that are ready for Cosmos Policy training are provided on Hugging Face:
 
-* https://huggingface.co/datasets/nvidia/LIBERO-Cosmos-Policy
-* https://huggingface.co/datasets/nvidia/RoboCasa-Cosmos-Policy
-* https://huggingface.co/datasets/nvidia/ALOHA-Cosmos-Policy
+* <https://huggingface.co/datasets/nvidia/LIBERO-Cosmos-Policy>
+* <https://huggingface.co/datasets/nvidia/RoboCasa-Cosmos-Policy>
+* <https://huggingface.co/datasets/nvidia/ALOHA-Cosmos-Policy>
 
 You can download these datasets and inspect what training data for Cosmos Policy should look like.
 
 To download, run the commands below in a directory that you will use as the base datasets directory:
 
 **LIBERO:**
+
 ```bash
 hf download nvidia/LIBERO-Cosmos-Policy --repo-type dataset --local-dir LIBERO-Cosmos-Policy
 export BASE_DATASETS_DIR=$(pwd)
 ```
 
 **RoboCasa:**
+
 ```bash
 hf download nvidia/RoboCasa-Cosmos-Policy --repo-type dataset --local-dir RoboCasa-Cosmos-Policy
 export BASE_DATASETS_DIR=$(pwd)
 ```
 
 **ALOHA:**
+
 ```bash
 hf download nvidia/ALOHA-Cosmos-Policy --repo-type dataset --local-dir ALOHA-Cosmos-Policy
 export BASE_DATASETS_DIR=$(pwd)
@@ -238,6 +239,7 @@ export BASE_DATASETS_DIR=$(pwd)
 Once you have downloaded one of the datasets above, you can launch training jobs using the instructions below.
 
 **LIBERO:**
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 
@@ -249,6 +251,7 @@ uv run --extra cu128 --group libero --python 3.10 \
 ```
 
 **RoboCasa:**
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 
@@ -260,6 +263,7 @@ uv run --extra cu128 --group robocasa --python 3.10 \
 ```
 
 **ALOHA:**
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 
@@ -289,6 +293,7 @@ For reference, below are the training losses that we observed upon convergence. 
 | ALOHA | [nvidia/Cosmos-Policy-ALOHA-Predict2-2B](https://huggingface.co/nvidia/Cosmos-Policy-ALOHA-Predict2-2B) |
 
 ### Quick Start Example
+
 First, set up a Docker container following the setup instructions earlier in this guide.
 
 Then, inside the Docker container, enter a Python shell via: `uv run --extra cu128 --group libero --python 3.10 python`.
@@ -370,6 +375,7 @@ Beyond quick start inference, here are the commands you can use to run evaluatio
 
 **LIBERO:**
 We trained Cosmos Policy on four LIBERO task suites altogether in one run: LIBERO-Spatial, LIBERO-Object, LIBERO-Goal, and LIBERO-10 (also called LIBERO-Long). Below is the pretrained checkpoint:
+
 * [nvidia/Cosmos-Policy-LIBERO-Predict2-2B](https://huggingface.co/nvidia/Cosmos-Policy-LIBERO-Predict2-2B)
 
 To start evaluations with this checkpoint, run the command below, where `task_suite_name` is one of the following: `libero_spatial`, `libero_object`, `libero_goal`, `libero_10`. Each will automatically download the checkpoint above. You can set the `TRANSFORMERS_CACHE` and `HF_HOME` environment variable to change where the checkpoint files get cached.
@@ -408,6 +414,7 @@ uv run --extra cu128 --group libero --python 3.10 \
 ```
 
 Notes:
+
 * The evaluation script will run 500 trials by default (10 tasks x 50 episodes each). You can modify the number of trials per task by setting `--num_trials_per_task`. Note that the `--seed` and `--deterministic` arguments are important if you want to exactly reproduce the results in the Cosmos Policy paper. We used seeds {195, 196, 197} and `--deterministic True`. You can change these, but the results may vary slightly (and change every time you run the evaluation).
 * The evaluation script logs results locally. You can also log results in Weights & Biases by setting `--use_wandb True` and specifying `--wandb_entity <ENTITY>` and `--wandb_project <PROJECT>`.
 * The results reported in our paper were obtained using **Python 3.12.3 (and 3.10.18) and PyTorch 2.7.0** on an **NVIDIA H100 GPU**, averaged over three random seeds. Note that results may vary slightly if you use a different PyTorch version or different hardware.
@@ -415,6 +422,7 @@ Notes:
 **RoboCasa:**
 
 We trained Cosmos Policy on the RoboCasa benchmark with 24 tasks and 50 demonstrations per task. Below is the pretrained checkpoint:
+
 * [nvidia/Cosmos-Policy-RoboCasa-Predict2-2B](https://huggingface.co/nvidia/Cosmos-Policy-RoboCasa-Predict2-2B)
 
 To start evaluations with this checkpoint, run the command below, where `task_name` can be set to any RoboCasa task (e.g., `TurnOffMicrowave`). This will automatically download the checkpoint above. You can set the `TRANSFORMERS_CACHE` and `HF_HOME` environment variable to change where the checkpoint files get cached.
@@ -452,13 +460,14 @@ uv run --extra cu128 --group robocasa --python 3.10 \
 ```
 
 Notes:
+
 * The evaluation script will run 50 trials by default per task. You can modify the number of trials per task by setting `--num_trials_per_task`. Note that the `--seed` and `--deterministic` arguments are important if you want to exactly reproduce the results in the Cosmos Policy paper. We used seeds {195, 196, 197} and `--deterministic True`. You can change these, but the results may vary slightly (and change every time you run the evaluation).
 * The evaluation script logs results locally. You can also log results in Weights & Biases by setting `--use_wandb True` and specifying `--wandb_entity <ENTITY>` and `--wandb_project <PROJECT>`.
 * The results reported in our paper were obtained using **Python 3.12.3 (and 3.10.18) and PyTorch 2.7.0** on an **NVIDIA H100 GPU**, averaged over three random seeds. Note that results may vary slightly if you use a different PyTorch version or different hardware.
 
 **ALOHA:**
 
-We omit instructions for ALOHA evaluations, which are more difficult to reproduce than simulated experiments since they require identical hardware setups and environments. However, the Cosmos Policy GitHub repo includes some useful files and instructions that can be used to run the policy on a real ALOHA robot. See the repo here: https://github.com/NVlabs/cosmos-policy
+We omit instructions for ALOHA evaluations, which are more difficult to reproduce than simulated experiments since they require identical hardware setups and environments. However, the Cosmos Policy GitHub repo includes some useful files and instructions that can be used to run the policy on a real ALOHA robot. See the repo here: <https://github.com/NVlabs/cosmos-policy>
 
 ## Results
 
@@ -530,4 +539,4 @@ Cosmos Policy achieves state-of-the-art with **6× fewer demonstrations**.
 
 Cosmos Policy demonstrates that video foundation models like Cosmos-Predict2 can be effectively adapted for robotic control through latent frame injection — a simple approach that allows multiple modalities to be modeled in one unified latent diffusion sequence while requiring no architectural modifications. Despite its simplicity, Cosmos Policy achieves state-of-the-art performance on LIBERO (98.5%), RoboCasa (67.1%), and ALOHA robot tasks (93.6%).
 
-See more details on the Cosmos Policy website: https://research.nvidia.com/labs/dir/cosmos-policy/
+See more details on the Cosmos Policy website: <https://research.nvidia.com/labs/dir/cosmos-policy/>
