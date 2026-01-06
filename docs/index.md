@@ -21,12 +21,12 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Jan 6 | [Dataset Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) | Cosmos Curator |
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](recipes/post_training/reason2/video_caption_vqa/post_training.md) | Cosmos Reason 2 |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
 | Jan 1 | [Reason 2 on Brev](getting_started/brev/reason2/reason2_on_brev.md) | Cosmos Reason 2 |
 | Dec 22 | [Multiview AV Generation with World Scenario Maps](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) | Cosmos Transfer 2.5 |
 | Dec 20 | [Vision AI Gallery](gallery/vision_ai_inference.md) | Cosmos Transfer 2.5 |
-| Dec 20 | [Style-Guided Video Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) | Cosmos Transfer 2.5 |
 
 ## Open Source Community Platform
 
@@ -91,6 +91,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Workflow** | **Description**                                      | **Link**                                                                        |
 | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
+| **Analysis** | Advanced video clustering using Time Series K-Means on embedding trajectories | [Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
 
 ### **End-to-End Workflows**
 

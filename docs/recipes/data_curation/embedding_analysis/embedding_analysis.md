@@ -34,14 +34,15 @@ This guide focuses on a minimal demonstration workflow and provides a sample dat
 
 ### The Core Idea
 
-Many people are familiar with the [K-Means clustering algorithm](https://en.wikipedia.org/wiki/K-means_clustering) for automatically clustering data *points*, but by using a distance measure appropriate for time-series (like [Dynamic Time Warping (DTW)](https://en.wikipedia.org/wiki/Dynamic_time_warping), or more specifically, its differentiable variant [Soft-DTW](https://arxiv.org/abs/1703.01541)), it is possible to apply K-Means methods to entire, multidimensional time series: exactly like the data structures produced when Cosmos Curator takes a long input video, divides it into shorter clips, and then generates an embedding vector for each clip (thereby producing a “time series” of embedding vectors for each long input video).
+Many people are familiar with the [K-Means clustering algorithm](https://en.wikipedia.org/wiki/K-means_clustering) for automatically clustering data *points*, but by using a distance measure appropriate for time-series (like [Dynamic Time Warping (DTW)](https://en.wikipedia.org/wiki/Dynamic_time_warping), or more specifically, its differentiable variant [Soft-DTW](https://arxiv.org/abs/1703.01541)), it is possible to apply K-Means methods to entire, multidimensional time series: exactly like the data structures produced when Cosmos Curator takes a long input video, divides it into shorter clips, and then generates an embedding vector for each clip (thereby producing a "time series" of embedding vectors for each long input video).
 
-**Files**
+### Files
 
 1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.json)
 2. Jupyter Notebook implementation
 
 The instructions below were tested with the following uv + jupyter notebook setup
+
 ```shell
 uv init --python 3.12
 
@@ -50,11 +51,11 @@ uv add scikit-learn umap-learn scipy matplotlib jupyterlab tslearn
 uv run jupyter lab
 ```
 
-**Recipe Steps**
+### Recipe Steps
 
-1. Understand the right data format / structures  
-2. Dimensional reduction & Interpolation  
-3. Run the Time Series K-Means algorithm  
+1. Understand the right data format / structures
+2. Dimensional reduction & Interpolation
+3. Run the Time Series K-Means algorithm
 4. Inspect the results
 
 ## Performing the analysis
@@ -63,22 +64,22 @@ uv run jupyter lab
 
 Once you’ve run Cosmos Curator on your target dataset, you will be able to manipulate the embedding vectors produced for each of the subdivided clips into various forms and structures which you may use for analysis. This will work better if the clips are processed with a fixed stride curator option, and that the window is fairly short.  This way the embedding sequence produced by Cosmos Curator is dense enough.  Five seconds is probably a reasonable starting point, but you may try decreasing the window size if your data contain higher speed movements, or increase it if the movements are slow.
 
-For the simplicity of this demonstration, we assume you can gather the embedding vectors per clip that you are interested into a list of 
+For the simplicity of this demonstration, we assume you can gather the embedding vectors per clip that you are interested into a list of
 
 ```py
 # Sample of what the data structure might look like
 # all_video_data = [
-# 	[ #all clips for video 1
-# 		[1.0, 2.0, 3.0,...], # embedding vector for clip1
-# 		[1.0, 2.0, 3.0,...], # embedding vector for clip2
-# 		...
+#  [ #all clips for video 1
+#   [1.0, 2.0, 3.0,...], # embedding vector for clip1
+#   [1.0, 2.0, 3.0,...], # embedding vector for clip2
+#   ...
 # ],
 # [ #all clips for video 2
-# 		[1.0, 2.0, 3.0,...], # embedding vector for clip1
-# 		[1.0, 2.0, 3.0,...], # embedding vector for clip2
-# 		...
+#   [1.0, 2.0, 3.0,...], # embedding vector for clip1
+#   [1.0, 2.0, 3.0,...], # embedding vector for clip2
+#   ...
 # ]
-# 	...
+#  ...
 # ]
 ```
 
@@ -162,14 +163,14 @@ centers = np.asarray(model.cluster_centers_)
 ```
 
 > Why do we use Soft-DTW?
-> 
+>
 > The primary challenge when applying K-Means techniques to time series data is choosing a suitable distance metric.
-> 
-> Pointwise Euclidean distances between timeseries can fail if the two time series are shifted or distorted with respect to each other on the time-axis. > [Dynamic Time Warping](https://en.wikipedia.org/wiki/Dynamic_time_warping) (DTW) was developed to resolve this.  
+>
+> Pointwise Euclidean distances between timeseries can fail if the two time series are shifted or distorted with respect to each other on the time-axis. > [Dynamic Time Warping](https://en.wikipedia.org/wiki/Dynamic_time_warping) (DTW) was developed to resolve this.
 > ![](assets/euclidean.png)
 >
 > ![](assets/soft-dtw.png)
-> 
+>
 > [Soft-DTW](https://arxiv.org/abs/1703.01541) is a differentiable variant of regular Dynamic Time Warping.
 
 ### 4 - Inspect the results
