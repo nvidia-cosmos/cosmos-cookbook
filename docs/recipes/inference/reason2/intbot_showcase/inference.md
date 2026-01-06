@@ -11,7 +11,7 @@
 
 ## 1. Overview
 
-[IntBot](https://www.intbot.ai/) is a robotic startup company building social intelligent humanoid robots to address the structural labor shortage across service industries including hotels, airports, etc. IntBot robots elevate guest experiences by handlin routine inquiries with warm, human-like presence and expressive body language, engaging in natural conversation across 50+ languages, and providing accurate answers, directions, and local recommendations. Available 24/7 and customizable to each brand, IntBot robots reliably cover repetitive and always-on service needs, enable human staff to focus on more important tasks.
+[IntBot](https://www.intbot.ai/) is a robotic startup company building social intelligent humanoid robots to address the structural labor shortage across service industries including hotels, airports, etc. IntBot robots elevate guest experiences by handling routine inquiries with warm, human-like presence and expressive body language, engaging in natural conversation across 50+ languages, and providing accurate answers, directions, and local recommendations. Available 24/7 and customizable to each brand, IntBot robots reliably cover repetitive and always-on service needs, enable human staff to focus on more important tasks.
 
 <table>
   <tr>

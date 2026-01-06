@@ -1,0 +1,17 @@
+{
+    "weather": "Light rain",
+    "lighting": "Daytime (low\u2011contrast daylight)",
+    "road_conditions": "Wet surface with puddles",
+    "traffic_light": "N/A",
+    "traffic_sign": "A no stopping sign.\nA keep right sign.\nA directional arrow pointing straight.\nA crossroad ahead sign.\n",
+    "additional_traffic_rules": null,
+    "road_type": "Collector road - moderate speed with frequent driveways and intersections.",
+    "junction_type": "Straight segment - uninterrupted roadway with no intersections or turns",
+    "lane_type": "Single lane each direction, no turn lanes.",
+    "additional_map_rules": null,
+    "interactive_expanded_metaaction": ["Yield to VRUs", "Vehicle following"],
+    "safety_analysis": "The ego vehicle proceeds straight on the right lane of a two-lane collector road during the daytime on a wet road. The weather is lightly rainy. As the ego proceeds, it follows another vehicle ahead of it while crossing by numerous traffic signs, including a no stopping sign, a keep right sign, a directional arrow pointing straight, and a crossroad ahead sign. While proceeding, a pedestrian is seen crossing the road in front of the ego, causing the ego to slow down and yield to them.",
+    "driving_difficulty": 3,
+    "rule_violation": "False",
+    "interesting_scenario": "True"
+}

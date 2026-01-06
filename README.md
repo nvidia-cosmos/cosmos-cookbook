@@ -13,12 +13,12 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 | **Date** | **Recipe** | **Model** | **Description** |
 |----------|------------|-----------|-----------------|
+| Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html) | Cosmos Reason 2 | Domain adaptation for autonomous vehicle video captioning with multi-benchmark evaluation |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html) | Cosmos Reason 2 | Egocentric social and physical reasoning evaluation for social robotics |
 | Jan 1 | [Reason 2 on Brev](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/brev/reason2/reason2_on_brev.html) | Cosmos Reason 2 | Getting started guide for Cosmos Reason 2 inference and post-training on Brev |
 | Dec 22 | [Multiview AV Generation with World Scenario Maps](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html) | Cosmos Transfer 2.5 | ControlNet post-training for spatially-conditioned multiview AV video generation |
 | Dec 20 | [Vision AI Gallery](https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html) | Cosmos Transfer 2.5 | Interactive gallery showcasing weather, lighting, and object augmentations for traffic scenarios |
 | Dec 20 | [Style-Guided Video Generation](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-image-prompt/inference.html) | Cosmos Transfer 2.5 | Generate videos with style guidance from reference images using edge/depth/segmentation control |
-| Dec 17 | [Wafer Map Anomaly Classification](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html) | Cosmos Reason 1 | Supervised fine-tuning for wafer map anomaly classification using WM-811k |
 
 ## Prerequisites
 

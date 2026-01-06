@@ -21,12 +21,12 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle —
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](recipes/post_training/reason2/video_caption_vqa/post_training.md) | Cosmos Reason 2 |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
 | Jan 1 | [Reason 2 on Brev](getting_started/brev/reason2/reason2_on_brev.md) | Cosmos Reason 2 |
 | Dec 22 | [Multiview AV Generation with World Scenario Maps](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) | Cosmos Transfer 2.5 |
 | Dec 20 | [Vision AI Gallery](gallery/vision_ai_inference.md) | Cosmos Transfer 2.5 |
 | Dec 20 | [Style-Guided Video Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) | Cosmos Transfer 2.5 |
-| Dec 17 | [Wafer Map Anomaly Classification](recipes/post_training/reason1/wafermap_classification/post_training.md) | Cosmos Reason 1 |
 
 ## Open Source Community Platform
 
@@ -78,10 +78,11 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)                   |
+| **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
 | **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
 | **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)             |
+| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA (Reason 1)](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)  |
 | **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
 | **Training** | Wafer map anomaly classification with supervised fine-tuning on WM-811k  | [Wafer Map Classification](recipes/post_training/reason1/wafermap_classification/post_training.md)      |
 
