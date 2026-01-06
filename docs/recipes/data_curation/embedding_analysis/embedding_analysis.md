@@ -39,8 +39,8 @@ Many people are familiar with the [K-Means clustering algorithm](https://en.wiki
 **Files**
 
 1. Pick one of:
-  1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.json)
-  1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
+    1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.json)
+    1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
 2. Jupyter Notebook implementation
 
 The instructions below were tested with the following uv + jupyter notebook setup
