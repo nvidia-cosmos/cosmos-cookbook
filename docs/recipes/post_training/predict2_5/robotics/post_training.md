@@ -9,14 +9,9 @@
 |-----------|--------------|-------------------|
 | [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Surgical Robotics |
 
-This recipe details how to post‑train the Cosmos Predict world foundation model (WFM) to function as a learned simulator for 
-policy evaluation. Developers are guided on how to finetune an action‑conditioned variant of Cosmos Predict 2.5 using domain‑specific 
-surgical robotic data, leveraging the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset, which contains endoscopic video paired with 
-kinematic action sequences from the da Vinci Research Kit (dVRK). The resulting model implicitly captures both robot kinematics 
-and task‑relevant environment dynamics, including realistic deformation and tool–deformable object interactions. This 
-learned model forms the basis for simulation‑based policy evaluation, executed via a software‑in‑the‑loop rollout loop for 
-autonomous surgical systems. While demonstrated on a surgical robotic use case, this recipe generalizes to other robotic 
-systems and broader embodied AI applications.
+This recipe builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/)￼by reproducing its core methodology with the improved Cosmos Predict 2.5 model, replacing the original Cosmos Predict 2 backbone while preserving the overall training approach.
+
+Building on this foundation, we post‑train the Cosmos Predict world foundation model (WFM) to function as a learned simulator for policy evaluation. Developers are guided on how to finetune an action‑conditioned variant of Cosmos Predict 2.5 using domain‑specific surgical robotic data, leveraging the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset, which contains endoscopic video paired with kinematic action sequences from the da Vinci Research Kit (dVRK). The resulting model implicitly captures both robot kinematics and task‑relevant environment dynamics, including realistic deformation and tool–deformable object interactions. This learned model forms the basis for simulation‑based policy evaluation, executed via a software‑in‑the‑loop rollout loop for autonomous surgical systems. While demonstrated on a surgical robotic use case, this recipe generalizes to other robotic systems and broader embodied AI applications.
 
 ## Table of Contents
 
@@ -738,7 +733,11 @@ The checkpoints in distributed format (DCP) will be saved in:
 cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/cosmos_predict_v2p5/def_ac_predict2p5_video2world_2b_suturebot_training/checkpoints
 ```
 
-## 5 Run Inference and Evaluation Script
+## 5 Inference & Evaluation
+
+This recipe is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates within Cosmos against real-world execution. Across three SutureBot tasks and six VLA models, that approach achieved a strong positive correlation with the real-world dVRK rollouts (Pearson r = 0.718, p < 0.001).
+
+However, the public SutureBot dataset lacks the failure trajectories used in the original study to balance training. Without this negative data, WFMs tend to hallucinate success (false positives). Therefore, instead of replicating the full policy rollout validation, this recipe demonstrates how to run open-loop inference on held-out test data. This generates video outputs that users can visually compare against ground truth to assess the model's kinematic faithfulness and physical realism.
 
 The `inference_dvrk.py` script runs autoregressive video generation for policy evaluation. It:
 
@@ -784,7 +783,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python scripts/inference_dvrk.py \
 
 The `--save_comparison` flag generates side-by-side videos (GT left, predicted right).
 
-For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
+> For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
 
 ### 5.3 Swapping in a Policy
 
@@ -799,6 +798,8 @@ actions = policy.predict(current_frame)  # Returns (12, action_dim)
 ```
 
 The model accepts **normalized** action sequences matching the expected shape `(chunk_size, action_dim)` and following the **relative action formulation** used in this recipe.
+
+> Note: Running Cosmos with a policy's output actions generates video rollouts (MP4 files) for manual review. To automate this evaluation process, [Cosmos-Reason2](https://github.com/nvidia-cosmos/cosmos-reason2) can be post-trained to serve as a judge, automatically detecting task successes, failures, and physics anomalies.
 
 
 
