@@ -9,4 +9,5 @@
 - [Reason for Warehouse Safety](./reason1/spatial-ai-warehouse/post_training.md)
 - [Reason for AV Video Captioning and VQA](./reason1/av_video_caption_vqa/post_training.md)
 - [Reason for MimicGen temporal localization](./reason1/temporal_localization/post_training.md)
+- [Reason for Wafer Map Classification](./reason1/wafermap_classification/post_training.md)
 - [Reason 2 for AV Video Captioning and VQA](./reason2/video_caption_vqa/post_training.md)
