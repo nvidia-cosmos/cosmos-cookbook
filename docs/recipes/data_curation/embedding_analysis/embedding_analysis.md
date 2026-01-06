@@ -41,6 +41,15 @@ Many people are familiar with the [K-Means clustering algorithm](https://en.wiki
 1. [PKL sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/embedding_analysis_trajectories.pkl)
 2. Jupyter Notebook implementation
 
+The instructions below were tested with the following uv + jupyter notebook setup
+```shell
+uv init --python 3.12
+
+uv add scikit-learn umap-learn scipy matplotlib jupyterlab tslearn
+
+uv run jupyter lab
+```
+
 **Recipe Steps**
 
 1. Understand the right data format / structures  
@@ -83,7 +92,6 @@ from pathlib import Path
 
 pkl_path = Path("embedding_analysis_trajectories.pkl")
 trajectories = pickle.load(open(pkl_path, "rb"))
-
 ```
 
 ### 2 - Dimensional reduction & interpolation
@@ -97,7 +105,6 @@ Second, since our embedding vectors are living in a high dimensional space, for 
 The interpolation function
 
 ```py
-
 import numpy as np
 
 def subdivide_trajectory(trajectory: np.ndarray, n_points: int) -> np.ndarray:
@@ -117,8 +124,6 @@ def subdivide_trajectory(trajectory: np.ndarray, n_points: int) -> np.ndarray:
 interpolated_trajectories = np.asarray(
     [subdivide_trajectory(np.asarray(traj), 6) for traj in trajectories]
 )
-
-
 ```
 
 Dimensional reduction
@@ -126,7 +131,6 @@ Dimensional reduction
 ```py
 n_traj, t_len, dim = interpolated_trajectories.shape
 flat = interpolated_trajectories.reshape(n_traj * t_len, dim)
-
 
 from umap import UMAP
 RUN_SEED = 353550416
