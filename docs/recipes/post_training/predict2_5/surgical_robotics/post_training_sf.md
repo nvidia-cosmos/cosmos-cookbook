@@ -327,18 +327,30 @@ python ./scripts/convert_distcp_to_pt.py $CHECKPOINT_DIR/model $CHECKPOINT_DIR
 ```
 
 ### 1.4 Generate Self-Forcing Teacher Trajectory Cache
+Make the following three code changes in inference_gr00t_warmup.py:
+```python
+# file: cosmos_predict2/_src/predict2/action/inference/inference_gr00t_warmup.py
+...
+        num_frames=5, # this line
+...
+        dataset_path=args.input_video_root,  # this line
+        data_split="full",
+        embodiment="dvrk",  # this line
+        downscaled_res=False,
+...
+```
+
 Using one GPU, generate the teacher trajectory cache. In the following command, specify the teacher checkpoint from the previous finetuning run.
 The teacher trajectory cache will be written to the directory `trajectory_cache/warmup_regenerated_4step`. 
 ```bash
 mkdir trajectory_cache
 CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python cosmos_predict2/_src/predict2/action/inference/inference_gr00t_warmup.py \
-    --experiment=ac_predict2p5_video2world_2b_jhu_training   \
+    --experiment=ac_predict2p5_video2world_2b_suturebot_training   \
     --ckpt_path ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/cosmos_predict_v2p5/ac_predict2p5_video2world_2b_suturebot_training/checkpoints/iter_000020000/model_ema_bf16.pt \
     --input_video_root /path/to/dataset/SutureBot-LeRobot \
     --save_root trajectory_cache/warmup_regenerated_4step \
     --resolution 720,960 \
     --guidance 0 \
-    --chunk_size 12 \
     --start 0 \
     --end 1000 \
     --query_steps 0,9,18,27,34

@@ -63,7 +63,7 @@ CODE_PATH="/lustre/fsw/portfolios/healthcareeng/users/lzbinden/git/def-cookbook-
 # Run the training script inside the container
 
 srun --export=ALL --container-image="/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan/users/lzbinden/images/cosmos-predict-2.5.sqsh" \
-     --container-mounts="$CODE_PATH:/workspace,/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan/datasets/SutureBot_v2/LeRobot:/SutureBot,/lustre/fsw/portfolios/healthcareeng/users/lzbinden:/lustre/fsw/portfolios/healthcareeng/users/lzbinden,/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan:/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan" \
+     --container-mounts="$CODE_PATH:/workspace,/lustre/fsw/portfolios/healthcareeng/users/nigeln/cache/huggingface/lerobot/jhu_lerobot/suturebot_lerobot:/SutureBot,/lustre/fsw/portfolios/healthcareeng/users/lzbinden:/lustre/fsw/portfolios/healthcareeng/users/lzbinden,/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan:/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan" \
      --container-workdir=/workspace \
      bash -c '
         # Set up environment variables
