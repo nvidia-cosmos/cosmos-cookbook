@@ -1,6 +1,6 @@
 # Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors
 
-> **Authors:** Petr Khrapchenkov
+> **Authors:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)
 > **Organization:** [AI Robot Association (AIRoA)](https://www.airoa.org/)
 
 | **Model** | **Workload** | **Use Case** |
