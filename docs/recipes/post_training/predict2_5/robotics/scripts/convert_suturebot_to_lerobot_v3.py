@@ -201,8 +201,8 @@ def compute_rel_actions_local(actions):
 
     Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
     Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
-    Output per-arm: [delta_xyz (3), delta_rotvec (3), gripper (1)] = 7
-    Dual-arm output: [n_actions-1, arm1 (7) + arm2 (7)] = [n_actions-1, 14]
+    Output per-arm: [delta_xyz (3), delta_rot6d (6), gripper (1)] = 10
+    Dual-arm output: [n_actions-1, arm1 (10) + arm2 (10)] = [n_actions-1, 20]
     """
     if isinstance(actions, torch.Tensor):
         actions = actions.numpy()
@@ -210,10 +210,10 @@ def compute_rel_actions_local(actions):
     base = actions[0]
     targets = actions[1:]
     n_targets = targets.shape[0]
-    rel_actions = np.zeros((n_targets, 14))
+    rel_actions = np.zeros((n_targets, 20))
 
     for arm in range(2):
-        i, o = arm * 10, arm * 7
+        i = arm * 10  # Same stride for input and output
 
         # Build 4x4 base pose matrix
         T_base = np.eye(4)
@@ -231,9 +231,10 @@ def compute_rel_actions_local(actions):
         T_rel = T_base_inv @ T_targets
 
         # Extract components
-        rel_actions[:, o : o + 3] = T_rel[:, :3, 3]
-        rel_actions[:, o + 3 : o + 6] = Rotation.from_matrix(T_rel[:, :3, :3]).as_rotvec()
-        rel_actions[:, o + 6] = targets[:, i + 9]
+        rel_actions[:, i : i + 3] = T_rel[:, :3, 3]  # Local translation delta
+        R_rel = T_rel[:, :3, :3]  # Relative rotation matrix
+        rel_actions[:, i + 3 : i + 9] = R_rel[:, :2, :].reshape(n_targets, 6)  # 6D rotation (first 2 rows)
+        rel_actions[:, i + 9] = targets[:, i + 9]  # Gripper (absolute)
 
     return rel_actions
 
@@ -340,6 +341,147 @@ def _compute_stats(data: np.ndarray) -> dict:
         "q01": np.quantile(data, 0.01, axis=0).tolist(),
         "q99": np.quantile(data, 0.99, axis=0).tolist(),
     }
+
+
+def _vector_length(shape: list) -> int:
+    """Extract vector length from shape, handling tuple/list formats."""
+    if not shape:
+        raise ValueError("Shape is empty")
+    # Handle both list and tuple shapes
+    shape_list = list(shape)
+    if len(shape_list) > 1:
+        raise ValueError(f"Expected 1D vector, got shape {shape}")
+    return int(shape_list[0])
+
+
+def _derive_state_entries(features: dict) -> dict:
+    """Derive state entries from features dict."""
+    state_entries = {}
+    for key, meta in features.items():
+        if not key.startswith("observation.state"):
+            continue
+        # Skip non-vector features (like images)
+        if meta.get("dtype") == "video":
+            continue
+        try:
+            length = _vector_length(meta["shape"])
+            state_entries[key] = {
+                "start": 0,
+                "end": length,
+                "rotation_type": None,
+                "absolute": True,
+                "dtype": meta.get("dtype", "float32"),
+                "range": None,
+                "original_key": key,
+            }
+        except ValueError:
+            continue
+    return state_entries
+
+
+def _derive_action_entries(features: dict) -> dict:
+    """Derive action entries from features dict."""
+    action_entries = {}
+    for key, meta in features.items():
+        if key != "action" and not key.startswith("action."):
+            continue
+        try:
+            length = _vector_length(meta["shape"])
+            action_entries[key] = {
+                "start": 0,
+                "end": length,
+                "rotation_type": None,
+                "absolute": False,
+                "dtype": meta.get("dtype", "float32"),
+                "range": None,
+                "original_key": key,
+            }
+        except ValueError:
+            continue
+    return action_entries
+
+
+def _derive_video_entries(features: dict) -> dict:
+    """Derive video entries from features dict."""
+    video_entries = {}
+    for key, meta in features.items():
+        if not key.startswith("observation.images"):
+            continue
+        video_entries[key] = {
+            "original_key": key,
+        }
+    return video_entries
+
+
+def _derive_annotation_entries(features: dict) -> dict | None:
+    """Derive annotation entries from features dict."""
+    annotation_entries = {}
+    for key in features:
+        if key.startswith("annotation.") or key.startswith("language."):
+            annotation_entries[key] = {
+                "original_key": key,
+            }
+    return annotation_entries or None
+
+
+def generate_modality_metadata(features: dict, embodiment: str, description: str = None) -> dict:
+    """
+    Generate modality metadata from features dict.
+    
+    Args:
+        features: Dict of feature definitions (from LeRobotDataset or info.json)
+        embodiment: Robot type identifier
+        description: Optional description for the dataset
+    
+    Returns:
+        Dict containing modality metadata for state, action, video, and annotation entries
+    """
+    state_entries = _derive_state_entries(features)
+    action_entries = _derive_action_entries(features)
+    video_entries = _derive_video_entries(features)
+    annotation_entries = _derive_annotation_entries(features)
+
+    return {
+        "state": state_entries,
+        "action": action_entries,
+        "video": video_entries,
+        "annotation": annotation_entries,
+        "embodiment": embodiment,
+        "description": description or "Auto-generated modality metadata derived from dataset features.",
+        "version": "v2.0",
+    }
+
+
+def _write_modality_metadata(dataset_path: Path, features: dict, robot_type: str):
+    """
+    Generate and write modality.json to the dataset's meta directory.
+    
+    Args:
+        dataset_path: Path to the dataset root directory
+        features: Dict of feature definitions
+        robot_type: Robot type identifier (embodiment)
+    """
+    meta_dir = dataset_path / "meta"
+    if not meta_dir.exists():
+        meta_dir.mkdir(parents=True, exist_ok=True)
+    
+    try:
+        modality_metadata = generate_modality_metadata(
+            features, 
+            embodiment=robot_type,
+            description="DVRK surgical robot dataset with dual-arm PSM control"
+        )
+        modality_path = meta_dir / "modality.json"
+        with modality_path.open("w", encoding="utf-8") as f:
+            json.dump(modality_metadata, f, indent=2)
+            f.write("\n")
+        print(
+            f"Generated modality.json with "
+            f"{len(modality_metadata.get('state', {}))} state entries and "
+            f"{len(modality_metadata.get('action', {}))} action entries."
+        )
+    except Exception as err:
+        print(f"WARNING: Failed to generate modality metadata: {err}")
 
 
 def _compute_and_write_stats(dataset_path: Path):
@@ -510,6 +652,30 @@ def convert_data_to_lerobot(
 
     # Compute and write normalization stats for relative actions and states
     _compute_and_write_stats(Path(final_output_path))
+
+    # Generate and write modality.json
+    dataset_features = {
+        "observation.images.main": {
+            "dtype": "video",
+            "shape": (540, 960, 3),
+            "names": ["height", "width", "channels"],
+        },
+        "observation.state": {
+            "dtype": "float32",
+            "shape": (len(states_name),),
+            "names": states_name,
+        },
+        "action": {
+            "dtype": "float32",
+            "shape": (len(ACTION_NAMES_6D),),
+            "names": ACTION_NAMES_6D,
+        },
+        "instruction.text": {
+            "dtype": "string",
+            "shape": (1,),
+        },
+    }
+    _write_modality_metadata(Path(final_output_path), dataset_features, "dvrk")
 
     print(f"suturing processed successful, time taken: {time.time() - start_time}")
 
