@@ -95,8 +95,8 @@ page](https://suturebot.github.io/) and a [Hugging Face release](https://hugging
 
 Following is an example for each surgical task:
 
-| Needle pickup                                                                                                    | Needle insertion                                                                                                          | Knot tying                                                                                                              |
-|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| Needle pickup                                                                                                              | Needle insertion                                                                                                          | Knot tying                                                                                                              |
+|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_pickup.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_throw.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_knot_tying.mp4" type="video/mp4"></video> |
 
 
