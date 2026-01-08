@@ -10,13 +10,6 @@
 
 ## Installation
 
-Clone the repository:
-
-```bash
-git clone git@github.com:nvidia-cosmos/cosmos-predict2.5.git
-cd cosmos-predict2.5
-```
-
 Install system dependencies:
 
 ```shell

@@ -32,7 +32,14 @@ TODO RECIPE FEEDBACK:
 
 ### 1.1. Environment Setup
 
-Follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies.
+Clone the following cosmos-predict2.5-cookbook repository, which is a fork of the official [cosmos-predict2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) repo that has all the code changes of this recipe already applied:
+
+```bash
+git clone https://github.com/lukaszbinden/cosmos-predict2.5-cookbook.git
+cd cosmos-predict2.5-cookbook
+```
+
+Then, follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies.
 
 ### 1.2. Hugging Face Configuration
 
