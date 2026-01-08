@@ -80,7 +80,22 @@ Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
 
 ## 2. Preparing Data
 
-### 2.1 Dataset Location
+### 2.1 Exploration
+SutureBot is dataset for autonomous end-to-end suturing on the da Vinci Research Kit (dVRK), covering subtasks 
+like needle pickup, needle insertion, and knot tying. It provides multi-camera surgical video paired 
+with robot kinematics, totaling about 1,890 demonstrations, to support imitation learning and evaluation of 
+VLA/robotic policies. Public access is via the [project 
+page](https://suturebot.github.io/) and a [Hugging Face release](https://huggingface.co/datasets/jchen396/SutureBot).
+
+Following are samples for each surgical task:
+
+<video width="320" controls autoplay loop muted><source src="assets/suturebot_demo.mp4" type="video/mp4"></video>
+
+add more description of the data: 
+number of samples per training/eval, and for visual purpose, sample one image/video to give a better idea?
+
+
+### 2.2 Location
 
 The [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset should be organized in a directory structure that you'll specify in the configuration. Set your dataset path to point to your dataset root folder:
 
@@ -91,7 +106,7 @@ The [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset shou
 Replace this path with the actual download location of the SutureBot dataset. The dataset should contain da Vinci robot 
 video clips stored as individual JPG files at 640x480 resolution.
 
-### 2.2 Dataset Download
+### 2.3 Download
 In your environment (conda, docker, etc.), install the HuggingFace library:
 ```python
 python -m pip install --upgrade huggingface_hub
@@ -117,7 +132,10 @@ cd /path/to/dataset/SutureBot
 ls -1 *.zip | parallel 'echo "Unzipping {}"; unzip -q -o "{}"'
 ```
 
-Now run the following script to convert the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset to the LeRobot format (notice lerobot==0.3.3 is expected). Notice that the output path is retrieved from the env variable \$HF_LEROBOT_HOME. Override \$HF_LEROBOT_HOME to change the location of the output.  
+### 2.4 Convert to LeRobot Dataset format
+To be compatible with Cosmos data processing, we need to convert the raw SutureBot data to the LeRobot Dataset format. 
+
+Run the following script to convert the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset to the LeRobot format (notice lerobot==0.3.3 is expected). Notice that the output path is retrieved from the env variable \$HF_LEROBOT_HOME. Override \$HF_LEROBOT_HOME to change the location of the output.  
 ```bash
 # optional: export HF_LEROBOT_HOME=/path/to/dataset/SutureBot/LeRobot
 python3 -u convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset/SutureBot 
@@ -826,8 +844,9 @@ The post-trained Cosmos-predict 2.5 model generates faithful and highly realisti
 
 
 
-## Resources
+## Further Reading
 
-1. [Cosmos Predict 2.5 Model](https://github.com/nvidia-cosmos/cosmos-predict2.5) - Model weights and documentation.
-2. [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) - A Precision Framework & Benchmark For Autonomous End-to-End Suturing.
-3. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) - World foundation model-based automated online evaluation of surgical robot policy learning
+1. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) - World foundation model-based automated online evaluation of surgical robot policy learning
+2. [Cosmos Predict 2.5 Model](https://github.com/nvidia-cosmos/cosmos-predict2.5) - Model weights and documentation.
+3. [SutureBot](https://suturebot.github.io/) - A Precision Framework & Benchmark For Autonomous End-to-End Suturing.
+4. [The da Vinci Research Kit](https://www.intuitive-foundation.org/dvrk/) - A community effort supporting research in the field of telerobotic surgery

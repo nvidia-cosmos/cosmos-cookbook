@@ -39,7 +39,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.state_action import (
-    compute_rel_actions_local,
+    compute_rel_actions,
 )
 
 
@@ -78,7 +78,7 @@ def main():
 
         # Extract actions and compute relative actions
         actions = np.vstack(df["action"].values)  # [T, 20]
-        rel_actions = compute_rel_actions_local(actions)  # [T-1, 20]
+        rel_actions = compute_rel_actions(actions)  # [T-1, 20]
         all_rel_actions.append(rel_actions)
 
         # Extract states

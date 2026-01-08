@@ -189,12 +189,11 @@ def rotation_6d_to_matrix(rot6d):
     R = np.stack([row1, row2, row3], axis=-2)
     return R
 
-def compute_rel_actions_local(actions):
+def compute_rel_actions(actions):
     """
-    Computes relative actions for a dual-arm robot using SE(3) transformation.
-    Both translation and rotation deltas are in the local (tooltip) frame.
+    Computes relative actions for a dual-arm robot.
+    Global translation delta, local (tooltip frame) rotation delta in 6D format.
 
-    Follows UMI 'relative' mode: T_rel = T_base^(-1) @ T_action
     Reference: https://github.com/real-stanford/universal_manipulation_interface
 
     actions[0] is used as the base pose, actions[1:] are the targets.
@@ -203,6 +202,9 @@ def compute_rel_actions_local(actions):
     Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
     Output per-arm: [delta_xyz (3), delta_rot6d (6), gripper (1)] = 10
     Dual-arm output: [n_actions-1, arm1 (10) + arm2 (10)] = [n_actions-1, 20]
+
+    The relative rotation R_rel = R_base.T @ R_target is represented in 6D format
+    (first two rows of the rotation matrix, flattened).
     """
     if isinstance(actions, torch.Tensor):
         actions = actions.numpy()
@@ -213,28 +215,17 @@ def compute_rel_actions_local(actions):
     rel_actions = np.zeros((n_targets, 20))
 
     for arm in range(2):
-        i = arm * 10  # Same stride for input and output
+        i = arm * 10  # Both input and output use same stride
+        R_base = rotation_6d_to_matrix(base[i + 3 : i + 9])
+        R_tgt = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
 
-        # Build 4x4 base pose matrix
-        T_base = np.eye(4)
-        T_base[:3, :3] = rotation_6d_to_matrix(base[i + 3 : i + 9])
-        T_base[:3, 3] = base[i : i + 3]
-
-        # Build 4x4 target pose matrices
-        T_targets = np.zeros((n_targets, 4, 4))
-        T_targets[:, :3, :3] = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
-        T_targets[:, :3, 3] = targets[:, i : i + 3]
-        T_targets[:, 3, 3] = 1.0
-
-        # SE(3) relative: T_rel = T_base^(-1) @ T_target
-        T_base_inv = np.linalg.inv(T_base)
-        T_rel = T_base_inv @ T_targets
-
-        # Extract components
-        rel_actions[:, i : i + 3] = T_rel[:, :3, 3]  # Local translation delta
-        R_rel = T_rel[:, :3, :3]  # Relative rotation matrix
-        rel_actions[:, i + 3 : i + 9] = R_rel[:, :2, :].reshape(n_targets, 6)  # 6D rotation (first 2 rows)
-        rel_actions[:, i + 9] = targets[:, i + 9]  # Gripper (absolute)
+        # Global translation delta
+        rel_actions[:, i : i + 3] = targets[:, i : i + 3] - base[i : i + 3]
+        # Relative rotation in 6D format (first 2 rows of R_rel, flattened)
+        R_rel = R_base.T @ R_tgt  # [n_targets, 3, 3]
+        rel_actions[:, i + 3 : i + 9] = R_rel[:, :2, :].reshape(n_targets, 6)
+        # Gripper (absolute value, not delta)
+        rel_actions[:, i + 9] = targets[:, i + 9]
 
     return rel_actions
 
@@ -505,7 +496,7 @@ def _compute_and_write_stats(dataset_path: Path):
 
         # Extract actions and compute relative actions
         actions = np.vstack(df["action"].values)  # [T, 20]
-        rel_actions = compute_rel_actions_local(actions)  # [T-1, 20]
+        rel_actions = compute_rel_actions(actions)  # [T-1, 20]
         all_rel_actions.append(rel_actions)
 
         # Extract states
