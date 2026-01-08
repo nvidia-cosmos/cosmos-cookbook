@@ -13,6 +13,10 @@ This recipe builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) by
 
 Building on this foundation, we post‑train the Cosmos Predict world foundation model (WFM) to function as a learned simulator for policy evaluation. Developers are guided on how to finetune an action‑conditioned variant of Cosmos Predict 2.5 using domain‑specific surgical robotic data, leveraging the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset, which contains endoscopic video paired with kinematic action sequences from the da Vinci Research Kit (dVRK). The resulting model implicitly captures both robot kinematics and task‑relevant environment dynamics, including realistic deformation and tool–deformable object interactions. This learned model forms the basis for simulation‑based policy evaluation, executed via a software‑in‑the‑loop rollout loop for autonomous surgical systems. While demonstrated on a surgical robotic use case, this recipe generalizes to other robotic systems and broader embodied AI applications.
 
+TODO RECIPE FEEDBACK:
+- recipes are encouraged to be more visual:
+- in the overview, illustrate the painpoint/motivation for the work through a failure case
+
 ## Table of Contents
 
 - [Prerequisites](#1-prerequisites)
@@ -21,6 +25,7 @@ Building on this foundation, we post‑train the Cosmos Predict world foundation
 - [Finetuning](#4-finetuning)
 - [Inference & Evaluation](#5-inference--evaluation)
 - [Results](#6-results)
+- [Conclusion](#7-conclusion)
 
 
 ## 1. Prerequisites
@@ -83,16 +88,17 @@ Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
 ### 2.1 Exploration
 SutureBot is dataset for autonomous end-to-end suturing on the da Vinci Research Kit (dVRK), covering subtasks 
 like needle pickup, needle insertion, and knot tying. It provides multi-camera surgical video paired 
-with robot kinematics, totaling about 1,890 demonstrations, to support imitation learning and evaluation of 
-VLA/robotic policies. Public access is via the [project 
+with robot kinematics to support imitation learning and evaluation of VLA/robotic policies. 
+SutureBot contains about 1,890 demonstrations, amounting to 6 hours of video or 629,183 samples. 
+Public access is via the [project 
 page](https://suturebot.github.io/) and a [Hugging Face release](https://huggingface.co/datasets/jchen396/SutureBot).
 
-Following are samples for each surgical task:
+Following is an example for each surgical task:
 
-<video width="320" controls autoplay loop muted><source src="assets/suturebot_demo.mp4" type="video/mp4"></video>
+| Needle pickup                                                                                                    | Needle insertion                                                                                                          | Knot tying                                                                                                              |
+|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_pickup.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_throw.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_knot_tying.mp4" type="video/mp4"></video> |
 
-add more description of the data: 
-number of samples per training/eval, and for visual purpose, sample one image/video to give a better idea?
 
 
 ### 2.2 Location
@@ -146,6 +152,9 @@ The script will save the SutureBot dataset in LeRobot format at the location as 
 The finetuning wil be performed at 720x960 resolution (to match 720p pre-training) with 12 frames prediction horizon.
 
 Before executing the finetuning script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)). Those changes will address both model configuration and [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) data processing:
+
+TODO RECIPE FEEDBACK:
+- make presentation of code changes more intuitive, i.e. for tutorial purposes only thanks to fork
 
 ### 3.1 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
 Rationale: Register the embodiment 'dvrk'.
@@ -747,7 +756,9 @@ index 0aed5bb..7d0c1f0 100644
 ```
 
 ## 4. Finetuning
-With the code changes applied, we are set to start the finetuning, using 4 nodes (32 GPUs). We recommend using at least 1 node with 8 GPUs for finetuning the 2B Cosmos model.
+With the code changes applied, we are set to start the finetuning, using 4 nodes (32 GPUs). 
+The batch size was configured to be 4, resulting in a global batch size of 128. 
+We recommend using at least 1 node with 8 GPUs for finetuning the 2B Cosmos model (global batch size of 32).
 ```bash
 mkdir logs
 sbatch run_finetuning.sh
@@ -759,6 +770,12 @@ The checkpoints in distributed format (DCP) will be saved in:
 ```bash
 cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/cosmos_predict_v2p5/def_ac_predict2p5_video2world_2b_suturebot_training/checkpoints
 ```
+TODO RECIPE FEEDBACK:
+- please include more information, such as training log (you can include wandb log screen shots), 
+and also give an approximate training elapsed time.
+- (optional) have you done experiments with different parameter setups? 
+provide intuition on the choice of hyperparameters or data blending
+
 
 ## 5 Inference & Evaluation
 
@@ -842,6 +859,10 @@ The post-trained Cosmos-predict 2.5 model generates faithful and highly realisti
 | **Sample 3** | <video width="320" controls autoplay loop muted><source src="assets/base/5.mp4" type="video/mp4"></video>  | <video width="320" controls autoplay loop muted><source src="assets/post_trained/5.mp4" type="video/mp4"></video> |
 
 
+## 7. Conclusion
+TODO RECIPE FEEDBACK: 
+- add one section for conclusion, with your message for key takeaways. You can include insights, 
+or limitations that you which can be aimed for the future.
 
 
 ## Further Reading
