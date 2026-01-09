@@ -73,18 +73,18 @@ brev login --token <YOUR_TOKEN>
 Open a terminal locally
 
 ```bash
-brev shell sample-reason1-fa3124
+brev shell sample-reason2-bdb1b0
 ```
 
 OR Open in Code Editor
 
 ```bash
-brev open sample-reason1-fa3124 cursor
+brev open sample-reason2-bdb1b0 cursor
 ```
 
 ## Step 3: Authenticate Hugging Face CLI
 
-The Hugging Face Token is required to download the Cosmos Reason1 model:
+The Hugging Face Token is required to download the Cosmos Reason2 model:
 
 ```bash
 # Authenticate with Hugging Face
@@ -93,13 +93,13 @@ The Hugging Face Token is required to download the Cosmos Reason1 model:
 
 When prompted, enter your Hugging Face token. You can create a token at [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 
-**Important**: Make sure you have access to the [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B) model. Request access if needed.
+**Important**: Make sure you have access to the [Cosmos-Reason2-8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B) model. Request access if needed.
 
 ## Step 4: Run Inference and Post-Training
 
-Now you're ready to run inference with Cosmos Reason1!
+Now you're ready to run inference with Cosmos Reason2!
 
-Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason1) to run the inference and post-training examples.
+Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/nvidia-cosmos/cosmos-reason2) to run the inference and post-training examples.
 
 ## Troubleshooting
 
@@ -108,7 +108,7 @@ Follow the steps provided in the [Cosmos Reason GitHub repo](https://github.com/
 If the model fails to download:
 
 1. Verify your Hugging Face authentication: `~/.local/bin/hf whoami`
-2. Ensure you have access to the Cosmos-Reason1-7B model
+2. Ensure you have access to the Cosmos-Reason2-8B model
 3. Check your internet connection
 4. Try downloading manually: `huggingface-cli download nvidia/Cosmos-Reason2-8B`
 
