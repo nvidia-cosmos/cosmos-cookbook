@@ -9,9 +9,9 @@
 
 ## Overview
 
-**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models — offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
+**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models--offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
 
-The Cosmos ecosystem supports the complete Physical AI development lifecycle — from inference using pre-trained models to custom post-training for domain adaptation. Inside, you'll find:
+The Cosmos ecosystem supports the complete Physical AI development lifecycle--from inference using pre-trained models to custom post-training for domain adaptation. Inside, you'll find the following:
 
 - Quick-start inference examples to get up and running fast.
 - Advanced post-training workflows for domain-specific fine-tuning.
@@ -40,7 +40,7 @@ We welcome contributions—from new examples and workflow improvements to bug fi
 
 ## Case Study Recipes
 
-The cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
+The Cosmos Cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
 
 ### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
 
@@ -53,7 +53,7 @@ The cookbook includes comprehensive use cases demonstrating real-world applicati
 | **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 | **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
 
-> **Advanced Topics:** For model compression and deployment optimization, see [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
+> **Advanced Topics:** Refer to [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
 ### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 

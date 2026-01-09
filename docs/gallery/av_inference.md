@@ -11,12 +11,12 @@ This page showcases a collection of results generated using Cosmos Transfer 2.5 
 ## Driving Scene 1
 
 - **Multi control**: The model uses different controls, each with different control weights to produce an output. This gives the user more control over how the output would look like.
-  - **depth**: Maintains 3D realism and spatial consistency
-  - **edge**: Preserves original structure, shape, and layout
-  - **seg**: Enables structural changes and semantic replacement
-  - **vis**: Preserves background, lighting, and overall visual appearance
+  - **depth**: Maintains 3D realism and spatial consistency.
+  - **edge**: Preserves original structure, shape, and layout.
+  - **seg**: Enables structural changes and semantic replacement.
+  - **vis**: Preserves background, lighting, and overall visual appearance.
 
-For detailed explanations of control modalities, see [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
+For detailed explanations of control modalities, refer to the [Control Modalities Overview](../core_concepts/control_modalities/overview.md).
 
 <style>
 .carousel {
@@ -392,7 +392,7 @@ This scene shows a driving video captured from a dashcam perspective. The exampl
 
 ## Quality Enhancements: Transfer 2.5 vs Transfer 1
 
-Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
+Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvements in both **video quality** and **inference speed**. The examples below show side-by-side comparisons, where each video transitions between Transfer 1 results and Transfer 2.5 results, illustrating the quality improvements achieved in the latest version.
 
 <div class="carousel" data-interval="5000">
   <div class="carousel-track">
