@@ -1,4 +1,4 @@
 #
 
 - [Setup](setup.md)
-- [Cloud Platform](cloud_platform.md)
+- [Cloud Deployments](cloud_platform.md)

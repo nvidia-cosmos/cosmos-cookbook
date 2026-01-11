@@ -177,11 +177,11 @@
 }
 
 /* Make Gallery navigation item bold (only the top-level item, not subpages) */
-.md-nav__item:has(a[href="gallery/"]) > .md-nav__link {
+.md-nav__item:has(a[href="gallery/"])>.md-nav__link {
   font-weight: bold;
 }
 
-/* Cloud Platform sub-items: hide unless that page is active */
+/* Cloud Deployments sub-items: hide unless that page is active */
 .cloud-nav-subitem {
   display: none;
 }
