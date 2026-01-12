@@ -79,9 +79,9 @@ huggingface-cli login
 
 **Note:** You'll need a Hugging Face account and access token for authentication.
 
-## Cloud Platform Quick Start
+## Cloud Deployments Quick Start
 
-These cloud platform guides help you deploy and run Cosmos models without local infrastructure setup.
+These Cloud Deployments guides help you deploy and run Cosmos models without local infrastructure setup.
 
 - **[Get started with Cosmos Reason1 on Brev](brev/reason1/reason1_on_brev.md)** - Deploy Cosmos Reason1 for physical AI reasoning on Brev's cloud GPU platform. Covers provisioning, setup, and first inference.
 

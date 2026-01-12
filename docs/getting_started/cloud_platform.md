@@ -1,6 +1,6 @@
-# Cloud Platform
+# Cloud Deployments
 
-Pick your cloud and access the deployment guide to get started.
+Get started by deploying on a cloud instance. Ready-to-launch on the cloud of your choice &#8209; Brev, AWS, Crusoe, Oracle and more.
 
 <style>
 .platform-board {
@@ -129,13 +129,15 @@ Pick your cloud and access the deployment guide to get started.
 
 <section class="platform-section" id="brev">
   <div class="platform-header">
-    <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/brev.png" alt="Brev logo"> Brev</h2>
-    <p>Ready-to-launch notebooks on Brev workspaces.</p>
+    <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/brev.png" alt="Brev logo"> Brev Launchable</h2>
+    <p>Ready-to-launch on Brev workspaces.</p>
   </div>
   <div class="platform-track">
     <a class="platform-card" href="./brev/reason2/reason2_on_brev.html">
       <div class="platform-media" aria-hidden="true">
-        <img src="./brev/reason2/reason2.png" alt="Reason 2 on Brev">
+        <video autoplay loop muted playsinline>
+          <source src="./brev/reason2/images/nvidia-cosmos-reason2.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="platform-title">Reason 2 on Brev</div>
     </a>

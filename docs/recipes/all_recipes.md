@@ -273,7 +273,7 @@
           <div class="recipe-title">Cosmos Transfer Sim2Real for Robotics Navigation Tasks</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
-        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post_training.html">
+        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/predict2/gr00t-dreams/assets/hero.png" alt="" loading="lazy" />
           </div>
