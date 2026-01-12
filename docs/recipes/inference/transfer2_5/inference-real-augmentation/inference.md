@@ -25,13 +25,13 @@ Before diving into recipes, here are the basic control modalities we'll be using
 
 | **Control Type** | **Description** | **Example** |
 |-----------------|-----------------|-------------|
-| **Original Video** | Source video input | <video src="assets/wave.mp4" controls width="300"></video> |
-| [**Edge**](#generating-a-more-detailed-edge-control-modality) | Canny edge detection output | <video src="assets/edge.mp4" controls width="300"></video> |
-| [**Filtered Edge**](#generating-a-filtered-edge) | Edge with mask applied (keeping only desired edges) | <video src="assets/filtered.mp4" controls width="300"></video> |
-| **Segmentation** | Semantic segmentation map | <video src="assets/seg.mp4" controls width="300"></video> |
-| **Vis** | Visual features from original | <video src="assets/vis.mp4" controls width="300"></video> |
-| **Mask** | Binary mask (white = change allowed) | <video src="assets/mask.mp4" controls width="300"></video> |
-| [**Inverted Mask**](#generating-an-inverted-mask) | Inverse of mask (white = background) | <video src="assets/mask_inverted.mp4" controls width="300"></video> |
+| **Original Video** | Source video input | <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> |
+| [**Edge**](#generating-a-more-detailed-edge-control-modality) | Canny edge detection output | <video src="assets/edge.mp4" controls autoplay loop muted width="300"></video> |
+| [**Filtered Edge**](#generating-a-filtered-edge) | Edge with mask applied (keeping only desired edges) | <video src="assets/filtered.mp4" controls autoplay loop muted width="300"></video> |
+| **Segmentation** | Semantic segmentation map | <video src="assets/seg.mp4" controls autoplay loop muted width="300"></video> |
+| **Vis** | Visual features from original | <video src="assets/vis.mp4" controls autoplay loop muted width="300"></video> |
+| **Mask** | Binary mask (white = change allowed) | <video src="assets/mask.mp4" controls autoplay loop muted width="300"></video> |
+| [**Inverted Mask**](#generating-an-inverted-mask) | Inverse of mask (white = background) | <video src="assets/mask_inverted.mp4" controls autoplay loop muted width="300"></video> |
 
 Note: Edge and Vis can be automatically computed on the fly.
 
@@ -43,10 +43,10 @@ Use this table as a starting point for your projects.
 
 | Task | Suggested Controls & Settings | Original Video | Augmented Video |
 | :---- | :---- | :---- | :---- |
-| **Change clothing or textures** | Edge: 1, Guidance: 3 | <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/color.mp4" controls width="300"></video> |
-| **Change lighting** | Guidance: 3, Edge: 1 + Vis: 0.2 | <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/lighting.mp4" controls width="300"></video> |
-| **Change background, keep subject** | Guidance: 3, Edge Filtered: 1.0 \+ Seg (Mask Inverted): 0.4 + Vis: (medium weight, e.g., 0.6) | <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/ocean.mp4" controls width="300"></video> |
-| **Make object changes, but keep it realistic** | Guidance: 3, Edge: 0.2 \+ Seg (Mask): 1.0 + Vis: (medium weight, e.g., 0.5) | <video src="assets/humanoid.mp4" controls width="300"></video> | <video src="assets/object_change.mp4" controls width="300"></video> |
+| **Change clothing or textures** | Edge: 1, Guidance: 3 | <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/color.mp4" controls autoplay loop muted width="300"></video> |
+| **Change lighting** | Guidance: 3, Edge: 1 + Vis: 0.2 | <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/lighting.mp4" controls autoplay loop muted width="300"></video> |
+| **Change background, keep subject** | Guidance: 3, Edge Filtered: 1.0 \+ Seg (Mask Inverted): 0.4 + Vis: (medium weight, e.g., 0.6) | <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/ocean.mp4" controls autoplay loop muted width="300"></video> |
+| **Make object changes, but keep it realistic** | Guidance: 3, Edge: 0.2 \+ Seg (Mask): 1.0 + Vis: (medium weight, e.g., 0.5) | <video src="assets/humanoid.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/object_change.mp4" controls autoplay loop muted width="300"></video> |
 
 ---
 
@@ -64,7 +64,7 @@ Replace video backgrounds while preserving foreground subjects and their motion.
 
 | Original | Background Changed |
 |----------|----------|
-| <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/street_background.mp4" controls width="300"></video>  |
+| <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/street_background.mp4" controls autoplay loop muted width="300"></video>  |
 
 ### Pipeline Configuration
 
@@ -103,7 +103,7 @@ Extract edges only for objects to preserve (human, table, etc.)
 
 Reference [this section](#generating-an-inverted-mask) for inverting the mask.
 
-<video src="assets/mask_inverted.mp4" controls width="300"></video>
+<video src="assets/mask_inverted.mp4" controls autoplay loop muted width="300"></video>
 
 #### 3. Configure Controls
 
@@ -128,7 +128,7 @@ Here's another result generated with "ocean" as the background. I had to turn do
 
 | Original Video | High Vis | Low Vis |
 |----------|----------|----------|
-| <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/ocean_high_vis.mp4" controls width="300"></video> | <video src="assets/ocean.mp4" controls width="300"></video>  |
+| <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/ocean_high_vis.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/ocean.mp4" controls autoplay loop muted width="300"></video>  |
 
 For reference, this is the ocean prompt:
 
@@ -150,7 +150,7 @@ Modify scene lighting conditions (e.g., day to night, indoor to outdoor lighting
 
 | Original | Lighting Changed |
 |----------|----------|
-| <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/lighting.mp4" controls width="300"></video>  |
+| <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/lighting.mp4" controls autoplay loop muted width="300"></video>  |
 
 ### Pipeline Configuration
 
@@ -173,7 +173,7 @@ Modify scene lighting conditions (e.g., day to night, indoor to outdoor lighting
 
 | Original Video | Edge Only | Edge + Vis |
 |----------|----------|----------|
-| <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/lighting_no_vis.mp4" controls width="300"></video> | <video src="assets/lighting.mp4" controls width="300"></video> |
+| <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/lighting_no_vis.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/lighting.mp4" controls autoplay loop muted width="300"></video> |
 
 ### Configure Controls
 
@@ -201,7 +201,7 @@ Modify colors or textures of specific objects without altering structure. Simple
 
 | Original | Color/Texture Changed |
 |----------|-------------------|
-| <video src="assets/wave.mp4" controls width="300"></video> | <video src="assets/color.mp4" controls width="300"></video>  |
+| <video src="assets/wave.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/color.mp4" controls autoplay loop muted width="300"></video>  |
 
 ### Pipeline Configuration
 
@@ -251,7 +251,7 @@ Transform specific objects while maintaining realistic interaction and physics. 
 
 | Original | Object Changed |
 |----------|-------------------|
-| <video src="assets/humanoid.mp4" controls width="300"></video> | <video src="assets/object_change.mp4" controls width="300"></video>  |
+| <video src="assets/humanoid.mp4" controls autoplay loop muted width="300"></video> | <video src="assets/object_change.mp4" controls autoplay loop muted width="300"></video>  |
 
 ### Pipeline Configuration
 
@@ -282,7 +282,7 @@ Transform specific objects while maintaining realistic interaction and physics. 
 
 Unlike background replacement, we use the *full edge map* with a low weight (0.2). This allows the model to deviate from the original object structure while maintaining scene coherence.
 
-<video src="assets/object_edge_full.mp4" controls width="300"></video>
+<video src="assets/object_edge_full.mp4" controls autoplay loop muted width="300"></video>
 
 **Why low edge weight?** If you're changing a chip bag into a watermelon, the shape must change dramatically. High edge weight would force the model to keep the bag's shape, creating unrealistic results.
 
@@ -294,13 +294,13 @@ Generate a mask that includes both the object AND any interacting elements (e.g.
 2. Interacting elements (e.g., robot hand) - white pixels
 3. Everything else - black pixels
 
-<video src="assets/object_mask.mp4" controls width="300"></video>
+<video src="assets/object_mask.mp4" controls autoplay loop muted width="300"></video>
 
 #### 3. Generate Segmentation
 
 Use the full segmentation map to provide semantic understanding of the scene:
 
-<video src="assets/object_seg.mp4" controls width="300"></video>
+<video src="assets/object_seg.mp4" controls autoplay loop muted width="300"></video>
 
 #### 4. Configure Controls
 
@@ -372,7 +372,7 @@ From the previous excersize, we learned how to extract the control modalities fr
 
 | Original Video | Edge | Seg | Mask |
 |----------|----------|----------|----------|
-| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/generated_edges.mp4" controls width="300"></video> | <video src="./assets/segmentation_video.mp4" controls width="300"></video> | <video src="./assets/bw_seg_video.mp4" controls width="300"></video> |
+| <video src="./assets/ov_rgb_video.mp4" controls autoplay loop muted width="300"></video> | <video src="./assets/generated_edges.mp4" controls autoplay loop muted width="300"></video> | <video src="./assets/segmentation_video.mp4" controls autoplay loop muted width="300"></video> | <video src="./assets/bw_seg_video.mp4" controls autoplay loop muted width="300"></video> |
 
 ### Photorealistic Generation
 
@@ -415,7 +415,7 @@ A humanoid robot walks over to a box and grabs it with its grippers. The warehou
 
 | Original | Background Changed |
 |----------|----------|
-| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/omniverse_photorealistic.mp4" controls width="300"></video>  |
+| <video src="./assets/ov_rgb_video.mp4" controls autoplay loop muted width="300"></video> | <video src="./assets/omniverse_photorealistic.mp4" controls autoplay loop muted width="300"></video>  |
 
 ### Creating a Realistic Background
 
@@ -453,7 +453,7 @@ In this video, a humanoid robot stands on a busy street sidewalk, approaching a 
 
 | Original | Background Changed |
 |----------|----------|
-| <video src="./assets/ov_rgb_video.mp4" controls width="300"></video> | <video src="./assets/omniverse_background_change.mp4" controls width="300"></video>  |
+| <video src="./assets/ov_rgb_video.mp4" controls autoplay loop muted width="300"></video> | <video src="./assets/omniverse_background_change.mp4" controls autoplay loop muted width="300"></video>  |
 
 ## Resources
 

@@ -62,14 +62,14 @@ The RGB video for each camera is processed sequentially through multiple Cosmos 
 
 **Multi-View RGB Input:**
 
-<video width="720" controls>
+<video width="720" controls autoplay loop muted>
   <source src="assets/combined_grid_rgb.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
 **Combined Multi-View Depth Control:**
 
-<video width="720" controls>
+<video width="720" controls autoplay loop muted>
   <source src="assets/combined_grid_depth.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -96,7 +96,7 @@ We can leverage the Cosmos Transfer 1 model to convert the appearance of synthet
 
 **Combined Multi-View Transfer 1 Output:**
 
-<video width="720" controls>
+<video width="720" controls autoplay loop muted>
   <source src="assets/combined_grid_output.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
