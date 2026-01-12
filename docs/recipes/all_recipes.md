@@ -273,7 +273,7 @@
           <div class="recipe-title">Cosmos Transfer Sim2Real for Robotics Navigation Tasks</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
-        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post_training.html">
+        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/predict2/gr00t-dreams/assets/hero.png" alt="" loading="lazy" />
           </div>
@@ -306,6 +306,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Autonomous Vehicles recipes">
+        <a class="recipe-card" href="./post_training/reason2/video_caption_vqa/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/reason2/video_caption_vqa/assets/mcq_vqa_results.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Post-train Cosmos Reason 2 for AV Video Captioning & VQA</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./post_training/transfer2_5/av_world_scenario_maps/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
@@ -377,6 +384,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Vision AI recipes">
+        <a class="recipe-card" href="./data_curation/embedding_analysis/embedding_analysis.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./data_curation/embedding_analysis/assets/clusters.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Dataset Video Clustering with Time Series K-Means on Embeddings</div>
+          <div class="recipe-tag recipe-tag--curation">Curation</div>
+        </a>
         <a class="recipe-card" href="./inference/transfer2_5/biotrove_augmentation/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/transfer2_5/biotrove_augmentation/assets/moth_biotrove.webp" alt="" loading="lazy" />

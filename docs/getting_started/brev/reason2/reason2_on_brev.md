@@ -143,8 +143,8 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason2/examples/post_training_hf/outp
 
 ## Additional Resources
 
-- [Cosmos Reason 2 GitHub Repository](!https://github.com/nvidia-cosmos/cosmos-reason2)
-- [Cosmos Reason 2 Model on Hugging Face](!https://huggingface.co/nvidia/Cosmos-Reason2-8B)
+- [Cosmos Reason 2 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason2)
+- [Cosmos Reason 2 Model on Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-8B)
 - [Brev Documentation](https://docs.brev.dev)
 - [Cosmos Cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
@@ -152,5 +152,5 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason2/examples/post_training_hf/outp
 
 For issues related to:
 
-- **Cosmos Reason 2**: Open an issue on the [GitHub repository](!https://github.com/nvidia-cosmos/cosmos-reason2/issues)
-- **Brev Platform**: Contact [Brev support](!https://brev.dev/support)
+- **Cosmos Reason 2**: Open an issue on the [GitHub repository](https://github.com/nvidia-cosmos/cosmos-reason2/issues)
+- **Brev Platform**: Contact [Brev support](https://brev.dev/support)
