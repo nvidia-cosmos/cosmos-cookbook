@@ -118,7 +118,7 @@ For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the i
 
 After training, we evaluate the model on the validation set of the Environment VQA subset of the WTS dataset. The evaluation script below will save the model responses and accuracy score in the `results` directory.
 
-We updated the `eval_config.yaml` with the path to the post-trained model and the validation set.
+The `eval_config.yaml` needs to be updated with the path to the post-trained model and the validation set.
 
 ```shell
 # From scripts/examples/reason2/intelligent-transportation directory
@@ -137,7 +137,7 @@ First, let's review the quantitative results on the environment VQA subset of th
 
 ### Training Time
 
-We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. As expected, with 3k vision tokens, the model converged in roughly half the time as 8k vision tokens. In summary, you can train a very accurate model using this amount of data in an hour or less.
+We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. As expected, with 3k vision tokens, the model converged roughly 3 times as fast as 8k vision tokens. In summary, you can train a very accurate model using this amount of data in an hour or less.
 
 | Method | FPS & Resolution                  | Training Time (on 8 A100s) |
 |--------|-----------------------------------|----------------------------|
@@ -146,7 +146,7 @@ We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures 
 
 ### Qualitative Results
 
-After SFT training with multiple choice questions (MCQ), the model achieves a significant accuracy improvement on the validation set MCQs on WTS videos. Additionally, the model is also able to answer open-ended questions more accurately than zero shot on videos outside of WTS dataset. Below is a qualitative comparison of open-ended questions on an unseen video outside of WTS dataset.
+After SFT training with MCQs, the model achieves a significant accuracy improvement on the validation set MCQs on WTS videos. Additionally, the model is also able to answer open-ended questions more accurately than zero shot on videos outside of WTS dataset. Below is a qualitative comparison of open-ended questions on an unseen video.
 
 <video controls width="960">
   <source src="assets/example_video.mp4" type="video/mp4">
@@ -161,7 +161,7 @@ Supervised Fine-Tuning Cosmos Reason 2 on traffic-specific data boosts accuracy 
 
 - **Domain data matters**: Specialized datasets drive substantial performance gains.
 - **Efficient training**: 3k vision tokens converged 3 times as fast as 8k, with similar accuracy.
-- **Open-ended questions**: Even though the model is trained on a specific dataset with MCQ questions, it is able to answer open-ended questions more accurately than zero shot on other traffic videos outside of the dataset.
+- **Generalization to unseen videos and questions**: Even though the model is trained on a specific dataset with MCQ questions, it is able to answer open-ended questions more accurately than zero shot on other traffic videos outside of the dataset.
 
 This methodology can be applied to any physical AI domain by substituting relevant datasets.
 
