@@ -9,7 +9,7 @@
 
 **Related Concepts:** [Concept 1](link), [Concept 2](link)
 
-> ** Recommended Structure:** For concept contributions, we recommend organizing your content to include the following elements:
+> **Recommended Structure:** For concept contributions, we recommend organizing your content to include the following elements:
 >
 > 1. **Overview & Context** - Define the concept and its relevance to Cosmos workflows
 > 2. **Core Principles** - Break down the fundamental ideas and theory

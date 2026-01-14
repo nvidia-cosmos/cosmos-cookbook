@@ -13,7 +13,7 @@
 
 - [Setup and System Requirements](setup.md) *(optional)*
 
-> ** Recommended Structure:** For inference contributions, we recommend organizing your content to include the following elements:
+> **Recommended Structure:** For inference contributions, we recommend organizing your content to include the following elements:
 >
 > 1. **Problem & Use Case** - Define the real-world application and value proposition
 > 2. **Model Selection** - Why this Cosmos model fits your needs (out-of-the-box capabilities)
