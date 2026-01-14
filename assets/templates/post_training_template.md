@@ -9,11 +9,11 @@
 |-----------|--------------|--------------|
 | Cosmos [Model] | Post-training | [Brief description] |
 
-[Describe the challenge, why post-training is needed, and your approach (e.g., LoRA, full fine-tuning, RL).]
+[Introduce your company/organization, project, and application domain. Describe the specific challenge or pain point you're addressing, why post-training is needed for your use case, and your approach (e.g., LoRA, full fine-tuning, RL).]
 
 - [Setup and System Requirements](setup.md) *(optional)*
 
-> **💡 Recommended Structure:** For post-training contributions, we recommend organizing your content to include the following elements:
+> ** Recommended Structure:** For post-training contributions, we recommend organizing your content to include the following elements:
 >
 > 1. **Problem Statement & Benchmarks** - Define the task and target benchmarks
 > 2. **Zero-shot Evaluation** - Establish baseline performance and identify gaps
