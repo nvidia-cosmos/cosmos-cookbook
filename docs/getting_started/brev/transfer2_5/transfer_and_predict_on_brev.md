@@ -41,6 +41,8 @@ In this section, we'll walk through building a Launchable for Transfer2.5. Setti
 
    ![Add ports](images/brev05-create-launchable-step3.png)
 
+   > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
+
 6. Choose the desired level of compute. The screenshot below shows filtering on 8+ GPUs to run the Transfer 2.5 AV Multiview model.
 
    ![Choose compute](images/brev06-create-launchable-step4.png)
@@ -124,9 +126,11 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 - Don't forget to shutdown (i.e. delete) your instances when you're done.
 - As of November 2025, most instances suitable for Transfer 2.5 and Predict 2.5 do not support the pause and resume (start/stop) feature.
 - Note the Brev deployment time estimate when evaluating instance types (e.g. "Ready in 7minutes").
-- Deployment can fail on occasion, and the driver version might not be what you expect when trying a new provider. For these reasons, expect to try deployment at least three times before succeeding.
+- Deployment can fail on occasion, and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3x your estimated ready time and you will be happy 😀
 - Your favorite cloud provider might not always be available.
 - You can change the compute for a Launchable. Here are some reasons you might want to do this:
-  - The preferred cloud provider is not available.
-  - You want to save money with a different configuration.
-  - You want to try higher specs.
+  <ul>
+    <li>☁️ The preferred cloud provider is not available.</li>
+    <li>💰 You want to save money with a different configuration.</li>
+    <li>🏎️ You want to try higher specs.</li>
+  </ul>

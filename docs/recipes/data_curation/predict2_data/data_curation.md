@@ -1,28 +1,28 @@
-# Curate data for Cosmos Predict Fine-Tuning using Cosmos Curate
+# Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator
 
-> **Authors:** [Hao Wang](https://www.linkedin.com/in/pkuwanghao/) • NVIDIA Cosmos Curate Team
+> **Authors:** [Hao Wang](https://www.linkedin.com/in/pkuwanghao/) • NVIDIA Cosmos Curator Team
 > **Organization:** NVIDIA
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| [Cosmos Curate](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training |
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training |
 
 ## Overview
 
-This recipe demonstrates how to curate video data for fine-tuning Cosmos Predict 2 models using Cosmos Curate. You'll learn how to transform raw videos into a structured dataset with semantic scene splits, AI-generated captions, and quality filtering—all in the format required by Cosmos Predict 2.
+This recipe demonstrates how to curate video data for fine-tuning Cosmos Predict 2 models using Cosmos Curator. You'll learn how to transform raw videos into a structured dataset with semantic scene splits, AI-generated captions, and quality filtering—all in the format required by Cosmos Predict 2.
 
-This guide focuses on a minimal, end-to-end workflow that you can run locally with Docker. We'll use a real example dataset to walk through each step of the curation pipeline. For more advanced configurations and deployment options, refer to the [Cosmos Curate Documentation](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/README.md).
+This guide focuses on a minimal, end-to-end workflow that you can run locally with Docker. We'll use a real example dataset to walk through each step of the curation pipeline. For more advanced configurations and deployment options, refer to the [Cosmos Curator Documentation](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/README.md).
 
 **What you'll learn**:
 
-1. Set up Cosmos Curate with required models.
+1. Set up Cosmos Curator with required models.
 2. Prepare source video data.
 3. Run the curation pipeline to generate training-ready datasets.
 4. Explore advanced configuration options.
 
-## Set up Cosmos Curate
+## Set up Cosmos Curator
 
-### Clone and Install Cosmos Curate
+### Clone and Install Cosmos Curator
 
 These steps will give you a CLI that helps with the following tasks:
 
@@ -124,11 +124,11 @@ When running the curation pipeline, consider the following important notes:
 - The `--transnetv2-min-length-frames 120` option is added to specify the minimum length of clips because the Cosmos Predict 2 post-training script expects a minimum number of frames.
 - The `--limit 0` option applies no limit to the number of input videos to process.
   - The data curation pipeline can fail with a system out-of-memory (OOM) error if you have two or fewer GPUs in the system or limited system memory with input videos that are too long or numerous.
-  - If an out-of-memory (OOM) error occurs, you can use a small limit like `--limit 1` and run the exact same command repeatedly. Cosmos Curate can remember which commands have been executed and which remain to be done.
+  - If an out-of-memory (OOM) error occurs, you can use a small limit like `--limit 1` and run the exact same command repeatedly. Cosmos Curator can remember which commands have been executed and which remain to be done.
 
 ### Produce the WebDataset Format
 
-Cosmos Curate has another `Shard-Dataset` pipeline that takes the output of the above `Split-Annotate` pipeline and generates a webdataset.
+Cosmos Curator has another `Shard-Dataset` pipeline that takes the output of the above `Split-Annotate` pipeline and generates a webdataset.
 
 ```bash
 cosmos-curate local launch -- pixi run python -m cosmos_curate.pipelines.video.run_pipeline shard \
