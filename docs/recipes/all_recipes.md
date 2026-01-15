@@ -194,29 +194,6 @@
     background-color: #36c2b2;
   }
 
-  .recipe-board .is-hidden {
-    display: none;
-  }
-
-  .recipe-show-more {
-    flex: 0 0 auto;
-    align-self: flex-end;
-    margin-left: 0.25rem;
-    margin-bottom: 0.1rem;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-    line-height: 1;
-    border-radius: 0;
-    position: relative;
-    z-index: 2;
-    pointer-events: auto;
-    cursor: pointer;
-  }
-
-  .recipe-show-more.md-button {
-    border-radius: 0;
-  }
-
   .md-sidebar--secondary {
     display: none;
   }
@@ -253,8 +230,8 @@
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
         <a class="recipe-card" href="./inference/transfer1/inference-warehouse-mv/inference.html">
-          <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./inference/transfer1/inference-warehouse-mv/assets/multi_world_simulation.png" alt="" loading="lazy" />
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video src="./inference/transfer1/inference-warehouse-mv/assets/combined_grid_rgb.mp4" autoplay muted loop loading="lazy"></video>
           </div>
           <div class="recipe-title">Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
@@ -268,12 +245,12 @@
         </a>
         <a class="recipe-card" href="./inference/transfer1/inference-x-mobility/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./inference/transfer1/inference-x-mobility/assets/training.png" alt="" loading="lazy" />
+            <img src="./inference/transfer1/inference-x-mobility/assets/output_xmob.gif" alt="" loading="lazy" />
           </div>
           <div class="recipe-title">Cosmos Transfer Sim2Real for Robotics Navigation Tasks</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
-        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post_training.html">
+        <a class="recipe-card" href="./post_training/predict2/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/predict2/gr00t-dreams/assets/hero.png" alt="" loading="lazy" />
           </div>
@@ -282,19 +259,18 @@
         </a>
         <a class="recipe-card" href="./post_training/reason1/spatial-ai-warehouse/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./post_training/reason1/spatial-ai-warehouse/assets/e2e_workflow.png" alt="" loading="lazy" />
+            <img src="./post_training/reason1/spatial-ai-warehouse/assets/data_overview.png" alt="" loading="lazy" />
           </div>
           <div class="recipe-title">Spatial AI for Warehouse Post-Training with Cosmos Reason 1</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/temporal_localization/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./post_training/reason1/temporal_localization/assets/events_timeline.png" alt="" loading="lazy" />
+            <img src="./post_training/reason1/temporal_localization/assets/cube_stacking.gif" alt="" loading="lazy" />
           </div>
           <div class="recipe-title">Cosmos Reason for Mimic Gen temporal localization</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
-        <button class="md-button recipe-show-more" type="button">+ Show more</button>
       </div>
     </div>
   </section>
@@ -372,7 +348,6 @@
           <div class="recipe-title">Synthetic Data Generation (SDG) for Traffic Scenarios</div>
           <div class="recipe-tag recipe-tag--workflow">Workflow</div>
         </a>
-        <button class="md-button recipe-show-more" type="button">+ Show more</button>
       </div>
     </div>
   </section>
@@ -426,15 +401,18 @@
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">
-          <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./post_training/reason1/physical-plausibility-check/assets/correlation_bar_graph.png" alt="" loading="lazy" />
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
           <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 1</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/wafermap_classification/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
-            <img src="./post_training/reason1/wafermap_classification/assets/Picture6.png" alt="" loading="lazy" />
+            <img src="./post_training/reason1/wafermap_classification/assets/Picture8.png" alt="" loading="lazy" />
           </div>
           <div class="recipe-title">Wafer Map Anomaly Classification with Cosmos Reason 1</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
@@ -446,60 +424,8 @@
           <div class="recipe-title">Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator</div>
           <div class="recipe-tag recipe-tag--curation">Curation</div>
         </a>
-        <button class="md-button recipe-show-more" type="button">+ Show more</button>
       </div>
     </div>
   </section>
 </div>
 </div>
-
-<script>
-  const initRecipeCarousels = () => {
-    const defaultPageSize = 6;
-
-    document.querySelectorAll(".recipe-category").forEach((section) => {
-      const track = section.querySelector(".recipe-track");
-      if (!track) {
-        return;
-      }
-
-      const cards = Array.from(track.querySelectorAll(".recipe-card"));
-      const pageSize = parseInt(track.dataset.pageSize || defaultPageSize, 10);
-      const button = track.querySelector(".recipe-show-more");
-
-      if (cards.length <= pageSize) {
-        if (button) {
-          button.classList.add("is-hidden");
-        }
-        return;
-      }
-
-      cards.forEach((card, index) => {
-        if (index >= pageSize) {
-          card.classList.add("is-hidden");
-        }
-      });
-
-      if (!button) {
-        return;
-      }
-
-      let visibleCount = pageSize;
-
-      button.addEventListener("click", () => {
-        visibleCount = Math.min(visibleCount + pageSize, cards.length);
-        cards.slice(0, visibleCount).forEach((card) => card.classList.remove("is-hidden"));
-
-        if (visibleCount >= cards.length) {
-          button.classList.add("is-hidden");
-        }
-      });
-    });
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initRecipeCarousels);
-  } else {
-    initRecipeCarousels();
-  }
-</script>
