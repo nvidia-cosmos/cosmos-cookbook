@@ -16,7 +16,7 @@ This guide focuses on a minimal, end-to-end workflow that you can run locally wi
 **What you'll learn**:
 
 1. Set up Cosmos Curate with required models.
-2. Prepare source video data. 
+2. Prepare source video data.
 3. Run the curation pipeline to generate training-ready datasets.
 4. Explore advanced configuration options.
 

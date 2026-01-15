@@ -199,7 +199,7 @@ Once the config has been set, you can generate your augmented videos:
 python modules/augmentation/modules/cli.py --config /path/to/augmentation_config.yaml
 ```
 
-**Augmentations for sunrise vs night**
+#### Augmentations for Sunrise vs. Night
 
 <img src="./assets/aug.gif" width="400"><img src="./assets/aug2.gif" width="400">
 
@@ -224,7 +224,7 @@ python modules/carla-ground-truth-generation/som.py \
       --output-video /path/to/SOM.mp4
 ```
 
-**Overlayed Video**
+#### Overlayed Video
 
 <img src="./assets/som.gif" width="400">
 
@@ -238,7 +238,7 @@ python modules/postprocess/postprocess_for_vlm.py \
                 --run_id 1
 ```
 
-**Q&A format**
+#### Q&A Format
 
 ```
 "id": "events_collision_rgb_som.mp4",​

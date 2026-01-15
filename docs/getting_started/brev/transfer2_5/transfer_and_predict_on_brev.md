@@ -53,11 +53,11 @@ In this section, we'll walk through building a Launchable for Transfer2.5. Setti
 
    ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
 
-9. After deploying, visit the instance page to find helpful examples of how to connect to the instance. Note the **Delete** button, which allows you to delete your instance when you're done. This can also be done with the `brev delete` CLI command. Instances that support pause and resume can be stopped from this page.
+8. After deploying, visit the instance page to find helpful examples of how to connect to the instance. Note the **Delete** button, which allows you to delete your instance when you're done. This can also be done with the `brev delete` CLI command. Instances that support pause and resume can be stopped from this page.
 
    ![Instance page](images/brev09-instance-page.png)
 
-10. Connect to the instance. This example runs the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
+9. Connect to the instance. This example runs the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
 
    ![Docker prompt](images/brev10-docker-prompt.png)
 
@@ -65,7 +65,7 @@ In this section, we'll walk through building a Launchable for Transfer2.5. Setti
 
 ### Sample setup script
 
-The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, run the `hf auth login` command to enable checkpoint downloads. Refer to the [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) section for more info. 
+The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, run the `hf auth login` command to enable checkpoint downloads. Refer to the [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) section for more info.
 
 ```bash
 #!/bin/bash
