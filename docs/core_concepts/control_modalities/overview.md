@@ -5,9 +5,9 @@
 
 ## Overview: The Control Challenge
 
-This document serves as a comprehensive guide to the **core concepts** required for using the **Transfer 2.5** video generation model. Success depends on understanding the balance between the **Guidance Scale** (your text prompt) and the influence of the four primary **Control Modalities (Edge, Depth, Segmentation, and Vis)**.
+This document serves as a comprehensive guide to the **core concepts** required for using the **Transfer 2.5** video generation model. Success depends on understanding the balance between the **Guidance Scale** (your text prompt) and the influence of the four primary **Control Modalities**: Edge, Depth, Segmentation, and Vis.
 
-**Key Takeaway:** Multi-control tuning, using a strategic combination of Edge, Vis, Depth, and Seg is required for achieving high-fidelity, structurally consistent video results.
+**Key Takeaway:** Multi-control tuning--using a strategic combination of Edge, Vis, Depth, and Seg modalities--is required for achieving high-fidelity, structurally consistent video results.
 
 ---
 
@@ -17,13 +17,13 @@ This document serves as a comprehensive guide to the **core concepts** required 
 
 This principle dictates how strictly the model adheres to your text prompt versus the visual controls.
 
-- **What it is:** Controls the influence of the text prompt.
-- **Good Starting Point:** Guidance = 3.
-- **When to Increase:** Increase to **5+** if the visual output fails to incorporate the changes described in your prompt (e.g., trying to change a shirt into a specific texture).
+- **What it does**: Controls the influence of the text prompt.
+- **Good Starting Point**: Guidance = 3
+- **When to Increase**: Increase to **5+** if the visual output fails to incorporate the changes described in your prompt (e.g. trying to change a shirt into a specific texture).
 
 ### 1.2. Control Weight Normalization (Very Important)
 
-This principle governs how the model balances the influence of multiple control modalities (e.g., Edge + Seg + Vis) against each other.
+This principle governs how the model balances the influence of multiple control modalities (e.g. Edge + Seg + Vis) against each other.
 
 - **Rule 1: Weights WILL NOT Normalize** if the total sum of all control weights is **1.0 or less**. The weights are applied as-is.
   - *Example:* {seg: 0.2, edge: 0.2} (sum is 0.4) will be used as-is.
@@ -34,7 +34,7 @@ This principle governs how the model balances the influence of multiple control 
 
 ## 2. Technical Details: The Control Modalities
 
-The system uses 4 primary modalities to inject structural, semantic, relative, and visual consistency into the video.
+The system uses four primary modalities to inject structural, semantic, relative, and visual consistency into the video.
 
 ![Overall Architecture](assets/Cosmos-Transfer2-2B-Arch.png)
 
@@ -42,11 +42,11 @@ The system uses 4 primary modalities to inject structural, semantic, relative, a
 
 - **Function:** Preserves the **original structure, shape, and layout** of the video.
 - **Best For:** Changing textures, clothing, or lighting where the underlying shape must be maintained.
-- **Limitation:** Performs poorly when attempting to drastically change an object's shape (e.g., turning a shirt into a banana).
+- **Limitation:** Performs poorly when attempting to drastically change an object's shape (e.g. turning a shirt into a banana).
 
-Edge control is natively supported in the CT2.5 (Cosmos Transfer 2.5) [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). Users may optionally supply their own edge-detection output by providing a `control_path` pointing to a precomputed edge-control video. If no `control_path` is provided, CT2.5 automatically generates the edge control modality on the fly
+Edge control is natively supported in the Cosmos Transfer 2.5 [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). Users may optionally supply their own edge-detection output by providing a `control_path` pointing to a precomputed edge-control video. If no `control_path` is provided, Cosmos Transfer 2.5 automatically generates the edge control modality on the fly.
 
-When object and background contours are too similar, the default Canny edge detection may fail to distinguish them reliably. In these cases, pre-adjusting the brightness and contrast of the video can help produce a cleaner, more stable edge map before feeding it into the CT2.5 pipeline.
+When object and background contours are too similar, the default Canny edge detection may fail to distinguish them reliably. In these cases, pre-adjusting the brightness and contrast of the video can help produce a cleaner, more stable edge map before feeding it into the Cosmos Transfer 2.5 pipeline.
 
 An example preprocessing implementation is shown below:
 
@@ -90,24 +90,24 @@ if __name__ == "__main__":
 - **Function:** Facilitates **large, structural changes** and semantic replacement. Used to completely transform or replace objects, people, or backgrounds.
 - **Best For:** Generating realistic *new* objects/scenes where the prompt requires a large change.
 - **Limitation:** High weights can lead to **"hallucinations"** (unrealistic or physically incorrect objects).
-- **Recommended Usage:** **Always** use Seg with a **mask** of the parts you want to change, and **always** use it as part of a **multi-control** configuration (e.g., with Edge).
+- **Recommended Usage:** **Always** use Seg with a **mask** of the parts you want to change, and **always** use it as part of a **multi-control** configuration (e.g. with Edge).
 
 There are two ways to generate segmentation masks:
 
-1. **Specify objects manually**: You can provide the list of objects you want to segment and run the SAM2 endpoint in the CT2.5 repository.
+1. **Specify objects manually**: You can provide the list of objects you want to segment and run the SAM2 endpoint in the Cosmos Transfer 2.5 repository.
 The implementation is available in the [SAM2 pipeline code](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/cosmos_transfer2/_src/transfer2/auxiliary/sam2/sam2_pipeline.py).
-2. **Automatic object detection (recommended for scale)**: For larger datasets, you can use models like [RAM++](https://github.com/xinyu1205/recognize-anything) to automatically detect objects. The detected object labels are then passed into the Cosmos pipeline to generate segmentation masks using the same SAM2 workflow described above.
+2. **Automatic object detection (recommended for scale)**: For larger datasets, you can use models like [RAM++](https://github.com/xinyu1205/recognize-anything) to automatically detect objects. The detected object labels are then passed into the Cosmos Transfer 2.5 pipeline to generate segmentation masks using the same SAM2 workflow described above.
 
 ### 2.3. Vis Control (Lighting & Background Feel)
 
-- **Function:** Preserves the original video’s **background, lighting, and overall appearance**. By default, it applies a subtle smoothing/blur effect, but the underlying visual characteristics remain unchanged.
+- **Function:** Preserves the original video's **background, lighting, and overall appearance**. By default, it applies a subtle smoothing/blur effect, but the underlying visual characteristics remain unchanged.
 - **Best For:** Acting as a *supplement* to Edge or Seg, typically with a **lower weight**, to fine-tune visual consistency.
 - **Intuition:**
   - **Increase Vis weight** to keep more of the original video's look.
-  - **Decrease Vis weight** to allow more changes from the original (though too low can *increase* background hallucinations).
+  - **Decrease Vis weight** to allow more changes from the original (though a weight that is too low can *increase* background hallucinations).
 - **Limitation:** If the weight is too high, it will just return your original video. Masking Vis control is known to cause hallucinations.
 
-Vis control is natively built on the CT2.5 (Cosmos Transfer 2.5) [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). No need to specify a `control_path`
+Vis control is natively built on the Cosmos Transfer 2.5 [repository](https://github.com/nvidia-cosmos/cosmos-transfer2.5). There is no need to specify a `control_path`.
 
 ### 2.4. Depth Control
 
@@ -147,7 +147,7 @@ Masking is the technique used to apply a control modality to specific areas of t
 
 ## 3. Building Intuition: Multi-Control Tuning
 
-To achieve complex goals like background replacement, you must strategically combine the modalities.
+To achieve complex goals like background replacement, you must strategically combine modalities.
 
 | If Your Goal Is... | Increase This Setting | Decrease This Setting |
 | :---- | :---- | :---- |
@@ -159,14 +159,14 @@ To achieve complex goals like background replacement, you must strategically com
 
 ### The Background Replacement Walkthrough
 
-The following steps illustrate how each control builds upon the last to achieve a high-fidelity result, starting from a base video. The objective is to change the original video's background to an outside street type environment. This is not meant to be a recipe on how to perform a background change, but more of a walkthrough how each control modality affects the result. Specific guidelines on how to generate these results can be found [here](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+The following steps illustrate how each control can build upon the last to achieve a high-fidelity result, starting from a base video. The objective is to change the original video background to an outside street type environment. This is not meant to be a recipe to perform a background change; instead, it is a walkthrough of how each control modality affects the result. Specific guidelines on how to generate these results can be found [here](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
 
-#### **Step 1: Edge Only (Base Structure)**
+#### Step 1: Edge Only (Base Structure)
 
-The first step is often applying **Edge control** to keep the core structure (e.g., the human's gesture).
+The first step is often applying **Edge control** to keep the core structure (e.g. the human's gesture).
 
 - **Action:** Apply Edge control using a **filtered edge map** (edges of only the human).
-- **Result Intuition:** The human's motion is preserved, but the background still looks unrealistic and distorted. This shows that **Edge only controls shape, not *visual fidelity***.
+- **Result Intuition:** The human's motion is preserved, but the background still looks unrealistic and distorted. This shows that Edge only controls shape, **not visual fidelity**.
 
 <video width="500" controls>
 <strong>Mask Video</strong>
@@ -174,12 +174,12 @@ The first step is often applying **Edge control** to keep the core structure (e.
   Your browser does not support the video tag.
 </video>
 
-#### **Step 2: Edge + Vis (Adding Lighting Consistency)**
+#### Step 2: Edge + Vis (Adding Lighting Consistency)
 
 To fix the unrealistic look and preserve camera effects, **Vis control** is added.
 
-- **Action:** Add **Vis control** with a medium weight (e.g., 0.6).
-- **Result Intuition:** The fisheye distortion is more accurate, and the background is less blurry. This confirms **Vis**'s role in **preserving overall *visual feel* and camera properties**. However, overall realism is still lacking.
+- **Action:** Add **Vis control** with a medium weight (e.g. 0.6).
+- **Result Intuition:** The fisheye distortion is more accurate, and the background is less blurry. This confirms the role of **Vis** in preserving overall **visual feel** and camera properties. However, overall realism is still lacking.
 
 <video width="500" controls>
 <strong>Mask Video</strong>
@@ -187,11 +187,11 @@ To fix the unrealistic look and preserve camera effects, **Vis control** is adde
   Your browser does not support the video tag.
 </video>
 
-#### **Step 3: Edge + Vis + Seg (Injecting Realism)**
+#### Step 3: Edge + Vis + Seg (Injecting Realism)
 
 To generate a *completely new and realistic* background, **Segmentation control** is used.
 
-- **Action:** Add **Seg control** with a moderate weight (e.g., 0.4), using an **mask** (white on the background) to direct the semantic replacement only to the background.
+- **Action:** Add **Seg control** with a moderate weight (e.g. 0.4), using a **mask** (white on the background) to direct the semantic replacement only to the background area.
 - **Result Intuition:** The final output is visually sharp and consistent. **Seg** provides the **semantic information** necessary to generate a plausible, new environment, while **Edge** and **Vis** ensure the subject and lighting remain consistent.
 
 <video width="500" controls>
@@ -208,16 +208,16 @@ Full recipes can be found at [Real World Video Manipulation Guidelines with Cosm
 
 **Do:**
 
-- ✅ **Use Multi-Control:** Combine modalities (especially Seg + Edge) for complex tasks.
-- ✅ **Use a Mask with Seg:** Provide a mask when using Seg control to isolate the area of change.
-- ✅ **Start with Lower Weights for Vis:** Use Vis as a supplement with a lower weight (e.g., 0.4-0.6) to maintain visual feel.
+- ✅ **Use Multi-Control**: Combine modalities (especially Seg + Edge) for complex tasks.
+- ✅ **Use a Mask with Seg**: Provide a mask when using Seg control to isolate the area of change.
+- ✅ **Start with Lower Weights for Vis**: Use Vis as a supplement with a lower weight (e.g. 0.4-0.6) to maintain visual feel.
 
 **Don't:**
 
-- ❌ **Use Seg Control Alone:** **Do not use Segmentation control by itself**; it leads to highly unrealistic results.
-- ❌ **Use Seg + Vis (without Edge):** This combination is **not recommended** as it can lead to unpredictable outcomes.
-- ❌ **Mask Vis Control:** **Avoid masking Vis control** as it is known to cause hallucinations.
-- ❌ **Use Vis with a High Weight:** A very high Vis weight will just return your original video—Use [lower weights] instead.
+- ❌ **Use Seg Control Alone**: Do not use Segmentation control by itself; it leads to highly unrealistic results.
+- ❌ **Use Seg + Vis (without Edge)**: This combination is not recommended as it can lead to unpredictable outcomes.
+- ❌ **Mask Vis Control**: Avoid masking Vis control as it is known to cause hallucinations.
+- ❌ **Use Vis with a High Weight**: A very high Vis weight will just return your original video—use [lower weights] instead.
 
 ## Use Cases
 

@@ -25,11 +25,11 @@ This structure separates the documentation from the practical implementation, ma
 
 ## Prerequisites
 
-Before getting started, ensure you have the following requirements:
+Before getting started, ensure you have the following requirements.
 
 ### Hardware
 
-For running cookbook recipes and workflows, you will need the following: 1 GPU minimum for inference and 4 GPUs minimum for training(recommended 8 GPUs) using Ampere architecture or newer (A100, H100).
+For running cookbook recipes and workflows, you will need the following: 1 GPU minimum for inference and 4 GPUs minimum for training(recommended 8 GPUs), using Ampere architecture or newer (A100, H100).
 
 For specific GPU and memory requirements for each Cosmos model (Predict1, Predict2, Transfer1, etc.), refer to the [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
 
@@ -43,10 +43,6 @@ For specific GPU and memory requirements for each Cosmos model (Predict1, Predic
 - **CUDA**: 12.4 or later
 - **Docker Engine**
 - **Network**: Internet connection for downloading models and dependencies
-
-### Hardware Requirements
-
-For specific GPU and memory requirements for each Cosmos model (Predict 2, Predict 2.5, Transfer 1, Transfer 2.5, Reason 1), refer to the official [NVIDIA Cosmos Prerequisites](https://docs.nvidia.com/cosmos/latest/prerequisites.html) documentation.
 
 ## Generic Tool Installation
 
@@ -77,12 +73,12 @@ pkgm install huggingface-cli
 huggingface-cli login
 ```
 
-**Note:** You'll need a Hugging Face account and access token for authentication.
+> **Note**: You'll need a Hugging Face account and access token for authentication.
 
 ## Cloud Deployments Quick Start
 
 These Cloud Deployments guides help you deploy and run Cosmos models without local infrastructure setup.
 
-- **[Get started with Cosmos Reason1 on Brev](brev/reason1/reason1_on_brev.md)** - Deploy Cosmos Reason1 for physical AI reasoning on Brev's cloud GPU platform. Covers provisioning, setup, and first inference.
+- **[Get started with Cosmos Reason1 on Brev](brev/reason1/reason1_on_brev.md)** - Deploy Cosmos Reason1 for physical AI reasoning on Brev's cloud GPU platform. This guide covers provisioning, setup, and first inference.
 
 - **[Get started with Transfer2.5 and Predict2.5 on Brev](brev/transfer2_5/transfer_and_predict_on_brev.md)** - Set up Transfer2.5 (video generation) and Predict2.5 (world prediction) on Brev cloud infrastructure with example workflows.
