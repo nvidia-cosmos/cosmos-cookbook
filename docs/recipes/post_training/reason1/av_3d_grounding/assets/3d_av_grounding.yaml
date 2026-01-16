@@ -1,0 +1,4 @@
+system_prompt: |
+  You are an expert AI assistant for 3D grounding. Your task is to accurately generate the 3D vehicle coordinates in the image, based on the user's input.
+
+user_prompt: "Find all vehicles in this image. For each vehicle, provide its 3D bounding box coordinates including x, y, z, x_size, y_size, z_size, roll, pitch, yaw and the label of the vehicle. The output format required is JSON: `[{\"bbox_3d\":[x, y, z, x_size, y_size, z_size, roll, pitch, yaw],\"label\":\"category\"}]`."

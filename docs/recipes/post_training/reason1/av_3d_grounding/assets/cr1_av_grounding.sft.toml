@@ -1,0 +1,42 @@
+redis = "12800"
+
+[custom.dataset]
+dataset_root = "dataset/train_07"
+meta_file = "meta.json"
+
+[custom.vision]
+fps = 1
+max_pixels = 40960
+
+[train]
+output_dir = "outputs/sft-07"
+compile = false
+epoch = 5
+train_batch_per_replica = 32
+fsdp_offload = true
+
+[policy]
+model_name_or_path = "nvidia/Cosmos-Reason1-7B"
+model_max_length = 4096
+model_gradient_checkpointing = true  # Ensure gradient checkpointing is enabled
+
+[logging]
+logger = ['console', 'wandb']
+project_name = "cosmos_reason1"
+experiment_name = "post_training_capabilities/sft_v7_cr1"
+
+[train.train_policy]
+type = "sft"
+mini_batch = 4
+
+[train.ckpt]
+enable_checkpoint = true
+save_freq = 50
+max_keep = 3
+save_mode = "async"
+
+[policy.parallelism]
+tp_size = 1
+cp_size = 1
+dp_shard_size = 8
+pp_size = 1 
