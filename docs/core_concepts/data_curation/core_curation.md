@@ -1,4 +1,9 @@
-# Core Curation with Cosmos-Curate
+# Core Curation with Cosmos-
+
+> **Authors:** [Jibin Varghese
+ ](https://www.linkedin.com/in/jibinrajan/) • [Amol Fasale](https://www.linkedin.com/in/amolfasale/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
+>
+> **Organization:** [NVIDIA](https://www.nvidia.com/)
 
 > **Prerequisites:** Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
 
