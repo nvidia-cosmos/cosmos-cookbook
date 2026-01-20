@@ -149,7 +149,7 @@ The CLI and pipeline commands have many configurable options. Use `cosmos-curate
 
 ### Storage Configuration
 
-`Cosmos Curate` supports all S3-compatible object stores (e.g. AWS, OCI, Swiftstack, GCP). You only need to configure your `~/.aws/credentials` file properly and pass in an S3 prefix.
+`Cosmos Curator` supports all S3-compatible object stores (e.g. AWS, OCI, Swiftstack, GCP). You only need to configure your `~/.aws/credentials` file properly and pass in an S3 prefix.
 
 **Documentation:** [Initial Setup - Storage Configuration](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#initial-setup) (refer to bullet 5)
 
