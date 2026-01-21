@@ -92,16 +92,16 @@ For this SFT experiment, we updated some default configurations in `configs/llav
 We ablated the training with two configurations for different frame sampling rates and resolutions:
 
 1. **nframes 8**: It uniformly samples 8 frames from the video and resizes the frames based on default limit. This translates to a total of **3k vision tokens**. The calculation is provided below.
-2. **Fps 1, Total pixels 8,388,608**: It samples 1 frame per second from the video and resize the frames such that the total number of pixels is 8,388,608. This translates to a total of **8k vision tokens**. The calculation is provided below.
-
----
+2. **fps 1, total pixels 8,388,608**: It samples 1 frame per second from the video and resize the frames such that the total number of pixels is 8,388,608. This translates to a total of **8k vision tokens**. The calculation is provided below.
 
 For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the input video in both space and time. Please refer to the `process_vision_info` function in [Qwen-VL-Utils](https://github.com/QwenLM/Qwen3-VL/blob/main/qwen-vl-utils/src/qwen_vl_utils/vision_process.py) for specific implementation details.
 
 - Spatial Compression: The effective patch size is 32 (16 patch size $\times$ 2 spatial merge).
 - Temporal Compression: The effective temporal step is 2 (2 frames merge into 1).
 
-#### Calculation for "nframes 8" to 3k total vision tokens
+---
+
+#### Calculation for "nframes 8" to 3k vision tokens
 
 1. As specified, 8 frames are uniformly sampled from the video.
 2. The default max frame pixel limit is defined as 768 vision tokens, corresponding to 768 $\times$ 32 $\times$ 32 = 786,432 pixels. The original frame resolution is 1920 $\times$ 1080, which exceeds the limit, so each frame is resized to approximately 1152 $\times$ 640.
@@ -109,7 +109,7 @@ For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the i
 
 ---
 
-#### Calculation for "fps 1, Total pixels 8,388,608" to 8k total vision tokens
+#### Calculation for "fps 1, total pixels 8,388,608" to 8k vision tokens
 
 1. The video length is about 75 seconds. With 1 fps, the model samples 74 frames (rounded to the nearest even number).
 2. As specified, the video's total pixel is 8,388,608. Considering the temporal step of 2, the frame pixel limit is 8,388,608 // (74 / 2) = 226,719 pixels. Each frame is resized to approximately 608 $\times$ 352.
@@ -157,6 +157,43 @@ After SFT training with MCQs, the model achieves a significant accuracy improvem
 <img src="assets/after_qa.png" width="960"/>
 
 <br>
+
+## Model Deployment
+
+The last step is to deploy the trained model for inference. You can deploy it using an NVIDIA optimized NIM, or you can deploy it in your own application. Before deployment, we can first quantize the LLM portion of the VLM to FP8 for faster inference.
+
+### FP8 Quantization
+
+The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2?tab=readme-ov-file#quantization).
+
+1. Clone the Cosmos Reason 2 repo.
+
+2. Run the quantization script.
+
+   ```shell
+   python ./scripts/quantize.py --model_id '/path/to/post-trained/reason2' --save_dir '/path/to/quantized/model --precision fp8'
+   ```
+
+Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression.
+
+### Deploy on NVIDIA NIM
+
+NVIDIA NIM™ provides containers to self-host GPU-accelerated inferencing microservices for pre-trained and customized AI models across cloud instances, data centers, and RTX™ AI PCs and workstations, with industry-standard APIs for simple integration into AI applications.
+
+To deploy a post-trained checkpoint, go to the [fine-tune-model](https://docs.nvidia.com/nim/vision-language-models/latest/fine-tune-model.html) section in NIM documentation. Go to "Cosmos Reason2" tab. NIM will automatically serve an optimized vLLM engine for this model. The model needs to be in the Huggingface checkpoint or quantized checkpoint.
+
+```shell
+export CUSTOM_WEIGHTS=/path/to/post-trained/model
+docker run -it --rm --name=cosmos-reason2-8b \
+    --gpus all \
+    --shm-size=32GB \
+    -e NIM_MODEL_NAME=$CUSTOM_WEIGHTS \
+    -e NIM_SERVED_MODEL_NAME="cosmos-reason2-8b" \
+    -v $CUSTOM_WEIGHTS:$CUSTOM_WEIGHTS \
+    -u $(id -u) \
+    -p 8000:8000 \
+    $NIM_IMAGE
+```
 
 ## Conclusion
 
