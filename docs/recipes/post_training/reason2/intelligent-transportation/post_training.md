@@ -91,16 +91,17 @@ For this SFT experiment, we updated some default configurations in `configs/llav
 
 We ablated the training with two configurations for different frame sampling rates and resolutions:
 
-1. **nframes = 8**: It uniformly samples 8 frames from the video and resizes the frames based on default limit. This translates to a total of **3k vision tokens**. The calculation is provided below.
-2. **Fps = 1, Total pixels = 8,388,608**: It samples 1 frame per second from the video and resize the frames such that the total number of pixels is 8,388,608. This translates to a total of **8k vision tokens**. The calculation is provided below.
+1. **nframes 8**: It uniformly samples 8 frames from the video and resizes the frames based on default limit. This translates to a total of **3k vision tokens**. The calculation is provided below.
+2. **Fps 1, Total pixels 8,388,608**: It samples 1 frame per second from the video and resize the frames such that the total number of pixels is 8,388,608. This translates to a total of **8k vision tokens**. The calculation is provided below.
 
 ---
 
 For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the input video in both space and time. Please refer to the `process_vision_info` function in [Qwen-VL-Utils](https://github.com/QwenLM/Qwen3-VL/blob/main/qwen-vl-utils/src/qwen_vl_utils/vision_process.py) for specific implementation details.
+
 - Spatial Compression: The effective patch size is 32 (16 patch size $\times$ 2 spatial merge).
 - Temporal Compression: The effective temporal step is 2 (2 frames merge into 1).
 
-#### Calculation for nframes = 8 to 3k total vision tokens
+#### Calculation for "nframes 8" to 3k total vision tokens
 
 1. As specified, 8 frames are uniformly sampled from the video.
 2. The default max frame pixel limit is defined as 768 vision tokens, corresponding to 768 $\times$ 32 $\times$ 32 = 786,432 pixels. The original frame resolution is 1920 $\times$ 1080, which exceeds the limit, so each frame is resized to approximately 1152 $\times$ 640.
@@ -108,7 +109,7 @@ For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the i
 
 ---
 
-#### Calculation for total_pixels 8,388,608 to 8k total vision tokens
+#### Calculation for "fps 1, Total pixels 8,388,608" to 8k total vision tokens
 
 1. The video length is about 75 seconds. With 1 fps, the model samples 74 frames (rounded to the nearest even number).
 2. As specified, the video's total pixel is 8,388,608. Considering the temporal step of 2, the frame pixel limit is 8,388,608 // (74 / 2) = 226,719 pixels. Each frame is resized to approximately 608 $\times$ 352.
@@ -131,18 +132,20 @@ python evaluate.py --config eval_config.yaml
 
 ### Quantitative Results
 
-First, let's review the quantitative results on the environment VQA subset of the WTS dataset for each experiment: one with nframes 8 (3k vision tokens) and another with fps 1, total pixels 8,388,608 (8k vision tokens). This is a collection of multiple choice questions (MCQ) on traffic and pedestrian videos. Overall, we see the accuracy jump to over 90 for both experiments. There is not a lot of delta in training accuracy between the two experiments, and 3k vision tokens will converge faster and provide faster inference times.
+First, let's review the quantitative results on the environment VQA validation set of the WTS dataset for each experiment: one with "nframes 8" (3k vision tokens) and another with "fps 1, total pixels 8,388,608" (8k vision tokens). Similar to the training set, the validation set is also a collection of multiple choice questions (MCQ) on traffic and pedestrian videos, which are unseen during training.
 
-<img src="assets/quan_result.png" width="500"/>
+Overall, we see the accuracy jumps over 92% for both experiments after 1 epoch of training. For 3k tokens, accuracy keeps increasing over 3 epochs of training and reaches 93.65% in the end, while for 8k tokens, the model is more prone to overfitting with more training epochs. For this task and dataset, 3k vision tokens give us overall better performance and will converge faster and provide faster inference times.
+
+<img src="assets/quan_result.png" width="600"/>
 
 ### Training Time
 
 We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. As expected, with 3k vision tokens, the model converged roughly 3 times as fast as 8k vision tokens. In summary, you can train a very accurate model using this amount of data in an hour or less.
 
-| Method | FPS & Resolution                  | Training Time (on 8 A100s) |
-|--------|-----------------------------------|----------------------------|
-| SFT    | nframes 8 (3k vision tokens)      | 38m                        |
-| SFT    | fps 1, total pixels 8,388,608 (8k vision tokens) | 2h 10m                      |
+| Method | Vision Configuration                  | Training Time for 3 epochs (on 8 A100s) |
+|--------|---------------------------------------|----------------------------|
+| SFT    | "nframes 8" (3k vision tokens)       | 1h16m                        |
+| SFT    | "fps 1, total pixels 8,388,608" (8k) | 4h                      |
 
 ### Qualitative Results
 
@@ -160,12 +163,11 @@ After SFT training with MCQs, the model achieves a significant accuracy improvem
 Supervised Fine-Tuning Cosmos Reason 2 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
 
 - **Domain data matters**: Specialized datasets drive substantial performance gains.
-- **Efficient training**: 3k vision tokens converged 3 times as fast as 8k, with similar accuracy.
+- **Best training configuration is task-dependent**: It's not always the case that post-training with more vision tokens will lead to better performance. For this task and dataset, 3k vision tokens achieve better accuracy while taking almost 1/3 of the training time as 8k.
 - **Generalization to unseen videos and questions**: Even though the model is trained on a specific dataset with MCQ questions, it is able to answer open-ended questions more accurately than zero shot on other traffic videos outside of the dataset.
 
 This methodology can be applied to any physical AI domain by substituting relevant datasets.
 
-
 ## Related Work
 
-This recipe builds upon our earlier work: [Intelligent Transportation Post-Training with Cosmos Reason 1](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html). 
+This recipe builds upon our earlier work: [Intelligent Transportation Post-Training with Cosmos Reason 1](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html).

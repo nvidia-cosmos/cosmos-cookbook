@@ -7,10 +7,12 @@ system_prompt = "You are a helpful assistant."
 nframes = 8
 
 [train]
-optm_lr = 2e-6
+optm_lr = 2e-5
 output_dir = "outputs/wts_environment_mcq"
 optm_warmup_steps = 0
-train_batch_per_replica = 16
+optm_decay_type = "cosine"
+optm_weight_decay = 0.01
+train_batch_per_replica = 32
 enable_validation = false
 compile = false
 

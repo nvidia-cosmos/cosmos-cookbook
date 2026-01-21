@@ -44,11 +44,7 @@ from vllm import LLM, SamplingParams
 Processor = AutoProcessor
 
 from utils.model_download import download_checkpoint
-from utils.output import (
-    OutputStructure,
-    parse_letter_response,
-    save_results_parallel,
-)
+from utils.output import OutputStructure, parse_letter_response, save_results_parallel
 
 
 @attrs.define(slots=False)
@@ -214,7 +210,10 @@ def prepare_single_model_input(
 
     # Process vision information (image/video paths) from the prompt structure
     image_inputs, video_inputs, video_kwargs = process_vision_info(
-        input_task.prompt, image_patch_size=16, return_video_kwargs=True, return_video_metadata=True
+        input_task.prompt,
+        image_patch_size=16,
+        return_video_kwargs=True,
+        return_video_metadata=True,
     )
     # Format for a potential custom model structure
     # Assuming video_inputs contains a list and we need the first item
