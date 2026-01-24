@@ -44,9 +44,20 @@ git checkout -b recipe/descriptive-name  # or docs/, fix/, etc.
 Add your content following the templates below, then test:
 
 ```bash
-just serve-internal  # Preview changes
+just serve-internal  # Preview changes at http://localhost:8000
 just test           # Run validation
 ```
+
+**Preview Your Recipe Locally:**
+
+Once `just serve-internal` is running, open your browser and navigate to:
+- **Main site:** `http://localhost:8000`
+- **Your recipe:** `http://localhost:8000/recipes/[category]/[model-name]/[recipe-name]/`
+
+For example, if you added a recipe at `docs/recipes/inference/transfer2_5/my-new-recipe/inference.md`, preview it at:
+`http://localhost:8000/recipes/inference/transfer2_5/my-new-recipe/inference/`
+
+The local server automatically reloads when you save changes to markdown files.
 
 ### 4. Commit and Push
 
@@ -74,6 +85,19 @@ git push origin recipe/descriptive-name
 ```
 
 The PR updates automatically. Once approved, maintainers will merge your contribution.
+
+### 7. After Your PR is Merged
+
+Once your pull request is approved and merged:
+
+1. **Your content goes live** - Changes are automatically deployed to the [Cosmos Cookbook site](https://nvidia-cosmos.github.io/cosmos-cookbook/) within a few minutes
+2. **Index updates** - If you didn't update the index files (`docs/index.md`, `README.md`, `docs/recipes/all_recipes.md`), maintainers will add your contribution to these files in a follow-up commit
+3. **Celebrate!** 🎉 - Your contribution is now part of the Cosmos community knowledge base
+
+**Next Steps:**
+- Share your recipe with the community
+- Consider contributing additional recipes or improvements
+- Help review other community contributions
 
 ### Sync Your Fork
 
