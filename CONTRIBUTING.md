@@ -51,6 +51,7 @@ just test           # Run validation
 **Preview Your Recipe Locally:**
 
 Once `just serve-internal` is running, open your browser and navigate to:
+
 - **Main site:** `http://localhost:8000`
 - **Your recipe:** `http://localhost:8000/recipes/[category]/[model-name]/[recipe-name]/`
 
@@ -95,6 +96,7 @@ Once your pull request is approved and merged:
 3. **Celebrate!** 🎉 - Your contribution is now part of the Cosmos community knowledge base
 
 **Next Steps:**
+
 - Share your recipe with the community
 - Consider contributing additional recipes or improvements
 - Help review other community contributions
