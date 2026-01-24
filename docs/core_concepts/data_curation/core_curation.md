@@ -5,7 +5,6 @@
 >
 > **Organization:** [NVIDIA](https://www.nvidia.com/)
 
-
 **Prerequisites:** Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
 
 Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curator](https://github.com/nvidia-cosmos/cosmos-curate).
