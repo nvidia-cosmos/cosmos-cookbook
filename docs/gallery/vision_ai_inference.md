@@ -932,3 +932,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
+---
+
+## Document Information
+
+**Publication Date:** December 20, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_vision_ai_gallery_2025,
+  title={Vision AI Gallery},
+  author={Chang, Aiden and Santhosh, Akul},
+  year={2025},
+  month={December},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aiden Chang, & Akul Santhosh (2025). Vision AI Gallery. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html>

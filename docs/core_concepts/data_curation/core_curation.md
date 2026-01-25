@@ -248,3 +248,28 @@ For a complete end-to-end example of running Cosmos-Curator locally using Docker
 ### SLURM Cluster Deployment
 
 For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curator documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.
+
+---
+
+## Document Information
+
+**Publication Date:** October 9, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_core_curation_2025,
+  title={Core Curation with Cosmos-Curator},
+  author={Varghese, Jibin and Fasale, Amol and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/data_curation/core_curation.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Jibin Varghese, Amol Fasale, & Jingyi Jin (2025). Core Curation with Cosmos-Curator. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/data_curation/core_curation.html>
