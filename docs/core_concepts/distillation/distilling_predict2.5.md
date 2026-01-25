@@ -67,3 +67,28 @@ Critic phase (`training_step_critic`):
 
 The DMD2 distillation process usually achieves quick convergence. For instance, in the given example, satisfactory video quality is obtained from the 4-step student after 1500 iterations, which corresponds to 300 student steps and 1200 critic steps.
 ![DMD2 Predict 2.5 vis 2k](../../assets/images/distillation/dmd2_predict2.5_step2k.png)
+
+---
+
+## Document Information
+
+**Publication Date:** November 30, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_distilling_predict2_5_2025,
+  title={Distilling Cosmos Predict 2.5},
+  author={Ma, Qianli},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Qianli Ma (2025). Distilling Cosmos Predict 2.5. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_predict2.5.html

@@ -334,3 +334,28 @@ Supervised Fine-Tuning Cosmos Reason 1 on warehouse-specific data boosts accurac
 - **Seamless deployment**: Workflow supports quantization and deployment via NIM or VSS for production environments.
 
 This methodology can be applied to any physical AI domain by substituting relevant datasets, with dataset scale being a critical factor for achieving strong causal perception capabilities.
+
+---
+
+## Document Information
+
+**Publication Date:** October 13, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_spatial_ai_warehouse_2025,
+  title={Spatial AI for Warehouse Post-Training with Cosmos Reason 1},
+  author={Li, Xiaolong and Shah, Chintan and Kornuta, Tomasz},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/spatial-ai-warehouse/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Xiaolong Li, Chintan Shah, & Tomasz Kornuta (2025). Spatial AI for Warehouse Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/spatial-ai-warehouse/post_training.html

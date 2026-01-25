@@ -295,3 +295,29 @@ This approach can generalize to:
 
 For environment setup, see the [Setup Guide](setup.md). Once you have the environment ready, please use this [tutorial](https://docs.voxel51.com/tutorials/cosmos-transfer-integration.html) to run everything at once.
 For more examples, you can explore other Cosmos-Transfer recipes in the cookbook.
+
+---
+
+## Document Information
+
+**Publication Date:** November 26, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_domain_transfer_for_2025,
+  title={Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5},
+  author={PhD, Paula Ramos,},
+  organization={Voxel51},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Paula Ramos, PhD (2025). Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Voxel51. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html

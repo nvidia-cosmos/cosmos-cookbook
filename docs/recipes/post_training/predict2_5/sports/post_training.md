@@ -547,3 +547,29 @@ These improvements make the post-trained model particularly suitable for:
 - Producing content for sports broadcasting and entertainment
 
 For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
+
+---
+
+## Document Information
+
+**Publication Date:** December 1, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_lora_sports_2025,
+  title={LoRA Post-training for Sports Video Generation},
+  author={Ali, Arslan},
+  organization={NVIDIA},
+  year={2025},
+  month={December},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Arslan Ali (2025). LoRA Post-training for Sports Video Generation. In *NVIDIA Cosmos Cookbook*. NVIDIA. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html

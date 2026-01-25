@@ -387,3 +387,28 @@ Fine-tuning Cosmos Reason 1 on VideoPhy-2 data significantly improves physical p
 - **Flexibility**: This methodology can be adapted to other video quality assessment tasks by substituting the datasets and defining appropriate metrics.
 
 As a next step, we can investigate reasoning SFT as a warmup step using datasets that contain thinking traces. This can improve the model's reasoning ability before RL training.
+
+---
+
+## Document Information
+
+**Publication Date:** October 10, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_physical_plausibility_prediction_2025,
+  title={Physical Plausibility Prediction with Cosmos Reason 1},
+  author={Zhang, Shun and Hao, Zekun and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/physical-plausibility-check/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Shun Zhang, Zekun Hao, & Jingyi Jin (2025). Physical Plausibility Prediction with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/physical-plausibility-check/post_training.html

@@ -613,3 +613,28 @@ The fine-tuned model provides more accurate subtask timestamp boundaries compare
 
 - Fine-tuning on task-specific datasets significantly improves timestamp consistency and reduces variance across model runs.
 - Simulation data provides more reliable information for SFT model than real-world data.
+
+---
+
+## Document Information
+
+**Publication Date:** November 24, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_temporal_localization_2025,
+  title={Cosmos Reason for Mimic Gen temporal localization},
+  author={Dzhumamuratova, Aigul and Efitorov, Alexander and Rabeti, Hesam and Jin, Jingyi},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aigul Dzhumamuratova, Alexander Efitorov, Hesam Rabeti, & Jingyi Jin (2025). Cosmos Reason for Mimic Gen temporal localization. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html

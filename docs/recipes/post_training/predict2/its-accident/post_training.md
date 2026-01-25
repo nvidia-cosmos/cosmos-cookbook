@@ -479,3 +479,28 @@ Combining the powerful video generation capabilities of Cosmos Predict 2 with th
 While traditional fine-tuning would require tens of thousands of examples and risk catastrophic overfitting with limited data, LoRA achieved meaningful adaptation with just over 1,000 incident clips. This data efficiency, combined with reduced computational requirements and deployment flexibility, makes LoRA not just a good choice but arguably the only viable approach for adapting large video models to rare-event domains like traffic accidents.
 
 The result is a system capable of generating unlimited high-quality, physically realistic traffic incident videos from minimal real examples--effectively transforming data scarcity from a blocking constraint into a solved problem. This breakthrough can significantly enhance safety system development, emergency response training, and urban planning initiatives worldwide.
+
+---
+
+## Document Information
+
+**Publication Date:** October 10, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_traffic_anomaly_generation_2025,
+  title={Traffic Anomaly Generation with Cosmos Predict2},
+  author={Ali, Arslan and Lam, Grace and Fasale, Amol and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/its-accident/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Arslan Ali, Grace Lam, Amol Fasale, & Jingyi Jin (2025). Traffic Anomaly Generation with Cosmos Predict2. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/its-accident/post_training.html

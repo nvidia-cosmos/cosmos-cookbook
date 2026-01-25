@@ -196,3 +196,28 @@ Enhance dataset quality by filtering out low-quality clips:
 ### Extending the Pipeline
 
 If you need to add custom processing stages (e.g. new filtering logic, custom annotations), refer to the [Pipeline Design Guide](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/curator/PIPELINE_DESIGN_GUIDE.md).
+
+---
+
+## Document Information
+
+**Publication Date:** October 29, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_curate_data_for_2025,
+  title={Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator},
+  author={Wang, Hao},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/predict2_data/data_curation.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Hao Wang (2025). Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/predict2_data/data_curation.html

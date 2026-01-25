@@ -232,3 +232,29 @@ Example silhouette and Davies-Bouldin score:
 silhouette_score: 0.6653785109519958
 davies_bouldin_score: 0.42510679230192855
 ```
+
+---
+
+## Document Information
+
+**Publication Date:** January 6, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_dataset_video_clustering_2026,
+  title={Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors},
+  author={Khrapchenkov, Petr},
+  organization={AI Robot Association (AIRoA)},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Petr Khrapchenkov (2026). Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors. In *NVIDIA Cosmos Cookbook*. AI Robot Association (AIRoA). Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html

@@ -1335,3 +1335,28 @@ Compared to Cosmos Transfer 1, Cosmos Transfer 2.5 offers significant improvemen
 
   </div>
 </div>
+
+---
+
+## Document Information
+
+**Publication Date:** November 12, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_robotics_gallery_2025,
+  title={Robotics Domain Adaptation Gallery},
+  author={Wagwani, Raju and Sriram, Jathavan and Yarlett, Richard and Bapst, Joshua and Gu, Jinwei},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/robotics_inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Raju Wagwani, Jathavan Sriram, Richard Yarlett, Joshua Bapst, & Jinwei Gu (2025). Robotics Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/robotics_inference.html

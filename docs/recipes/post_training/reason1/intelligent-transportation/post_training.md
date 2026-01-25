@@ -241,20 +241,29 @@ vss:
   - name: local-cosmos-reason1-checkpoint
     hostPath:
       path: </path/to/local/cosmos-reason1-checkpoint>
-  extraPodVolumeMounts:
-  - name: local-cosmos-reason1-checkpoint
-    mountPath: /tmp/cosmos-reason1
-
 ```
 
-<br>
+---
 
-## Conclusion
+## Document Information
 
-Supervised Fine-Tuning Cosmos Reason 1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
+**Publication Date:** October 10, 2025
 
-- **Domain data matters**: Specialized datasets drive substantial performance gains.
-- **Efficient training**: 4K vision tokens per frame converged twice as fast as 8K, with similar accuracy.
-- **Seamless deployment**: Workflow supports quantization and deployment via NIM or VSS.
+### Citation
 
-This methodology can be applied to any physical AI domain by substituting relevant datasets.
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_its_post_training_2025,
+  title={Intelligent Transportation Post-Training with Cosmos Reason 1},
+  author={Zhang, Paris and Shah, Chintan and Kornuta, Tomasz},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Paris Zhang, Chintan Shah, & Tomasz Kornuta (2025). Intelligent Transportation Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html

@@ -563,3 +563,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
+---
+
+## Document Information
+
+**Publication Date:** November 12, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_av_gallery_2025,
+  title={Autonomous Vehicle Domain Adaptation Gallery},
+  author={Wagwani, Raju and Matveiev, Nikolay and Bapst, Joshua and Gu, Jinwei},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/av_inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Raju Wagwani, Nikolay Matveiev, Joshua Bapst, & Jinwei Gu (2025). Autonomous Vehicle Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/av_inference.html

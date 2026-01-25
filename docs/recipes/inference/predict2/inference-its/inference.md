@@ -181,3 +181,28 @@ Key takeaways:
 3. Strong prompt design (captioning + constrained augmentation) is critical for controllable, high-quality outputs.
 
 For more details on implementation and training configurations, please refer to the accompanying setup and configuration files in this repository.
+
+---
+
+## Document Information
+
+**Publication Date:** November 18, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_predict_2_2025,
+  title={Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images},
+  author={Verma, Charul and Entezari, Reihaneh and Jain, Arihant and Devendran, Dharshi and Kumar, Ratnesh},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/predict2/inference-its/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Charul Verma, Reihaneh Entezari, Arihant Jain, Dharshi Devendran, & Ratnesh Kumar (2025). Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/predict2/inference-its/inference.html

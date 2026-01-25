@@ -516,3 +516,29 @@ Cosmos Transfer 2.5 Multiview successfully addresses the spatial control require
 The key innovation lies in maintaining multiview consistency and temporal dynamics while respecting spatial constraints encoded in world scenario maps. Lane detection and 3D cuboid evaluation demonstrate high spatial accuracy, transforming video generation from a creative tool into a precision instrument suitable for engineering applications where spatial fidelity directly impacts testing validity. Critical design decisions—operating at 10 fps for LiDAR alignment, using 8 latent frames for tractability, and training with variable view counts for robustness—reflect pragmatic choices that balance real-world constraints with quality requirements.
 
 Looking forward, Cosmos Transfer 2.5 Multiview enables systematic exploration of perception system behavior across diverse conditions while holding spatial layout constant, supporting comprehensive testing of autonomous vehicle algorithms. This work demonstrates that post-training with spatial conditioning represents a viable path toward production-ready video generation, combining photorealism with the spatial determinism essential for reliable autonomous vehicle development workflows.
+
+---
+
+## Document Information
+
+**Publication Date:** December 22, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_transfer25_multiview_generation_2025,
+  title={Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview},
+  author={Cai, Tiffany and Ferroni, Francesco},
+  organization={NVIDIA},
+  year={2025},
+  month={December},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Tiffany Cai, & Francesco Ferroni (2025). Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview. In *NVIDIA Cosmos Cookbook*. NVIDIA. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html

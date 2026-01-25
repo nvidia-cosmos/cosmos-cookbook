@@ -178,3 +178,28 @@ This use case demonstrates how users can leverage Cosmos Transfer 1 as an AI mod
 4. **Optimal Control Configuration**: Using only edge and depth controls produce the best results for warehouse sim-to-real conversion.
 
 By applying this framework, we can generate realistic warehouse scenes that maintain multi-view consistency, leading to substantial improvements in downstream detection and tracking algorithm accuracy, while reducing the need for expensive real-world data collection or costly synthetic data re-rendering.
+
+---
+
+## Document Information
+
+**Publication Date:** October 09, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_transfer_1_2025,
+  title={Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking},
+  author={Li, Alice and Tang, Thomas and Wang, Yuxing and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-warehouse-mv/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Alice Li, Thomas Tang, Yuxing Wang, & Jingyi Jin (2025). Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-warehouse-mv/inference.html

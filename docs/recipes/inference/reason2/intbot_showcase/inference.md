@@ -341,3 +341,29 @@ This evaluation was conducted within a constrained time frame, which limited the
 - **Expanded test coverage** — Increase the number and diversity of test scenarios to improve statistical robustness
 - **Systematic example selection** — Apply more rigorous criteria for scenario selection to ensure balanced representation across interaction types
 - **Additional capability testing** — Incorporate tests for object handoffs and emotional state awareness, as noted in Section 1
+
+---
+
+## Document Information
+
+**Publication Date:** January 1, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_intbot_2026,
+  title={Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B},
+  author={Zhang, Tingyu and Yang, Sharon},
+  organization={IntBot Inc.},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Tingyu Zhang, & Sharon Yang (2026). Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B. In *NVIDIA Cosmos Cookbook*. IntBot Inc. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html

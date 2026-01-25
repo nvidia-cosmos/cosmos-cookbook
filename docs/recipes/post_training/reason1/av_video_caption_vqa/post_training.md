@@ -253,3 +253,28 @@ The only case where the fine-tuned model does worse is "rule_violation". For thi
 ## Conclusion
 
 This recipe demonstrates that the Cosmos Reason model can be used out-of-the box for video captioning and VQA, and  the baseline model is able to answer simple questions about weather and road conditions with high accuracy.  However, for more complex domain-specific questions, performance of the model can be improved substantially by supervised fine-tuning on human annotations.
+
+---
+
+## Document Information
+
+**Publication Date:** October 13, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_av_video_captioning_vqa_2025,
+  title={SFT for AV video captioning and VQA},
+  author={Hutchins, DeLesley and Jin, Jingyi and Fasale, Amol},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/av_video_caption_vqa/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> DeLesley Hutchins, Jingyi Jin, & Amol Fasale (2025). SFT for AV video captioning and VQA. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/av_video_caption_vqa/post_training.html

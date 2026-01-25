@@ -206,3 +206,28 @@ You can use different control types depending on your needs. Only **edge**, **de
 
 - **[Cosmos Transfer 2.5 Model](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - Model weights and documentation
 - **[Control Modalities Guide](../../../../core_concepts/control_modalities/overview.md)** - Understanding different control types
+
+---
+
+## Document Information
+
+**Publication Date:** December 20, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_styleguided_video_generation_2025,
+  title={Style-Guided Video Generation with Cosmos Transfer 2.5},
+  author={Wei, Fangyin and Gupta, Aryaman},
+  year={2025},
+  month={December},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-image-prompt/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Fangyin Wei, & Aryaman Gupta (2025). Style-Guided Video Generation with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-image-prompt/inference.html
