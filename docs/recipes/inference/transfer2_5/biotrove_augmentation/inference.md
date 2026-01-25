@@ -309,7 +309,7 @@ If you use this recipe or reference this work, please cite it as:
 ```bibtex
 @misc{cosmos_cookbook_domain_transfer_for_2025,
   title={Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5},
-  author={PhD, Paula Ramos,},
+  author={Ramos, Paula},
   organization={Voxel51},
   year={2025},
   month={November},
