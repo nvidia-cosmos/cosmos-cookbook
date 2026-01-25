@@ -191,4 +191,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Anita Chiu, & Tim Lin (2025). Wafer Map Anomaly Classification with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html
+> Anita Chiu, & Tim Lin (2025). Wafer Map Anomaly Classification with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html>

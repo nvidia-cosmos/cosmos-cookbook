@@ -220,4 +220,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Hao Wang (2025). Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/predict2_data/data_curation.html
+> Hao Wang (2025). Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/predict2_data/data_curation.html>

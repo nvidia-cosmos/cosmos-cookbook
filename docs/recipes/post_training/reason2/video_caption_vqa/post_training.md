@@ -501,4 +501,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Jingyi Jin, Shun Zhang, Xiaodong Yang, & Joseph Wang (2026). Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA. In *NVIDIA Cosmos Cookbook*. NVIDIA and Uber. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html
+> Jingyi Jin, Shun Zhang, Xiaodong Yang, & Joseph Wang (2026). Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA. In _NVIDIA Cosmos Cookbook_. NVIDIA and Uber. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html>

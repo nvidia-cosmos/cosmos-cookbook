@@ -202,4 +202,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Alice Li, Thomas Tang, Yuxing Wang, & Jingyi Jin (2025). Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-warehouse-mv/inference.html
+> Alice Li, Thomas Tang, Yuxing Wang, & Jingyi Jin (2025). Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking. In _NVIDIA Cosmos Cookbook_. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-warehouse-mv/inference.html>

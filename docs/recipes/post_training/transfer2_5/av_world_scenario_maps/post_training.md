@@ -541,4 +541,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Tiffany Cai, & Francesco Ferroni (2025). Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview. In *NVIDIA Cosmos Cookbook*. NVIDIA. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html
+> Tiffany Cai, & Francesco Ferroni (2025). Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html>

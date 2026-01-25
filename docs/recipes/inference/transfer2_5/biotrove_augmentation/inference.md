@@ -320,4 +320,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Paula Ramos, PhD (2025). Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Voxel51. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html
+> Paula Ramos, PhD (2025). Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Voxel51. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/biotrove_augmentation/inference.html>

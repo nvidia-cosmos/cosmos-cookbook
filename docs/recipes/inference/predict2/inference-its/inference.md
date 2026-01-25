@@ -205,4 +205,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Charul Verma, Reihaneh Entezari, Arihant Jain, Dharshi Devendran, & Ratnesh Kumar (2025). Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/predict2/inference-its/inference.html
+> Charul Verma, Reihaneh Entezari, Arihant Jain, Dharshi Devendran, & Ratnesh Kumar (2025). Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/predict2/inference-its/inference.html>

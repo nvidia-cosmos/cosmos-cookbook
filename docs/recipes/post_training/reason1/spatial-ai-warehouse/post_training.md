@@ -358,4 +358,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Xiaolong Li, Chintan Shah, & Tomasz Kornuta (2025). Spatial AI for Warehouse Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/spatial-ai-warehouse/post_training.html
+> Xiaolong Li, Chintan Shah, & Tomasz Kornuta (2025). Spatial AI for Warehouse Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/spatial-ai-warehouse/post_training.html>

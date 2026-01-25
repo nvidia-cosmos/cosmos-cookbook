@@ -637,4 +637,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Aigul Dzhumamuratova, Alexander Efitorov, Hesam Rabeti, & Jingyi Jin (2025). Cosmos Reason for Mimic Gen temporal localization. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html
+> Aigul Dzhumamuratova, Alexander Efitorov, Hesam Rabeti, & Jingyi Jin (2025). Cosmos Reason for Mimic Gen temporal localization. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/temporal_localization/post_training.html>

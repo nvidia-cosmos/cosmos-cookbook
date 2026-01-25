@@ -402,4 +402,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Aidan Ladenburg, & Adityan Jothi (2025). Synthetic Data Generation (SDG) for Traffic Scenarios. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html
+> Aidan Ladenburg, & Adityan Jothi (2025). Synthetic Data Generation (SDG) for Traffic Scenarios. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html>

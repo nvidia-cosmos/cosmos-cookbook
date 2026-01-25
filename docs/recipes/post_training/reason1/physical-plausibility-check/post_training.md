@@ -411,4 +411,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Shun Zhang, Zekun Hao, & Jingyi Jin (2025). Physical Plausibility Prediction with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/physical-plausibility-check/post_training.html
+> Shun Zhang, Zekun Hao, & Jingyi Jin (2025). Physical Plausibility Prediction with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/physical-plausibility-check/post_training.html>

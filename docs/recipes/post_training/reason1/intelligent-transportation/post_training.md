@@ -266,4 +266,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Paris Zhang, Chintan Shah, & Tomasz Kornuta (2025). Intelligent Transportation Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html
+> Paris Zhang, Chintan Shah, & Tomasz Kornuta (2025). Intelligent Transportation Post-Training with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html>

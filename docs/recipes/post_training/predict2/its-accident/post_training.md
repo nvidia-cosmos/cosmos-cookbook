@@ -503,4 +503,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Arslan Ali, Grace Lam, Amol Fasale, & Jingyi Jin (2025). Traffic Anomaly Generation with Cosmos Predict2. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/its-accident/post_training.html
+> Arslan Ali, Grace Lam, Amol Fasale, & Jingyi Jin (2025). Traffic Anomaly Generation with Cosmos Predict2. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/its-accident/post_training.html>

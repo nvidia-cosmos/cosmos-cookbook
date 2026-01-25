@@ -246,4 +246,4 @@ If you use this content or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Aiden Chang, & Akul Santhosh (2025). Cosmos Transfer 2.5 Control Modalities: Core Concepts. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html
+> Aiden Chang, & Akul Santhosh (2025). Cosmos Transfer 2.5 Control Modalities: Core Concepts. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html>

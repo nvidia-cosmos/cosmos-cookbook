@@ -572,4 +572,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Arslan Ali (2025). LoRA Post-training for Sports Video Generation. In *NVIDIA Cosmos Cookbook*. NVIDIA. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html
+> Arslan Ali (2025). LoRA Post-training for Sports Video Generation. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/sports/post_training.html>

@@ -1359,4 +1359,4 @@ If you use this content or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Raju Wagwani, Jathavan Sriram, Richard Yarlett, Joshua Bapst, & Jinwei Gu (2025). Robotics Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/robotics_inference.html
+> Raju Wagwani, Jathavan Sriram, Richard Yarlett, Joshua Bapst, & Jinwei Gu (2025). Robotics Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/robotics_inference.html>

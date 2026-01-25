@@ -208,4 +208,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Aigul Dzhumamuratova, Hesam Rabeti, Yan Chang, & Jingyi Jin (2025). Cosmos Transfer Sim2Real for Robotics Navigation Tasks. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-x-mobility/inference.html
+> Aigul Dzhumamuratova, Hesam Rabeti, Yan Chang, & Jingyi Jin (2025). Cosmos Transfer Sim2Real for Robotics Navigation Tasks. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-x-mobility/inference.html>

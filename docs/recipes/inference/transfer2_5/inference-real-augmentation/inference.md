@@ -484,4 +484,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Aiden Chang, & Akul Santhosh (2025). Multi-Control Recipes with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-real-augmentation/inference.html
+> Aiden Chang, & Akul Santhosh (2025). Multi-Control Recipes with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-real-augmentation/inference.html>

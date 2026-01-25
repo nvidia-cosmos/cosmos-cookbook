@@ -366,4 +366,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Tingyu Zhang, & Sharon Yang (2026). Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B. In *NVIDIA Cosmos Cookbook*. IntBot Inc. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html
+> Tingyu Zhang, & Sharon Yang (2026). Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B. In *NVIDIA Cosmos Cookbook*. IntBot Inc. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html>

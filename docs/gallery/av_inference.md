@@ -587,4 +587,4 @@ If you use this content or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Raju Wagwani, Nikolay Matveiev, Joshua Bapst, & Jinwei Gu (2025). Autonomous Vehicle Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/av_inference.html
+> Raju Wagwani, Nikolay Matveiev, Joshua Bapst, & Jinwei Gu (2025). Autonomous Vehicle Domain Adaptation Gallery. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/av_inference.html>

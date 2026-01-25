@@ -277,4 +277,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> DeLesley Hutchins, Jingyi Jin, & Amol Fasale (2025). SFT for AV video captioning and VQA. In *NVIDIA Cosmos Cookbook*. Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/av_video_caption_vqa/post_training.html
+> DeLesley Hutchins, Jingyi Jin, & Amol Fasale (2025). SFT for AV video captioning and VQA. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/av_video_caption_vqa/post_training.html>

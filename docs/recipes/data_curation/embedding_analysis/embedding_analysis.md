@@ -257,4 +257,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Petr Khrapchenkov (2026). Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors. In *NVIDIA Cosmos Cookbook*. AI Robot Association (AIRoA). Retrieved from https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html
+> Petr Khrapchenkov (2026). Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors. In *NVIDIA Cosmos Cookbook*. AI Robot Association (AIRoA). Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html>
