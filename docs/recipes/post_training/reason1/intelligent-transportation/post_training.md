@@ -247,7 +247,8 @@ vss:
 
 ```
 
-<<<<<<< Updated upstream
+<br>
+
 ## Conclusion
 
 Fine-tuning Cosmos Reason 1 with domain-specific intelligent transportation data significantly improves the model's ability to understand traffic scenes, recognize road users, and reason about complex situations such as pedestrian crossings and vehicle interactions. By leveraging supervised fine-tuning, the recipe shows how to efficiently adapt a general-purpose vision-language model to a specialized domain with targeted instruction data and curated video/image prompts.
@@ -255,20 +256,7 @@ Fine-tuning Cosmos Reason 1 with domain-specific intelligent transportation data
 The training workflow demonstrated here emphasizes scalable and reproducible SFT, including data preparation, configuration, and evaluation steps that can be extended to new tasks or additional edge cases. This enables practitioners to iteratively refine model behavior while managing training cost and turnaround time.
 
 Finally, the deployment examples illustrate how the fine-tuned Cosmos Reason 1 checkpoint can be integrated into NVIDIA Video Storage and Streaming (VSS) using both direct configuration and Helm-based setups. This enables practical, production-ready deployments where the improved scene understanding and reasoning capabilities can be applied to real-world intelligent transportation systems.
-=======
-<br>
 
-## Conclusion
-
-Supervised Fine-Tuning Cosmos Reason 1 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
-
-- **Domain data matters**: Specialized datasets drive substantial performance gains.
-- **Efficient training**: 4K vision tokens per frame converged twice as fast as 8K, with similar accuracy.
-- **Seamless deployment**: Workflow supports quantization and deployment via NIM or VSS.
-
-This methodology can be applied to any physical AI domain by substituting relevant datasets.
-
->>>>>>> Stashed changes
 ---
 
 ## Document Information
