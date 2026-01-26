@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| Cosmos [Model] | Inference | [Brief description] |
+| **Model**      | **Workload**  | **Use Case**        | **Category**                               | **Date**    |
+|----------------|---------------|---------------------|--------------------------------------------|-------------|
+| Cosmos [Model] | Inference     | [Brief description] | Robotics / Autonomous Vehicles / Vision AI | Jan 1, 2026 |
 
 [Introduce your company/organization, project, and application domain. Describe the specific use case, problem statement, and value proposition. Explain why Cosmos inference (vs. post-training) is the right approach for your needs.]
 
