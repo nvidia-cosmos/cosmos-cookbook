@@ -161,7 +161,7 @@ After SFT training with MCQs, the model achieves a significant accuracy improvem
 </video>
 <img src="assets/after_qa.png" width="960"/>
 
-You can run the inference script in [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2?tab=readme-ov-file#transformers) to query the fine-tuned model on any custom traffic video and question. 
+You can run the inference script in [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2?tab=readme-ov-file#transformers) to query the fine-tuned model on any custom traffic video and question.
 
 <br>
 
@@ -171,7 +171,7 @@ The last step is to deploy the trained model for inference. You can deploy it us
 
 ### FP8 Quantization
 
-The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2?tab=readme-ov-file#quantization).
+The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/docs/llmcompressor.md).
 
 1. Clone the Cosmos Reason 2 repo.
 
@@ -184,13 +184,13 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
       --precision fp8
    ```
 
-Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression. 
+Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression.
 
 ### Deploy on NVIDIA NIM
 
 NVIDIA NIM™ provides containers to self-host GPU-accelerated inferencing microservices for pre-trained and customized AI models across cloud instances, data centers, and RTX™ AI PCs and workstations, with industry-standard APIs for simple integration into AI applications. Please visit the [Cosmos Reason 2 NIM page](https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/cosmos-reason2-8b) for more details and to get the NIM image container.
 
-To deploy a post-trained checkpoint, go to the [fine-tune-model](https://docs.nvidia.com/nim/vision-language-models/latest/fine-tune-model.html) section in NIM documentation. Go to "Cosmos Reason2" tab. NIM will automatically serve an optimized vLLM engine for this model. The model needs to be in the Huggingface checkpoint or quantized checkpoint.
+To deploy a post-trained checkpoint, go to the [Fine-Tune a Model](https://docs.nvidia.com/nim/vision-language-models/latest/fine-tune-model.html) section in NIM documentation. Go to "Cosmos Reason2" tab. NIM will automatically serve an optimized vLLM engine for this model. The model needs to be in the Huggingface checkpoint or quantized checkpoint.
 
 ```shell
 export CUSTOM_WEIGHTS=/path/to/post-trained/model
