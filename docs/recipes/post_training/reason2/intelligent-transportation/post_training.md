@@ -20,9 +20,14 @@ Before fine-tuning the model, let's review the zero-shot performance of the mode
 
 <br>
 
+Here’s the end-to-end workflow to fine-tune Cosmos Reason 2 - from data preparation, to training and evaluating the model, and finally quantizing and deploying the model for inference.
+<img src="assets/e2e_workflow.png"/>
+
+<br>
+
 ## Data Preparation
 
-For this experiment, we used the [WovenTraffic Safety](https://woven-visionai.github.io/wts-dataset-homepage/) (WTS) Dataset from [Woven by Toyota, Inc.](https://woven.toyota/en/). This is a real-world pedestrian-centric traffic video dataset featuring 255 traffic scenarios, including staged pedestrian-related accidents across 1.2k video segments. It provides detailed textual descriptions of pedestrian and vehicle behavior, bounding box annotations, and traffic Visual Question Answering (VQA) with multiple-choice questions (MCQ).
+For this experiment, we use the [WovenTraffic Safety](https://woven-visionai.github.io/wts-dataset-homepage/) (WTS) Dataset from [Woven by Toyota, Inc.](https://woven.toyota/en/). This is a real-world pedestrian-centric traffic video dataset featuring 255 traffic scenarios, including staged pedestrian-related accidents across 1.2k video segments. It provides detailed textual descriptions of pedestrian and vehicle behavior, bounding box annotations, and traffic Visual Question Answering (VQA) with multiple-choice questions (MCQ).
 
 > **Note**: The goal of this example is to demonstrate post-training on Cosmos Reason 2. The dataset used in this experiment is governed by the terms specified in the [WTS DATASET Terms of Use](https://woven-visionai.github.io/wts-dataset-homepage/#downloads).
 
@@ -31,7 +36,7 @@ Here are examples of the video clips and textual descriptions of the pedestrian 
 
 <br>
 
-For this experiment, we fine-tune the Cosmos Reason 2 model on the Environment VQA subset of the WTS dataset. The subset contains 341 videos with 5k MCQ question-answer pairs. The average video length is about 75 seconds.
+For this experiment, we fine-tune the Cosmos Reason 2 model on the Environment VQA subset of the WTS dataset. The subset contains 341 videos with 5.6k MCQ question-answer pairs. The average video length is about 75 seconds.
 
 ### Data Pre-processing
 
@@ -59,7 +64,7 @@ This format is a JSON-based structure commonly used for visual SFT on VLMs, incl
   }
   ```
 
-To pre-process the dataset, run the following command:
+To pre-process the dataset, run the following command using the provided [script](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/examples/reason2/intelligent-transportation/data_preprocess.py):
 
    ```shell
    # From scripts/examples/reason2/intelligent-transportation directory
@@ -70,7 +75,7 @@ To pre-process the dataset, run the following command:
 
 ## Post-Training with Supervised Fine-Tuning (SFT)
 
-After preprocessing, the WTS dataset is in Llava dataset format and ready for training. To launch training, we follow the cosmos-rl training command in [Cosmos Reason 2 SFT Guide](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md#supervised-fine-tuning-sft):
+After preprocessing, the WTS dataset is in Llava dataset format and ready for training. To launch training, we follow the cosmos-rl training command in [Cosmos Reason 2 SFT Guide](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md#supervised-fine-tuning-sft). The specific code for this experiment can be found [here](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/examples/reason2/intelligent-transportation).
 
 ```shell
 # From scripts/examples/reason2/intelligent-transportation directory
@@ -117,7 +122,7 @@ For Qwen3-VL (the backbone model of Cosmos Reason 2), the model compresses the i
 
 ### Model Evaluation
 
-After training, we evaluate the model on the validation set of the Environment VQA subset of the WTS dataset. The evaluation script below will save the model responses and accuracy score in the `results` directory.
+After training, we evaluate the model on the validation set of the Environment VQA subset of the WTS dataset. Similar to the training set, the validation set is also a collection of multiple choice questions (MCQ) on traffic and pedestrian videos. It contains 171 videos with 2.6k MCQ questions, which are unseen during training. The evaluation script below will save the model responses and accuracy score in the `results` directory.
 
 The `eval_config.yaml` needs to be updated with the path to the post-trained model and the validation set.
 
@@ -132,15 +137,15 @@ python evaluate.py --config eval_config.yaml
 
 ### Quantitative Results
 
-First, let's review the quantitative results on the environment VQA validation set of the WTS dataset for each experiment: one with "nframes 8" (3k vision tokens) and another with "fps 1, total pixels 8,388,608" (8k vision tokens). Similar to the training set, the validation set is also a collection of multiple choice questions (MCQ) on traffic and pedestrian videos, which are unseen during training.
+First, let's review the quantitative results on the environment VQA validation set for each experiment: one with "nframes 8" (3k vision tokens) and another with "fps 1, total pixels 8,388,608" (8k vision tokens). As calculated above, the 3k tokens setup samples fewer frames but uses a higher resolution per frame, while the 8k tokens setup samples more frames but at a lower resolution per frame.
 
-Overall, we see the accuracy jumps over 92% for both experiments after 1 epoch of training. For 3k tokens, accuracy keeps increasing over 3 epochs of training and reaches 93.65% in the end, while for 8k tokens, the model is more prone to overfitting with more training epochs. For this task and dataset, 3k vision tokens give us overall better performance and will converge faster and provide faster inference times.
+For this task, it appears that having higher resolution per frame (even with fewer frames sampled) is more valuable for the model to accurately understand the traffic scene and pedestrian situations. This is reflected in the results: both experiments surpass 92% accuracy after just 1 epoch of training. With the 3k tokens setup, accuracy continues to improve over 3 epochs, reaching 93.65%, whereas the 8k tokens model tends to overfit with additional training. Thus, for this dataset, prioritizing higher resolution (3k vision tokens) leads to better overall performance, faster convergence, and faster inference times.
 
 <img src="assets/quan_result.png" width="600"/>
 
 ### Training Time
 
-We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with one training epoch. As expected, with 3k vision tokens, the model converged roughly 3 times as fast as 8k vision tokens. In summary, you can train a very accurate model using this amount of data in an hour or less.
+We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures the training time for the two different settings with three training epoch. As expected, with 3k vision tokens, the model converged roughly 3 times as fast as 8k vision tokens. In summary, you can train a very accurate model using this amount of data in about an hour.
 
 | Method | Vision Configuration                  | Training Time for 3 epochs (on 8 A100s) |
 |--------|---------------------------------------|----------------------------|
@@ -171,10 +176,13 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
 2. Run the quantization script.
 
    ```shell
-   python ./scripts/quantize.py --model_id '/path/to/post-trained/reason2' --save_dir '/path/to/quantized/model --precision fp8'
+   python ./scripts/quantize.py \
+      --model_id '/path/to/post-trained/reason2' \
+      --save_dir '/path/to/quantized/model' \
+      --precision fp8
    ```
 
-Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression.
+Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression. Please vis the [Cosmos Reason 2 NIM page](https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/cosmos-reason2-8b) for more details and to get the NIM image container.
 
 ### Deploy on NVIDIA NIM
 
@@ -184,6 +192,7 @@ To deploy a post-trained checkpoint, go to the [fine-tune-model](https://docs.nv
 
 ```shell
 export CUSTOM_WEIGHTS=/path/to/post-trained/model
+export NIM_IMAGE=/path/to/nim/image/container
 docker run -it --rm --name=cosmos-reason2-8b \
     --gpus all \
     --shm-size=32GB \

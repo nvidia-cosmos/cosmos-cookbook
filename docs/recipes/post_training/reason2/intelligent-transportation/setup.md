@@ -6,13 +6,13 @@ This guide covers the setup requirements for post-training Cosmos Reason 2 for i
 
 ### Minimum Hardware Requirements
 
-- **GPU**: 8 A100, H100, or later GPU (recommended minimum)
-- **Memory**: Sufficient VRAM for model inference
-- **Storage**: Adequate space for model weights
+- **GPU**: 8xA100, H100, or later GPUs (recommended minimum).
+- **Memory**: Sufficient VRAM for model training and inference. We recommend at least 80GB per GPU.
+- **Storage**: Adequate space for model weights and datasets.
 
 ### Software Requirements
 
-The setup requires the Cosmos Reason 2 and cosmos-rl repositories and Cosmos Reason 2 model to be properly installed and configured.
+The setup requires the [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) and [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) repositories and [Cosmos Reason 2-8B model](https://huggingface.co/nvidia/Cosmos-Reason2-8B) to be properly installed and configured.
 
 ## Installation
 
