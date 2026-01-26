@@ -222,3 +222,28 @@ Full recipes can be found at [Real World Video Manipulation Guidelines with Cosm
 ## Use Cases
 
 - [Real World Video Manipulation Guidelines with Cosmos Transfer 2.5](../../recipes/inference/transfer2_5/inference-real-augmentation/inference.md).
+
+---
+
+## Document Information
+
+**Publication Date:** November 9, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_control_modalities_2025,
+  title={Cosmos Transfer 2.5 Control Modalities: Core Concepts},
+  author={Chang, Aiden and Santhosh, Akul},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aiden Chang, & Akul Santhosh (2025). Cosmos Transfer 2.5 Control Modalities: Core Concepts. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/control_modalities/overview.html>

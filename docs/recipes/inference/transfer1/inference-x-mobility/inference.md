@@ -184,3 +184,28 @@ This demonstration shows that Cosmos Transfer significantly enhances Sim2Real na
 - **Enhanced robustness** for transparent, low-contrast, and poorly-lit obstacles
 
 These results highlight Cosmos Transfer as a powerful tool for improving the robustness and real-world adaptability of robotics navigation systems through photorealistic data augmentation.
+
+---
+
+## Document Information
+
+**Publication Date:** October 27, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_transfer_sim2real_2025,
+  title={Cosmos Transfer Sim2Real for Robotics Navigation Tasks},
+  author={Dzhumamuratova, Aigul and Rabeti, Hesam and Chang, Yan and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-x-mobility/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aigul Dzhumamuratova, Hesam Rabeti, Yan Chang, & Jingyi Jin (2025). Cosmos Transfer Sim2Real for Robotics Navigation Tasks. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-x-mobility/inference.html>
