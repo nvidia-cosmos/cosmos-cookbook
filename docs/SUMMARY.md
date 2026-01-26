@@ -1,4 +1,4 @@
-- [Overview](index.md)
+- [Overview](overview.md)
 - [Getting Started](getting_started/)
 - [Gallery](gallery/)
 - [Recipes](recipes/)
