@@ -154,7 +154,7 @@ We ran all the experiments on 1 node (8 GPUs) of A100. The table below captures 
 
 ### Qualitative Results
 
-After SFT training with MCQs, the model achieves a significant accuracy improvement on the validation set MCQs on WTS videos. Additionally, the model is also able to answer open-ended questions more accurately than zero shot on videos outside of WTS dataset. Below is a qualitative comparison of open-ended questions on an unseen video.
+After SFT training with MCQs, the model achieves a significant accuracy improvement on the validation set on WTS videos. Additionally, the model is also able to answer open-ended questions more accurately than zero shot on videos outside of WTS dataset. Below is a qualitative comparison of open-ended questions on an unseen video.
 
 <video controls width="960">
   <source src="assets/example_video.mp4" type="video/mp4">
@@ -182,7 +182,7 @@ The script to quantize the model to FP8 is provided in the NVIDIA [Cosmos Reason
       --precision fp8
    ```
 
-Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression. Please vis the [Cosmos Reason 2 NIM page](https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/cosmos-reason2-8b) for more details and to get the NIM image container.
+Before deploying the quantized model for inference, you should run an evaluation on the model for accuracy and ensure quantization doesn’t introduce significant accuracy regression. Please visit the [Cosmos Reason 2 NIM page](https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/cosmos-reason2-8b) for more details and to get the NIM image container.
 
 ### Deploy on NVIDIA NIM
 
@@ -208,9 +208,9 @@ docker run -it --rm --name=cosmos-reason2-8b \
 
 Supervised Fine-Tuning Cosmos Reason 2 on traffic-specific data boosts accuracy from zero-shot levels to over 90% on traffic VQA tasks. Key insights include the following:
 
-- **Domain data matters**: Specialized datasets drive substantial performance gains.
-- **Best training configuration is task-dependent**: It's not always the case that post-training with more vision tokens will lead to better performance. For this task and dataset, 3k vision tokens achieve better accuracy while taking almost 1/3 of the training time as 8k.
-- **Generalization to unseen videos and questions**: Even though the model is trained on a specific dataset with MCQ questions, it is able to answer open-ended questions more accurately than zero shot on other traffic videos outside of the dataset.
+- **The importance of domain-specific data**: Fine-tuning with targeted, specialized datasets delivers substantial performance improvements—even after just 1 hour of training.
+- **Optimal training settings depend on the task**: More vision tokens in post-training do not always guarantee better results. In our case, using 3k vision tokens (with higher resolution per frame) yielded greater accuracy in about one-third the training time compared to using 8k vision tokens (with more frames sampled).
+- **Enhanced generalization to new videos and questions**: Although the model was fine-tuned primarily with MCQ data from a specific dataset, it demonstrates improved accuracy on open-ended questions for traffic videos outside of the dataset, surpassing zero-shot performance.
 
 This methodology can be applied to any physical AI domain by substituting relevant datasets.
 
