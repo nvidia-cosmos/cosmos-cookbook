@@ -160,3 +160,28 @@ This tutorial demonstrates how Cosmos Transfer 1 can effectively augment ITS dat
 - Synthetic augmentation significantly improves model performance on rare weather conditions.
 
 For more details on implementation and training configurations, refer to the accompanying setup and configuration files in this repository.
+
+---
+
+## Document Information
+
+**Publication Date:** October 09, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_transfer_1_2025,
+  title={Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images},
+  author={Entezari, Reihaneh and Verma, Charul and Jain, Arihant and Devendran, Dharshi and Kumar, Ratnesh},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-its-weather-augmentation/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Reihaneh Entezari, Charul Verma, Arihant Jain, Dharshi Devendran, & Ratnesh Kumar (2025). Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer1/inference-its-weather-augmentation/inference.html>

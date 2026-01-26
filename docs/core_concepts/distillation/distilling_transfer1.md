@@ -84,3 +84,28 @@ After ~10k steps:
 After ~20k steps:
 
 ![DMD2 vis 20k](../../assets/images/distillation/dmd2_transfer1_step20k.jpg)
+
+---
+
+## Document Information
+
+**Publication Date:** October 9, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_distilling_transfer1_2025,
+  title={Distilling Cosmos Transfer 1 Models},
+  author={Lam, Grace},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_transfer1.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Grace Lam (2025). Distilling Cosmos Transfer 1 Models. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/distillation/distilling_transfer1.html>
