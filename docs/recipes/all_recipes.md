@@ -390,6 +390,13 @@
           <div class="recipe-title">Video Search and Summarization with Cosmos Reason</div>
           <div class="recipe-tag recipe-tag--inference">Inference</div>
         </a>
+        <a class="recipe-card" href="./inference/reason2/worker_safety/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/reason2/worker_safety/assets/assets_1_worker_safety.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">EWorker Safety in a Classical Warehouse with Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
         <a class="recipe-card" href="./data_curation/embedding_analysis/embedding_analysis.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./data_curation/embedding_analysis/assets/clusters.png" alt="" loading="lazy" />
