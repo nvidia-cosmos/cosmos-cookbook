@@ -39,7 +39,9 @@ uv --version
 ## 3) Clone the Cosmos Reason2 repository
 
 ```bash
-cd ~/Documents/GitHub
+REPO_ROOT=/path/to/your/preferred/projects/directory  # e.g., $HOME/Documents/GitHub or $HOME/projects
+mkdir -p "$REPO_ROOT"
+cd "$REPO_ROOT"
 git clone https://github.com/nvidia-cosmos/cosmos-reason2.git
 cd cosmos-reason2
 git lfs pull

@@ -28,18 +28,20 @@ Setup guide: [Setup and system requirements](setup.md)
 Before running this recipe, ensure you have the necessary environment configuration.
 
 Prerequisites:
+
 - A GPU environment (e.g., NVIDIA RTX PRO 5000 Blackwell) with CUDA 13.0 available.
 - `fiftyone`, `transformers`, `torch`, and `qwen-vl-utils` installed.
-- The [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test-Understanding) dataset available on Hugging Face.
+- The [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset available on Hugging Face.
 
 ---
 
 ## Motivation: Safety in "Classical" Warehouses
 
 Modern factories are often pristine, but many real-world facilities are "classical" warehouses - older buildings with irregular layouts, poor illumination, and worn infrastructure. In these environments, standard computer vision models often fail because they confuse faded floor markings with active safety zones.
-The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality perfectly. It contains 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days. The dataset we are using in this recipe is just a sample of the original dataset ([Papaer](https://www.sciencedirect.com/science/article/pii/S235234092400756X#abs0001), [Dataset](https://data.mendeley.com/datasets/xjmtb22pff/1))
+The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality perfectly. It contains 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days. The dataset we are using in this recipe is just a sample of the original dataset ([Paper](https://www.sciencedirect.com/science/article/pii/S235234092400756X#abs0001), [Dataset](https://data.mendeley.com/datasets/xjmtb22pff/1))
 
 The challenges defined in the dataset:
+
 - Environmental noise: faded yellow lines, unpainted areas, and complex backgrounds.
 - 2D projection limits: camera angles make workers appear "on" a path when they are actually walking alongside it.
 - Strict compliance: safety rules are binary (e.g., a vest is either worn or not), but visual data is messy.
@@ -47,22 +49,26 @@ The challenges defined in the dataset:
 The solution: Cosmos Reason 2 allows us to bypass training a custom classifier. Instead, we use **prompt engineering** to act as an **expert inspector**. We instruct the model to ignore the **"old warehouse"** aesthetic and focus strictly on the visual definitions provided in the dataset paper - specifically Green Paths, Green Vests, and Block Counts.
 
 This recipe demonstrates a reproducible pipeline that:
+
 1. Loads the safety dataset into FiftyOne.
 2. Constructs a context-aware prompt based on the dataset's ground truth.
 3. Runs Cosmos Reason 2 inference on video clips.
 4. Parses structured JSON output for hazard detection.
 5. Visualizes the results and compare with ground truth.
 
+
 ---
 
 ## Pipeline Overview
 
 This is the end-to-end flow:
-1. Load data: ingest the [`Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test-Understanding) dataset from Hugging Face.
+
+1. Load data: ingest the [`Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset from Hugging Face.
 2. Define prompts: encode the dataset's specific visual rules into system and user prompts.
 3. Run inference: process videos using [`Cosmos-Reason2-2B`](https://github.com/nvidia-cosmos/cosmos-reason2) via Hugging Face Transformers.
 4. Parse output: extract JSON predictions (Class ID, Label, Rationale).
 5. Visualize: explore the results in FiftyOne to verify accuracy against the "old warehouse" constraints.
+
 
 ---
 
@@ -89,9 +95,11 @@ print(f"Loaded dataset with {len(dataset)} samples. Media type: {sample.media_ty
 This is the most critical step. Because the facility is old, we cannot ask the model to look for "safe areas" generically. We must map the system instructions to the dataset's specific constraints defined in the paper.
 
 System prompt (the persona and constraints): we instruct the model to act as an industrial safety inspector. Crucially, we add negative constraints to handle the dataset's limitations:
+
 - Ignore background: do not flag hazards based on faded paint or disrepair.
 - Ignore sitting workers: "intervention" classes only apply to standing workers at machine boards; sitting workers (or drivers) are background noise.
 - Priority: prioritize unsafe behaviors over safe ones.
+
 
 User prompt (the strict classification table): we provide the model with the exact definitions from Table 1 of the dataset paper:
 
@@ -220,6 +228,7 @@ session.wait()
 ```
 
 What to look for:
+
 - Green path compliance: check if the model correctly distinguishes between Class 0 and Class 4 based on the green markings, even when the floor paint is faded.
 - Vest detection: verify that Class 1 (Unauthorized) is triggered only when the worker at the board is standing and missing the green vest.
 - Forklift counting: ensure Class 3 (Overload) is strictly applied to loads of 3+ blocks, while 2 blocks remain Class 7 (Safe).
@@ -245,14 +254,18 @@ Example result clips:
 ## Conclusion
 
 This recipe demonstrates:
+
 - How to adapt Cosmos Reason 2 for specialized industrial domains without fine-tuning.
 - The importance of prompt engineering in overcoming "brownfield" environmental noise.
 - How to map academic dataset definitions (like those in the Safe and Unsafe Behaviours paper) into executable model constraints.
 
+
 This approach can be generalized to:
+
 - Construction site monitoring (PPE detection).
 - Retail loss prevention.
 - Logistics and inventory auditing.
+
 
 For the full code and to run this analysis yourself, verify you have the `pjramg/Safe_Unsafe_Test` dataset and the Cosmos-Reason2 model accessible in your environment.
 
