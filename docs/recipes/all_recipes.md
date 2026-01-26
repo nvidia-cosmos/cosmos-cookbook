@@ -327,6 +327,13 @@
           <div class="recipe-title">Traffic Anomaly Generation with Cosmos Predict2</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
+        <a class="recipe-card" href="./post_training/reason2/intelligent-transportation/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/reason2/intelligent-transportation/assets/after_qa.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Intelligent Transportation Post-Training with Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./post_training/reason1/intelligent-transportation/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/intelligent-transportation/assets/e2e_workflow.png" alt="" loading="lazy" />
