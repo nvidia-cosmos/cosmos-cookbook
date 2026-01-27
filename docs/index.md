@@ -79,6 +79,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | **Inference** | Prompt Guide         | [Prompt Guide (Reason 2)](recipes/inference/reason2/prompt_guide/inference.md)                   |
+| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)   
 | **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
 | **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
