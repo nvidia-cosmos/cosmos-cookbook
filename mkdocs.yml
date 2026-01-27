@@ -81,3 +81,5 @@ use_directory_urls: false
 validation:
   omitted_files: ignore
   unrecognized_links: ignore
+hooks:
+  - scripts/landing_page/hooks.py
