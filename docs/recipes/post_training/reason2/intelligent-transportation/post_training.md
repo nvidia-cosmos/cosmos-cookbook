@@ -219,3 +219,28 @@ This methodology can be applied to any physical AI domain by substituting releva
 ## Related Work
 
 This recipe builds upon our earlier work: [Intelligent Transportation Post-Training with Cosmos Reason 1](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/intelligent-transportation/post_training.html).
+
+---
+
+## Document Information
+
+**Publication Date:** January 26, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_its_post_training_2026,
+  title={Intelligent Transportation Post-Training with Cosmos Reason 2},
+  author={Zhang, Paris},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Paris Zhang (2026). Intelligent Transportation Post-Training with Cosmos Reason 2. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html>
