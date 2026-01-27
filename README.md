@@ -13,6 +13,7 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 | **Date** | **Recipe** | **Model** | **Description** |
 |----------|------------|-----------|-----------------|
+| Jan 26 | [Prompt Guide ](recipes/inference/reason2/prompt_guide/inference.html) | Cosmos Reason 2 | Prompt Guide  
 | Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html) | Cosmos Reason 2 | Post-training Cosmos Reason 2 for intelligent transportation scene understanding using WovenTraffic Safety dataset |
 | Jan 6 | [Dataset Video Clustering with Time Series K-Means](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html) | Cosmos Curator | Advanced video clustering using Time Series K-Means on embedding vector trajectories for robotics behavior analysis |
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html) | Cosmos Reason 2 | Domain adaptation for autonomous vehicle video captioning with multi-benchmark evaluation |
