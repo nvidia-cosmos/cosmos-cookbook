@@ -7,7 +7,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| Cosmos Reason| Inference | Large scale video search and summarization. |
+| [Cosmos Reason 2](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. |
 
 Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time-consuming manual review to extract valuable insights from the videos.
 
