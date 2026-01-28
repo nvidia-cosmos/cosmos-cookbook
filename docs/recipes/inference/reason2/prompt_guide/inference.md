@@ -6,7 +6,30 @@
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
 | [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Prompt Guide|
+## Overview
 
+Cosmos Reason 2 is an open, customizable, reasoning vision language model designed to operate across vision, robotics, autonomous driving, and physical-world understanding tasks. While many workflows in the Cosmos Cookbook focus on *what* to run, such as recipes and end-to-end pipelines, this document focuses on *how* to interact with the model effectively through prompting. It serves as a conceptual reference for prompting Cosmos Reason 2, consolidating best practices, common patterns, and illustrative examples that explain how system prompts, user instructions, sampling parameters, and multimodal message structure influence model behavior. Rather than prescribing a fixed workflow, this guide helps users build a correct mental model of how Cosmos Reason 2 interprets inputs and produces structured outputs across different task types. It is intended for developers, researchers, and practitioners who are designing new recipes, evaluating model outputs, or integrating Cosmos Reason 2 into real-world systems, and it is not a benchmark, API reference, or end-to-end workflow. By centralizing these prompting conventions in one place, this document provides a shared vocabulary that allows the rest of the Cosmos Cookbook to remain consistent, easier to extend, and easier to maintain as new domains and workflows are added.
+
+## Key Takeaways
+
+- **Prompting is foundational**: Prompt structure, sampling parameters, and multimodal message ordering have a direct impact on Cosmos Reason 2 behavior across all tasks.
+- **Minimal system prompts work best**: Cosmos Reason 2 generally performs well with lightweight system prompts, relying primarily on clear user instructions and structured output requests.
+- **Media-first message ordering matters**: When using images or video, media inputs should appear before user text to align with the model’s training conventions.
+- **Sampling controls trade-offs**: Adjusting parameters such as temperature, top-p, and presence penalty allows users to balance determinism, exploration, and verbosity depending on the task.
+- **Structured outputs are prompt-driven**: Temporal localization, JSON outputs, trajectories, and reasoning-style responses are best achieved by explicitly requesting structure in the prompt.
+- **Concepts over copy-paste**: The examples in this guide are illustrative; they are intended to teach prompting patterns rather than serve as fixed or deterministic templates.
+- 
+
+## How to Use This Guide
+
+This document is organized to support both first-time users of Cosmos Reason 2 and experienced practitioners looking for specific prompting patterns.
+
+If you are new to Cosmos Reason 2, we recommend reading the sections in the following order:
+
+1. **Message Structure and Media Ordering** – Understand how system prompts, user prompts, and multimodal inputs are interpreted by the model.
+2. **Sampling Parameters** – Learn how to tune determinism, exploration, and verbosity based on task requirements.
+3. **Structured Output Patterns** – See how to request captions, timestamps, JSON outputs, and action predictions.
+4. **Task-Specific Examples** – Explore how these prompting patterns apply to embodied reasoning, autonomous driving, grounding, safety, and evaluation tasks.
 ## Sampling Parameters ([Following Qwen3 recommended params](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file#evaluation-reproduction))
 
 
