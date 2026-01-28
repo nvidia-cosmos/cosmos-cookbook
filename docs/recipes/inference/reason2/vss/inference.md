@@ -7,7 +7,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| [Cosmos Reason 2](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. |
+| [Cosmos Reason 2 8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. |
 
 Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time-consuming manual review to extract valuable insights from the videos.
 
@@ -131,7 +131,7 @@ body = {
     "prompt": "Write a detailed caption based on the video clip.",
     "caption_summarization_prompt": "Combine sequential captions to create more concise descriptions.",
     "summary_aggregation_prompt": "Write a detailed and well formatted summary of the video captions.",
-    "model": "cosmos-reason",
+    "model": "cosmos-reason2",
     "max_tokens": 1024,
     "temperature": 0.3,
     "top_p": 0.3,
@@ -139,7 +139,7 @@ body = {
 }
 
 response = requests.post(summarize_endpoint, json=body)
-response = check_response(response)
+response = response.json()
 summary = response["choices"][0]["message"]["content"]
 print(summary)
 ```
@@ -152,7 +152,7 @@ question = "What did you see in the video?"
 payload = {
         "id": video_id,
         "messages": [{"content": question, "role": "user"}],
-        "model": "cosmos-reason"
+        "model": "cosmos-reason2"
     }
 
 response = requests.post(qna_endpoint, json=payload)
