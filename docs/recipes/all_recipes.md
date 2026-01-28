@@ -414,16 +414,6 @@
           <div class="recipe-title">LoRA Post-training for Sports Video Generation</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
-        <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">
-          <div class="recipe-media recipe-media--video" aria-hidden="true">
-            <video autoplay loop muted playsinline preload="none" tabindex="-1">
-              <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 1</div>
-          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
-        </a>
         <a class="recipe-card" href="./post_training/reason2/physical-plausibility-check/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
@@ -432,6 +422,16 @@
             </video>
           </div>
           <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
+        <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_car_crashes_into_a_stack_of_cardboard_boxes,_sending_the_boxes_flying_in_all_directions.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 1</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/wafermap_classification/post_training.html">
