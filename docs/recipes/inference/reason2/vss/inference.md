@@ -86,7 +86,7 @@ To use VSS with Cosmos Reason, you must first deploy it either to a cloud instan
 Cloud Deployment
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
-Local Deployment
+### Local Deployment
 - [Setup and System Requirements](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
 
 Once deployed, you can follow the [UI documentation page](https://docs.nvidia.com/vss/latest/content/ui_app.html) to learn how to use the reference UI for quickly testing your own videos and live streams.
