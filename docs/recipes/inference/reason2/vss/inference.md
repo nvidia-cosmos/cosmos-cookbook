@@ -9,7 +9,7 @@
 |-----------|--------------|--------------|
 | Cosmos Reason| Inference | Large scale video search and summarization. |
 
-Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time consuming manual review to extract valuable insights from the videos.
+Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time-consuming manual review to extract valuable insights from the videos.
 
 The Video Search and Summarization Blueprint (VSS) from NVIDIA is a reference architecture for combining vision language models, computer vision models and large language models to analyze and understand large volumes of video data. VSS is easily configured through various prompts to tune the model responses based on the target use case.
 
