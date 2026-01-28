@@ -222,6 +222,16 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./post_training/predict2/cosmos_policy/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="./post_training/predict2/cosmos_policy/assets/aloha_rollouts/fold_shirt_15x_speed.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./inference/reason2/intbot_showcase/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="" loading="lazy" />
@@ -405,6 +415,16 @@
             </video>
           </div>
           <div class="recipe-title">LoRA Post-training for Sports Video Generation</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
+        <a class="recipe-card" href="./post_training/reason2/physical-plausibility-check/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/hunyuan_xedit_train/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 2</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">
