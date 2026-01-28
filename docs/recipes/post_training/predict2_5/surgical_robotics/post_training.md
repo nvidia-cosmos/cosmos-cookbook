@@ -158,7 +158,9 @@ The script will save the SutureBot dataset in LeRobot format at the location as 
 ## 3. Model Configuration
 The finetuning wil be performed at 720x960 resolution (to match 720p pre-training) with 12 frames prediction horizon.
 
-Before executing the finetuning script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)). Those changes will address both model configuration and [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) data processing:
+Note: thanks to the cloned repository from step 1.1 which has all code changes integrated already, you can skip this section which is left for informational purposes only. 
+
+~~Before executing the finetuning script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)). Those changes will address both model configuration and [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) data processing:~~
 
 TODO RECIPE FEEDBACK:
 - make presentation of code changes more intuitive, i.e. for tutorial purposes only thanks to fork
