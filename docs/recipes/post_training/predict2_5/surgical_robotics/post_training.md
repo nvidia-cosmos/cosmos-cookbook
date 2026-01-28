@@ -177,44 +177,64 @@ index e31586f..9133347 100644
 +    DVRK = "dvrk"
 ```
 
-### 3.2 cosmos_predict2/experiments/base/action.py
+### 3.2 cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
 Rationale: Configure the 2B Cosmos-predict 2.5 model for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
 ```python
-diff --git a/cosmos_predict2/experiments/base/action.py b/cosmos_predict2/experiments/base/action.py
-index 30dbc91..c219ba0 100644
---- a/cosmos_predict2/experiments/base/action.py
-+++ b/cosmos_predict2/experiments/base/action.py
-@@ -125,9 +125,30 @@ ac_reason_embeddings_rectified_flow_2b_256_320 = LazyDict(
+diff --git a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
+index 108267f..f59f22d 100644
+--- a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
++++ b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
+@@ -833,6 +833,39 @@ AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS = LazyDict(
      flags={"allow_objects": True},
  )
 
-+import copy
-+ac_predict2p5_video2world_2b_suturebot_training = copy.deepcopy(ac_reason_embeddings_rectified_flow_2b_256_320)
-+ac_predict2p5_video2world_2b_suturebot_training['job']['name'] = 'def_ac_predict2p5_video2world_2b_suturebot_training'
-+ac_predict2p5_video2world_2b_suturebot_training['defaults'] = [
-+    DEFAULT_CHECKPOINT.experiment,
-+    {"override /model": "action_conditioned_video2world_fsdp_rectified_flow"},
-+    {"override /net": "cosmos_v1_2B_action_conditioned"},
-+    {"override /conditioner": "action_conditioned_video_conditioner"},
-+    {"override /data_train": "suturebot_train"},
-+    {"override /data_val": "suturebot_val"},
-+    "_self_",
-+]
-+ac_predict2p5_video2world_2b_suturebot_training['model']['config']['net']['action_dim'] = 20
-+ac_predict2p5_video2world_2b_suturebot_training['dataloader_train'] = {'batch_size': 4}
-+ac_predict2p5_video2world_2b_suturebot_training['optimizer']['lr'] = 7.5e-6 # assuming 4 nodes
++AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS = LazyDict(
++    dict(
++        defaults=[
++            "/experiment/2b_bridge_action_conditioned_oss",
++            {"override /net": "cosmos_v1_2B_action_chunk_conditioned"},
++            {"override /data_train": "suturebot_train"},
++            {"override /data_val": "suturebot_val"},
++            "_self_",
++        ],
++        job=dict(
++            group="official_runs_vid2vid",
++            name="cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss",
++            project="cosmos_predict2_action_conditioned",
++        ),
++        model=dict(
++            config=dict(
++                state_t=1 + 12 // 4,
++                net=dict(
++                    action_dim=20,
++                ),
++            ),
++        ),
++        dataloader_train=dict(
++            batch_size=4
++        ),
++        optimizer=dict(
++            lr=4e-5,
++            weight_decay=0.1,
++        ),
++    ),
++    flags={"allow_objects": True},
++)
 +
-+print(f"+++++++++++++++++++++++++++++")
-+print(ac_predict2p5_video2world_2b_suturebot_training)
-+print(f"+++++++++++++++++++++++++++++")
-+
-+
+
  cs = ConfigStore.instance()
 
--for _item in [ac_reason_embeddings_rectified_flow_2b_256_320]:
-+for _item in [ac_reason_embeddings_rectified_flow_2b_256_320, ac_predict2p5_video2world_2b_suturebot_training]:
-     # Get the experiment name from the global variable
-     experiment_name = [name.lower() for name, value in globals().items() if value is _item][0]  # noqa: RUF015
+@@ -875,6 +908,10 @@ for _item, _item_wo_resume, _item_mock_wo_resume in [
+         AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS,
+         *build_debug_runs(AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS),
+     ],
++    [
++        AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS,
++        *build_debug_runs(AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS),
++    ],
+ ]:
+     cs.store(group="experiment", package="_global_", name=f"{_item['job']['name']}", node=_item)
+     if _item_wo_resume is not None:
 ```
 
 ### 3.3 cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
@@ -766,6 +786,8 @@ index 0aed5bb..7d0c1f0 100644
 With the code changes applied, we are set to start the finetuning, using 4 nodes (32 GPUs). 
 The batch size was configured to be 4, resulting in a global batch size of 128. 
 We recommend using at least 1 node with 8 GPUs for finetuning the 2B Cosmos model (global batch size of 32).
+
+Adapt the reference script 'run_finetuning.sh' to your environment.
 ```bash
 mkdir logs
 sbatch run_finetuning.sh
@@ -775,7 +797,7 @@ Run the finetuning for 20,000 steps.
 
 The checkpoints in distributed format (DCP) will be saved in:
 ```bash
-cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/cosmos_predict_v2p5/def_ac_predict2p5_video2world_2b_suturebot_training/checkpoints
+cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/official_runs_vid2vid/cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss/checkpoints
 ```
 TODO RECIPE FEEDBACK:
 - please include more information, such as training log (you can include wandb log screen shots), 

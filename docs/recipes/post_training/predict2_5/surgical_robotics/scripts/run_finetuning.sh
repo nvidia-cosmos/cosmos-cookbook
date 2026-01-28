@@ -11,27 +11,6 @@
 #SBATCH --array=0-9%1  # Run 10 jobs (0-9), only 1 at a time
 #SBATCH --dependency=singleton
 
-TIMESTAMP=$(date "+%Y%m%d_%H%M%S")
-# Archive repository (excluding binaries/logs) - SLURM-safe, uses pyproject.toml as repo root marker
-_d="${SLURM_SUBMIT_DIR:-$PWD}"; while [[ "$_d" != "/" && ! -f "$_d/pyproject.toml" ]]; do _d="$(dirname "$_d")"; done
-REPO_ROOT="$_d"; [[ -f "$REPO_ROOT/pyproject.toml" ]] || { echo "ERROR: Cannot find repo root"; exit 1; }
-REPO_DEST="/lustre/fsw/portfolios/healthcareeng/users/lzbinden/imaginaire/output/repo/run_${TIMESTAMP}_${SLURM_JOB_NAME:-unknown}"
-mkdir -p "$REPO_DEST" && tar -czf "$REPO_DEST/repo.tar.gz" -C "$REPO_ROOT" \
-  --exclude='*.log' --exclude='*.out' --exclude='*.pt' --exclude='*.pth' --exclude='*.bin' --exclude='*.onnx' \
-  --exclude='*.npy' --exclude='*.npz' --exclude='*.parquet' --exclude='*.h5' --exclude='*.safetensors' \
-  --exclude='*.mp4' --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.gif' --exclude='*.sqsh' \
-  --exclude='.git' --exclude='__pycache__' --exclude='*.pyc' --exclude='logs' --exclude='uv.lock' \
-  --exclude='.venv' --exclude='venv' --exclude='.env' --exclude='*.egg-info' --exclude='.eggs' \
-  --exclude='.pytest_cache' --exclude='.mypy_cache' --exclude='.ruff_cache' --exclude='dist' --exclude='build' --exclude='datasets' . \
-  && cat > "$REPO_DEST/README.txt" <<EOF
-SLURM_JOB_ID..: ${SLURM_JOB_ID}
-SLURM_JOB_NAME: ${SLURM_JOB_NAME}
-TIMESTAMP.....: ${TIMESTAMP}
-REPO_ROOT.....: ${REPO_ROOT}
-LOG_FILE......: ${REPO_ROOT}/logs/def-cb-cp2.5-720x960_ac_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out
-EOF
-  echo "[jobId=${SLURM_JOB_ID}] Repo archived to: $REPO_DEST/repo.tar.gz"
-
 # Set environment variables
 master_addr=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
 export MASTER_ADDR=${master_addr:-"127.0.0.1"}
@@ -59,11 +38,12 @@ echo "SLURM Array Task ID: $SLURM_ARRAY_TASK_ID"
 
 # Set the necessary variables
 CODE_PATH="/lustre/fsw/portfolios/healthcareeng/users/lzbinden/git/def-cookbook-cosmos-predict2.5"
+DATASET_PATH="/lustre/fsw/portfolios/healthcareeng/users/nigeln/cache/huggingface/lerobot/jhu_lerobot/suturebot_lerobot"
 
 # Run the training script inside the container
 
 srun --export=ALL --container-image="/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan/users/lzbinden/images/cosmos-predict-2.5.sqsh" \
-     --container-mounts="$CODE_PATH:/workspace,/lustre/fsw/portfolios/healthcareeng/users/nigeln/cache/huggingface/lerobot/jhu_lerobot/suturebot_lerobot:/SutureBot,/lustre/fsw/portfolios/healthcareeng/users/lzbinden:/lustre/fsw/portfolios/healthcareeng/users/lzbinden,/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan:/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan" \
+     --container-mounts="$CODE_PATH:/workspace,$DATASET_PATH:/SutureBot,/lustre/fsw/portfolios/healthcareeng/users/lzbinden:/lustre/fsw/portfolios/healthcareeng/users/lzbinden,/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan:/lustre/fsw/portfolios/healthcareeng/projects/healthcareeng_holoscan" \
      --container-workdir=/workspace \
      bash -c '
         # Set up environment variables
@@ -83,7 +63,7 @@ srun --export=ALL --container-image="/lustre/fsw/portfolios/healthcareeng/projec
             scripts.train \
               --config=cosmos_predict2/_src/predict2/action/configs/action_conditioned/config.py \
               -- \
-              experiment="ac_predict2p5_video2world_2b_suturebot_training" \
+              experiment="cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss" \
               checkpoint.save_iter=200 \
               ~dataloader_train.dataloaders
      '
