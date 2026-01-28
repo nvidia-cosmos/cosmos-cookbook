@@ -19,7 +19,7 @@ VSS allows the user to upload video files or connect live streaming camera feeds
 
 Cosmos Reason is used as the default vision language model in VSS to produce high quality captions across the input videos. VSS first breaks the input video into small chunks (10s-30s) then provides them to Cosmos Reason as a part of a GPU optimized inference pipeline to rapidly caption the video chunks in parallel.
 
-In addition to the captions from Cosmos Reason, extra data sources such as detection data and audio transcription are combined with the video captions. All this data is stored in a graph database and retrieved by a large language model to generate summaries, answer questions and trigger alerts based on user prompts.
+In addition to the captions from Cosmos Reason, extra data sources such as detection data and audio transcription are combined with the video captions. This data is stored in vector and graph database, then retrieved by an LLM to generate summaries, answer questions and trigger alerts based on user prompts.
 
 
 The NVIDIA Brev Launchable is a quick way to launch a pre-configured environment for VSS testing.
