@@ -112,7 +112,7 @@ qna_endpoint = vss_host + "/chat/completions" #ask questions for ingested video
 3) Upload a video file to VSS and receive a video ID
 
 ```
-video_file_path = /path/to/your/video.mp4
+video_file_path = "/path/to/your/video.mp4"
 
 with open(video_file_path, "rb") as file:
     files = {"file": ("video_file", file)} #provide the file content along with a file name
