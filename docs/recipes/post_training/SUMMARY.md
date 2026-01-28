@@ -1,5 +1,6 @@
 #
 
+- [Cosmos Policy](./predict2/cosmos_policy/post_training.md)
 - [Predict for Traffic Anomaly Generation](./predict2/its-accident/post_training.md)
 - [Predict for Gr00t-Dreams](./predict2/gr00t-dreams/post-training.md)
 - [Predict for Sports Video Generation](./predict2_5/sports/post_training.md)
