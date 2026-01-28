@@ -164,7 +164,7 @@ print(answer)
 
 ## Conclusion
 
-Cosmos Reason is used in VSS to generate high quality video captions through an optimized GPU accelerated inference pipeline. The captions are analyze and indexed using a combination of embedding and large language models to store key information in vector and graph databases to power long video summarization, Q&A and live stream alerts.
+Cosmos Reason is used in VSS to generate high-quality video captions through an optimized GPU accelerated inference pipeline. The captions are analyzed and indexed using a combination of embedding and large language models to store key information in vector and graph databases to power long video summarization, Q&A and live stream alerts.
 
 VSS can easily be deployed through the Brev Launchable or by following the local deployment guide. Once deployed, the reference web UI can be used to quickly test custom videos and prompts. To integrate with your own application, the VSS REST APIs can be used programmatically to access all VSS features.
 
