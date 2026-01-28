@@ -108,23 +108,27 @@ We evaluate the model performance using two key metrics:
 
 To run zero-shot inference, you need to clone both repositories and copy the necessary files:
 
-1. Clone the Cosmos Reason 2 repository:
+- Clone the Cosmos Reason 2 repository:
+
    ```bash
    git clone https://github.com/nvidia-cosmos/cosmos-reason2.git
    ```
 
-2. Clone the cosmos-cookbook repository (this repository):
+- Clone the cosmos-cookbook repository (this repository):
+
    ```bash
    git clone https://github.com/nvidia-cosmos/cosmos-cookbook.git
    ```
 
-3. Copy the `video_critic` folder from the cosmos-cookbook repository to your Cosmos Reason 2 clone:
+- Copy the `video_critic` folder from the cosmos-cookbook repository to your Cosmos Reason 2 clone:
+
    ```bash
    # Adjust paths based on where you cloned the repositories
    cp -r cosmos-cookbook/scripts/examples/reason2/physical-plausibility-check/video_critic cosmos-reason2/examples/
    ```
 
-4. Copy the prompt file from the cosmos-cookbook repository to your Cosmos Reason 2 repository (shown in the "Prompt for Scoring Physical Plausibility" section above):
+- Copy the prompt file from the cosmos-cookbook repository to your Cosmos Reason 2 repository (shown in the "Prompt for Scoring Physical Plausibility" section above):
+
    ```bash
    # Adjust paths based on where you cloned the repositories
    cp cosmos-cookbook/docs/recipes/post_training/reason2/physical-plausibility-check/assets/video_reward.yaml cosmos-reason2/prompts/video_reward.yaml
@@ -288,7 +292,7 @@ However, the accuracy of both Reason 1 and Reason 2 declines after step 40, show
   <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/hunyuan_xdit/A_speeding_car_crashes_into_a_brick_wall,_crumpling_the_front_end_and_stopping_abruptly.mp4" type="video/mp4">
 </video>
 
-- **Model prediction (before fine-tuning):** 3  
+- **Model prediction (before fine-tuning):** 3
 - **Model prediction (after fine-tuning):** 2
 - **Ground truth:** 2 (poor adherence to physical laws)
 
@@ -296,8 +300,8 @@ However, the accuracy of both Reason 1 and Reason 2 declines after step 40, show
   <source src="https://videophysics2testvideos.s3.us-east-2.amazonaws.com/videocrafter_videophy2_hard/A_speeding_car_crashes_into_a_brick_wall__crumpling_the_front_end_and_stopping_abruptly_.mp4" type="video/mp4">
 </video>
 
-- **Model prediction (before fine-tuning):** 3  
-- **Model prediction (after fine-tuning):** 2  
+- **Model prediction (before fine-tuning):** 3
+- **Model prediction (after fine-tuning):** 2
 - **Ground truth:** 1 (no adherence to physical laws; completely implausible)
 
 After fine-tuning, Cosmos Reason 2 correctly identifies the low physical plausibility of the videos, matching human judgment. In contrast, the base model, prior to fine-tuning, overestimated plausibility.
@@ -313,3 +317,28 @@ Supervised fine-tuning on the VideoPhy-2 dataset significantly improves physical
 - **Consistent Improvements**: Fine-tuning delivers measurable gains in both metrics, with correlation showing more sustained improvement (reaching 0.419) compared to accuracy, which peaks earlier and then stabilizes.
 
 - **Flexibility**: This methodology can be adapted to other video quality assessment tasks by substituting the datasets and defining appropriate metrics. The better zero-shot performance of Cosmos Reason 2 also suggests it may require less fine-tuning data to achieve target performance levels.
+
+---
+
+## Document Information
+
+**Publication Date:** January 27, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_physical_plausibility_prediction_2026,
+  title={Physical Plausibility Prediction with Cosmos Reason 2},
+  author={Zhang, Shun and Hao, Zekun and Jin, Jingyi},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Shun Zhang, Zekun Hao, & Jingyi Jin (2026). Physical Plausibility Prediction with Cosmos Reason 2. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html>

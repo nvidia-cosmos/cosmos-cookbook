@@ -1,4 +1,3 @@
-#!/usr/bin/env -S uv run --script
 # SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -51,9 +50,8 @@ import qwen_vl_utils
 import transformers
 import vllm
 import yaml
-
-from cosmos_reason2_utils.text import create_conversation, SYSTEM_PROMPT
 from cosmos_reason2_utils.script.inference import Offline
+from cosmos_reason2_utils.text import SYSTEM_PROMPT, create_conversation
 from cosmos_reason2_utils.vision import PIXELS_PER_TOKEN, VisionConfig
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -65,7 +63,9 @@ def get_video_data(dataset_name: str, split: str = "train"):
     dataset = datasets.load_dataset(dataset_name)
     dataset_split = dataset[split]
 
-    print(f"Dataset loaded successfully. {split} split has {len(dataset_split)} examples.")
+    print(
+        f"Dataset loaded successfully. {split} split has {len(dataset_split)} examples."
+    )
 
     video_data = []
     for example in dataset_split:
@@ -83,29 +83,29 @@ def get_video_data(dataset_name: str, split: str = "train"):
 
 def parse_answer_from_text(text: str) -> float | None:
     """Parse a numeric answer from model output text.
-    
+
     The prompt expects a score between 1 and 5. The model outputs:
     - A number on its own line: "3" or "4"
     - Sometimes with template text on previous line: "[Score between 1 and 5.]\n\n3"
     - Sometimes followed by explanation: "3\n\nOkay, let's see..."
-    
+
     This function looks for numbers (1-5) that appear on their own line.
     """
     # Split text into lines
-    lines = text.strip().split('\n')
-    
+    lines = text.strip().split("\n")
+
     # Look for a number (1-5) that appears on its own line
     for line in lines:
         line = line.strip()
         # Match a single integer between 1-5 on its own line
-        match = re.match(r'^([1-5])\.?\s*$', line)
+        match = re.match(r"^([1-5])\.?\s*$", line)
         if match:
             try:
                 value = float(match.group(1))
                 return value
             except ValueError:
                 continue
-    
+
     return None
 
 
@@ -113,16 +113,16 @@ def load_prompt_config(prompt_path: str) -> tuple[str, str]:
     """Load prompt configuration from YAML file."""
     if not os.path.isabs(prompt_path):
         prompt_path = os.path.join(ROOT, prompt_path)
-    
-    with open(prompt_path, 'r') as f:
+
+    with open(prompt_path, "r") as f:
         config = yaml.safe_load(f)
-    
-    system_prompt = config.get('system_prompt', SYSTEM_PROMPT)
-    user_prompt = config.get('user_prompt', '')
-    
+
+    system_prompt = config.get("system_prompt", SYSTEM_PROMPT)
+    user_prompt = config.get("user_prompt", "")
+
     if not user_prompt:
         raise ValueError(f"No user_prompt found in {prompt_path}")
-    
+
     return system_prompt, user_prompt
 
 
@@ -136,7 +136,7 @@ def run_inference_for_video(
     sampling_params: vllm.SamplingParams,
 ) -> str:
     """Run inference for a single video.
-    
+
     This follows the same pattern as offline_inference but reuses the provided model.
     """
     # Create conversation
@@ -146,7 +146,7 @@ def run_inference_for_video(
         videos=[video_url],
         vision_kwargs=vision_kwargs,
     )
-    
+
     # Process inputs (matching offline_inference pattern)
     # add_vision_ids is True when there are multiple media items (images + videos > 1)
     # In our case, we have 1 video, so add_vision_ids = False
@@ -157,29 +157,29 @@ def run_inference_for_video(
         add_generation_prompt=True,
         add_vision_ids=add_vision_ids,
     )
-    
+
     image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(
         conversation,
         image_patch_size=processor.image_processor.patch_size,
         return_video_kwargs=True,
         return_video_metadata=True,
     )
-    
+
     # Run inference (matching offline_inference pattern)
     mm_data = {}
     if image_inputs is not None:
         mm_data["image"] = image_inputs
     if video_inputs is not None:
         mm_data["video"] = video_inputs
-    
+
     llm_inputs = {
         "prompt": prompt,
         "multi_modal_data": mm_data,
         "mm_processor_kwargs": video_kwargs,
     }
-    
+
     outputs = llm.generate([llm_inputs], sampling_params=sampling_params)
-    
+
     # Extract output text
     output_text = outputs[0].outputs[0].text.strip()
     return output_text
@@ -262,7 +262,9 @@ def run_inference_for_dataset(args):
         json_path = os.path.join(output_dir, f"{i}.json")
 
         if os.path.exists(json_path):
-            print(f"\n[{i}/{len(video_data)}] 📋 Results already exist: {os.path.basename(json_path)}. Skipping...")
+            print(
+                f"\n[{i}/{len(video_data)}] 📋 Results already exist: {os.path.basename(json_path)}. Skipping..."
+            )
             continue
 
         print(f"\n[{i}/{len(video_data)}] Processing: {video_url}")
@@ -294,7 +296,9 @@ def run_inference_for_dataset(args):
                 json.dump(result_entry, f, indent=2)
 
             if score is not None:
-                print(f"✅ Saved results (score: {score}) to {os.path.basename(json_path)}")
+                print(
+                    f"✅ Saved results (score: {score}) to {os.path.basename(json_path)}"
+                )
             else:
                 print(f"✅ Saved results to {os.path.basename(json_path)}")
                 print(f"   Output: {output_text[:200]}...")
@@ -308,27 +312,43 @@ def run_inference_for_dataset(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    
+
     # Dataset arguments
-    parser.add_argument("--dataset", type=str, default="videophysics/videophy2_test",
-                        help='Dataset name (default: "videophysics/videophy2_test")')
-    parser.add_argument("--split", type=str, default="test",
-                        help="Dataset split (default: train)")
-    
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="videophysics/videophy2_test",
+        help='Dataset name (default: "videophysics/videophy2_test")',
+    )
+    parser.add_argument(
+        "--split", type=str, default="test", help="Dataset split (default: train)"
+    )
+
     # Model arguments
-    parser.add_argument("--model", type=str, default="nvidia/Cosmos-Reason2-2B",
-                        help="Model name or path (default: nvidia/Cosmos-Reason2-2B)")
-    parser.add_argument("--revision", type=str, default=None,
-                        help="Model revision")
-    
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="nvidia/Cosmos-Reason2-2B",
+        help="Model name or path (default: nvidia/Cosmos-Reason2-2B)",
+    )
+    parser.add_argument("--revision", type=str, default=None, help="Model revision")
+
     # Prompt arguments
-    parser.add_argument("--input-file", type=str, default="prompts/video_reward.yaml",
-                        help="Path to input yaml file")
-    
+    parser.add_argument(
+        "--input-file",
+        type=str,
+        default="prompts/video_reward.yaml",
+        help="Path to input yaml file",
+    )
+
     # Output arguments
-    parser.add_argument("--output-dir", type=str, default="outputs/videophy2_test",
-                        help="Output directory for JSON results")
-    
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="outputs/videophy2_test",
+        help="Output directory for JSON results",
+    )
+
     args = parser.parse_args()
     run_inference_for_dataset(args)
 

@@ -1,5 +1,4 @@
 system_prompt: "You are a helpful assistant."
-
 user_prompt: |
   You are a helpful video analyzer. Evaluate whether the video follows physical commonsense.
 
