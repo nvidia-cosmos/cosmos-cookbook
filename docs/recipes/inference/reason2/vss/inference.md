@@ -83,7 +83,7 @@ The retrieval pipeline, implemented in the [CA-RAG library](https://github.com/N
 
 To use VSS with Cosmos Reason, you must first deploy it either to a cloud instance or to your local GPUs. After deployment, VSS offers a reference front-end interface for quick video summarization and a REST API backend for seamless integration with your custom applications.
 
-Cloud Deployment
+### Cloud Deployment
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
 ### Local Deployment
