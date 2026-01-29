@@ -1,12 +1,12 @@
 name: "NVIDIA Cosmos Cookoff Submission Form"
 description: "Submit your project for the NVIDIA Cosmos Cookoff."
-# title is optional. Uncomment and customize if you want a prefix in issue titles.
-# title: "[Cosmos Cookoff Submission] "
+# submission name is optional. Uncomment and customize if you want a prefix in issue titles.
+# title: "[Submission Name] "
 body:
   - type: markdown
     attributes:
       value: |
-        **Form Subtitle:** Submit your project by 5 p.m. Pacific Time on February 26, 2026, and make sure to fill in all required fields accurately for your submission to be considered eligible.
+        Submit your project by 5 p.m. Pacific Time on February 26, 2026, and make sure to fill in all required fields accurately for your submission to be considered eligible.
 
         By filling out the form, you agree to share your data with our partners, Milestone and Nebius. Your information will be handled in accordance with [Milestone's Privacy Policy](https://www.milestonesys.com/privacy-policy/) and [Nebius's Privacy Policy](https://docs.nebius.com/legal/privacy).
   - type: input
@@ -158,7 +158,3 @@ body:
       options:
         - label: "I agree to the Terms & Conditions."
           required: true
-  - type: markdown
-    attributes:
-      value: |
-        **Text upon completion of form:** You have successfully submitted your project for the contest. The winner will be announced at NVIDIA GTC in March. Be sure to register and add the Cosmos sessions to your calendar.
