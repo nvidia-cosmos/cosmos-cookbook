@@ -28,9 +28,11 @@ Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19
 
 ### NVIDIA Cosmos Cookoff
 
-Introducing the **NVIDIA Cosmos Cookoff** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
 
 Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+
+**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
 
 Sponsored by Nebius and Milestone.
 
