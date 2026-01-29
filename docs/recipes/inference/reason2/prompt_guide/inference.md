@@ -145,6 +145,9 @@ Write your final answer immediately after the </think> tag and include the times
 **Model Answer**
 
 ```text
+<think>
+Okay, let’s see. The user wants me to describe the video content shown across multiple frames with specific time stamps. First, I need to parse each frame description carefully and note all relevant details such as settings, actions, characters, vehicles, and any other elements like logos or text.</think>
+
 The video showcases various dynamic moments from a motorsport event, blending interior cockpit perspectives with exhilarating exterior action sequences. Here's a breakdown of the key scenes and timestamps:
 
 Opening Scene (00:00-00:02)
