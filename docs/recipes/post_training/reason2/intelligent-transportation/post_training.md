@@ -78,7 +78,7 @@ To pre-process the dataset, run the following command using the provided [script
 After preprocessing, the WTS dataset is in Llava dataset format and ready for training. To launch training, we follow the Cosmos-RL training command in [Cosmos Reason 2 SFT Guide](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md#supervised-fine-tuning-sft). The specific code for this experiment can be found [here](https://github.com/nvidia-cosmos/cosmos-cookbook/tree/main/scripts/examples/reason2/intelligent-transportation).
 
 ```shell
-# 1. Make sure the environment is set up following Cosmos Reason 2 post-training setup: https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md#setup
+# 1. Make sure the environment is set up following Cosmos Reason 2 post-training setup guide: https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md#setup
 
 # 2. Activate the environment from cosmos-reason2/examples/cosmos_rl directory
 source .venv/bin/activate
