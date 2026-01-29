@@ -21,6 +21,7 @@ import logging as log
 import os
 import re
 import time
+import sysconfig
 from argparse import ArgumentParser
 from functools import partial
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -46,6 +47,26 @@ Processor = AutoProcessor
 from utils.model_download import download_checkpoint
 from utils.output import OutputStructure, parse_letter_response, save_results_parallel
 
+def check_python_headers():
+    """
+    Checks if Python headers are available, which are required for compiling
+    kernels on the fly with openai-triton (used by VLLM).
+    """
+    include_path = sysconfig.get_path("include")
+    # Check for Python.h which is the standard header file
+    python_h = os.path.join(include_path, "Python.h")
+
+    if not os.path.exists(python_h):
+        error_msg = (
+            f"Python headers not found at {include_path}. "
+            "Please install python-dev/python3-dev to allow VLLM/Triton "
+            "to compile kernels on the fly."
+            "Example: sudo apt-get install python3.12-dev"
+        )
+        log.error(error_msg)
+        raise RuntimeError(error_msg)
+
+    log.info(f"Python headers found at {include_path}")
 
 @attrs.define(slots=False)
 class LlavaInputStructure:
@@ -668,6 +689,9 @@ def main():
     """
     Main function to set up evaluation, run the model, and save results.
     """
+    # Check for Python headers before proceeding
+    check_python_headers()
+
     # --- Argument Parsing ---
     parser = ArgumentParser(description="Run video language model evaluation.")
     parser.add_argument(
