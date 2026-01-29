@@ -20,7 +20,6 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html) | Cosmos Reason 2 | Domain adaptation for autonomous vehicle video captioning with multi-benchmark evaluation |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html) | Cosmos Reason 2 | Egocentric social and physical reasoning evaluation for social robotics |
 
-
 ## Upcoming Activities
 
 ### NVIDIA GTC 2026
