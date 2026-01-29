@@ -1,7 +1,6 @@
 name: "NVIDIA Cosmos Cookoff Submission Form"
 description: "Submit your project for the NVIDIA Cosmos Cookoff."
 # submission name is optional. Uncomment and customize if you want a prefix in issue titles.
-
 # title: "[Submission Name] "
 body:
   - type: markdown
@@ -61,11 +60,23 @@ body:
         - Other
     validations:
       required: true
+  - type: input
+    id: team-name
+    attributes:
+      label: Team Name
+    validations:
+      required: true
+  - type: input
+    id: team-members
+    attributes:
+      label: Add your team members' names and emails
+    validations:
+      required: true
   - type: dropdown
     id: location
     attributes:
       label: Location
-      description: "Select your country from the eligible countries listed in the Terms & Conditions."
+      description: "Select your country from the eligible countries listed in the [Terms & Conditions](https://nvdam.widen.net/s/dz6pwq8jkh/cosmos-cookoff_contest_terms-and-conditions)."
       options:
         - Australia
         - Austria
@@ -157,5 +168,5 @@ body:
     attributes:
       label: I agree to T&C
       options:
-        - label: "I agree to the Terms & Conditions."
+        - label: "I agree to the [Terms & Conditions](https://nvdam.widen.net/s/dz6pwq8jkh/cosmos-cookoff_contest_terms-and-conditions)."
           required: true
