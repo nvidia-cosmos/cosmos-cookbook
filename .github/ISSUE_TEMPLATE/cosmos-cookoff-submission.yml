@@ -1,6 +1,7 @@
 name: "NVIDIA Cosmos Cookoff Submission Form"
 description: "Submit your project for the NVIDIA Cosmos Cookoff."
 # submission name is optional. Uncomment and customize if you want a prefix in issue titles.
+
 # title: "[Submission Name] "
 body:
   - type: markdown
