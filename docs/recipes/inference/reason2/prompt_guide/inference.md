@@ -113,8 +113,8 @@ Caption the video in detail.
 <think>
 Okay, let’s see. The user wants me to describe the video shown based on several paragraphs of detailed text. First, I need to parse all the information given and make sure I understand each scene.
 
-Starting with the first part, there’s a red race car labeled “IndyCar” moving slowly towards the camera among other cars at a racetrack. The setting is sunny with green fields and empty stands. Then inside the cockpit, two drivers—one smiling, wearing sunglasses and a helmet, another focused on driving. They’re talking while navigating turns. Next shot shows an orange/red car drifting, creating smoke as it maneuvers through curves. Another angle from behind shows the same car drifting again, emphasizing speed and control.</think>
-
+Starting with the first part, there’s a red race car labeled “IndyCar” moving slowly towards the camera among other cars at a racetrack. The setting is sunny with green fields and empty stands. Then inside the cockpit, two drivers—one smiling, wearing sunglasses and a helmet, another focused on driving. They’re talking while navigating turns. Next shot shows an orange/red car drifting, creating smoke as it maneuvers through curves. Another angle from behind shows the same car drifting again, emphasizing speed and control.
+</think>
 The video begins with an exterior shot of several race cars lined up on a track, ready for action. The focus is particularly on a red car prominently displaying "Indy Lights" and other sponsor logos such as "ENEOS." This scene sets the stage for what appears to be a high-energy motorsport event.
 
 Cutting to the interior of one of these vehicles, we see two individuals inside: a driver wearing gloves and a helmet, gripping the steering wheel tightly, and another person seated beside him, possibly a co-pilot or navigator. Both appear focused and engaged, suggesting they're preparing for intense driving maneuvers ahead.
@@ -146,7 +146,8 @@ Write your final answer immediately after the </think> tag and include the times
 
 ```text
 <think>
-Okay, let’s see. The user wants me to describe the video content shown across multiple frames with specific time stamps. First, I need to parse each frame description carefully and note all relevant details such as settings, actions, characters, vehicles, and any other elements like logos or text.</think>
+Okay, let’s see. The user wants me to describe the video content shown across multiple frames with specific time stamps. First, I need to parse each frame description carefully and note all relevant details such as settings, actions, characters, vehicles, and any other elements like logos or text.
+</think>
 
 The video showcases various dynamic moments from a motorsport event, blending interior cockpit perspectives with exhilarating exterior action sequences. Here's a breakdown of the key scenes and timestamps:
 
