@@ -94,7 +94,8 @@ messages=[
 
 **Media Input**
 
-caption.mp4: 1280x720 @ 30.00 fps
+1280x720 @ 30.00 fps
+
 <video controls muted loop width="720">
   <source src="assets/caption.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -293,6 +294,8 @@ Write your final answer immediately after the </think> tag and include the times
 
 **Media Input**
 
+644x476 @ 4.00 fps
+
 <video controls muted loop width="720">
   <source src="assets/agibot.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -351,6 +354,8 @@ No, the robot has not yet completed the intended packaging subtask. While Robot 
 
 **Media Input**
 
+1280x720 @ 30.00 fps
+
 <video controls muted loop width="720">
   <source src="assets/ego_v.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -387,6 +392,8 @@ Proceed through the intersection cautiously while continuing to monitor for pede
 ## Video Critic
 
 **Media Input**
+
+1280x704 @ 16.00 fps
 
 <video controls muted loop width="720">
   <source src="assets/sdg.mp4" type="video/mp4">
@@ -506,6 +513,8 @@ Write your final answer immediately after the </think> tag.
 
 **Media Input**
 
+1842x1080 @ 19.99 fps
+
 <video controls muted loop width="720">
   <source src="assets/warehouse_1.mp4" type="video/mp4">
   Your browser does not support the video tag.
@@ -544,6 +553,8 @@ No, not all workers were shown wearing safety equipment. While Worker 0 (the fir
 ## Security
 
 **Media Input**
+
+1842x1080 @ 19.99 fps
 
 <video controls muted loop width="720">
   <source src="assets/package.mp4" type="video/mp4">
