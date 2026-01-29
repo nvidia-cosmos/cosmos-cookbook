@@ -20,6 +20,21 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html) | Cosmos Reason 2 | Domain adaptation for autonomous vehicle video captioning with multi-benchmark evaluation |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html) | Cosmos Reason 2 | Egocentric social and physical reasoning evaluation for social robotics |
 
+
+## Upcoming Activities
+
+### NVIDIA GTC 2026
+
+Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the Cosmos sessions to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+
+### NVIDIA Cosmos Cookoff
+
+Introducing the **NVIDIA Cosmos Cookoff** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+
+Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+
+Sponsored by Nebius and Milestone.
+
 ## Prerequisites
 
 | Use Case | Linux (Ubuntu) | macOS | Windows |
