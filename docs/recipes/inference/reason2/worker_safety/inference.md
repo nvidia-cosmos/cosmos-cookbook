@@ -38,11 +38,7 @@ Prerequisites:
 ## Motivation: Safety in "Classical" Warehouses
 
 Modern factories are often pristine, but many real-world facilities are "classical" warehouses - older buildings with irregular layouts, poor illumination, and worn infrastructure. In these environments, standard computer vision models often fail because they confuse faded floor markings with active safety zones.
-<<<<<<< HEAD
-The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality perfectly. It contains 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days. The dataset we are using in this recipe is just a sample of the original dataset ([Papaer](https://www.sciencedirect.com/science/article/pii/S235234092400756X), [Dataset](https://data.mendeley.com/datasets/xjmtb22pff/1))
-=======
 The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality perfectly. It contains 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days. The dataset we are using in this recipe is just a sample of the original dataset ([Paper](https://www.sciencedirect.com/science/article/pii/S235234092400756X), [Dataset](https://data.mendeley.com/datasets/xjmtb22pff/1))
->>>>>>> 5e01631 (Update docs/recipes/inference/reason2/worker_safety/inference.md)
 
 The challenges defined in the dataset:
 
