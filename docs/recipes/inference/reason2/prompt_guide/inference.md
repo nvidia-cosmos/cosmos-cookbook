@@ -18,7 +18,6 @@ Cosmos Reason 2 is an open, customizable, reasoning vision language model design
 - **Sampling controls trade-offs**: Adjusting parameters such as temperature, top-p, and presence penalty allows users to balance determinism, exploration, and verbosity depending on the task.
 - **Structured outputs are prompt-driven**: Temporal localization, JSON outputs, trajectories, and reasoning-style responses are best achieved by explicitly requesting structure in the prompt.
 - **Concepts over copy-paste**: The examples in this guide are illustrative; they are intended to teach prompting patterns rather than serve as fixed or deterministic templates.
-- 
 
 ## How to Use This Guide
 
