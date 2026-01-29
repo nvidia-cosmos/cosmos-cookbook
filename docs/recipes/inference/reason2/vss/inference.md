@@ -21,15 +21,17 @@ Cosmos Reason is used as the default vision language model in VSS to produce hig
 
 In addition to the captions from Cosmos Reason, extra data sources such as detection data and audio transcription are combined with the video captions. This data is stored in vector and graph database, then retrieved by an LLM to generate summaries, answer questions and trigger alerts based on user prompts.
 
-
 The NVIDIA Brev Launchable is a quick way to launch a pre-configured environment for VSS testing.
+
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
 For Nebius deployment, an 8xH100 GPU instance is recommended using the local deployment profile. Alternatively, a single 1xH100 instance can be used with smaller models by following the single GPU deployment profile.
+
 - [Multi-GPU local deployment profile](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#local-deployment)
 - [Single-GPU local deployment profile](https://docs.nvidia.com/vss/latest/content/vss_dep_docker_compose_x86.html#fully-local-deployment-single-gpu)
 
 For custom deployments on local systems or other cloud instances, the VSS documentation provides several deployment profiles for various hardware configurations.
+
 - [Setup and System Requirements](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
 
 ## Key Features
@@ -48,7 +50,6 @@ VSS is composed of two main parts:
   form of captions and scene descriptions.
 - **Retrieval Pipeline**: Visual insights from the ingestion pipeline are further
   processed, indexed, and used in retrieval tasks like summarization, Q&A and alerts.
-
 
 ### Ingestion Pipeline
 
@@ -84,13 +85,14 @@ The retrieval pipeline, implemented in the [CA-RAG library](https://github.com/N
 To use VSS with Cosmos Reason, you must first deploy it either to a cloud instance or to your local GPUs. After deployment, VSS offers a reference front-end interface for quick video summarization and a REST API backend for seamless integration with your custom applications.
 
 ### Cloud Deployment
+
 - [VSS Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html)
 
 ### Local Deployment
+
 - [Setup and System Requirements](https://docs.nvidia.com/vss/latest/content/prereqs_x86.html#)
 
 Once deployed, you can follow the [UI documentation page](https://docs.nvidia.com/vss/latest/content/ui_app.html) to learn how to use the reference UI for quickly testing your own videos and live streams.
-
 
 ### Example Code Walkthrough
 
@@ -161,13 +163,11 @@ answer = response_data["choices"][0]["message"]["content"]
 print(answer)
 ```
 
-
 ## Conclusion
 
 Cosmos Reason is used in VSS to generate high-quality video captions through an optimized GPU accelerated inference pipeline. The captions are analyzed and indexed using a combination of embedding and large language models to store key information in vector and graph databases to power long video summarization, Q&A and live stream alerts.
 
 VSS can easily be deployed through the [Brev Launchable](https://docs.nvidia.com/vss/latest/content/cloud_brev.html) or by following the local deployment guide. Once deployed, the reference web UI can be used to quickly test custom videos and prompts. To integrate with your own application, the [VSS REST APIs](https://docs.nvidia.com/vss/latest/content/API_doc.html) can be used programmatically to access all VSS features.
-
 
 ## Resources
 
