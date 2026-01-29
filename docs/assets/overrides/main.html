@@ -4,7 +4,7 @@
 {{ super() }}
 <!-- OneTrust Cookies Consent Notice start for nvidia-cosmos.github.io -->
 
-<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="text/javascript" charset="UTF-8" data-domain-script="019c0510-0233-7bb8-be91-9083a1e91694" ></script>
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="text/javascript" charset="UTF-8" data-domain-script="019c0510-0233-7bb8-be91-9083a1e91694{% if config.extra.cookie_test_mode %}-test{% endif %}" ></script>
 <script type="text/javascript">
 function OptanonWrapper() {
         var event = new Event('bannerLoaded');
