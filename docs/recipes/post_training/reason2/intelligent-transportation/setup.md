@@ -12,19 +12,20 @@ This guide covers the setup requirements for post-training Cosmos Reason 2 for i
 
 ### Software Requirements
 
-The setup requires the [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) and [cosmos-rl](https://github.com/nvidia-cosmos/cosmos-rl) repositories and [Cosmos Reason 2-8B model](https://huggingface.co/nvidia/Cosmos-Reason2-8B) to be properly installed and configured.
+The setup requires the [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) and [Cosmos-RL](https://github.com/nvidia-cosmos/cosmos-rl) repositories and [Cosmos Reason 2-8B model](https://huggingface.co/nvidia/Cosmos-Reason2-8B) to be properly installed and configured.
 
 ## Installation
 
 ### Cosmos Reason 2 Setup
 
-To set up Cosmos Reason 2 repository and model, follow the detailed installation and inference setup instructions at:
+To set up Cosmos Reason 2 repository and model, follow the detailed installation and post-training environment setup instructions at:
 
 **[Cosmos Reason 2 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md)**
+**[Cosmos-RL Installation Documentation](https://nvidia-cosmos.github.io/cosmos-rl/quickstart/installation.html)**
 
 ### Verification
 
-After completing the installation, verify the setup by running the inference examples provided in the Cosmos Reason 2 repository to ensure the model is working correctly before proceeding with the post-training pipeline.
+After completing the installation, verify the setup by running the inference examples provided in the [Cosmos Reason 2 repository](https://github.com/nvidia-cosmos/cosmos-reason2?tab=readme-ov-file#transformers) on your custom traffic video and question to ensure the model is working correctly before proceeding with the post-training pipeline.
 
 ## Next Steps
 

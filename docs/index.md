@@ -21,13 +21,13 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
-| Jan 26 | [Prompt Guide ](recipes/inference/reason2/prompt_guide/inference.md) | Cosmos Reason 2 |   
+| Jan 29 | [Prompt Guide ](recipes/inference/reason2/prompt_guide/inference.md) | Cosmos Reason 2 |   
+| Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
+| Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
 | Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](recipes/post_training/reason2/intelligent-transportation/post_training.md) | Cosmos Reason 2 |
 | Jan 6 | [Dataset Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) | Cosmos Curator |
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](recipes/post_training/reason2/video_caption_vqa/post_training.md) | Cosmos Reason 2 |
 | Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
-| Jan 1 | [Reason 2 on Brev](getting_started/brev/reason2/reason2_on_brev.md) | Cosmos Reason 2 |
-| Dec 22 | [Multiview AV Generation with World Scenario Maps](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) | Cosmos Transfer 2.5 |
 
 ## Open Source Community Platform
 
@@ -50,6 +50,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
 | **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md) |
+| **Training** | Fine-tuning Cosmos Predict 2 for robotic manipulation through latent frame injection for visuomotor control | [Cosmos Policy](recipes/post_training/predict2/cosmos_policy/post_training.md) |
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
 | **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 | **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
@@ -82,7 +83,8 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)   
 | **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
-| **Training** | Physical plausibility check for video quality assessment                  | [Video Rewards](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
+| **Training** | Physical plausibility prediction for video quality assessment with Cosmos Reason 2 | [Physical Plausibility (Reason 2)](recipes/post_training/reason2/physical-plausibility-check/post_training.md) |
+| **Training** | Physical plausibility check for video quality assessment                  | [Physical Plausibility (Reason 1)](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
 | **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
 | **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation (Reason 1)](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
 | **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA (Reason 1)](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)  |
