@@ -94,6 +94,7 @@ messages=[
 
 **Media Input**
 
+caption.mp4: 1280x720 @ 30.00 fps
 <video controls muted loop width="720">
   <source src="assets/caption.mp4" type="video/mp4">
   Your browser does not support the video tag.
