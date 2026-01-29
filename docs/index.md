@@ -21,18 +21,18 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
 | Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](recipes/post_training/reason2/intelligent-transportation/post_training.md) | Cosmos Reason 2 |
 | Jan 6 | [Dataset Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) | Cosmos Curator |
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](recipes/post_training/reason2/video_caption_vqa/post_training.md) | Cosmos Reason 2 |
-| Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
 
 ## Upcoming Activities
 
 ### NVIDIA GTC 2026
 
-Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the Cosmos sessions to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
 
 ### NVIDIA Cosmos Cookoff
 
@@ -94,6 +94,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)                   |
 | **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |

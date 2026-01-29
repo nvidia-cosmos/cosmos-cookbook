@@ -98,70 +98,70 @@ Once deployed, you can follow the [UI documentation page](https://docs.nvidia.co
 
 Once you are ready build a custom application around VSS, you can directly access the back end REST APIs instead of using the UI.
 
-1) Once deployed, VSS will provide a backend port by default at port 8100. This is where the REST APIs are available.
+1. Once deployed, VSS will provide a backend port by default at port 8100. This is where the REST APIs are available.
 
-2) Import the requests library and setup the REST API paths. The full REST API documentation can be found [here](https://docs.nvidia.com/vss/latest/content/API_doc.html).
+1. Import the requests library and setup the REST API paths. The full REST API documentation can be found [here](https://docs.nvidia.com/vss/latest/content/API_doc.html).
 
-```
-import requests
+    ```
+    import requests
 
-vss_host = "http://localhost:8100"
-files_endpoint = vss_host + "/files" #upload and manage files
-summarize_endpoint = vss_host + "/summarize" #summarize uploaded content
-qna_endpoint = vss_host + "/chat/completions" #ask questions for ingested video
-```
+    vss_host = "http://localhost:8100"
+    files_endpoint = vss_host + "/files" #upload and manage files
+    summarize_endpoint = vss_host + "/summarize" #summarize uploaded content
+    qna_endpoint = vss_host + "/chat/completions" #ask questions for ingested video
+    ```
 
-3) Upload a video file to VSS and receive a video ID
+1. Upload a video file to VSS and receive a video ID
 
-```
-video_file_path = "/path/to/your/video.mp4"
+    ```
+    video_file_path = "/path/to/your/video.mp4"
 
-with open(video_file_path, "rb") as file:
-    files = {"file": ("video_file", file)} #provide the file content along with a file name
-    data = {"purpose":"vision", "media_type":"video"}
-    response = requests.post(files_endpoint, data=data, files=files) #post file upload request
-    response = response.json()
+    with open(video_file_path, "rb") as file:
+        files = {"file": ("video_file", file)} #provide the file content along with a file name
+        data = {"purpose":"vision", "media_type":"video"}
+        response = requests.post(files_endpoint, data=data, files=files) #post file upload request
+        response = response.json()
 
-video_id = response["id"] #save file ID for summarization request
-```
+    video_id = response["id"] #save file ID for summarization request
+    ```
 
-4) With the video id, a summarization request can be sent along with prompts to control the VLM captioning and output summary.
+1. With the video id, a summarization request can be sent along with prompts to control the VLM captioning and output summary.
 
-```
-body = {
-    "id": video_id, #id of file returned after upload
-    "prompt": "Write a detailed caption based on the video clip.",
-    "caption_summarization_prompt": "Combine sequential captions to create more concise descriptions.",
-    "summary_aggregation_prompt": "Write a detailed and well formatted summary of the video captions.",
-    "model": "cosmos-reason2",
-    "max_tokens": 1024,
-    "temperature": 0.3,
-    "top_p": 0.3,
-    "chunk_duration": 20,
-}
-
-response = requests.post(summarize_endpoint, json=body)
-response = response.json()
-summary = response["choices"][0]["message"]["content"]
-print(summary)
-```
-
-5) Once the video has been ingested, additional Q&A requests can be sent to ask questions about the video.
-
-```
-question = "What did you see in the video?"
-
-payload = {
-        "id": video_id,
-        "messages": [{"content": question, "role": "user"}],
-        "model": "cosmos-reason2"
+    ```
+    body = {
+        "id": video_id, #id of file returned after upload
+        "prompt": "Write a detailed caption based on the video clip.",
+        "caption_summarization_prompt": "Combine sequential captions to create more concise descriptions.",
+        "summary_aggregation_prompt": "Write a detailed and well formatted summary of the video captions.",
+        "model": "cosmos-reason2",
+        "max_tokens": 1024,
+        "temperature": 0.3,
+        "top_p": 0.3,
+        "chunk_duration": 20,
     }
 
-response = requests.post(qna_endpoint, json=payload)
-response_data = response.json()
-answer = response_data["choices"][0]["message"]["content"]
-print(answer)
-```
+    response = requests.post(summarize_endpoint, json=body)
+    response = response.json()
+    summary = response["choices"][0]["message"]["content"]
+    print(summary)
+    ```
+
+1. Once the video has been ingested, additional Q&A requests can be sent to ask questions about the video.
+
+    ```
+    question = "What did you see in the video?"
+
+    payload = {
+            "id": video_id,
+            "messages": [{"content": question, "role": "user"}],
+            "model": "cosmos-reason2"
+        }
+
+    response = requests.post(qna_endpoint, json=payload)
+    response_data = response.json()
+    answer = response_data["choices"][0]["message"]["content"]
+    print(answer)
+    ```
 
 ## Conclusion
 
@@ -173,3 +173,29 @@ VSS can easily be deployed through the [Brev Launchable](https://docs.nvidia.com
 
 - **[VSS Documentation](https://docs.nvidia.com/vss/latest/index.html)** - Primary documentation for VSS
 - **[VSS Github Repository](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization)** - Open Source GitHub Repository for VSS
+
+---
+
+## Document Information
+
+**Publication Date:** January 29, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_video_search_and_2026,
+  title={Video Search and Summarization with Cosmos Reason},
+  author={Ochoa, Sammy},
+  organization={NVIDIA},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Sammy Ochoa (2026). Video Search and Summarization with Cosmos Reason. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html>
