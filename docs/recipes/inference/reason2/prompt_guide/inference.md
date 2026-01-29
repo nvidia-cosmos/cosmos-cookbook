@@ -111,9 +111,9 @@ Caption the video in detail.
 
 ```text
 <think>
-Okay, let’s see. The user wants me to describe the video content shown across multiple frames with specific time stamps. First, I need to parse each frame description carefully and note all relevant details such as settings, actions, characters, vehicles, and any other elements like logos or text.
+Okay, let’s see. The user wants me to describe the video shown based on several paragraphs of detailed text. First, I need to parse all the information given and make sure I understand each scene.
 
-Starting from the first frame at 00:00–00:02, there’s an outdoor racing event on a sunny day. A red race car is leading others down a track lined with barriers and grassy areas. There are empty stands suggesting it might be practice rather than a live audience event. The camera angle here is static but captures movement along the track...........</think>
+Starting with the first part, there’s a red race car labeled “IndyCar” moving slowly towards the camera among other cars at a racetrack. The setting is sunny with green fields and empty stands. Then inside the cockpit, two drivers—one smiling, wearing sunglasses and a helmet, another focused on driving. They’re talking while navigating turns. Next shot shows an orange/red car drifting, creating smoke as it maneuvers through curves. Another angle from behind shows the same car drifting again, emphasizing speed and control.</think>
 
 The video begins with an exterior shot of several race cars lined up on a track, ready for action. The focus is particularly on a red car prominently displaying "Indy Lights" and other sponsor logos such as "ENEOS." This scene sets the stage for what appears to be a high-energy motorsport event.
 
