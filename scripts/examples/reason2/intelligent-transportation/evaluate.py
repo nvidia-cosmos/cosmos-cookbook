@@ -20,8 +20,8 @@ import json
 import logging as log
 import os
 import re
-import time
 import sysconfig
+import time
 from argparse import ArgumentParser
 from functools import partial
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -47,6 +47,7 @@ Processor = AutoProcessor
 from utils.model_download import download_checkpoint
 from utils.output import OutputStructure, parse_letter_response, save_results_parallel
 
+
 def check_python_headers():
     """
     Checks if Python headers are available, which are required for compiling
@@ -67,6 +68,7 @@ def check_python_headers():
         raise RuntimeError(error_msg)
 
     log.info(f"Python headers found at {include_path}")
+
 
 @attrs.define(slots=False)
 class LlavaInputStructure:
