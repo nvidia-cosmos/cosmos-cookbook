@@ -13,10 +13,11 @@ This guide covers the setup requirements for post-training Cosmos Reason 2 for p
 ### Software Requirements
 
 - **FFmpeg**: Required for video processing
+
   ```bash
   # Ubuntu/Debian
   sudo apt-get update && sudo apt-get install -y ffmpeg
-  
+
   # macOS
   brew install ffmpeg
   ```

@@ -245,11 +245,13 @@ def run_inference_for_dataset(args):
 
     # Create sampling params for inference
     sampling_kwargs = dict(offline_args.sampling_kwargs)
-    sampling_kwargs.update({
-        "seed": 1,
-        "temperature": 0,  # Greedy decoding
-        "max_tokens": 2048,
-    })
+    sampling_kwargs.update(
+        {
+            "seed": 1,
+            "temperature": 0,  # Greedy decoding
+            "max_tokens": 2048,
+        }
+    )
     # Remove None values (top_p, top_k, repetition_penalty not set)
     sampling_kwargs = {k: v for k, v in sampling_kwargs.items() if v is not None}
     sampling_params = vllm.SamplingParams(**sampling_kwargs)
