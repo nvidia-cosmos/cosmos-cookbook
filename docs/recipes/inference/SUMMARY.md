@@ -10,4 +10,3 @@
 - [Transfer Style-Guided Video Generation](./transfer2_5/inference-image-prompt/inference.md)
 - [Transfer for Data Augmentation in Biodiversity](./transfer2_5/biotrove_augmentation/inference.md)
 - [Reason for Egocentric Social Reasoning](./reason2/intbot_showcase/inference.md)
-- [Reason 2 Prompt Guide](./reason2/prompt_guide/inference.md)

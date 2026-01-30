@@ -21,7 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
-| Jan 30 | [Prompt Guide](core_concepts/prompt_guide/reason_guide.md) | Cosmos Reason 2 | Prompt Guide |
+| Jan 30 | [Prompt Guide](core_concepts/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
