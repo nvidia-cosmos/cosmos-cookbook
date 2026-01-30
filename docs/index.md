@@ -22,12 +22,28 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
 | Jan 29 | [Prompt Guide ](recipes/inference/reason2/prompt_guide/inference.md) | Cosmos Reason 2 |   
+| Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
 | Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](recipes/post_training/reason2/intelligent-transportation/post_training.md) | Cosmos Reason 2 |
 | Jan 6 | [Dataset Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) | Cosmos Curator |
 | Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](recipes/post_training/reason2/video_caption_vqa/post_training.md) | Cosmos Reason 2 |
-| Jan 1 | [Egocentric Social Reasoning for Robotics](recipes/inference/reason2/intbot_showcase/inference.md) | Cosmos Reason 2 |
+
+## Upcoming Activities
+
+### NVIDIA GTC 2026
+
+Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+
+### NVIDIA Cosmos Cookoff
+
+Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+
+Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+
+**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
+
+Sponsored by Nebius and Milestone.
 
 ## Open Source Community Platform
 
