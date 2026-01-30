@@ -6,6 +6,7 @@
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
 | [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Prompt Guide|
+
 ## Overview
 
 Cosmos Reason 2 is an open, customizable, reasoning vision language model designed to operate across vision, robotics, autonomous driving, and physical-world understanding tasks. While many workflows in the Cosmos Cookbook focus on *what* to run, such as recipes and end-to-end pipelines, this document focuses on *how* to interact with the model effectively through prompting. It serves as a conceptual reference for prompting Cosmos Reason 2, consolidating best practices, common patterns, and illustrative examples that explain how system prompts, user instructions, sampling parameters, and multimodal message structure influence model behavior. Rather than prescribing a fixed workflow, this guide helps users build a correct mental model of how Cosmos Reason 2 interprets inputs and produces structured outputs across different task types. It is intended for developers, researchers, and practitioners who are designing new recipes, evaluating model outputs, or integrating Cosmos Reason 2 into real-world systems, and it is not a benchmark, API reference, or end-to-end workflow. By centralizing these prompting conventions in one place, this document provides a shared vocabulary that allows the rest of the Cosmos Cookbook to remain consistent, easier to extend, and easier to maintain as new domains and workflows are added.
@@ -29,8 +30,8 @@ If you are new to Cosmos Reason 2, we recommend reading the sections in the foll
 2. **Sampling Parameters** – Learn how to tune determinism, exploration, and verbosity based on task requirements.
 3. **Structured Output Patterns** – See how to request captions, timestamps, JSON outputs, and action predictions.
 4. **Task-Specific Examples** – Explore how these prompting patterns apply to embodied reasoning, autonomous driving, grounding, safety, and evaluation tasks.
-## Sampling Parameters ([Following Qwen3 recommended params](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file#evaluation-reproduction))
 
+## Sampling Parameters ([Following Qwen3 recommended params](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file#evaluation-reproduction))
 
 | **Parameter** | **Default** | **With reasoning** | **Practical effect** |
 |--------------|------------:|-------------------:|----------------------|
@@ -40,10 +41,9 @@ If you are new to Cosmos Reason 2, we recommend reading the sections in the foll
 | presence_penalty | 1.5 | 0.0 | Strong novelty push vs none |
 | temperature | 0.7 | 0.6 | Slightly more varied vs more deterministic |
 
-
 ## System Prompt
 
-In Cosmos Reason 2, we are more aligned with Qwen's use of system 
+In Cosmos Reason 2, we are more aligned with Qwen's use of system
 prompt. In the examples given, we simply use 'You are a helpful
 assistant.' You may note this is different from Reason 1, where the
 system prompt was heavily used.
@@ -51,6 +51,7 @@ system prompt was heavily used.
 ```text
 You are a helpful assistant.
 ```
+
 ## Turn on/off reasoning
 
 **This is important.** If you want to use reasoning, you must append the
@@ -74,8 +75,8 @@ prompt:
 
 ```text
 messages=[
-	{    "role": "system",
- 	     "content": [{"type": "text", "text": "You are a helpful assistant."}]
+ {    "role": "system",
+       "content": [{"type": "text", "text": "You are a helpful assistant."}]
 },
         {
             "role": "user",
@@ -92,7 +93,7 @@ messages=[
 
 ## Caption and Temporal Localization
 
-**Media Input**
+### Media Input
 
 1280x720 @ 30.00 fps
 
@@ -103,13 +104,13 @@ messages=[
 
 ### Caption
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Caption the video in detail.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think>
@@ -130,7 +131,7 @@ Finally, the perspective broadens outwards once more, offering aerial views that
 
 ### Temporal localization
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Describe the video. Add timestamps in mm:ss format.
@@ -144,7 +145,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag and include the timestamps.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think>
@@ -195,9 +196,10 @@ Hands clad in gloves grip the wheel tightly during a tight corner, demonstrating
 Panoramic Circuit Tour (00:35-00:44)
 Final aerial sweeps offer sweeping vistas of the expansive racetrack nestled amidst rolling hills, dotted with water bodies and sparse vegetation. Distant structures and faint smoke trails suggest ongoing activity beyond the immediate frame, concluding the immersive experience of speed, skill, and adrenaline-fueled motorsports.
 ```
+
 ### Temporal localization Json File
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Describe the video. Add timestamps in mm:ss format. Provide the result in json format with 'mm:ss.ff' format for time depiction for each event. Use keywords 'start', 'end' and 'caption' in the json output.
@@ -210,9 +212,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag and include the timestamps.
 ```
 
-
-**Model Answer**
-
+#### Model Answer
 
 ```json
 [
@@ -292,7 +292,7 @@ Write your final answer immediately after the </think> tag and include the times
 
 ## Embodied Reasoning
 
-**Media Input**
+### Media Input
 
 644x476 @ 4.00 fps
 
@@ -301,13 +301,12 @@ Write your final answer immediately after the </think> tag and include the times
   Your browser does not support the video tag.
 </video>
 
-
 ### Robotics Next Action Prediction
 
-**User Prompt**
+#### User Prompt
 
 ```text
-What can be the next immediate action? 
+What can be the next immediate action?
 
 Answer the question using the following format:
 
@@ -319,7 +318,7 @@ Write your final answer immediately after the </think> tag.
 
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think\>Okay, let's see. The video is a lab or workshop with two robot arms. The camera is top-down, showing the table with a cardboard box in the center, open and filled with air column wraps. Robot Arm 1 ison the left, not moving. Robot Arm 2 is on the right, holding a white object and moving it upwards and away from the table.
@@ -331,7 +330,7 @@ Robot Arm 2 places the white object into the cardboard box.
 
 ### Goal Verification
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Has the robot successfully completed the intended packaging subtask? Explain why not.
@@ -342,7 +341,7 @@ Answer the question using the following format:
 Write your final answer immediately after the </think> tag.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think>Okay, let's see. The user is asking if the robot has successfully completed the intended packaging subtask. The video shows that Robot Arm 2 is picking up a samrt charger. The task is about packaging, so maybe the next step is placing the cable into the box with the air column wraps. But the current action is just lifting the cable. The video does not show placing it into the box yet. So, even though the arm has the cable, the subtask of packaging isn't fully done until it's placed inside. Therefore, the answer would be no because the cable is still being lifted and not yet placed.
@@ -350,9 +349,10 @@ Write your final answer immediately after the </think> tag.
 no
 No, the robot has not yet completed the intended packaging subtask. While Robot Arm 2 successfully grasps and lifts the smart charger, the action shown does not include placing it into the cardboard box or securing it with the air column wraps. Packaging typically involves both retrieving the item and properly positioning it within protective materials, which has not been executed in the observed sequence.
 ```
+
 ### AV Next Action Prediction
 
-**Media Input**
+#### Media Input
 
 1280x720 @ 30.00 fps
 
@@ -361,7 +361,7 @@ No, the robot has not yet completed the intended packaging subtask. While Robot 
   Your browser does not support the video tag.
 </video>
 
-**User Prompt**
+#### User Prompt
 
 ```text
 What's the next immediate action for the Ego vehicle?
@@ -375,7 +375,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think>
@@ -391,7 +391,7 @@ Proceed through the intersection cautiously while continuing to monitor for pede
 
 ## Video Critic
 
-**Media Input**
+### Media Input
 
 1280x704 @ 16.00 fps
 
@@ -400,7 +400,7 @@ Proceed through the intersection cautiously while continuing to monitor for pede
   Your browser does not support the video tag.
 </video>
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Approve or reject this generated video for inclusion in a dataset for physical world model ai training. It must perfectly adhere to physics, object permanence, and have no anomalies. Any issue or concern causes rejection.
@@ -413,7 +413,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag. Answer with Approve or Reject only.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think>
@@ -431,19 +431,19 @@ So the main issues are the disappearing block and possibly unrealistic stacking 
 Reject
 ```
 
-
 ## 2D Grounding
 
-**Media Input**
+### Media Input
+
 <img src="assets/load.png" alt="Load" width="720" />
 
-**User Prompt**
+#### User Prompt
 
 ```text
-Locate the bounding box of the load and determine if its size and weight of load within the forklift's limits. Estimate weights. Return all as json. Include json location, estimated weight of the load, and if it's in the limit. Return a json. 
+Locate the bounding box of the load and determine if its size and weight of load within the forklift's limits. Estimate weights. Return all as json. Include json location, estimated weight of the load, and if it's in the limit. Return a json.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```json
 {
@@ -457,11 +457,10 @@ Locate the bounding box of the load and determine if its size and weight of load
 }
 
 ```
-**Visualization**
+
+### Visualization
 
 <img src="assets/load_bbox.png" alt="Load" width="720" />
-
-
 
 ### Action CoT
 
@@ -478,11 +477,11 @@ We now support point coordinates on images and videos. The pixel coordinate is n
   </figcaption>
 </figure>
 
-**Media Input**
+#### Media Input
 
 <img src="assets/trajectory_clean.png" alt="Load" width="720" />
 
-**User Prompt**
+#### User Prompt
 
 ```text
 You are given the task "Move the tape into the basket". Specify the 2D trajectory your end effector should follow in pixel space. Return the trajectory coordinates in JSON format like this: {"point_2d": [x, y], "label": "gripper trajectory"}.
@@ -496,7 +495,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 <think> I will move my left gripper from its current position at [195, 630] to the blue painter’s tape located at [487, 721] so I can grasp it securely. After picking up the tape, I’ll lift it and carry it over to the gray woven basket positioned at [460, 410]. Then I’ll carefully lower the tape into the open space inside the basket at [469, 400], making sure it’s fully placed within the container. This sequence gives me precise control while avoiding any collisions with the table or other objects. </think>
@@ -515,7 +514,7 @@ Write your final answer immediately after the </think> tag.
 
 ## Safety
 
-**Media Input**
+### Media Input
 
 1842x1080 @ 19.99 fps
 
@@ -524,7 +523,7 @@ Write your final answer immediately after the </think> tag.
   Your browser does not support the video tag.
 </video>
 
-**User Prompt**
+#### User Prompt
 
 ```text
 were all the workers working safety equipment
@@ -537,7 +536,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 
@@ -556,7 +555,7 @@ No, not all workers were shown wearing safety equipment. While Worker 0 (the fir
 
 ## Security
 
-**Media Input**
+### Media Input
 
 1842x1080 @ 19.99 fps
 
@@ -565,7 +564,7 @@ No, not all workers were shown wearing safety equipment. While Worker 0 (the fir
   Your browser does not support the video tag.
 </video>
 
-**User Prompt**
+#### User Prompt
 
 ```text
 Is the person allowed to pick up the packages?
@@ -578,7 +577,7 @@ Your reasoning.
 Write your final answer immediately after the </think> tag.
 ```
 
-**Model Answer**
+#### Model Answer
 
 ```text
 
@@ -606,10 +605,9 @@ While the act itself involves physical effort (lifting both boxes), this does no
 Conclusion: Without clear indicators of ownership transfer (e.g., labels, instructions, or verbal/written approval), it is reasonable to infer the individual acted unlawfully or improperly by removing the packages. Legal permissibility hinges on context not fully revealed in the clip.
 ```
 
-
 ## 3 OpenAI API Samples for NIM Docs
 
-**Temporal Localization**
+### Temporal Localization
 
 ```python
 client = openai.OpenAI(api_key=token, base_url=url)
@@ -636,7 +634,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-**SDG Critic**
+### SDG Critic
 
 ```python
 client = openai.OpenAI(api_key=token, base_url=url)
@@ -671,7 +669,7 @@ print(response.choices[0].message.content)
 
 ```
 
-**2D Trajectory Creation**
+### 2D Trajectory Creation
 
 ```python
 client = openai.OpenAI(api_key=token, base_url=url)
