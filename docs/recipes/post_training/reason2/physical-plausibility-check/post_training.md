@@ -215,7 +215,7 @@ uv run examples/video_critic/download_videophy2_train.py \
 
 The script will:
 
-1. Download videos from URLs in the dataset
+1. Automatically download videos from URLs in the HuggingFace dataset (no manual download needed)
 2. Create conversations using the prompt template
 3. Save the dataset in HuggingFace format for training
 
@@ -229,13 +229,13 @@ We use the following configuration optimized for 8 GPUs:
     --8<-- "scripts/examples/reason2/physical-plausibility-check/video_critic/configs/videophy2_sft.toml"
     ```
 
-> **Note**: Set `dp_shard_size` to the number of GPUs you are using. We tested on A100/H100 GPUs where the model fits in the memory of a GPU, so we only use data parallelism. If you use GPUs with less memory, you may increase `tp_size` to enable tensor parallelism.
+> **Note**: The configuration file is included in the `video_critic` folder that you copied from cosmos-cookbook. Set `dp_shard_size` to the number of GPUs you are using. We tested on A100/H100 GPUs where the model fits in the memory of a GPU, so we only use data parallelism. If you use GPUs with less memory, you may increase `tp_size` to enable tensor parallelism.
 
 We performed hyperparameter search across different learning rates (1e-5, 2e-7, and 1e-6) and found that 1e-6 performs best overall, which is used in the configuration file above.
 
 ### Running Training
 
-Fine-tune the model on the prepared dataset. From the Cosmos Reason 2 project root directory:
+To fine-tune the model on the prepared dataset, first activate the conda environment where you installed `redis` (as part of the setup guide). Then from the Cosmos Reason 2 project root directory:
 
 ```bash
 cd examples/cosmos_rl
