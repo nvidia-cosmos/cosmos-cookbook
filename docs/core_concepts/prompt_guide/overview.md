@@ -1,4 +1,4 @@
-# Prompt Guide
+# Overview
 
 Effective prompting is foundational to getting the best results from Cosmos models. This section provides comprehensive guides on how to interact with Cosmos models through well-structured prompts.
 
