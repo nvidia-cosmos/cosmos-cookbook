@@ -21,7 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
-| Jan 29 | [Prompt Guide ](recipes/inference/reason2/prompt_guide/inference.md) | Cosmos Reason 2 |   
+| Jan 29 | [Prompt Guide](recipes/inference/reason2/prompt_guide/inference.md) | Cosmos Reason 2 |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
@@ -96,7 +96,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | **Inference** | Prompt Guide         | [Prompt Guide (Reason 2)](recipes/inference/reason2/prompt_guide/inference.md)                   |
-| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)   
+| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md)
 | **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
 | **Training** | Physical plausibility prediction for video quality assessment with Cosmos Reason 2 | [Physical Plausibility (Reason 2)](recipes/post_training/reason2/physical-plausibility-check/post_training.md) |
