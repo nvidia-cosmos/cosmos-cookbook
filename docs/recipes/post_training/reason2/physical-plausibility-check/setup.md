@@ -12,15 +12,31 @@ This guide covers the setup requirements for post-training Cosmos Reason 2 for p
 
 ### Software Requirements
 
-The setup requires the Cosmos Reason 2 and cosmos-rl repositories and Cosmos Reason 2 model to be properly installed and configured.
+- **FFmpeg**: Required for video processing
+  ```bash
+  # Ubuntu/Debian
+  sudo apt-get update && sudo apt-get install -y ffmpeg
+  
+  # macOS
+  brew install ffmpeg
+  ```
+
+- **Cosmos Reason 2 Repository**: Clone from [GitHub](https://github.com/nvidia-cosmos/cosmos-reason2) and follow the installation instructions below.
 
 ## Installation
 
 ### Cosmos Reason 2 Setup
 
-To set up Cosmos Reason 2 repository and model, follow the detailed installation and inference setup instructions at:
-
+Follow the detailed installation and inference setup instructions at:
 **[Cosmos Reason 2 Post-Training Installation Guide](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md)**
+
+This includes:
+
+- Installing uv and other dependencies
+- Setting up the virtual environment or Docker container
+- Installing redis (required system dependency)
+- Running `uv sync` in the `examples/cosmos_rl` directory
+- Optional: Setting up wandb for monitoring
 
 ### Verification
 

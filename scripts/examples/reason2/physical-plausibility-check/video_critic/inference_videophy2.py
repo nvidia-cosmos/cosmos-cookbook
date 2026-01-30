@@ -52,7 +52,7 @@ import vllm
 import yaml
 from cosmos_reason2_utils.script.inference import Offline
 from cosmos_reason2_utils.text import SYSTEM_PROMPT, create_conversation
-from cosmos_reason2_utils.vision import PIXELS_PER_TOKEN, VisionConfig
+from cosmos_reason2_utils.vision import VisionConfig
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -215,20 +215,15 @@ def run_inference_for_dataset(args):
         images=[],
     )
 
-    # Calculate and validate vision kwargs (matching offline_inference pattern)
-    vision_kwargs = offline_args.vision.model_dump(exclude_none=True)
-    assert offline_args.sampling_params.max_tokens
-    if offline_args.max_model_len < offline_args.sampling_params.max_tokens:
-        raise ValueError("Max model length must be greater than max tokens.")
-    max_seq_len = offline_args.max_model_len - offline_args.sampling_params.max_tokens
-    total_pixels = int(max_seq_len * PIXELS_PER_TOKEN * 0.9)
-    if "total_pixels" in vision_kwargs:
-        if vision_kwargs["total_pixels"] > total_pixels:
-            raise ValueError(
-                f"Total pixels {vision_kwargs['total_pixels']} exceeds limit {total_pixels}."
-            )
-    else:
-        vision_kwargs["total_pixels"] = total_pixels
+    # Set vision kwargs for video processing
+    vision_kwargs = {
+        "fps": 16.0,
+        "total_pixels": 8192 * 28 * 28,  # 6,422,528
+        "max_pixels": None,
+        "max_frames": None,
+    }
+    # Remove None values
+    vision_kwargs = {k: v for k, v in vision_kwargs.items() if v is not None}
     VisionConfig.model_validate(vision_kwargs)
 
     # Initialize model and processor once (reused across all videos)
@@ -248,10 +243,15 @@ def run_inference_for_dataset(args):
     )
     print("✓ Processor loaded successfully")
 
-    # Create sampling params (matching offline_inference pattern)
-    # Override seed to 1 for reproducibility
+    # Create sampling params for inference
     sampling_kwargs = dict(offline_args.sampling_kwargs)
-    sampling_kwargs["seed"] = 1
+    sampling_kwargs.update({
+        "seed": 1,
+        "temperature": 0,  # Greedy decoding
+        "max_tokens": 2048,
+    })
+    # Remove None values (top_p, top_k, repetition_penalty not set)
+    sampling_kwargs = {k: v for k, v in sampling_kwargs.items() if v is not None}
     sampling_params = vllm.SamplingParams(**sampling_kwargs)
 
     # Process each video
@@ -321,7 +321,7 @@ def main():
         help='Dataset name (default: "videophysics/videophy2_test")',
     )
     parser.add_argument(
-        "--split", type=str, default="test", help="Dataset split (default: train)"
+        "--split", type=str, default="test", help="Dataset split (default: test)"
     )
 
     # Model arguments
