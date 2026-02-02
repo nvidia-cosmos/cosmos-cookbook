@@ -475,10 +475,32 @@ def _write_modality_metadata(dataset_path: Path, features: dict, robot_type: str
         print(f"WARNING: Failed to generate modality metadata: {err}")
 
 
-def _compute_and_write_stats(dataset_path: Path):
+def _compute_and_write_stats(
+    dataset_path: Path,
+    num_frames: int = 13,
+    timestep_interval: int = 3,
+    chunk_stride: int = None,
+):
     """
     Compute normalization statistics for relative actions and states,
     then write them to stats.json in the dataset's meta directory.
+    
+    IMPORTANT: Statistics are computed on PER-CHUNK relative actions to match
+    the training pipeline. During training:
+    1. Each sample is a chunk of `num_frames` frames sampled at `timestep_interval`
+    2. RelativeActionTransform converts these to (num_frames-1) relative actions
+    3. Each relative action is relative to the FIRST frame of its chunk
+    
+    This is different from computing relative actions over the entire episode,
+    which would produce a very different distribution (larger variance, drifting mean).
+    
+    Args:
+        dataset_path: Path to the dataset root directory
+        num_frames: Number of frames per chunk (must match training, default=13 for dvrk)
+        timestep_interval: Frame sampling interval (must match training, default=3 for dvrk)
+        chunk_stride: Stride between chunk start positions. If None, uses 
+                      (num_frames - 1) * timestep_interval for non-overlapping chunks.
+                      Use 1 for maximum coverage (like training samples).
     """
     parquet_files = sorted(dataset_path.glob("data/*/*.parquet"))
 
@@ -486,29 +508,68 @@ def _compute_and_write_stats(dataset_path: Path):
         print(f"Warning: No parquet files found in {dataset_path / 'data'}, skipping stats computation")
         return
 
-    print(f"Computing stats from {len(parquet_files)} parquet files...")
+    # Compute delta_indices matching training pipeline (groot_configs.py)
+    # For dvrk: delta_indices = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36]
+    delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
+    max_delta = delta_indices[-1]  # Last frame offset needed
+    
+    # Default stride: non-overlapping chunks
+    if chunk_stride is None:
+        chunk_stride = (num_frames - 1) * timestep_interval
+    
+    print(f"Computing per-chunk stats from {len(parquet_files)} parquet files...")
+    print(f"  num_frames={num_frames}, timestep_interval={timestep_interval}")
+    print(f"  delta_indices={delta_indices}")
+    print(f"  chunk_stride={chunk_stride}")
 
     all_rel_actions = []
     all_states = []
+    total_chunks = 0
+    skipped_short_episodes = 0
 
-    for pf in tqdm(parquet_files, desc="Computing stats"):
+    for pf in tqdm(parquet_files, desc="Computing per-chunk stats"):
         df = pd.read_parquet(pf)
 
-        # Extract actions and compute relative actions
+        # Extract all actions for this episode
         actions = np.vstack(df["action"].values)  # [T, 20]
-        rel_actions = compute_rel_actions(actions)  # [T-1, 20]
-        all_rel_actions.append(rel_actions)
+        episode_len = len(actions)
+        
+        # Skip episodes too short for even one chunk
+        if episode_len <= max_delta:
+            skipped_short_episodes += 1
+            continue
+        
+        # Iterate through chunks, sampling frames at delta_indices
+        # This matches how training samples data
+        for base_idx in range(0, episode_len - max_delta, chunk_stride):
+            # Sample frames at delta_indices (like training does)
+            chunk_indices = [base_idx + d for d in delta_indices]
+            chunk_actions = actions[chunk_indices]  # [num_frames, 20]
+            
+            # Compute relative actions for this chunk
+            # Output: [num_frames-1, 20] actions relative to chunk_actions[0]
+            chunk_rel_actions = compute_rel_actions(chunk_actions)
+            all_rel_actions.append(chunk_rel_actions)
+            total_chunks += 1
 
-        # Extract states
+        # Extract states (these don't need chunking - just collect all)
         if "observation.state" in df.columns:
             states = np.vstack(df["observation.state"].values)  # [T, 16]
             all_states.append(states)
 
-    # Stack all data
-    all_rel_actions = np.vstack(all_rel_actions)
-    print(f"Total relative actions: {all_rel_actions.shape}")
+    if not all_rel_actions:
+        print(f"Error: No valid chunks found. All episodes may be too short.")
+        print(f"  Minimum episode length needed: {max_delta + 1} frames")
+        return
 
-    # Compute stats
+    # Stack all per-chunk relative actions
+    all_rel_actions = np.vstack(all_rel_actions)
+    print(f"Total chunks processed: {total_chunks}")
+    print(f"Total per-chunk relative actions: {all_rel_actions.shape}")
+    if skipped_short_episodes > 0:
+        print(f"Skipped {skipped_short_episodes} episodes (too short for chunking)")
+
+    # Compute stats on per-chunk relative actions
     stats = {
         "action": _compute_stats(all_rel_actions),
     }
@@ -526,6 +587,12 @@ def _compute_and_write_stats(dataset_path: Path):
         json.dump(stats, f, indent=2)
 
     print(f"Saved stats to {output_path}")
+    
+    # Print summary of action stats for verification
+    action_stats = stats["action"]
+    print(f"\nAction statistics summary (should be used for normalization):")
+    print(f"  Mean range: [{min(action_stats['mean']):.6f}, {max(action_stats['mean']):.6f}]")
+    print(f"  Std range:  [{min(action_stats['std']):.6f}, {max(action_stats['std']):.6f}]")
 
 
 def _discover_episodes(data_path: Path):
@@ -641,8 +708,17 @@ def convert_data_to_lerobot(
             dataset.clear_episode_buffer()
     print(f"Total episodes processed: {len(episodes)}")
 
-    # Compute and write normalization stats for relative actions and states
-    _compute_and_write_stats(Path(final_output_path))
+    # Compute and write normalization stats for PER-CHUNK relative actions.
+    # IMPORTANT: Stats must be computed on per-chunk deltas (not whole-episode deltas)
+    # to match the training pipeline in groot_configs.py where RelativeActionTransform
+    # is applied to each chunk independently.
+    # Parameters: num_frames=13, timestep_interval=3 match dvrk training config.
+    _compute_and_write_stats(
+        Path(final_output_path),
+        num_frames=13,           # Must match training (groot_configs.py)
+        timestep_interval=3,     # Must match training (dvrk timestep_interval)
+        chunk_stride=None,       # None = non-overlapping chunks for efficiency
+    )
 
     # Generate and write modality.json
     dataset_features = {
@@ -698,5 +774,51 @@ def main(
     convert_data_to_lerobot(data_path, repo_id, push_to_hub=push_to_hub)
 
 
+def recompute_stats(
+    dataset_path: Path = Path("/path/to/lerobot/dataset"),
+    num_frames: int = 13,
+    timestep_interval: int = 3,
+    chunk_stride: int = None,
+):
+    """
+    Standalone function to recompute stats.json for an existing LeRobot dataset.
+    
+    Use this when you need to fix statistics without re-running the full conversion.
+    
+    Args:
+        dataset_path: Path to the LeRobot dataset (containing data/, meta/, videos/)
+        num_frames: Number of frames per chunk (default=13 for dvrk)
+        timestep_interval: Frame sampling interval (default=3 for dvrk)
+        chunk_stride: Stride between chunks (None = non-overlapping)
+    
+    Example:
+        python convert_suturebot_to_lerobot_v3.py recompute-stats --dataset-path /SutureBot
+    """
+    if not dataset_path.exists():
+        print(f"Error: Dataset path does not exist: {dataset_path}")
+        return
+    
+    if not (dataset_path / "data").exists():
+        print(f"Error: No 'data' directory found in {dataset_path}")
+        print("Expected LeRobot format with data/, meta/, videos/ directories.")
+        return
+    
+    print(f"Recomputing stats for dataset: {dataset_path}")
+    _compute_and_write_stats(
+        dataset_path,
+        num_frames=num_frames,
+        timestep_interval=timestep_interval,
+        chunk_stride=chunk_stride,
+    )
+    print("Done!")
+
+
 if __name__ == "__main__":
-    tyro.cli(main)
+    # Use tyro.extras.subcommand_cli to support both main conversion and stats recomputation
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "recompute-stats":
+        # Remove 'recompute-stats' from argv so tyro can parse the rest
+        sys.argv.pop(1)
+        tyro.cli(recompute_stats)
+    else:
+        tyro.cli(main)
