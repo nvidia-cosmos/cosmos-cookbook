@@ -58,3 +58,8 @@ ci-deploy-external:
   uv run mkdocs build {{ if env("COOKIE_TEST_MODE", "") == "true" { "-f mkdocs-internal.yml" } else { "" } }} --site-dir external/site --strict
   mkdir -p external/cosmos-cookbook
   cp -r scripts external/cosmos-cookbook/scripts
+
+# Sync jupytext notebooks
+[working-directory: 'scripts/examples']
+notebooks-sync:
+  uvx --with "ruff==0.14.8" jupytext@1.18.1 --sync *.ipynb --pipe 'ruff format -'

@@ -9,9 +9,8 @@ This recipe demonstrates a complete video reasoning pipeline for automating indu
 
 It shows how to prompt a Video Language Model (VLM) to ignore environmental noise (like faded paint or old machinery) and strictly classify worker behaviors based on visual ground truths defined in the Video Dataset for Safe and Unsafe Behaviours.
 
-Main notebook: [Worker Safety notebook](../../../../../scripts/examples/reason2/worker_safety.ipynb)  
+Main notebook: [Worker Safety notebook](worker_safety.ipynb)
 Setup guide: [Setup and system requirements](setup.md)
-
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
@@ -56,7 +55,6 @@ This recipe demonstrates a reproducible pipeline that:
 4. Parses structured JSON output for hazard detection.
 5. Visualizes the results and compare with ground truth.
 
-
 ---
 
 ## Pipeline Overview
@@ -69,12 +67,11 @@ This is the end-to-end flow:
 4. Parse output: extract JSON predictions (Class ID, Label, Rationale).
 5. Visualize: explore the results in FiftyOne to verify accuracy against the "old warehouse" constraints.
 
-
 ---
 
 ## 1. Loading the Dataset
 
-We start by loading the dataset from the Hugging Face Hub into FiftyOne. This dataset contains Full HD (1920x1080) clips at 24 fps, ranging from 1 to 20 seconds in length. 
+We start by loading the dataset from the Hugging Face Hub into FiftyOne. This dataset contains Full HD (1920x1080) clips at 24 fps, ranging from 1 to 20 seconds in length.
 
 ```python
 import fiftyone as fo
@@ -99,7 +96,6 @@ System prompt (the persona and constraints): we instruct the model to act as an 
 - Ignore background: do not flag hazards based on faded paint or disrepair.
 - Ignore sitting workers: "intervention" classes only apply to standing workers at machine boards; sitting workers (or drivers) are background noise.
 - Priority: prioritize unsafe behaviors over safe ones.
-
 
 User prompt (the strict classification table): we provide the model with the exact definitions from Table 1 of the dataset paper:
 
@@ -259,14 +255,12 @@ This recipe demonstrates:
 - The importance of prompt engineering in overcoming "brownfield" environmental noise.
 - How to map academic dataset definitions (like those in the Safe and Unsafe Behaviours paper) into executable model constraints.
 
-
 This approach can be generalized to:
 
 - Construction site monitoring (PPE detection).
 - Retail loss prevention.
 - Logistics and inventory auditing.
 
-
 For the full code and to run this analysis yourself, verify you have the `pjramg/Safe_Unsafe_Test` dataset and the Cosmos-Reason2 model accessible in your environment.
 
-Run the full workflow in the main notebook: [Worker Safety notebook](../../../../../scripts/examples/reason2/worker_safety.ipynb).
+Run the full workflow in the main notebook: [Worker Safety notebook](worker_safety.ipynb).

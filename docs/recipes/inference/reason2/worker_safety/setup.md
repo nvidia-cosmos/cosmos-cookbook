@@ -78,6 +78,7 @@ python -c "import torch; print(torch.__version__); print('cuda', torch.cuda.is_a
 ```
 
 Expected:
+
 - `cuda True`
 
 ---
@@ -131,6 +132,7 @@ jupyter lab
 ```
 
 In the JupyterLab UI:
+
 - **Kernel → Change Kernel → `Python (cosmos-reason2)`**
 
 ---
@@ -178,6 +180,7 @@ This ensures the script uses the correct repo-relative paths.
 ---
 
 **Done!** You now have:
+
 - a dedicated `cosmos-reason2` Python environment (`.venv`)
 - Cosmos Reason2 and all granted models from Hugging Face (per the Cosmos Reason2 repo)
 - FiftyOne installed inside that env
