@@ -479,7 +479,7 @@ def _compute_and_write_stats(
     dataset_path: Path,
     num_frames: int = 13,
     timestep_interval: int = 3,
-    chunk_stride: int = None,
+    chunk_stride: int = 1,
 ):
     """
     Compute normalization statistics for relative actions and states,
@@ -494,13 +494,17 @@ def _compute_and_write_stats(
     This is different from computing relative actions over the entire episode,
     which would produce a very different distribution (larger variance, drifting mean).
     
+    NOTE: chunk_stride=1 (default) samples ALL possible chunks like training does,
+    giving representative statistics. This may take longer but ensures the stats
+    match the actual training distribution.
+    
     Args:
         dataset_path: Path to the dataset root directory
         num_frames: Number of frames per chunk (must match training, default=13 for dvrk)
         timestep_interval: Frame sampling interval (must match training, default=3 for dvrk)
-        chunk_stride: Stride between chunk start positions. If None, uses 
-                      (num_frames - 1) * timestep_interval for non-overlapping chunks.
-                      Use 1 for maximum coverage (like training samples).
+        chunk_stride: Stride between chunk start positions. Default=1 for maximum
+                      coverage (matching training sampling). Use larger values for faster
+                      but potentially less accurate stats computation.
     """
     parquet_files = sorted(dataset_path.glob("data/*/*.parquet"))
 
@@ -512,10 +516,6 @@ def _compute_and_write_stats(
     # For dvrk: delta_indices = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36]
     delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
     max_delta = delta_indices[-1]  # Last frame offset needed
-    
-    # Default stride: non-overlapping chunks
-    if chunk_stride is None:
-        chunk_stride = (num_frames - 1) * timestep_interval
     
     print(f"Computing per-chunk stats from {len(parquet_files)} parquet files...")
     print(f"  num_frames={num_frames}, timestep_interval={timestep_interval}")
@@ -713,11 +713,12 @@ def convert_data_to_lerobot(
     # to match the training pipeline in groot_configs.py where RelativeActionTransform
     # is applied to each chunk independently.
     # Parameters: num_frames=13, timestep_interval=3 match dvrk training config.
+    # chunk_stride=1 (default) samples ALL possible chunks like training does.
     _compute_and_write_stats(
         Path(final_output_path),
         num_frames=13,           # Must match training (groot_configs.py)
         timestep_interval=3,     # Must match training (dvrk timestep_interval)
-        chunk_stride=None,       # None = non-overlapping chunks for efficiency
+        # chunk_stride=1 is default - samples all chunks like training
     )
 
     # Generate and write modality.json
@@ -778,7 +779,7 @@ def recompute_stats(
     dataset_path: Path = Path("/path/to/lerobot/dataset"),
     num_frames: int = 13,
     timestep_interval: int = 3,
-    chunk_stride: int = None,
+    chunk_stride: int = 1,
 ):
     """
     Standalone function to recompute stats.json for an existing LeRobot dataset.
@@ -789,7 +790,7 @@ def recompute_stats(
         dataset_path: Path to the LeRobot dataset (containing data/, meta/, videos/)
         num_frames: Number of frames per chunk (default=13 for dvrk)
         timestep_interval: Frame sampling interval (default=3 for dvrk)
-        chunk_stride: Stride between chunks (None = non-overlapping)
+        chunk_stride: Stride between chunks (default=1 for full coverage like training)
     
     Example:
         python convert_suturebot_to_lerobot_v3.py recompute-stats --dataset-path /SutureBot
