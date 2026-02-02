@@ -63,7 +63,7 @@ This is the end-to-end flow:
 
 1. Load data: ingest the [`Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset from Hugging Face.
 2. Define prompts: encode the dataset's specific visual rules into system and user prompts.
-3. Run inference: process videos using [`Cosmos-Reason2-2B`](https://github.com/nvidia-cosmos/cosmos-reason2) via Hugging Face Transformers.
+3. Run inference: process videos using [`Cosmos-Reason2-2B`](https://huggingface.co/nvidia/Cosmos-Reason2-2B) via Hugging Face Transformers.
 4. Parse output: extract JSON predictions (Class ID, Label, Rationale).
 5. Visualize: explore the results in FiftyOne to verify accuracy against the "old warehouse" constraints.
 
@@ -104,7 +104,7 @@ User prompt (the strict classification table): we provide the model with the exa
 | 0 | Safe Walkway Violation | Walking OUTSIDE the Green Path. |
 | 4 | Safe Walkway | Walking INSIDE the Green Path. |
 | 1 | Unauthorized Intervention | Interacting with machine board WITHOUT a green vest. |
-| 3 | Forklift Overload | Carrying 3 or more blocks. |
+| 3 | Carrying Overload with Forklift | Carrying 3 or more blocks. |
 
 ```python
 SYSTEM_INSTRUCTIONS = """
