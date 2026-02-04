@@ -20,7 +20,7 @@ Verify your GPU + NVIDIA driver + CUDA support:
 nvidia-smi
 ```
 
-> In this setup, the machine is a **laptop with an NVIDIA RTX PRO 5000 Blackwell GPU** running **Ubuntu 24.04** and supporting **CUDA 13.0**, so we use the **cu130** environment extra.
+> **Note**: This recipe was tested on a laptop with an **NVIDIA RTX PRO 5000 Blackwell GPU** running **Ubuntu 24.04** and supporting **CUDA 13.0**. For configuration, we use the **cu130** environment extra. You may need to adjust the CUDA version based on your system.
 
 ---
 

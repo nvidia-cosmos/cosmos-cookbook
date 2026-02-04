@@ -28,7 +28,7 @@ Before running this recipe, ensure you have the necessary environment configurat
 
 Prerequisites:
 
-- A GPU environment (e.g., NVIDIA RTX PRO 5000 Blackwell) with CUDA 13.0 available.
+- An NVIDIA GPU with CUDA support (this recipe was tested on an NVIDIA RTX PRO 5000 Blackwell GPU with CUDA 13.0).
 - `fiftyone`, `transformers`, `torch`, and `qwen-vl-utils` installed.
 - The [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset available on Hugging Face.
 
@@ -264,3 +264,29 @@ This approach can be generalized to:
 For the full code and to run this analysis yourself, verify you have the `pjramg/Safe_Unsafe_Test` dataset and the Cosmos-Reason2 model accessible in your environment.
 
 Run the full workflow in the main notebook: [Worker Safety notebook](worker_safety.ipynb).
+
+### References
+
+- Safe and Unsafe Behaviours Dataset: [Mendeley Data](https://data.mendeley.com/datasets/xjmtb22pff/1)
+- Original Paper: Fernandes, P., et al. (2024). "Video Dataset for Safe and Unsafe Behaviours Detection in Industrial Environments." *Data in Brief*. [DOI: 10.1016/j.dib.2024.111258](https://www.sciencedirect.com/science/article/pii/S235234092400756X)
+
+---
+
+## Document Information
+
+**Publication Date:** February 4, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_worker_safety_2026,
+  title={Worker Safety in a Classical Warehouse with Cosmos Reason 2},
+  author={Ramos, Paula},
+  organization={NVIDIA},
+  year={2026},
+  month={February},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}

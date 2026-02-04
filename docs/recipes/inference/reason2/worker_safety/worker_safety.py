@@ -1,3 +1,19 @@
+# Copyright 2026 NVIDIA CORPORATION & AFFILIATES
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # ---
 # jupyter:
 #   jupytext:
@@ -11,7 +27,7 @@
 
 # %% [markdown]
 # # Worker Safety in a Classical Warehouse
-# ### Using Cosmos-Reason2   
+# ### Using Cosmos-Reason2
 # ### [Main recipe](../../../docs/recipes/inference/reason2/worker_safety/inference.md)
 #
 # ![Worker safety overview](../../../docs/recipes/inference/reason2/worker_safety/assets/assets_1_worker_safety.png)
@@ -22,19 +38,20 @@
 # Unlike modern, pristine factories, "classical" warehouses often feature faded floor markings, irregular lighting, and worn infrastructure. Standard computer vision models often struggle here, confusing environmental noise with hazards. In this workflow, we solve this by using Context-Aware Prompt Engineering to force the model to ignore the background and focus strictly on specific visual ground truths.
 
 # %% [markdown]
-# ### 1. Install dependencies 
+# ### 1. Install dependencies
 #
 # Follow the instructions in the [setup](https://github.com/NVIDIA/Cosmos-Cookbook/blob/main/docs/recipes/inference/reason2/worker_safety/setup.md)
 
 # %% [markdown]
 # ### 2. Load dataset and copy the first video to assets/sample.mp4 - Testing the installation
 
+import pathlib
+import shutil
+
 # %%
 # 2. Load dataset and copy the first video to assets/sample.mp4
 import fiftyone as fo
 import fiftyone.utils.huggingface as fouh
-import shutil
-import pathlib
 
 ROOT = pathlib.Path.cwd()
 ASSETS = ROOT / "assets"
@@ -42,14 +59,16 @@ ASSETS.mkdir(exist_ok=True)
 
 # NOTE: omit overwrite=True so existing annotations are preserved
 dataset = fouh.load_from_hub("pjramg/Safe_Unsafe_Test", persistent=True)
-#dataset = fo.load_dataset("pjramg/Safe_Unsafe_Test") # 
+# dataset = fo.load_dataset("pjramg/Safe_Unsafe_Test") #
 
 sample = dataset.first()
 
 if sample is None:
     raise RuntimeError("Dataset is empty")
 if sample.media_type != "video":
-    raise RuntimeError(f"First sample is not a video (media_type={sample.media_type}). Use --images instead.")
+    raise RuntimeError(
+        f"First sample is not a video (media_type={sample.media_type}). Use --images instead."
+    )
 
 dst = ASSETS / "sample.mp4"
 shutil.copy2(sample.filepath, dst)
@@ -59,10 +78,11 @@ print("Reference video copied to:", dst)
 # %% [markdown]
 # ### 3. CUDA / environment sanity check
 
+import os
+
 # %%
 # 3. CUDA / environment sanity check
 import torch
-import os
 
 print("CUDA available:", torch.cuda.is_available())
 if torch.cuda.is_available():
@@ -73,7 +93,7 @@ if torch.cuda.is_available():
 
 
 # %% [markdown]
-# ### 4. Run the default inference_sample.py file 
+# ### 4. Run the default inference_sample.py file
 #
 # Be sure you are addressing the right sample.mp4 file, check the inference_sample.py file in the Cosmos Reason 2 repository. Make modification to the prompt if needed. This script assumes Cosmos Reason 2 is installed following the setup in the [Cosmos Reason 2 repo](https://github.com/nvidia-cosmos/cosmos-reason2).
 
@@ -88,11 +108,11 @@ if torch.cuda.is_available():
 import json
 import warnings
 from pathlib import Path
-import torch
+
 import transformers
-import fiftyone as fo
 
 warnings.filterwarnings("ignore")
+
 
 # --- MODEL INITIALIZATION ---
 def load_model():
@@ -101,7 +121,7 @@ def load_model():
         model_name, dtype=torch.float16, device_map="auto", attn_implementation="sdpa"
     )
     processor = transformers.Qwen3VLProcessor.from_pretrained(model_name)
-    
+
     # Pixel token limits
     PIXELS_PER_TOKEN = 32**2
     min_vision_tokens, max_vision_tokens = 256, 8192
@@ -111,11 +131,12 @@ def load_model():
     }
     return model, processor
 
+
 # --- PROMPTS ---
-SYSTEM_INSTRUCTIONS ="""
+SYSTEM_INSTRUCTIONS = """
     You are an expert Industrial Safety Inspector monitoring a manufacturing facility.
     Your goal is to classify the video into EXACTLY ONE of the 8 classes defined below.
-    
+
     CRITICAL NEGATIVE CONSTRAINTS (What to IGNORE):
     1. IGNORE SITTING WORKERS:
        - If a person is SITTING at a machine board working, this is NOT an intervention class. Ignore them.
@@ -125,13 +146,13 @@ SYSTEM_INSTRUCTIONS ="""
     3. SINGLE OUTPUT:
        - Even if multiple things happen, choose the MOST PROMINENT behavior.
        - Prioritize UNSAFE behaviors over SAFE behaviors if both are present.
-"""  
+"""
 
 USER_PROMPT_CONTENT = """
     Analyze the video and output a JSON object. You MUST select the class ID and Label EXACTLY from the table below.
-    
+
     STRICT CLASSIFICATION TABLE (Use these exact IDs and Labels):
-    
+
     | ID | Label | Definition (Ground Truth) | Hazard Status |
     | :--- | :--- | :--- | :--- |
     | 0 | Safe Walkway Violation | Worker walks OUTSIDE the designated Green Path. | TRUE (Unsafe) |
@@ -143,12 +164,12 @@ USER_PROMPT_CONTENT = """
     | 3 | Carrying Overload with Forklift | Forklift carries 3 OR MORE blocks. | TRUE (Unsafe) |
     | 7 | Safe Carrying | Forklift carries 2 OR FEWER blocks. | FALSE (Safe) |
 
-    
+
     INSTRUCTIONS:
     1. Identify the behavior in the video.
     2. Match it to one row in the table above.
     3. Output the exact "ID" and "Label" from that row. Do not invent new labels like "safe and compliant".
-    
+
     OUTPUT FORMAT:
     {
       "prediction_class_id": [Integer from Table],
@@ -179,8 +200,7 @@ print(f"Processing {len(dataset)} videos...")
 # Use progress_bar to track status
 for sample in dataset.iter_samples(progress=True):
     video_path = sample.filepath
-    
-    
+
     # Prepare inputs
     conversation = [
         {"role": "system", "content": [{"type": "text", "text": SYSTEM_INSTRUCTIONS}]},
@@ -200,7 +220,7 @@ for sample in dataset.iter_samples(progress=True):
             add_generation_prompt=True,
             return_dict=True,
             return_tensors="pt",
-            fps=4, # Set FPS here
+            fps=4,  # Set FPS here
         ).to(model.device)
 
         # Inference
@@ -221,15 +241,15 @@ for sample in dataset.iter_samples(progress=True):
             # Cleaning markdown blocks if model returns ```json ... ```
             clean_json = output_text.strip().replace("```json", "").replace("```", "")
             json_data = json.loads(clean_json)
-            
+
             # Store as a custom field "cosmos_analysis"
             sample["cosmos_analysis"] = json_data
-            
+
             # Optional: Also add the label as a top-level classification for easy filtering
             sample["safety_label"] = fo.Classification(
                 label=json_data.get("prediction_label"),
             )
-            
+
             sample.save()
         except Exception as e:
             print(f"JSON Parsing failed for {video_path}: {e}")
@@ -242,9 +262,8 @@ for sample in dataset.iter_samples(progress=True):
 print("Processing complete. Launching App...")
 
 
-
 # %% [markdown]
-# ### 7. Visualize the results in FiftyOne, compare results with Ground Truth and make adjustments if needed. 
+# ### 7. Visualize the results in FiftyOne, compare results with Ground Truth and make adjustments if needed.
 
 # %%
 session = fo.launch_app(dataset)
