@@ -272,7 +272,7 @@ session.wait()
 # %% [markdown]
 # ### Output sample:
 #
-# <video src="../../../docs/recipes/inference/reason2/worker_safety/assets/output_sample.webm" controls></video>
+# <video src="assets/output_sample.webm" controls></video>
 
 # %% [markdown]
 # # Happy Coding!!! 🤖
