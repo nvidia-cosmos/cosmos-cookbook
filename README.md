@@ -13,12 +13,12 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 | **Date** | **Recipe** | **Model** | **Description** |
 |----------|------------|-----------|-----------------|
+| Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 | Zero-shot industrial safety compliance and hazard detection in classical warehouse environments using context-aware prompt engineering |
 | Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | Inference Prompt Guide |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html) | Cosmos Reason 2 | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts across warehouses, factories, retail, and smart cities |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2 | State-of-the-art robot policy through latent frame injection for visuomotor control achieving 98.5% on LIBERO, 67.1% on RoboCasa, and 93.6% on ALOHA |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html) | Cosmos Reason 2 | Supervised fine-tuning for physical plausibility prediction using VideoPhy-2 dataset with improved zero-shot and SFT performance |
 | Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html) | Cosmos Reason 2 | Post-training Cosmos Reason 2 for intelligent transportation scene understanding using WovenTraffic Safety dataset |
-| Jan 6 | [Dataset Video Clustering with Time Series K-Means](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html) | Cosmos Curator | Advanced video clustering using Time Series K-Means on embedding vector trajectories for robotics behavior analysis |
 
 ## Upcoming Activities
 
