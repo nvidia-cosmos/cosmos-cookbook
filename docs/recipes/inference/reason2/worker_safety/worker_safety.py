@@ -82,6 +82,7 @@ print("Reference video copied to:", dst)
 # %%
 # 3. CUDA / environment sanity check
 import os
+
 import torch
 
 print("CUDA available:", torch.cuda.is_available())
