@@ -28,9 +28,9 @@
 # %% [markdown]
 # # Worker Safety in a Classical Warehouse
 # ### Using Cosmos-Reason2
-# ### [Main recipe](../../../docs/recipes/inference/reason2/worker_safety/inference.md)
+# ### [Main recipe](inference.md)
 #
-# ![Worker safety overview](../../../docs/recipes/inference/reason2/worker_safety/assets/assets_1_worker_safety.png)
+# ![Worker safety overview](assets/assets_1_worker_safety.png)
 
 # %% [markdown]
 # This notebook implements a complete Zero-Shot Video Reasoning Pipeline for industrial safety compliance. It demonstrates how to use NVIDIA Cosmos Reason 2, a multimodal Video Language Model (VLM), to act as an automated safety inspector in challenging "brownfield" environments.
