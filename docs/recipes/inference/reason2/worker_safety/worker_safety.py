@@ -45,6 +45,7 @@
 # %% [markdown]
 # ### 2. Load dataset and copy the first video to assets/sample.mp4 - Testing the installation
 
+# %%
 import pathlib
 import shutil
 
