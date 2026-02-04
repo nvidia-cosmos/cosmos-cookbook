@@ -60,6 +60,5 @@ ci-deploy-external:
   cp -r scripts external/cosmos-cookbook/scripts
 
 # Sync jupytext notebooks
-[working-directory: 'scripts/examples']
 notebooks-sync:
-  uvx --with "ruff==0.14.8" jupytext@1.18.1 --sync *.ipynb --pipe 'ruff format -'
+  uvx --with "ruff==0.14.8" jupytext --sync scripts/examples/*.ipynb docs/recipes/**/*.ipynb --pipe 'ruff format -'
