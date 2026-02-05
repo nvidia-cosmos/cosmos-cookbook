@@ -7,10 +7,10 @@ docs_dir: build/docs
 nav:
   - Home: index.md
   - Getting Started: get_started.md
-  - Gallery: gallery/
+  - FAQ: faq.md
+  - CONTRIBUTING: contributing_doc.md
   - Recipes: recipes/
   - Concepts: core_concepts/
-  - FAQ: faq.md
 plugins:
   - search
   - literate-nav:
@@ -75,6 +75,7 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:
   github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
+  local_dev: false
 copyright: |
   &copy; Copyright 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 use_directory_urls: false

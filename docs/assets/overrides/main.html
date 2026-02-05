@@ -2,6 +2,7 @@
 
 {% block extrahead %}
 {{ super() }}
+{% if not config.extra.local_dev %}
 <!-- OneTrust Cookies Consent Notice start for nvidia-cosmos.github.io -->
 
 <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="text/javascript" charset="UTF-8" data-domain-script="019c0510-0233-7bb8-be91-9083a1e91694{% if config.extra.cookie_test_mode %}-test{% endif %}" ></script>
@@ -16,9 +17,218 @@ function OptanonWrapper() {
 <!-- OneTrust Cookies Consent Notice end for nvidia-cosmos.github.io -->
 
 <script src="//assets.adobedtm.com/5d4962a43b79/814eb6e9b4e1/launch-4bc07f1e0b0b.min.js"></script>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">_satellite.pageBottom();</script>
+
+<!-- Custom Navigation Filter -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Find the primary navigation list
+    const navList = document.querySelector('.md-nav--primary > .md-nav__list');
+    if (!navList) return;
+    
+    // Mark Recipes and Concepts nav items as filterable based on URL paths
+    // Since literate-nav expands them, we need to filter by href
+    const navItems = Array.from(navList.children).filter(item => 
+      item.classList.contains('md-nav__item')
+    );
+    
+    navItems.forEach(item => {
+      const directLink = item.querySelector(':scope > a.md-nav__link[href]');
+      
+      // Check if it's a recipes or concepts item by URL
+      if (directLink) {
+        const href = directLink.getAttribute('href');
+        const linkText = directLink.textContent.trim();
+        
+        // Mark section headers (items that link to the directory index) separately
+        if (href === 'recipes/' || href === 'recipes/index.html' || 
+            (href && href.match(/^recipes\/?$/) && linkText.toLowerCase().includes('recipe'))) {
+          item.classList.add('section-header');
+          item.setAttribute('data-section-header', 'recipes');
+          item.style.display = 'none'; // Hidden by default
+        } else if (href === 'core_concepts/' || href === 'core_concepts/index.html' ||
+                   (href && href.match(/^core_concepts\/?$/) && linkText.toLowerCase().includes('concept'))) {
+          item.classList.add('section-header');
+          item.setAttribute('data-section-header', 'core_concepts');
+          item.style.display = 'none'; // Hidden by default
+        } else if (href && (href.startsWith('recipes/') || href.includes('/recipes/'))) {
+          // Regular recipe items (not headers)
+          item.classList.add('filterable-nav');
+          item.setAttribute('data-nav-section', 'recipes');
+          item.style.display = 'none'; // Hidden by default
+        } else if (href && (href.startsWith('core_concepts/') || href.includes('/core_concepts/'))) {
+          // Regular concept items (not headers)
+          item.classList.add('filterable-nav');
+          item.setAttribute('data-nav-section', 'core_concepts');
+          item.style.display = 'none'; // Hidden by default
+        }
+      }
+      
+      // Also check nested sections (like Gallery, Getting Started)
+      if (item.classList.contains('md-nav__item--nested')) {
+        const nestedLinks = item.querySelectorAll('nav a[href]');
+        
+        // Check if all nested links are from recipes or core_concepts
+        const allHrefs = Array.from(nestedLinks).map(a => a.getAttribute('href'));
+        const allRecipes = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('recipes/') || h.includes('/recipes/')));
+        const allConcepts = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('core_concepts/') || h.includes('/core_concepts/')));
+        
+        if (allRecipes) {
+          item.classList.add('filterable-nav');
+          item.setAttribute('data-nav-section', 'recipes');
+          item.style.display = 'none';
+        } else if (allConcepts) {
+          item.classList.add('filterable-nav');
+          item.setAttribute('data-nav-section', 'core_concepts');
+          item.style.display = 'none';
+        }
+      }
+    });
+    
+    // Create filter section HTML
+    const filterSection = document.createElement('li');
+    filterSection.className = 'md-nav__item md-nav__item--section';
+    filterSection.style.cssText = 'border-top: 1px solid var(--md-default-fg-color--lightest); margin-top: 1rem; padding-top: 0.5rem;';
+    filterSection.innerHTML = `
+      <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none;">
+        <span class="md-ellipsis">Filter Content</span>
+      </label>
+      <nav class="md-nav" aria-label="Filter">
+        <ul class="md-nav__list">
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="all">
+              <span class="md-ellipsis">✓ Show All</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="recipes">
+              <span class="md-ellipsis">Recipes</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="core_concepts">
+              <span class="md-ellipsis">Concepts</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    `;
+    
+    // Insert filter section after Gallery but before Glossary
+    const navItemsArray = Array.from(navList.children);
+    let insertIndex = navItemsArray.length; // Default to end
+    
+    // Find Glossary item
+    for (let i = 0; i < navItemsArray.length; i++) {
+      const link = navItemsArray[i].querySelector('a[href*="glossary"]');
+      if (link) {
+        insertIndex = i;
+        break;
+      }
+    }
+    
+    // Insert at the found position
+    if (insertIndex < navItemsArray.length) {
+      navList.insertBefore(filterSection, navItemsArray[insertIndex]);
+    } else {
+      navList.appendChild(filterSection);
+    }
+    
+    // Move all filterable items to appear after the filter section
+    const filterableItemsToMove = document.querySelectorAll('.filterable-nav');
+    filterableItemsToMove.forEach(item => {
+      // Remove from current position and insert after filter section
+      navList.insertBefore(item, filterSection.nextSibling);
+    });
+    
+    // Add a horizontal line before Glossary (after filtered items)
+    const glossaryItem = Array.from(navList.children).find(item => {
+      const link = item.querySelector('a[href*="glossary"]');
+      return link !== null;
+    });
+    
+    if (glossaryItem) {
+      glossaryItem.style.borderTop = '1px solid var(--md-default-fg-color--lightest)';
+      glossaryItem.style.marginTop = '1rem';
+      glossaryItem.style.paddingTop = '0.5rem';
+    }
+    
+    // Filter functionality
+    function applyFilter(filterType) {
+      const filterableItems = document.querySelectorAll('.filterable-nav');
+      const sectionHeaders = document.querySelectorAll('.section-header');
+      
+      // Update active state
+      document.querySelectorAll('.content-filter').forEach(el => {
+        el.classList.remove('active');
+        const span = el.querySelector('.md-ellipsis');
+        if (span) {
+          span.textContent = span.textContent.replace('✓ ', '');
+        }
+      });
+      
+      const activeFilter = document.querySelector(`.content-filter[data-filter="${filterType}"]`);
+      if (activeFilter) {
+        activeFilter.classList.add('active');
+        const span = activeFilter.querySelector('.md-ellipsis');
+        if (span && !span.textContent.startsWith('✓ ')) {
+          span.textContent = '✓ ' + span.textContent;
+        }
+      }
+      
+      // Show/hide nav items and section headers based on filter
+      if (filterType === 'all') {
+        filterableItems.forEach(item => item.style.display = '');
+        sectionHeaders.forEach(header => header.style.display = '');
+      } else {
+        // Show only items matching the filter
+        filterableItems.forEach(item => {
+          const section = item.getAttribute('data-nav-section');
+          item.style.display = (section === filterType) ? '' : 'none';
+        });
+        // Hide all section headers when filtering (we don't need them)
+        sectionHeaders.forEach(header => {
+          header.style.display = 'none';
+        });
+      }
+      
+      localStorage.setItem('navFilter', filterType);
+    }
+    
+    // Set up click handlers
+    document.querySelectorAll('.content-filter').forEach(filter => {
+      filter.addEventListener('click', function(e) {
+        e.preventDefault();
+        applyFilter(this.getAttribute('data-filter'));
+      });
+    });
+    
+    // Restore saved filter
+    const savedFilter = localStorage.getItem('navFilter') || 'all';
+    applyFilter(savedFilter);
+  });
+</script>
+
+<style>
+  .content-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  
+  .content-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  
+  .content-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+</style>
 {% endblock %}
