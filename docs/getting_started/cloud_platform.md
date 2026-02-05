@@ -160,4 +160,21 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
   </div>
 </section>
 
+<section class="platform-section" id="nebius">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/nebius.png" alt="Nebius logo"> Nebius</h2>
+    <p>Ready-to-launch on Nebius AI Cloud.</p>
+  </div>
+  <div class="platform-track">
+    <a class="platform-card" href="./nebius/reason2/reason2_on_nebius.html">
+      <div class="platform-media" aria-hidden="true">
+        <video autoplay loop muted playsinline>
+          <source src="./brev/reason2/images/nvidia-cosmos-reason2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="platform-title">Reason 2 on Nebius</div>
+    </a>
+  </div>
+</section>
+
 </div>
