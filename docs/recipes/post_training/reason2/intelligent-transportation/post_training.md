@@ -24,6 +24,7 @@ Here’s the end-to-end workflow to fine-tune Cosmos Reason 2 - from data prepar
 <img src="assets/e2e_workflow.png"/>
 
 ## Resources
+
 - [Setup and System Requirements](setup.md)
 - [Post training notebook](post_training_notebook.ipynb)
 
