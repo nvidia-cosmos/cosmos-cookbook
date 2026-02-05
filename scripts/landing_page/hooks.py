@@ -240,20 +240,12 @@ def scan_recipes(site_dir):
 
 
 def on_post_build(config):
-    """Copy custom HTML files and generate recipes.json after build."""
+    """Generate recipes.json after build."""
     site_dir = config["site_dir"]
     
     print("\n=== Custom Build Steps ===")
     
-    # 1. Copy index.html without MkDocs template to override the default
-    source = Path("docs/index.html")
-    dest = Path(site_dir) / "index.html"
-    
-    if source.exists():
-        shutil.copy2(source, dest)
-        print(f"✓ Copied {source} to {dest}")
-    
-    # 2. Scan recipes and generate recipes.json
+    # Scan recipes and generate recipes.json
     print("\n=== Scanning for recipes ===")
     recipes = scan_recipes(site_dir)
     
