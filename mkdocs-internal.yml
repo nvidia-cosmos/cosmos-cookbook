@@ -1,3 +1,4 @@
 INHERIT: mkdocs.yml
 extra:
   cookie_test_mode: true
+  local_dev: true
