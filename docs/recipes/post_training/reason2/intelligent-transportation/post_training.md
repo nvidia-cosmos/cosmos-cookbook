@@ -1,6 +1,6 @@
 # Intelligent Transportation Post-Training with Cosmos Reason 2
 
-> **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/)
+> **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/), [Deep Rodge](https://www.linkedin.com/in/deeprodge/), [Monika Jhuria](https://www.linkedin.com/in/monika-jhuria-07077797/)
 > **Organization:** NVIDIA
 
 | **Model** | **Workload** | **Use Case** |
@@ -22,6 +22,11 @@ Before fine-tuning the model, let's review the zero-shot performance of the mode
 
 Here’s the end-to-end workflow to fine-tune Cosmos Reason 2 - from data preparation, to training and evaluating the model, and finally quantizing and deploying the model for inference.
 <img src="assets/e2e_workflow.png"/>
+
+## Resources
+
+- [Setup and System Requirements](setup.md)
+- [Post training notebook](post_training_notebook.ipynb)
 
 <br>
 
