@@ -1,5 +1,5 @@
 [custom.dataset]
-annotation_path = "/path/to/WTS/environment_mcq_llava_train.py"
+annotation_path = "/path/to/WTS/environment_mcq_llava_train.json"
 media_path = "/path/to/WTS/videos/train"
 system_prompt = "You are a helpful assistant."
 
