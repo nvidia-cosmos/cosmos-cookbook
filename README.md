@@ -55,7 +55,7 @@ Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
 
 → See **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/setup.html)** for complete hardware and software requirements.
 
-→ Or **[Deploy on Cloud](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/cloud_platform.html)** (Nebius, Brev, AWS, and more) for ready-to-launch GPU instances.
+→ Or **[Deploy on Cloud](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/cloud_platform.html)** (Nebius, Brev, and more to come) for ready-to-launch GPU instances.
 
 ## Quick Start
 

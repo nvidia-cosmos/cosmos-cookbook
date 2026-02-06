@@ -169,7 +169,7 @@ Visual examples of Cosmos Transfer results across Physical AI domains:
 This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
 
 - **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
-- **Cloud deployments:** [Deploy on Nebius, Brev, AWS, and more](getting_started/cloud_platform.md) for ready-to-launch cloud instances
+- **Cloud deployments:** [Deploy on Nebius, Brev, and more to come](getting_started/cloud_platform.md) for ready-to-launch cloud instances
 - **Physical AI datasets:** [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face for curated datasets across domains
 - **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
 - **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
