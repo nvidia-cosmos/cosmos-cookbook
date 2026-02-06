@@ -169,7 +169,7 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
     <a class="platform-card" href="./nebius/reason2/reason2_on_nebius.html">
       <div class="platform-media" aria-hidden="true">
         <video autoplay loop muted playsinline>
-          <source src="./brev/reason2/images/nvidia-cosmos-reason2.mp4" type="video/mp4">
+          <source src="./nebius/reason2/images/nebius-04-container-over-vm-config.png" type="video/mp4">
         </video>
       </div>
       <div class="platform-title">Reason 2 on Nebius</div>
