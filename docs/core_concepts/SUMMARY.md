@@ -1,6 +1,5 @@
 # Core Concepts
 
-- [Prompt Guide](prompt_guide/)
 - [Control Modalities](control_modalities/)
 - [Data Curation](data_curation/)
 - [Post-Training](post_training/)
