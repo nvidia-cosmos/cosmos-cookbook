@@ -153,6 +153,8 @@ body:
         - "Yes, I only used the provided credits."
         - "Yes, I used both Nebius credits and my own credits/GPUs."
         - "No, I used my own GPUs or money."
+      validations:
+        required: true
   - type: input
     id: supplementary-materials
     attributes:
