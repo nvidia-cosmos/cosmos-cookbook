@@ -145,6 +145,14 @@ body:
       placeholder: "https://youtu.be/your-demo"
     validations:
       required: true
+  - type: dropdown
+    id: nebius-use
+    attributes:
+      label: Did you use Nebius or Brev credits for this project?
+      options:
+        - "Yes, I only used the provided credits."
+        - "Yes, I used both Nebius credits and my own credits/GPUs."
+        - "No, I used my own GPUs or money."
   - type: input
     id: supplementary-materials
     attributes:
