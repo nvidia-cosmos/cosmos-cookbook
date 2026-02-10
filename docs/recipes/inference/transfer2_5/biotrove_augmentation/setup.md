@@ -16,9 +16,10 @@ The setup has three main parts:
 
 - **GPU**:
   - 1 or more NVIDIA GPUs
+  - **Minimum 80 GB GPU memory (VRAM)** (e.g., A100 80GB, H100 80GB)
   - Ampere architecture or newer (e.g., RTX 30 Series, A100, H100 or later recommended)
 - **Storage**:
-  - Sufficient disk space for:
+  - **Minimum 100 GB free disk space** for:
     - Cosmos Transfer 2.5 repository and model weights
     - FiftyOne datasets and derived videos/images (edge maps, outputs, last frames)
 
@@ -120,7 +121,7 @@ cd cosmos-transfer2.5
 pip install -e .
 ```
 
-Then follow the **Cosmos Transfer 2.5 Setup Guide** for environment configuration and model weight downloads.
+Then follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md)for environment configuration and model weight downloads.
 
 ---
 
