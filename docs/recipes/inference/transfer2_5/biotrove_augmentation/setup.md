@@ -121,7 +121,7 @@ cd cosmos-transfer2.5
 pip install -e .
 ```
 
-Then follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md)for environment configuration and model weight downloads.
+Then follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) for environment configuration and model weight downloads.
 
 ---
 
