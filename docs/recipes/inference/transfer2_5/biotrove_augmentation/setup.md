@@ -113,15 +113,7 @@ pip install jupyterlab umap-learn
 
 ### 4. Clone and Install Cosmos Transfer 2.5
 
-Clone the Cosmos Transfer 2.5 repository and install it in editable mode.
-
-```bash
-git clone https://github.com/nvidia-cosmos/cosmos-transfer2.5.git
-cd cosmos-transfer2.5
-pip install -e .
-```
-
-Then follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) for environment configuration and model weight downloads.
+Clone the Cosmos Transfer 2.5 repository and install it in editable mode and follow the [**Cosmos Transfer 2.5 Setup Guide**](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md) for environment configuration and model weight downloads.
 
 ---
 
