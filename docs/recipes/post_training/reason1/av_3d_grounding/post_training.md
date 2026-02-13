@@ -12,7 +12,6 @@
 
 3D vehicle grounding is a computer vision task that enables autonomous vehicles to detect and precisely localize surrounding vehicles in three-dimensional space from camera images. Unlike traditional 2D object detection, which only identifies objects within the image plane, 3D grounding provides complete spatial information including each vehicle's position (x, y, z coordinates), dimensions (length, width, height), and orientation (roll, pitch, yaw angles) in the real world. This comprehensive 3D understanding is essential for autonomous driving systems, enabling accurate path planning, collision avoidance, and safe navigation by allowing vehicles to reason about spatial relationships and predict future trajectories of surrounding objects.
 
-
 ### Expected Input and Output After Post-Training
 
 The following example demonstrates the expected input and output of a fine-tuned model performing 3D vehicle grounding after post-training. This shows what a fine-tuned model can achieve: taking an autonomous vehicle camera image as input and producing accurate 3D bounding box coordinates as output.
@@ -24,17 +23,18 @@ The following example demonstrates the expected input and output of a fine-tuned
   <em>Figure: Input-output workflow for 3D vehicle grounding. The model takes a text prompt and camera image as input and predicts 3D bounding boxes for detected vehicles and it also shows the visualization of predicted 3d coordinates.</em>
 </p>
 
-
 The expected output includes:
+
 - **annotations**: Array of detected vehicles, each with:
   - **label**: Vehicle category (car, truck, bus, etc.)
   - **bbox_3d**: Array of 9 values representing [x, y, z, x_size, y_size, z_size, roll, pitch, yaw]
 
-**Visualization: 3D Coordinates Projected on Image**
+#### Visualization: 3D Coordinates Projected on Image
 
 The raw 3D bounding box coordinates from the model output are then projected back onto the 2D image plane for visualization. This projection uses the camera parameters to transform the 3D coordinates into 2D image coordinates, showing the detected vehicles with their 3D bounding box projections:
 
 The output image demonstrates:
+
 - **Vehicle Detection**: Multiple vehicles detected in the scene
 - **3D Bounding Box Projections**: 3D bounding boxes projected onto the 2D image plane using camera intrinsics
 - **Spatial Accuracy**: Accurate localization of vehicles in 3D space, visible through the projected bounding boxes
@@ -95,6 +95,7 @@ The script extracts individual frames from video sequences at specified interval
 #### 2. Extract 3D Text Annotations
 
 For each extracted frame, the script extracts corresponding 3D annotations from the original dataset. These annotations include:
+
 - Vehicle positions in 3D space
 - Bounding box dimensions
 - Orientation angles (roll, pitch, yaw)
@@ -105,7 +106,7 @@ For each extracted frame, the script extracts corresponding 3D annotations from 
 
 The script performs a two-step transformation process to convert 3D bounding boxes from **FLU world coordinates** to **RDF camera coordinates**:
 
-**Step 3a: Transformation from World to Camera Coordinates**
+##### Step 3a: Transformation from World to Camera Coordinates
 
 The script first transforms 3D bounding boxes from **world coordinates** to **camera coordinates** (both in FLU convention). This transformation is essential because:
 
@@ -117,9 +118,11 @@ The script first transforms 3D bounding boxes from **world coordinates** to **ca
 1. **Extract Camera Extrinsics**: The script uses the camera pose information (rotation and translation) from the dataset metadata to construct the transformation matrix from world to camera coordinates
 
 2. **Apply Rigid Transformation**: For each 3D bounding box center point, the transformation is applied:
+
    ```
    P_camera_FLU = R * P_world_FLU + t
    ```
+
    Where:
    - `P_world_FLU`: 3D point in world coordinates (FLU convention)
    - `R`: Rotation matrix from world to camera frame
@@ -130,7 +133,7 @@ The script first transforms 3D bounding boxes from **world coordinates** to **ca
 
 4. **Update Orientation**: The orientation angles (roll, pitch, yaw) are adjusted to account for the camera's orientation relative to the world frame
 
-**Step 3b: Coordinate Convention Conversion (FLU → RDF)**
+##### Step 3b: Coordinate Convention Conversion (FLU → RDF)
 
 After transforming to camera coordinates, the script converts coordinates from **FLU (Front-Left-Up)** convention to **RDF (Right-Down-Forward)** convention, which is the standard coordinate system used in computer vision and OpenCV. This conversion ensures compatibility with standard vision processing pipelines.
 
@@ -146,7 +149,7 @@ FLU Coordinate System (Forward-Left-Up)        RDF Coordinate System (Right-Down
         /                                            /
        /                                            /
       Y (Left)                                    Z (Forward)
-      
+
 Transformation Mapping:
 ┌─────────┬──────────────┬──────────────┬
 │ FLU Axis│ Direction    │ RDF Axis     │
@@ -161,6 +164,7 @@ Example: A point at (1, 2, 3) in FLU camera coordinates becomes (3, 1, -2) in RD
 ```
 
 **Why This Combined Transformation Matters**:
+
 - Camera coordinates enable direct projection to 2D image plane using camera intrinsics
 - Simplifies distance calculations and FOV filtering
 - Provides a consistent reference frame for multi-camera scenarios
@@ -183,12 +187,14 @@ These filters ensure that the training dataset contains only high-quality, relia
 After extracting frames and 3D annotations, it's crucial to validate that the extracted data is accurate and correctly formatted. This validation step projects the 3D bounding box annotations onto the 2D image plane, allowing visual verification that the annotations align correctly with the objects visible in the images.
 
 **Purpose of Validation:**
+
 - **Verify Annotation Accuracy**: Ensures that 3D annotations correctly correspond to objects visible in the images
 - **Check Coordinate Transformations**: Validates that the coordinate system conversions (FLU to RDF, world to camera) were performed correctly
 - **Visual Quality Control**: Enables visual inspection to identify any misaligned or incorrect annotations
 - **Compare Ground Truth**: Allows comparison between ground truth annotations and model predictions
 
 **Validation Process:**
+
 1. **Load Scene Data**: The script loads camera models, camera poses, ego poses, and scene metadata from the original dataset
 2. **Load Extracted Annotations**: Reads the 3D bounding box annotations from the extracted JSON files
 3. **Project 3D to 2D**: For each 3D bounding box:
@@ -220,6 +226,7 @@ python imaginaire/auxiliary/world_scenario/scripts/local_extract_frames.py \
 ```
 
 **Key Parameters:**
+
 - `--sequence-ids-file`: Text file containing sequence IDs to process (one per line)
 - `--s3-input-base-path`: S3 path to the MADS dataset video sequences
 - `--s3-input-profile`: AWS profile for S3 access
@@ -243,6 +250,7 @@ python imaginaire/auxiliary/world_scenario/scripts/local_project_annotations.py 
 ```
 
 **Key Parameters:**
+
 - `--sequence-ids-file`: Text file containing sequence IDs to validate
 - `--images-dir`: Directory containing ground truth images
 - `--text-dir`: Directory containing inferred 3D annotation JSON files
@@ -266,7 +274,6 @@ The training dataset consists of autonomous vehicle camera images with correspon
 <p align="center">
   <em>Figure: Example (left) of curated AV camera frames, (center) their corresponding 3D text annotations, and (right) overlay visualization extracted for benchmarking and training.</em>
 </p>
-
 
 ### Dataset Splits
 
@@ -340,6 +347,7 @@ Each annotation file contains 3D bounding box data for vehicles in the correspon
 ```
 
 The `camera_params` section contains:
+
 - **fx, fy**: Focal lengths in pixels (horizontal and vertical)
 - **cx, cy**: Principal point coordinates (optical center) in pixels
 
@@ -378,11 +386,13 @@ The evaluation uses a prompt that asks the model to identify vehicles and provid
 ???+ code "Prompt for 3D AV Grounding"
     ```yaml
     --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/3d_av_grounding.yaml"
-    ```
+
+```
 
 To run zero-shot evaluation:
 
 **Cosmos Reason 1:**
+
 ```bash
 # From cosmos-reason1 root directory
 python scripts/inference_local.py \
@@ -393,6 +403,7 @@ python scripts/inference_local.py \
 ```
 
 **Cosmos Reason 2:**
+
 ```bash
 # From cosmos-reason2 root directory
 python scripts/inference_local.py \
@@ -411,10 +422,12 @@ This recipe supports two different training frameworks, each with its own advant
 **Cosmos-RL** is an async post-training framework specialized for Supervised Fine-Tuning (SFT) and Reinforcement Learning with Human Feedback (RLHF). It prioritizes performance, scalability, and fault tolerance, making it ideal for large-scale training.
 
 **Supported Models:**
+
 - Cosmos Reason 1-7B
 - Cosmos Reason 2-8B
 
 **Advantages:**
+
 - High-performance async training pipeline
 - Built-in fault tolerance and checkpointing
 - Optimized for multi-node distributed training
@@ -425,9 +438,11 @@ This recipe supports two different training frameworks, each with its own advant
 **Qwen-Finetune** is a fine-tuning framework based on Qwen-VL, providing a flexible and easy-to-use interface for training vision-language models.
 
 **Supported Models:**
+
 - Cosmos Reason 2-8B
 
 **Advantages:**
+
 - Simple command-line interface
 - DeepSpeed ZeRO optimization support
 - Flexible dataset configuration
@@ -437,11 +452,11 @@ This recipe supports two different training frameworks, each with its own advant
 
 ### Prerequisites
 
-1. **Repository Setup**: 
+1. **Repository Setup**:
    - For Cosmos-RL: Clone and set up the [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) or [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) repository
    - For Qwen-Finetune: Clone and set up the [Qwen-VL-Finetune](https://github.com/QwenLM/Qwen3-VL) repository
 
-2. **Environment Setup**: 
+2. **Environment Setup**:
    - For Cosmos-RL: Follow the [main post-training guide](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training) for environment setup
    - For Qwen-Finetune: Follow the Qwen-VL-Finetune setup instructions
 
@@ -486,19 +501,20 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 
 ???+ code "Cosmos Reason 1 Configuration"
 
-    ```toml    
-    --8<-- "assets/cr1_av_grounding.sft.toml"
+    ```toml
+    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/cr1_av_grounding.sft.toml"
     ```
 
 ???+ code "Cosmos Reason 2 Configuration"
 
     ```toml
-    --8<-- "assets/cr2_av_grounding.sft.toml"
+    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/cr2_av_grounding.sft.toml"
     ```
 
 ### Key Cosmos-RL Configuration Parameters
 
 **Cosmos Reason 1:**
+
 - **Model**: `nvidia/Cosmos-Reason1-7B` (7B parameter model)
 - **Epochs**: 5 epochs
 - **Batch Size**: 32 per replica
@@ -506,6 +522,7 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 - **Memory Optimization**: FSDP offloading and gradient checkpointing enabled
 
 **Cosmos Reason 2:**
+
 - **Model**: `nvidia/Cosmos-Reason2-8B` (8B parameter model)
 - **Epochs**: 2 epochs
 - **Batch Size**: 16 per replica
@@ -513,10 +530,11 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 - **Memory Optimization**: Gradient checkpointing enabled
 
 **Common Settings:**
+
 - **Training Type**: Supervised Fine-Tuning (SFT)
 - **Parallelism**: Data parallelism with shard size of 8
 - **Dataset**: Points to `dataset/train_07` with `meta.json` metadata file
-- **Vision Settings**: 
+- **Vision Settings**:
   - FPS: 1 (for video inputs)
   - Max pixels: 40,960 per frame
 - **Logging**: Console and Weights & Biases (wandb) integration
@@ -525,12 +543,14 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 #### Monitoring Cosmos-RL Training
 
 Training progress is logged to:
+
 - **Console**: Real-time training metrics
-- **Weights & Biases**: 
+- **Weights & Biases**:
   - Cosmos Reason 1: Project `cosmos_reason1`, experiment `post_training_capabilities/sft_v7_cr1`
   - Cosmos Reason 2: Project `cosmos_reason2`, experiment `post_training_capabilities/sft_v7_cr2_8b`
 
 Key metrics to monitor:
+
 - Training loss
 - Learning rate schedule
 - GPU memory usage
@@ -569,7 +589,7 @@ The training script content is provided below. Save it as `scripts/sft_av_3d_gro
 ???+ code "Qwen-Finetune Training Script"
 
     ```bash
-    --8<-- "recipes/post_training/reason1/av_3d_grounding/assets/qwen_finetune_script.sh"    
+    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/qwen_finetune_script.sh"
     ```
 
 ### Key Qwen-Finetune Configuration Parameters
@@ -617,10 +637,12 @@ Qwen-Finetune uses the `annotations.json` format, a simplified single-file forma
 ### Monitoring Qwen-Finetune Training
 
 Training progress is logged to:
+
 - **Console**: Real-time training metrics
 - **Weights & Biases**: Project `qwen3-vl_cosmos_reason2`, run name `av_3d_grounding_sft_qwen3_vl_cr2_8b`
 
 Key metrics to monitor:
+
 - Training loss
 - Evaluation metrics (if eval dataset is provided)
 - Learning rate schedule
@@ -664,7 +686,8 @@ The evaluation script generates JSON files containing predicted 3D bounding boxe
 - **2D Axis-Aligned IoU**: Projects 3D bounding boxes onto the 2D image plane and computes the Intersection over Union of the axis-aligned 2D bounding boxes
 - **Calculation**: For each predicted vehicle, project its 3D bounding box corners to 2D image coordinates, compute the axis-aligned bounding rectangle, and compare with ground truth 2D projections
 - **AP2D Score**: Computes Average Precision across different IoU thresholds (typically 0.5, 0.75) using the standard COCO evaluation protocol
-- **Formula**: 
+- **Formula**:
+
   ```
   IoU_2D = Area(Intersection) / Area(Union)
   AP2D = Average Precision over all IoU thresholds
@@ -676,12 +699,14 @@ The evaluation script generates JSON files containing predicted 3D bounding boxe
 - **Calculation**: For each predicted vehicle, compute the axis-aligned 3D bounding box (aligned with world coordinate axes) and compare with ground truth axis-aligned boxes
 - **AP3D Score**: Computes Average Precision across different IoU thresholds (typically 0.25, 0.5, 0.75) in 3D space
 - **Formula**:
+
   ```
   IoU_3D = Volume(Intersection) / Volume(Union)
   AP3D = Average Precision over all IoU thresholds
   ```
 
 **Key Differences**:
+
 - **AP2D** evaluates how well vehicles are detected and localized in the 2D image plane
 - **AP3D** evaluates how well vehicles are localized in 3D world space
 - **Axis-Aligned IoU** simplifies the computation by ignoring rotation, focusing on position and size accuracy
