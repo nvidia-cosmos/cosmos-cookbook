@@ -4,7 +4,7 @@
 > **Organization:** NVIDIA
 
 | **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
+| --- | --- | --- |
 | [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | 3D vehicle grounding in autonomous driving scenarios |
 | [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | 3D vehicle grounding in autonomous driving scenarios |
 
@@ -71,15 +71,13 @@ For this 3D vehicle grounding task, we focus on extracting frames from the video
 
 ### Data Curation Pipeline
 
-The data curation script transforms raw video sequences and annotations into a structured format suitable for training. The curation process performs the following operations:
-
 The Cosmos Data Curation Pipeline involves 5 main steps that transform raw video sequences and annotations into a structured training dataset:
 
 <p align="center">
   <img src="assets/data_curation_pipeline.png" alt="Data Curation Pipeline Overview" width="700"/>
 </p>
 <p align="center">
-  <em>Figure: Cosmos Data Curation Pipeline Overview</em>
+  <em>Figure: Cosmos Data Curation Pipeline showing the five main steps from video extraction to dataset validation.</em>
 </p>
 
 **Pipeline Overview:**
@@ -276,8 +274,8 @@ The curated dataset is divided into training and evaluation splits to enable sup
 
 | **Split** | **Sequences** | **Frames/Annotations** | **Purpose** |
 |-----------|---------------|------------------------|-------------|
-| **Evaluation** | 10 AV Multivew Sequences | ~1.3k | For model performance assessment and validation |
-| **Training** | 700 AV Multivew Sequences | ~80k | For supervised fine-tuning of models |
+| **Evaluation** | 10 AV Multi-view Sequences | ~1.3k | For model performance assessment and validation |
+| **Training** | 700 AV Multi-view Sequences | ~80k | For supervised fine-tuning of models |
 
 ### Dataset Structure
 
@@ -378,7 +376,7 @@ Before fine-tuning, you can evaluate the base model's zero-shot performance on 3
 The evaluation uses a prompt that asks the model to identify vehicles and provide their 3D bounding box coordinates:
 
 ???+ code "Prompt for 3D AV Grounding"
-    ```toml    
+    ```yaml
     --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/3d_av_grounding.yaml"
     ```
 
@@ -447,15 +445,7 @@ This recipe supports two different training frameworks, each with its own advant
    - For Cosmos-RL: Follow the [main post-training guide](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training) for environment setup
    - For Qwen-Finetune: Follow the Qwen-VL-Finetune setup instructions
 
-3. **Dataset Preparation**: Prepare your dataset in the format described above, with `meta.json`, `images/`, and `text/` directories (or `annotations.json` format for Qwen-Finetune)
-
-### Prerequisites
-
-1. **Repository Setup**: Clone and set up the [Cosmos Reason 1 repository](https://github.com/nvidia-cosmos/cosmos-reason1)
-
-2. **Environment Setup**: Follow the [main post-training guide](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training) for environment setup and prerequisites
-
-3. **Dataset Preparation**: Prepare your dataset in the format described above, with `meta.json`, `images/`, and `text/` directories
+3. **Dataset Preparation**: Prepare your dataset in the format described above. **Cosmos-RL** uses the standard format with `meta.json`, `images/`, and `text/` directories. **Qwen-Finetune** uses a simplified, single-file format called `annotations.json` (see Qwen-Finetune Dataset Format below).
 
 ## Training with Cosmos-RL Framework
 
@@ -497,13 +487,13 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 ???+ code "Cosmos Reason 1 Configuration"
 
     ```toml    
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/cr1_av_grounding.sft.toml"
+    --8<-- "assets/cr1_av_grounding.sft.toml"
     ```
 
 ???+ code "Cosmos Reason 2 Configuration"
 
     ```toml
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/cr2_av_grounding.sft.toml"
+    --8<-- "assets/cr2_av_grounding.sft.toml"
     ```
 
 ### Key Cosmos-RL Configuration Parameters
@@ -525,28 +515,20 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 **Common Settings:**
 - **Training Type**: Supervised Fine-Tuning (SFT)
 - **Parallelism**: Data parallelism with shard size of 8
-- **Dataset**: Points to `dataset/train_06` with `meta.json` metadata file
+- **Dataset**: Points to `dataset/train_07` with `meta.json` metadata file
 - **Vision Settings**: 
   - FPS: 1 (for video inputs)
   - Max pixels: 40,960 per frame
 - **Logging**: Console and Weights & Biases (wandb) integration
 - **Checkpointing**: Async checkpointing every 50 steps
 
-### Cosmos-RL Training
-
-The default training command runs on a single node:
-
-```bash
-cosmos-rl --config configs/av_grounding.sft.toml scripts/av_grounding_dataloader.py
-```
-
 #### Monitoring Cosmos-RL Training
 
 Training progress is logged to:
 - **Console**: Real-time training metrics
 - **Weights & Biases**: 
-  - Cosmos Reason 1: Project `cosmos_reason1`, experiment `post_training_capabilities/sft_v6_cr1`
-  - Cosmos Reason 2: Project `cosmos_reason2`, experiment `post_training_capabilities/sft_v6_cr2_8b`
+  - Cosmos Reason 1: Project `cosmos_reason1`, experiment `post_training_capabilities/sft_v7_cr1`
+  - Cosmos Reason 2: Project `cosmos_reason2`, experiment `post_training_capabilities/sft_v7_cr2_8b`
 
 Key metrics to monitor:
 - Training loss
@@ -568,13 +550,13 @@ The following graphs show the training progress for both Cosmos Reason 1 and Cos
 
 ### Quick Start - Cosmos Reason 2
 
-Navigate to the Qwen-VL-Finetune directory:
+Navigate to your Qwen-VL-Finetune repository directory (the clone root, often named `qwen-vl-finetune` or `Qwen3-VL`):
 
 ```bash
-cd qwen-vl-finetune
+cd qwen-vl-finetune   # or your clone path
 ```
 
-Run supervised fine-tuning:
+Copy the training script from this recipe into the repo: save the script shown below as `scripts/sft_av_3d_grounding_cr2_8b.sh` in your clone (or copy `assets/qwen_finetune_script.sh` from this recipe into that path). Then run:
 
 ```bash
 bash scripts/sft_av_3d_grounding_cr2_8b.sh
@@ -582,11 +564,11 @@ bash scripts/sft_av_3d_grounding_cr2_8b.sh
 
 ### Qwen-Finetune Configuration
 
-The training script `scripts/sft_av_3d_grounding_cr2_8b.sh` contains the configuration:
+The training script content is provided below. Save it as `scripts/sft_av_3d_grounding_cr2_8b.sh` in your Qwen-VL-Finetune repository:
 
 ???+ code "Qwen-Finetune Training Script"
 
-    ```toml
+    ```bash
     --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/qwen_finetune_script.sh"    
     ```
 
@@ -612,7 +594,7 @@ The following graph shows the training progress for Cosmos Reason 2 using the Qw
 
 ### Qwen-Finetune Dataset Format
 
-Qwen-Finetune uses the `annotations.json` format, which is a simplified version:
+Qwen-Finetune uses the `annotations.json` format, a simplified single-file format specific to that framework. The standard format for Cosmos-RL (described earlier in this recipe) uses `meta.json` with separate `images/` and `text/` directories. The `annotations.json` format is shown below:
 
 ```json
 [
@@ -716,17 +698,7 @@ The evaluation script generates JSON files containing predicted 3D bounding boxe
 
 The following tables compare **zero-shot** (base model) and **post-trained** performance on the held-out evaluation set (~1.3k frames). Post-training consistently improves 3D vehicle grounding over the zero-shot baseline.
 
-### Cosmos Reason 1: Zero-Shot vs Post-Training
-
-| **Metric** | **Zero-Shot** | **Post-Training (1390 steps)** |
-|------------|---------------|--------------------------------|
-| **Mean IoU** | 0 | 0.102 |
-| **IoU Accuracy %** | 0 | 4.104 |
-| **Label Accuracy %** | 0 | 64.91 |
-| **Average Precision 2D** | 0 | 0.198 |
-| **Average Precision 3D** | 0 | 0.035 |
-
-### Cosmos Reason 1: Metrics vs Training Steps
+### Cosmos Reason 1: Zero-Shot vs Post-Training (by steps)
 
 | **Metric** | **Zero-Shot** | **200** | **400** | **600** | **800** | **1000** | **1390** |
 |------------|---------------|--------|--------|--------|--------|---------|----------|
@@ -744,23 +716,14 @@ The following graphs show zero-shot vs post-training comparison across training 
   <img src="assets/mean_iou.png" alt="Mean IoU vs training steps" width="450" style="display:inline-block; vertical-align:top; margin:8px;"/>
   <img src="assets/iou_accuracy.png" alt="IoU Accuracy % vs training steps" width="450" style="display:inline-block; vertical-align:top; margin:8px;"/>
 </p>
-<p align="center">
-  <em>Mean IoU</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>IoU Accuracy %</em>
-</p>
 
 <p align="center">
   <img src="assets/label_accuracy.png" alt="Label Accuracy % vs training steps" width="450" style="display:inline-block; vertical-align:top; margin:8px;"/>
   <img src="assets/ap2d.png" alt="Average Precision 2D vs training steps" width="450" style="display:inline-block; vertical-align:top; margin:8px;"/>
 </p>
-<p align="center">
-  <em>Label Accuracy %</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>Average Precision 2D</em>
-</p>
 
 <p align="center">
   <img src="assets/ap3d.png" alt="Average Precision 3D vs training steps" width="450" style="display:inline-block; vertical-align:top; margin:8px;"/>
-</p>
-<p align="center">
-  <em>Average Precision 3D</em>
 </p>
 
 ### Cosmos Reason 2: Zero-Shot vs Post-Training
@@ -778,7 +741,7 @@ Cosmos Reason 2 results can be added in the same format after evaluation.
 | **Distributed Training** | Built-in multi-node support | PyTorch Distributed + DeepSpeed |
 | **Memory Optimization** | FSDP, gradient checkpointing | DeepSpeed ZeRO-3, gradient checkpointing |
 | **Checkpointing** | Async checkpointing | Standard checkpointing |
-| **Dataset Format** | `meta.json` + structured directories | `annotations.json` |
+| **Dataset Format** | `meta.json` + structured directories (standard) | `annotations.json` (Qwen-Finetune simplified) |
 | **Best For** | Large-scale production training | Quick experimentation and prototyping |
 
 ## Additional Resources
