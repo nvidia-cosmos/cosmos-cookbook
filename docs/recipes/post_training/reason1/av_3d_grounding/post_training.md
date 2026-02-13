@@ -569,7 +569,7 @@ The training script content is provided below. Save it as `scripts/sft_av_3d_gro
 ???+ code "Qwen-Finetune Training Script"
 
     ```bash
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/qwen_finetune_script.sh"    
+    --8<-- "recipes/post_training/reason1/av_3d_grounding/assets/qwen_finetune_script.sh"    
     ```
 
 ### Key Qwen-Finetune Configuration Parameters
