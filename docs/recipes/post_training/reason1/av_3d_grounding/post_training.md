@@ -387,7 +387,7 @@ The evaluation uses a prompt that asks the model to identify vehicles and provid
     ```yaml
     --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/3d_av_grounding.yaml"
 
-```
+    ```
 
 To run zero-shot evaluation:
 
