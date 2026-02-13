@@ -22,7 +22,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
 | Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
-| Jan 30 | [Prompt Guide](core_concepts/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
+| Jan 30 | [Prompt Guide](getting_started/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
@@ -96,7 +96,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](core_concepts/prompt_guide/reason_guide.md)                   |
+| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](getting_started/prompt_guide/reason_guide.md)                   |
 | **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
 | **Inference** | Zero-shot safety compliance and hazard detection in industrial warehouse environments | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) |
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md) |
@@ -145,7 +145,7 @@ All models include pre-trained checkpoints and support custom training for domai
 
 The cookbook is organized around key concepts spanning (controlled) **inference** and **training** use cases:
 
-**1. [Prompt Guide](core_concepts/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
+**1. [Prompt Guide](getting_started/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
 
 **2. [Control Modalities](core_concepts/control_modalities/overview.md)** - Master precise control over video generation with Cosmos Transfer 2.5 using Edge, Depth, Segmentation, and Vis modalities. This covers structural preservation, semantic replacement, lighting consistency, and multi-control approaches for achieving high-fidelity, controllable video transformations.
 
