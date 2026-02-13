@@ -15,7 +15,7 @@
 
 ### Expected Input and Output After Post-Training
 
-The following example demonstrates the expected input and output of the 3D vehicle grounding task after completing the post-training exercise. This shows what a fine-tuned model can achieve: taking an autonomous vehicle camera image as input and producing accurate 3D bounding box coordinates as output.
+The following example demonstrates the expected input and output of a fine-tuned model performing 3D vehicle grounding after post-training. This shows what a fine-tuned model can achieve: taking an autonomous vehicle camera image as input and producing accurate 3D bounding box coordinates as output.
 
 <p align="center">
   <img src="assets/expected_input_output.png" alt="Expected Input and Output Flow for 3D AV Grounding" width="700"/>
