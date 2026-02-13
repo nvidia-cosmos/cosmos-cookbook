@@ -432,11 +432,6 @@
       </a>
     </div>
 
-    <!-- Documentation Link -->
-    <div class="docs-link-container">
-      <a href="overview.html" class="docs-link-btn">Go to Full Documentation</a>
-    </div>
-
     <!-- All Recipes Section -->
     <div class="all-recipes-section">
       <div class="section-header">All recipes</div>
