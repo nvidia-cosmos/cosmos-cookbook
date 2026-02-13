@@ -618,7 +618,7 @@ Qwen-Finetune uses the `annotations.json` format, a simplified single-file forma
 
 Training progress is logged to:
 - **Console**: Real-time training metrics
-- **Weights & Biases**: Project `cosmos_reason2_av_3d_grounding`, run name `av_3d_grounding_sft_cr2_8b`
+- **Weights & Biases**: Project `qwen3-vl_cosmos_reason2`, run name `av_3d_grounding_sft_qwen3_vl_cr2_8b`
 
 Key metrics to monitor:
 - Training loss
