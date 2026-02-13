@@ -239,6 +239,28 @@ def scan_recipes(site_dir):
     return recipes
 
 
+def scan_section_pages(site_dir, section_path):
+    """Scan all HTML pages in a section directory and return list of { title, url }."""
+    site_path = Path(site_dir)
+    section_dir = site_path / section_path
+    if not section_dir.exists():
+        return []
+    pages = []
+    for html_file in section_dir.rglob("*.html"):
+        if html_file.name in ("SUMMARY.html", "index.html"):
+            continue
+        try:
+            content = html_file.read_text(encoding="utf-8")
+            title = extract_h1_title(content)
+            if not title:
+                title = html_file.stem.replace("_", " ").replace("-", " ").title()
+            rel_url = str(html_file.relative_to(site_path))
+            pages.append({"title": title, "url": rel_url})
+        except Exception:
+            continue
+    return pages
+
+
 def on_post_build(config):
     """Generate recipes.json after build."""
     site_dir = config["site_dir"]
@@ -256,5 +278,17 @@ def on_post_build(config):
         print(f"\n✓ Generated recipes.json with {len(recipes)} recipes")
     else:
         print("\n⚠ No recipes found")
-    
+
+    # Generate nav_pages.json for sidebar (getting_started, recipes, core_concepts)
+    print("\n=== Building nav_pages.json ===")
+    nav_pages = {
+        "getting_started": scan_section_pages(site_dir, "getting_started"),
+        "recipes": [{"title": r["name"], "url": r["url"]} for r in recipes],
+        "core_concepts": scan_section_pages(site_dir, "core_concepts"),
+    }
+    nav_pages_path = Path(site_dir) / "nav_pages.json"
+    with open(nav_pages_path, "w", encoding="utf-8") as f:
+        json.dump(nav_pages, f, indent=2)
+    print(f"✓ Generated nav_pages.json (getting_started: {len(nav_pages['getting_started'])}, recipes: {len(nav_pages['recipes'])}, core_concepts: {len(nav_pages['core_concepts'])})")
+
     print("=== Build complete ===\n")
