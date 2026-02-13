@@ -1,6 +1,6 @@
 # Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning
 
-> **Authors:** [Moo Jin Kim](https://moojink.com) • [Jinwei Gu](https://www.gujinwei.org/) • Yuzhu Dong
+> **Authors:** [Moo Jin Kim](https://moojink.com) • [Yuzhu Dong](https://www.linkedin.com/in/yuzhudong/) • [Jinwei Gu](https://www.gujinwei.org/) 
 >
 > **Organizations:** NVIDIA, Stanford University
 >
@@ -708,3 +708,29 @@ Cosmos Policy achieves state-of-the-art with **6× fewer demonstrations**.
 Cosmos Policy demonstrates that video foundation models like Cosmos-Predict2 and Cosmos-Predict 2.5 can be effectively adapted for robotic control through latent frame injection — a simple approach that allows multiple modalities to be modeled in one unified latent diffusion sequence while requiring no architectural modifications. Despite its simplicity, Cosmos Policy achieves state-of-the-art performance on LIBERO (98.5% on Cosmos policy (predict2) and 98.33 on Cosmos policy (predict2.5)), RoboCasa (67.1% on Cosmos policy (predict2) and 71.14 on Cosmos policy (predict2.5)), and ALOHA robot tasks (93.6% on Cosmos policy (predict 2)).
 
 See more details on the Cosmos Policy website: <https://research.nvidia.com/labs/dir/cosmos-policy/>
+
+---
+
+## Document Information
+
+**Publication Date:** January 28, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_policy_2026,
+  title={Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning},
+  author={Kim, Moo Jin and Gu, Jinwei},
+  organization={NVIDIA, Stanford University},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Moo Jin Kim and Jinwei Gu (2026). Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning. In *NVIDIA Cosmos Cookbook*. NVIDIA, Stanford University. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html>
