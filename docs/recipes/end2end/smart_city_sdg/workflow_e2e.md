@@ -378,3 +378,28 @@ python modules/postprocess/postprocess_for_vlm.py \
 - **[Cosmos Transfer 2.5](https://research.nvidia.com/labs/dir/cosmos-transfer2.5/)** - Multi-control video generation for photorealistic augmentation
 - **[Cosmos Reason 1](https://research.nvidia.com/labs/dir/cosmos-reason1/)** - Vision-language model for video captioning
 - **[Nemotron](https://developer.nvidia.com/nemotron)** - LLM for prompt augmentation and variation
+
+---
+
+## Document Information
+
+**Publication Date:** November 26, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_synthetic_data_generation_2025,
+  title={Synthetic Data Generation (SDG) for Traffic Scenarios},
+  author={Ladenburg, Aidan and Jothi, Adityan},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aidan Ladenburg, & Adityan Jothi (2025). Synthetic Data Generation (SDG) for Traffic Scenarios. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/smart_city_sdg/workflow_e2e.html>

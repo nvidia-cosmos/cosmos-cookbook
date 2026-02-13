@@ -15,6 +15,7 @@ dev = [
 ]
 docs = [
     "mkdocs-exclude-unused-files",
+    "mkdocs-jupyter",
     "mkdocs-literate-nav",
     "mkdocs-material",
     "pymdown-extensions",

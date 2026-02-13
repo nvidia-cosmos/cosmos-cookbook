@@ -476,3 +476,29 @@ This recipe builds upon our earlier exploratory work: [SFT for AV Video Captioni
 [2] NVIDIA. **Cosmos-Reason1: From Physical Common Sense To Embodied Reasoning**. _arxiv:2503.15558_.
 
 [3] NVIDIA. **Alpamayo-R1: Bridging Reasoning and Action Prediction for Generalizable Autonomous Driving in the Long Tail**. _arxiv:2511.00088_.
+
+---
+
+## Document Information
+
+**Publication Date:** January 5, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_av_captioning_vqa_2026,
+  title={Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA},
+  author={Jin, Jingyi and Zhang, Shun and Yang, Xiaodong and Wang, Joseph},
+  organization={NVIDIA and Uber},
+  year={2026},
+  month={January},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Jingyi Jin, Shun Zhang, Xiaodong Yang, & Joseph Wang (2026). Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA. In _NVIDIA Cosmos Cookbook_. NVIDIA and Uber. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html>

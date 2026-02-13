@@ -13,6 +13,7 @@ nav:
   - FAQ: faq.md
 plugins:
   - search
+  - mkdocs-jupyter
   - literate-nav:
       nav_file: SUMMARY.md
   - exclude-unused-files:
