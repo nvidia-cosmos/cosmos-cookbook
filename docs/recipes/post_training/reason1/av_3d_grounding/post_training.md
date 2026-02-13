@@ -171,7 +171,7 @@ Example: A point at (1, 2, 3) in FLU camera coordinates becomes (3, 1, -2) in RD
 
 To ensure high-quality training data, the script applies several filtering criteria to remove problematic annotations:
 
-- **Distance Filtering**: Removes objects that are too far away (beyond 100m), as these are difficult to accurately annotate and provide limited training value
+- **Distance Filtering**: Removes objects that are too far away (at distances greater than 100 m (>100 m)), as these are difficult to accurately annotate and provide limited training value
 - **Field of View (FOV) Filtering**: Removes objects outside the camera's field of view, ensuring all annotations correspond to visible objects
 - **Occlusion Filtering**: Removes objects that are fully overlapped by other objects, as these cannot be reliably annotated
 - **Depth Filtering**: Removes objects that are behind closer objects, prioritizing annotations for objects that are clearly visible
