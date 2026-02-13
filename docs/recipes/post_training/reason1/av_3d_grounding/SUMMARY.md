@@ -1,3 +1,3 @@
-# 3D Autonomous Vehicle 3D Grounding
+# Autonomous Vehicle 3D Grounding
 
 - [Post-Training](post_training.md)
