@@ -36,7 +36,10 @@ from tqdm import tqdm
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 # Configure basic logging
-log.basicConfig(level=log.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+_eval_log_level = getattr(log, os.environ.get("LOGLEVEL", "INFO").upper(), log.INFO)
+log.basicConfig(
+    level=_eval_log_level, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 from transformers import AutoProcessor
 from vllm import LLM, SamplingParams
