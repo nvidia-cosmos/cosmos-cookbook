@@ -384,6 +384,7 @@ Before fine-tuning, you can evaluate the base model's zero-shot performance on 3
 The evaluation uses a prompt that asks the model to identify vehicles and provide their 3D bounding box coordinates:
 
 ???+ code "Prompt for 3D AV Grounding"
+
     ```yaml
     --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/3d_av_grounding.yaml"
 
