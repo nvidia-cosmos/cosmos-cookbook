@@ -159,8 +159,8 @@ Transformation Mapping:
 │ +Z (↑)  │ Up           │ -Y (↑)       │
 └─────────┴──────────────┴──────────────┘
 
-Example: A point at (1, 2, 3) in FLU camera coordinates becomes (3, 1, -2) in RDF camera coordinates
-  FLU Camera: (x=1, y=2, z=3)  →  RDF Camera: (x=3, y=1, z=-2)
+Example: A point at (1, 2, 3) in FLU camera coordinates becomes (-2, -3, 1) in RDF camera coordinates
+  FLU Camera: (x=1, y=2, z=3)  →  RDF Camera: (x=-2, y=-3, z=1)
 ```
 
 **Why This Combined Transformation Matters**:
