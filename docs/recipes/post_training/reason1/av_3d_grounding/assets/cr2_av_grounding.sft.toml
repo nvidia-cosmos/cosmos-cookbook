@@ -1,4 +1,3 @@
-#:schema ../../../configs/schemas/cosmos_rl_config.json
 redis = "12800"
 
 [custom.dataset]

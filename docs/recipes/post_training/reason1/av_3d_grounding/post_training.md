@@ -138,22 +138,22 @@ The transformation matrix for FLU to RDF conversion:
 
 ```
 FLU Coordinate System (Forward-Left-Up)        RDF Coordinate System (Right-Down-Forward)
-         Z (Up)                                       Y (Right)
+         Z (Up)                                       Y (Down)
          |                                            |
          |                                            |
          |                                            |
-         +----> X (Forward)                           +----> Z (Forward)
+         +----> X (Forward)                           +----> X (Right)
         /                                            /
        /                                            /
-      Y (Left)                                    X (Down)
+      Y (Left)                                    Z (Forward)
       
 Transformation Mapping:
-┌─────────┬──────────────┬──────────────┐
+┌─────────┬──────────────┬──────────────┬
 │ FLU Axis│ Direction    │ RDF Axis     │
 ├─────────┼──────────────┼──────────────┤
-│ +X (→)  │ Forward      │ +Y (→)       │
-│ +Y (←)  │ Left         │ -Z (↓)       │
-│ +Z (↑)  │ Up           │ +X (→)       │
+│ +X (→)  │ Forward      │ +Z (→)       │
+│ +Y (←)  │ Left         │ -X (←)       │
+│ +Z (↑)  │ Up           │ -Y (↑)       │
 └─────────┴──────────────┴──────────────┘
 
 Example: A point at (1, 2, 3) in FLU camera coordinates becomes (3, 1, -2) in RDF camera coordinates
