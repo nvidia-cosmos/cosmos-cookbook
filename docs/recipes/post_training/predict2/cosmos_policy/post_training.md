@@ -1,6 +1,6 @@
 # Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning
 
-> **Authors:** [Moo Jin Kim](https://moojink.com) • [Yuzhu Dong](https://www.linkedin.com/in/yuzhudong/) • [Jinwei Gu](https://www.gujinwei.org/) 
+> **Authors:** [Moo Jin Kim](https://moojink.com) • [Yuzhu Dong](https://www.linkedin.com/in/yuzhudong/) • [Jinwei Gu](https://www.gujinwei.org/)
 >
 > **Organizations:** NVIDIA, Stanford University
 >
@@ -123,7 +123,6 @@ Key hyperparameters:
 | Learning rate | 1e-4 | 2e-4 | 1e-4 | 2e-4 | 1e-4 |
 | LR decay step | 30K | 42k | 30K | 42k | 20K |
 
-
 ### Noise Distribution Modifications
 
 Cosmos policy (predict2) uses a hybrid log-normal-uniform noise distribution during training, for improved action prediction at test time:
@@ -134,6 +133,7 @@ Cosmos policy (predict2) uses a hybrid log-normal-uniform noise distribution dur
 At inference, set $\sigma_{max} = 80$ and $\sigma_{min} = 4$ (instead of 0.002), which we empirically found leads to more accurate predictions.
 
 For Cosmos policy (predict2.5), a timestep t is drawn logit-normal distribution with a shift of 5. We observed improved test-time performance with higher shift values, as this biases training toward the high-noise regime. However, setting the shift too high can also degrade performance.
+
 ## Setup and System Requirements for Inference and Training
 
 ### Hardware Requirements
@@ -165,6 +165,7 @@ Note: for Cosmos policy (predict 2), the code lives in Cosmos Policy [GitHub rep
 Clone the repo from above based on the version, build the Docker container, and launch an interactive session:
 
 Cosmos policy (predict 2):
+
 ```bash
 # Clone the repo
 git clone git@github.com:NVlabs/cosmos-policy.git
@@ -193,6 +194,7 @@ docker run \
 ```
 
 Build and run docker:
+
 ```bash
 # Build the Docker image
 docker build -t cosmos-policy docker
@@ -276,6 +278,7 @@ Once you have downloaded one of the datasets above, you can launch training jobs
 
 **LIBERO:**
 Cosmos policy (predict 2):
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 uv run --extra cu128 --group libero --python 3.10 \
@@ -286,6 +289,7 @@ uv run --extra cu128 --group libero --python 3.10 \
 ```
 
 Cosmos policy (predict2.5):
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 export WANDB_API_KEY=<wandb_api_key>
@@ -297,10 +301,10 @@ uv run --extra cu128 --group libero --python 3.10 \
  ~dataloader_train.dataloaders dataloader_train.num_workers=4
 ```
 
-
 **RoboCasa:**
 
 Cosmos policy (predict 2):
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 
@@ -312,6 +316,7 @@ uv run --extra cu128 --group robocasa --python 3.10 \
 ```
 
 Cosmos policy (predict2.5):
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 export WANDB_API_KEY=<wandb_api_key>
@@ -326,6 +331,7 @@ uv run --extra cu128 --group robocasa --python 3.10 \
 
 **ALOHA:**
 Cosmos policy (predict 2):
+
 ```bash
 export BASE_DATASETS_DIR=/path/to/datasets/
 
@@ -334,6 +340,7 @@ uv run --extra cu128 --group aloha --python 3.10 \
   --config=cosmos_policy/config/config.py -- \
   experiment="cosmos_predict2_2b_480p_aloha_185_demos_4_tasks_mixture_foldshirt15_candiesinbowl45_candyinbag45_eggplantchickenonplate80"
 ```
+
 Cosmos policy (predict2.5) was not trained on ALOHA, due to limited access to ALOHA robots.
 
 For reference, below are the training losses that we observed upon convergence. These are rough ballpark numbers you should expect to see when the policy is trained sufficiently. Note that the Cosmos Policy team used multiple nodes instead of gradient accumulation for faster convergence (e.g., for LIBERO and RoboCasa, we used 8 and 4 nodes of 8 H100 GPUs, respectively - no gradient accumulation).
@@ -367,13 +374,12 @@ Cosmos policy (predict2.5)
 
 First, set up a Docker container following the setup instructions earlier in this guide.
 
-Then, inside the Docker container, enter a Python shell via: 
+Then, inside the Docker container, enter a Python shell via:
 Cosmos policy (predict 2):
 `uv run --extra cu128 --group libero --python 3.10 python`.
 
 Cosmos policy (predict2.5):
 `uv run --extra cu128 --group libero --python 3.10 python`.
-
 
 Then, run the Python code below to generate (1) robot actions, (2) predicted future state (represented by robot proprioception and future image observations), and (3) future state value (expected cumulative rewards):
 
@@ -446,7 +452,6 @@ print(f"Saved future image predictions to:\n\t{img_path1}\n\t{img_path2}")
 print(f"Generated value: {action_return_dict['value_prediction']}")
 ```
 
-
 For Cosmos policy (predict2.5), please see cosmos_predict2/_src/predict2/cosmos_policy/experiments/robot/libero/run_libero_eval.py
 
 ### Running Evaluations
@@ -457,14 +462,17 @@ Beyond quick start inference, here are the commands you can use to run evaluatio
 We trained Cosmos Policy on four LIBERO task suites altogether in one run: LIBERO-Spatial, LIBERO-Object, LIBERO-Goal, and LIBERO-10 (also called LIBERO-Long). Below is the pretrained checkpoint:
 
 Cosmos policy (predict 2):
+
 * [nvidia/Cosmos-Policy-LIBERO-Predict2-2B](https://huggingface.co/nvidia/Cosmos-Policy-LIBERO-Predict2-2B)
 
 Cosmos policy (predict2.5):
+
 * [nvidia/Cosmos-Predict2.5-2B](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B/tree/main/robot/cosmos-policy/libero)
 
 To start evaluations with this checkpoint, run the command below, where `task_suite_name` is one of the following: `libero_spatial`, `libero_object`, `libero_goal`, `libero_10`. Each will automatically download the checkpoint above. You can set the `TRANSFORMERS_CACHE` and `HF_HOME` environment variable to change where the checkpoint files get cached.
 
 Cosmos policy (predict 2):
+
 ```bash
 uv run --extra cu128 --group libero --python 3.10 \
   python -m cosmos_policy.experiments.robot.libero.run_libero_eval \
@@ -499,6 +507,7 @@ uv run --extra cu128 --group libero --python 3.10 \
 ```
 
 Cosmos policy (predict2.5):
+
 ```bash
 uv run --extra cu128 --group libero --python 3.10 \
   python -m cosmos_predict2._src.predict2.cosmos_policy.experiments.robot.libero.run_libero_eval \
@@ -535,7 +544,6 @@ uv run --extra cu128 --group libero --python 3.10 \
     --data_collection False
 ```
 
-
 Notes:
 
 * The evaluation script will run 500 trials by default (10 tasks x 50 episodes each). You can modify the number of trials per task by setting `--num_trials_per_task`. Note that the `--seed` and `--deterministic` arguments are important if you want to exactly reproduce the results in the Cosmos Policy paper. We used seeds {195, 196, 197} and `--deterministic True`. You can change these, but the results may vary slightly (and change every time you run the evaluation).
@@ -546,6 +554,7 @@ Notes:
 
 We trained Cosmos Policy on the RoboCasa benchmark with 24 tasks and 50 demonstrations per task. Below is the pretrained checkpoint:
 Cosmos policy (predict 2):
+
 * [nvidia/Cosmos-Policy-RoboCasa-Predict2-2B](https://huggingface.co/nvidia/Cosmos-Policy-RoboCasa-Predict2-2B)
 Cosmos policy (predict2.5):
 * [nvidia/Cosmos-Predict2.5-2B](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B/tree/main/robot/cosmos-policy/robocasa)
@@ -553,6 +562,7 @@ Cosmos policy (predict2.5):
 To start evaluations with this checkpoint, run the command below, where `task_name` can be set to any RoboCasa task (e.g., `TurnOffMicrowave`). This will automatically download the checkpoint above. You can set the `TRANSFORMERS_CACHE` and `HF_HOME` environment variable to change where the checkpoint files get cached.
 
 Cosmos policy (predict 2):
+
 ```bash
 uv run --extra cu128 --group robocasa --python 3.10 \
   python -m cosmos_policy.experiments.robot.robocasa.run_robocasa_eval \
@@ -587,6 +597,7 @@ uv run --extra cu128 --group robocasa --python 3.10 \
 ```
 
 Cosmos policy (predict2.5):
+
 ```bash
 uv run --extra cu128 --group robocasa --python 3.10 \
   python -m cosmos_predict2._src.predict2.cosmos_policy.experiments.robot.robocasa.run_robocasa_eval \
@@ -733,4 +744,4 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Moo Jin Kim and Jinwei Gu (2026). Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning. In *NVIDIA Cosmos Cookbook*. NVIDIA, Stanford University. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html>
+> Moo Jin Kim, Yuzhu Dong and Jinwei Gu (2026). Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning. In *NVIDIA Cosmos Cookbook*. NVIDIA, Stanford University. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html>
