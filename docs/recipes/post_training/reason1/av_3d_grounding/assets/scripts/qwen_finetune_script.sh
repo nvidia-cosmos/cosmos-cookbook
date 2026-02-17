@@ -1,4 +1,20 @@
 #!/bin/bash
+# Copyright 2026 NVIDIA CORPORATION & AFFILIATES
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 
 # Training script for AV 3D Grounding finetuning - Cosmos-Reason2-8B model
 
@@ -28,7 +44,27 @@ grad_accum_steps=8
 # Training entry point
 entry_file=qwenvl/train/train_qwen.py
 
-# Dataset configuration - using Cosmos Reason 2 AV 3D Grounding dataset
+# Dataset configuration - using Cosmos Reason 1/2 AV 3D Grounding dataset
+# =====================================================
+# AV 3D Grounding Dataset Conversion (Qwen-Finetune) if not already converted
+#
+# This section uses scripts/convert_av3d_to_qwen_dataset.py to convert the original AV 3D Grounding dataset in Cosmos Reason 1/2 format to the Qwen-Finetune format.
+#
+# Example usage:
+#   python3 scripts/convert_av3d_to_qwen_dataset.py \
+#       --source_dir /path/to/cosmos-reason1/.../dataset/eval/ \
+#       --output_dir /path/to/qwenvl/data/eval
+#
+# And then add converted datasets to qwenvl/data/__init__.py
+#   AV3DGROUNDING_TRAIN_DATASET = {
+#       "annotation_path": "/path/to/qwenvl/data/train/annotations.json",
+#       "data_path": "/path/to/qwenvl/data/train/",
+#   }
+#   AV3DGROUNDING_EVAL_DATASET = {
+#       "annotation_path": "/path/to/qwenvl/data/eval/annotations.json",
+#       "data_path": "/path/to/qwenvl/data/eval/",
+#   }
+# =====================================================
 datasets=av3dgrounding_train
 eval_datasets=av3dgrounding_eval
 

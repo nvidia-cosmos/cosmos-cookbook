@@ -1,7 +1,7 @@
 redis = "12800"
 
 [custom.dataset]
-dataset_root = "dataset/train_07"
+dataset_root = "dataset/train"
 meta_file = "meta.json"
 
 [custom.vision]
@@ -9,7 +9,7 @@ fps = 1
 max_pixels = 40960
 
 [train]
-output_dir = "outputs/sft-07"
+output_dir = "outputs/sft_cr2_8b"
 resume = true
 compile = false
 train_batch_per_replica = 16
@@ -29,7 +29,7 @@ model_gradient_checkpointing = true  # Ensure gradient checkpointing is enabled
 [logging]
 logger = ['console', 'wandb']
 project_name = "cosmos_reason2"
-experiment_name = "post_training_capabilities/sft_v7_cr2_8b"
+experiment_name = "post_training_capabilities/sft_cr2_8b"
 
 [train.train_policy]
 type = "sft"
