@@ -41,6 +41,8 @@ This fine-tuning process adapts the general-purpose reasoning model to the speci
 
 ## Data Curation
 
+> **Disclaimer:** The dataset used in this recipe is **not released** publicly. This recipe describes the dataset format, structure, and curation pipeline so you can understand what the data looks like. If you have access to similar autonomous driving data (e.g., multi-camera video with 3D annotations or the ability to generate them), you can use your own data to follow this workflow. This recipe is intended as **inspiration** and a technical reference for 3D vehicle grounding post-training.
+
 The training dataset is curated from the **MADS (RDS-HQ) dataset**, which contains **5,500+ autonomous vehicle video driving sequences**, each with **5 camera views** (front, front-left, front-right, rear-left, rear-right). This rich dataset provides comprehensive multi-view coverage of driving scenarios, enabling robust 3D perception training.
 
 The MADS dataset is a comprehensive autonomous driving dataset that includes multiple data modalities and attributes:
