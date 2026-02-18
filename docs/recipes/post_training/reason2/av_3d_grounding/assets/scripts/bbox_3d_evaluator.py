@@ -31,7 +31,7 @@ The evaluation process:
 6. Aggregates results across all files
 
 Usage:
-    python docs/recipes/post_training/reason1/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py <pred_dir> <gt_dir> [--iou-threshold 0.5] [--verbose]
+    python docs/recipes/post_training/reason2/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py <pred_dir> <gt_dir> [--iou-threshold 0.5] [--verbose]
 
     Example:
         python path/to/bbox_3d_evaluator.py output_eval/text_qwen30b output_eval/text_gt --iou-threshold 0.5 --verbose
