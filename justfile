@@ -18,7 +18,7 @@ _template *args:
 # Serve the internal documentation locally
 serve-internal:
   just _template -d internal.yaml
-  uv run mkdocs serve
+  uv run mkdocs serve -f mkdocs-internal.yml
 
 # Serve the external documentation locally
 serve-external:
@@ -33,7 +33,7 @@ lint: setup
 test: lint
   # Test the internal documentation
   just _template -d internal.yaml
-  uv run mkdocs build --strict
+  uv run mkdocs build -f mkdocs-internal.yml --strict
 
   # Test the external documentation
   just _template -d external.yaml
@@ -48,12 +48,17 @@ ci-lint:
 ci-deploy-internal:
   rm -rf public
   just _template -d internal.yaml
-  uv run mkdocs build --site-dir public --strict
+  uv run mkdocs build -f mkdocs-internal.yml --site-dir public --strict
 
 # CI: Deploy the external documentation
+# Set COOKIE_TEST_MODE=true to use test cookie script (for forks)
 ci-deploy-external:
   rm -rf external
   just _template -d external.yaml
-  uv run mkdocs build --site-dir external/site --strict
+  uv run mkdocs build {{ if env("COOKIE_TEST_MODE", "") == "true" { "-f mkdocs-internal.yml" } else { "" } }} --site-dir external/site --strict
   mkdir -p external/cosmos-cookbook
   cp -r scripts external/cosmos-cookbook/scripts
+
+# Sync jupytext notebooks
+notebooks-sync:
+  uvx --with "ruff==0.14.8" jupytext --sync scripts/examples/*.ipynb docs/recipes/**/*.ipynb --pipe 'ruff format -'

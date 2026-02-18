@@ -460,3 +460,28 @@ In this video, a humanoid robot stands on a busy street sidewalk, approaching a 
 1. [Cosmos Transfer 2.5 Model](https://github.com/nvidia-cosmos/cosmos-transfer2.5) - Model weights and documentation.
 2. [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) - Summary of the role of each control modality.
 3. You can experiment with these recipes and customize them for your own videos using this [Brev instance](https://brev.nvidia.com/launchable/deploy?launchableID=env-36ZkptMd4kDDzFGMYN9lz9Ixnel). It comes fully pre-configured and will automatically provision the necessary compute so you can get started right away.
+
+---
+
+## Document Information
+
+**Publication Date:** November 09, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_multicontrol_recipes_with_2025,
+  title={Multi-Control Recipes with Cosmos Transfer 2.5},
+  author={Chang, Aiden and Santhosh, Akul},
+  year={2025},
+  month={November},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-real-augmentation/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Aiden Chang, & Akul Santhosh (2025). Multi-Control Recipes with Cosmos Transfer 2.5. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-real-augmentation/inference.html>

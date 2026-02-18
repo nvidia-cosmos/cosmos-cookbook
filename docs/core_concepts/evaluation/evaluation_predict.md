@@ -369,3 +369,28 @@ Note the following about Geometrical Consistency metrics:
 - **Feature Matching**: These metrics use SIFT features for correspondence matching between frames/views.
 - **Memory Usage**: Sufficient RAM is required for feature extraction and matching.
 - **GPU Support**: These metrics automatically use GPU acceleration when available for faster processing.
+
+---
+
+## Document Information
+
+**Publication Date:** October 9, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_evaluation_predict_2025,
+  title={Model Evaluation Predict},
+  author={Ali, Arslan},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/evaluation/evaluation_predict.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Arslan Ali (2025). Model Evaluation Predict. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/evaluation/evaluation_predict.html>

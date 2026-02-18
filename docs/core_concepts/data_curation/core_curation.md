@@ -1,8 +1,13 @@
-# Core Curation with Cosmos-Curate
+# Core Curation with Cosmos-Curator
 
-> **Prerequisites:** Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
+> **Authors:** [Jibin Varghese
+ ](https://www.linkedin.com/in/jibinrajan/) • [Amol Fasale](https://www.linkedin.com/in/amolfasale/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
+>
+> **Organization:** [NVIDIA](https://www.nvidia.com/)
 
-Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curate](https://github.com/nvidia-cosmos/cosmos-curate).
+**Prerequisites:** Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the [Data Curation Overview](overview.md), including data sourcing, sampling, and visualization.
+
+Now that your dataset has been normalized and sampled to better understand its characteristics, the next steps involve splitting the videos into shorter clips, captioning the video clips, applying filtering, and finally sharding the data into webdataset format if needed. These core curation tasks can be handled using [Cosmos-Curator](https://github.com/nvidia-cosmos/cosmos-curate).
 
 The Cosmos Curator tool offers multiple deployment modes to suit different use cases and technical requirements:
 
@@ -14,13 +19,13 @@ The Cosmos Curator tool offers multiple deployment modes to suit different use c
 
 2. **Local Infrastructure** — *Full control with Docker*
 
-    For complete control over the curation pipeline, you can run Cosmos-Curate locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
+    For complete control over the curation pipeline, you can run Cosmos-Curator locally using Docker containers. This approach allows you to create custom filters, modify source code, and run jobs on your own hardware. This option is ideal for development, testing, and smaller datasets.
 
-    > **Note**: If your local system has only a single GPU, Cosmos-Curate will disable `STREAMING` mode automatically because it cannot maintain multiple GPU stages at the same time; in this case, the Ray worker may encounter an out-of-memory (OOM) condition if the input video size/volume is large.
+    > **Note**: If your local system has only a single GPU, Cosmos-Curator will disable `STREAMING` mode automatically because it cannot maintain multiple GPU stages at the same time; in this case, the Ray worker may encounter an out-of-memory (OOM) condition if the input video size/volume is large.
 
 3. **SLURM Clusters** — *High-performance computing at scale*
 
-    For large-scale processing, you can deploy Cosmos-Curate on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
+    For large-scale processing, you can deploy Cosmos-Curator on SLURM clusters with multiple GPUs. This option provides maximum computational power and is suitable for processing massive datasets in production environments.
 
 ## Using the Pre-Deployed NVCF Function
 
@@ -238,8 +243,33 @@ The sharding pipeline will produce the following artifacts under the `output_dat
 
 ### Running Cosmos Curator locally
 
-For a complete end-to-end example of running Cosmos-Curate locally using Docker, refer to the [Curate data for Cosmos-Predict Fine-Tuning](../../recipes/data_curation/predict2_data/data_curation.md) recipe. This guide walks through the entire workflow using a real dataset from Hugging Face ([nexar_collision_prediction](https://huggingface.co/datasets/nexar-ai/nexar_collision_prediction)).
+For a complete end-to-end example of running Cosmos-Curator locally using Docker, refer to the [Curate data for Cosmos-Predict Fine-Tuning](../../recipes/data_curation/predict2_data/data_curation.md) recipe. This guide walks through the entire workflow using a real dataset from Hugging Face ([nexar_collision_prediction](https://huggingface.co/datasets/nexar-ai/nexar_collision_prediction)).
 
 ### SLURM Cluster Deployment
 
-For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curate documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.
+For large-scale processing on SLURM clusters, refer to the [Launch Pipelines on SLURM](https://github.com/nvidia-cosmos/cosmos-curate/blob/main/docs/client/END_USER_GUIDE.md#launch-pipelines-on-slurm) section in the Cosmos-Curator documentation. This deployment mode provides maximum computational power for processing massive datasets in production environments.
+
+---
+
+## Document Information
+
+**Publication Date:** October 9, 2025
+
+### Citation
+
+If you use this content or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_core_curation_2025,
+  title={Core Curation with Cosmos-Curator},
+  author={Varghese, Jibin and Fasale, Amol and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/data_curation/core_curation.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Jibin Varghese, Amol Fasale, & Jingyi Jin (2025). Core Curation with Cosmos-Curator. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/data_curation/core_curation.html>

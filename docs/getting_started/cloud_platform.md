@@ -160,4 +160,19 @@ Get started by deploying on a cloud instance. Ready-to-launch on the cloud of yo
   </div>
 </section>
 
+<section class="platform-section" id="nebius">
+  <div class="platform-header">
+    <h2><img class="platform-logo platform-logo-small" src="../assets/images/clouds/nebius.png" alt="Nebius logo"> Nebius</h2>
+    <p>Ready-to-launch on Nebius AI Cloud.</p>
+  </div>
+  <div class="platform-track">
+    <a class="platform-card" href="./nebius/reason2/reason2_on_nebius.html">
+      <div class="platform-media" aria-hidden="true">
+        <img src="./nebius/reason2/images/nebius-04-container-over-vm-config.png" alt="Nebius container configuration">
+      </div>
+      <div class="platform-title">Reason 2 on Nebius</div>
+    </a>
+  </div>
+</section>
+
 </div>

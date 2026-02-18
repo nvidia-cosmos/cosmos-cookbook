@@ -167,3 +167,28 @@ Supervised fine-tuning of Cosmos Reason 1 on wafer map anomaly data boosts accur
 + **Training efficiency**: Training with 4K vision tokens per frame converged twice as fast as 8K tokens, achieving similar accuracy.
 
 This methodology can be applied to any industrial anomaly classification task by substituting the relevant dataset.
+
+---
+
+## Document Information
+
+**Publication Date:** December 12, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_wafer_map_anomaly_2025,
+  title={Wafer Map Anomaly Classification with Cosmos Reason 1},
+  author={Chiu, Anita and Lin, Tim},
+  year={2025},
+  month={December},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Anita Chiu, & Tim Lin (2025). Wafer Map Anomaly Classification with Cosmos Reason 1. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason1/wafermap_classification/post_training.html>

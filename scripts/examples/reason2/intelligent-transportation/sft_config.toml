@@ -1,0 +1,43 @@
+[custom.dataset]
+annotation_path = "/path/to/WTS/environment_mcq_llava_train.json"
+media_path = "/path/to/WTS/videos/train"
+system_prompt = "You are a helpful assistant."
+
+[custom.vision]
+nframes = 8
+
+[train]
+optm_lr = 2e-5
+output_dir = "outputs/wts_environment_mcq"
+optm_warmup_steps = 0
+optm_decay_type = "cosine"
+optm_weight_decay = 0.01
+train_batch_per_replica = 32
+enable_validation = false
+compile = false
+
+[policy]
+model_name_or_path = "nvidia/Cosmos-Reason2-2B"
+model_max_length = 32768
+
+[logging]
+logger = ['console', 'wandb']
+project_name = "cosmos_reason2"
+experiment_name = "post_training/wts_environment_mcq"
+
+[train.train_policy]
+type = "sft"
+mini_batch = 1
+dataset.test_size = 0
+dataloader_num_workers = 4
+dataloader_prefetch_factor = 4
+
+[train.ckpt]
+enable_checkpoint = true
+save_freq = 20
+
+[policy.parallelism]
+tp_size = 1
+cp_size = 1
+dp_shard_size = 8
+pp_size = 1

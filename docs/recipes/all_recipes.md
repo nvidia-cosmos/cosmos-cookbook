@@ -222,6 +222,16 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./post_training/predict2/cosmos_policy/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="./post_training/predict2/cosmos_policy/assets/aloha_rollouts/fold_shirt_15x_speed.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./inference/reason2/intbot_showcase/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="" loading="lazy" />
@@ -327,6 +337,13 @@
           <div class="recipe-title">Traffic Anomaly Generation with Cosmos Predict2</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
+        <a class="recipe-card" href="./post_training/reason2/intelligent-transportation/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/reason2/intelligent-transportation/assets/after_qa.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Intelligent Transportation Post-Training with Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./post_training/reason1/intelligent-transportation/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason1/intelligent-transportation/assets/e2e_workflow.png" alt="" loading="lazy" />
@@ -359,6 +376,20 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Vision AI recipes">
+        <a class="recipe-card" href="./inference/reason2/worker_safety/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/reason2/worker_safety/assets/assets_1_worker_safety.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Worker Safety in a Classical Warehouse with Cosmos Reason 2</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
+        <a class="recipe-card" href="./inference/reason2/vss/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/reason2/vss/assets/warehouse_summary_example.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Video Search and Summarization with Cosmos Reason</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
         <a class="recipe-card" href="./data_curation/embedding_analysis/embedding_analysis.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./data_curation/embedding_analysis/assets/clusters.png" alt="" loading="lazy" />
@@ -398,6 +429,16 @@
             </video>
           </div>
           <div class="recipe-title">LoRA Post-training for Sports Video Generation</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
+        <a class="recipe-card" href="./post_training/reason2/physical-plausibility-check/post_training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="https://videophysics2trainvideos.s3.us-east-2.amazonaws.com/hunyuan_xedit_train/A_robotic_arm_gently_pokes_a_stack_of_plastic_cups,_making_the_bottom_cups_slide_out_and_the_whole_stack_fall.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 2</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
         <a class="recipe-card" href="./post_training/reason1/physical-plausibility-check/post_training.html">

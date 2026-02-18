@@ -13,12 +13,28 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 | **Date** | **Recipe** | **Model** | **Description** |
 |----------|------------|-----------|-----------------|
-| Jan 6 | [Dataset Video Clustering with Time Series K-Means](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/embedding_analysis/embedding_analysis.html) | Cosmos Curator | Advanced video clustering using Time Series K-Means on embedding vector trajectories for robotics behavior analysis |
-| Jan 5 | [Post-train Cosmos Reason 2 for AV Video Captioning and VQA](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/video_caption_vqa/post_training.html) | Cosmos Reason 2 | Domain adaptation for autonomous vehicle video captioning with multi-benchmark evaluation |
-| Jan 1 | [Egocentric Social Reasoning for Robotics](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/intbot_showcase/inference.html) | Cosmos Reason 2 | Egocentric social and physical reasoning evaluation for social robotics |
-| Jan 1 | [Reason 2 on Brev](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/brev/reason2/reason2_on_brev.html) | Cosmos Reason 2 | Getting started guide for Cosmos Reason 2 inference and post-training on Brev |
-| Dec 22 | [Multiview AV Generation with World Scenario Maps](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.html) | Cosmos Transfer 2.5 | ControlNet post-training for spatially-conditioned multiview AV video generation |
-| Dec 20 | [Vision AI Gallery](https://nvidia-cosmos.github.io/cosmos-cookbook/gallery/vision_ai_inference.html) | Cosmos Transfer 2.5 | Interactive gallery showcasing weather, lighting, and object augmentations for traffic scenarios |
+| Feb 4 | [Worker Safety in a Classical Warehouse](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html) | Cosmos Reason 2 | Zero-shot industrial safety compliance and hazard detection in classical warehouse environments using context-aware prompt engineering |
+| Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | Inference Prompt Guide |
+| Jan 29 | [Video Search and Summarization with Cosmos Reason](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html) | Cosmos Reason 2 | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts across warehouses, factories, retail, and smart cities |
+| Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2/cosmos_policy/post_training.html) | Cosmos Predict 2 | State-of-the-art robot policy through latent frame injection for visuomotor control achieving 98.5% on LIBERO, 67.1% on RoboCasa, and 93.6% on ALOHA |
+| Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/physical-plausibility-check/post_training.html) | Cosmos Reason 2 | Supervised fine-tuning for physical plausibility prediction using VideoPhy-2 dataset with improved zero-shot and SFT performance |
+| Jan 26 | [Intelligent Transportation Post-Training with Cosmos Reason 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/intelligent-transportation/post_training.html) | Cosmos Reason 2 | Post-training Cosmos Reason 2 for intelligent transportation scene understanding using WovenTraffic Safety dataset |
+
+## Upcoming Activities
+
+### NVIDIA GTC 2026
+
+Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+
+### NVIDIA Cosmos Cookoff
+
+Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+
+Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+
+**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
+
+Sponsored by Nebius and Milestone.
 
 ## Prerequisites
 
@@ -38,6 +54,8 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 Full GPU workflows require an Ubuntu Linux environment with NVIDIA GPUs.
 
 → See **[Getting Started](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/setup.html)** for complete hardware and software requirements.
+
+→ Or **[Deploy on Cloud](https://nvidia-cosmos.github.io/cosmos-cookbook/getting_started/cloud_platform.html)** (Nebius, Brev, and more to come) for ready-to-launch GPU instances.
 
 ## Quick Start
 
