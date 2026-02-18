@@ -13,3 +13,4 @@
 - [Reason for MimicGen temporal localization](./reason1/temporal_localization/post_training.md)
 - [Reason for Wafer Map Classification](./reason1/wafermap_classification/post_training.md)
 - [Reason 2 for AV Video Captioning and VQA](./reason2/video_caption_vqa/post_training.md)
+- [Reason 1 & 2 for 3D AV Grounding](./reason2/av_3d_grounding/post_training.md)

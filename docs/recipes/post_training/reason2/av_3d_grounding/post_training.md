@@ -368,12 +368,12 @@ The evaluation uses a prompt that asks the model to identify vehicles and provid
 ???+ code "Prompt for 3D AV Grounding"
 
     ```yaml
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/prompts/3d_av_grounding.yaml"
+    --8<-- "docs/recipes/post_training/reason2/av_3d_grounding/assets/prompts/3d_av_grounding.yaml"
     ```
 
 To run zero-shot evaluation:
 
-> **Note:** Use `prompts/3d_av_grounding.yaml` in your repo; if missing, copy from `docs/recipes/post_training/reason1/av_3d_grounding/assets/prompts/3d_av_grounding.yaml` into `<cosmos-reason1>/prompts/` or `<cosmos-reason2>/prompts/`.
+> **Note:** Use `prompts/3d_av_grounding.yaml` in your repo; if missing, copy from `docs/recipes/post_training/reason2/av_3d_grounding/assets/prompts/3d_av_grounding.yaml` into `<cosmos-reason1>/prompts/` or `<cosmos-reason2>/prompts/`.
 
 **Cosmos Reason 1:**
 
@@ -541,13 +541,13 @@ The training configuration is specified in `configs/av_grounding.sft.toml`. Here
 ???+ code "Cosmos Reason 1 Configuration"
 
     ```toml
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/configs/cr1_av_grounding.sft.toml"
+    --8<-- "docs/recipes/post_training/reason2/av_3d_grounding/assets/configs/cr1_av_grounding.sft.toml"
     ```
 
 ???+ code "Cosmos Reason 2 Configuration"
 
     ```toml
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/configs/cr2_av_grounding.sft.toml"
+    --8<-- "docs/recipes/post_training/reason2/av_3d_grounding/assets/configs/cr2_av_grounding.sft.toml"
     ```
 
 ### Key Cosmos-RL Configuration Parameters
@@ -640,7 +640,7 @@ The training script content is provided below. Save it as `scripts/sft_av_3d_gro
 ???+ code "Qwen-Finetune Training Script"
 
     ```bash
-    --8<-- "docs/recipes/post_training/reason1/av_3d_grounding/assets/scripts/qwen_finetune_script.sh"
+    --8<-- "docs/recipes/post_training/reason2/av_3d_grounding/assets/scripts/qwen_finetune_script.sh"
     ```
 
 ### Key Qwen-Finetune Configuration Parameters
@@ -799,7 +799,7 @@ The evaluation script generates JSON files containing predicted 3D bounding boxe
 To evaluate your predictions with all the described metrics, use the evaluation script from the recipe assets: [bbox_3d_evaluator.py](../av_3d_grounding/assets/scripts/bbox_3d_evaluator.py):
 
 ```bash
-python docs/recipes/post_training/reason1/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py <predictions_dir> <ground_truth_dir> [--iou-threshold 0.5] [--verbose]
+python docs/recipes/post_training/reason2/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py <predictions_dir> <ground_truth_dir> [--iou-threshold 0.5] [--verbose]
 ```
 
 - `<predictions_dir>`: Path to the directory with your predicted JSON files generated from inference.
@@ -815,7 +815,7 @@ See script help (`-h`) for advanced options or custom thresholds.
 # From cookbook repo root (or path containing the script)
 PRED_DIR=/path/to/output_predictions      # inference output JSONs (one per image)
 GT_DIR=/path/to/eval/text              # ground truth JSONs
-python docs/recipes/post_training/reason1/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py \
+python docs/recipes/post_training/reason2/av_3d_grounding/assets/scripts/bbox_3d_evaluator.py \
   $PRED_DIR $GT_DIR --iou-threshold 0.5 --verbose
 ```
 

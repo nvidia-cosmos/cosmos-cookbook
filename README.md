@@ -13,6 +13,7 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 
 | **Date** | **Recipe** | **Model** | **Description** |
 |----------|------------|-----------|-----------------|
+| Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/av_3d_grounding/post_training.html) | Cosmos Reason 1 & 2 | 3D vehicle grounding in autonomous driving: detect and localize vehicles in 3D from camera images with SFT (Cosmos-RL and Qwen-Finetune) |
 | Feb 4 | [Worker Safety in a Classical Warehouse](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html) | Cosmos Reason 2 | Zero-shot industrial safety compliance and hazard detection in classical warehouse environments using context-aware prompt engineering |
 | Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | Inference Prompt Guide |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/vss/inference.html) | Cosmos Reason 2 | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts across warehouses, factories, retail, and smart cities |
