@@ -292,6 +292,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Autonomous Vehicles recipes">
+        <a class="recipe-card" href="./post_training/reason2/av_3d_grounding/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/reason2/av_3d_grounding/assets/training_images_overlay_overview.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">3D AV Grounding Post-Training with Cosmos Reason 1 & 2</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./post_training/reason2/video_caption_vqa/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason2/video_caption_vqa/assets/mcq_vqa_results.png" alt="" loading="lazy" />
