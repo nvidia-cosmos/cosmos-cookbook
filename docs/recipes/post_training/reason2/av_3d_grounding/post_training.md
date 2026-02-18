@@ -911,3 +911,28 @@ Common issues and how to resolve them:
 - [Qwen-VL-Finetune Repository](https://github.com/QwenLM/Qwen3-VL)
 - [3D AV Grounding Example - Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1/tree/main/examples/post_training_3d_grounding)
 - [3D AV Grounding Example - Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2/tree/main/examples/cosmos_rl)
+
+---
+
+## Document Information
+
+**Publication Date:** February 18, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_av_3d_grounding_2026,
+  title={3D Autonomous Vehicle Grounding Post-Training with Cosmos Reason 1 \& 2},
+  author={Fasale, Amol and Jin, Jingyi},
+  year={2026},
+  month={February},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/av_3d_grounding/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Amol Fasale & Jingyi Jin (2026). 3D Autonomous Vehicle Grounding Post-Training with Cosmos Reason 1 & 2. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/reason2/av_3d_grounding/post_training.html>
