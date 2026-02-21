@@ -18,6 +18,7 @@ docs = [
     "mkdocs-jupyter",
     "mkdocs-literate-nav",
     "mkdocs-material",
+    "mkdocs-redirects",
     "pymdown-extensions",
 ]
 scripts = [

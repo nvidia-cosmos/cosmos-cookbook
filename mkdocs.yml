@@ -16,6 +16,10 @@ plugins:
   - mkdocs-jupyter
   - literate-nav:
       nav_file: SUMMARY.md
+  - redirects:
+      redirect_maps:
+        'core_concepts/prompt_guide/overview.md': 'getting_started/prompt_guide/overview.md'
+        'core_concepts/prompt_guide/reason_guide.md': 'getting_started/prompt_guide/reason_guide.md'
   - exclude-unused-files:
       enabled_on_serve: true
 markdown_extensions:

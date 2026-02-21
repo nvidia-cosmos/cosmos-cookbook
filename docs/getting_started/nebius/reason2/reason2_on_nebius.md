@@ -246,14 +246,14 @@ The image shows a tabletop scene with several objects arranged on it...
 
 #### Key Prompting Patterns
 
-The test script demonstrates important prompting patterns from the [Cosmos Reason 2 Prompt Guide](https://github.com/nvidia-cosmos/cosmos-cookbook/blob/main/docs/core_concepts/prompt_guide/reason_guide.md):
+The test script demonstrates important prompting patterns from the [Cosmos Reason 2 Prompt Guide](../../prompt_guide/reason_guide.md):
 
 1. **Media-First Ordering**: Images/videos appear before text in the message content
 2. **Reasoning Mode**: Use `<think>...</think>` tags to enable chain-of-thought reasoning
 3. **Structured Output**: Request JSON format for machine-readable outputs
 4. **Sampling Parameters**: Adjust temperature and top_p based on task requirements
 
-For more details on prompting Cosmos Reason 2, see the full [Prompt Guide](../../../core_concepts/prompt_guide/reason_guide.md).
+For more details on prompting Cosmos Reason 2, see the full [Prompt Guide](../../prompt_guide/reason_guide.md).
 
 ## Troubleshooting
 
