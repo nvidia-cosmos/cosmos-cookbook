@@ -71,11 +71,32 @@ Preview of the Training Dataset
 
 | Input Prompt File | Video File |
 | ----------------- | ---------- |
-| The robot arm is performing a task. Use the right hand to pick up green bok choy from tan table right side to bottom level of wire basket. | <video src="assets/1.mp4" controls width="320"></video> |
-| The robot arm is performing a task. Use the right hand to pick up rubik's cube from top level of the shelf to bottom level of the shelf. | <video src="assets/2.mp4" controls width="320"></video> |
-| The robot arm is performing a task. Use the right hand to pick up banana from teal plate to wooden table. | <video src="assets/3.mp4" controls width="320"></video> |
+| The robot arm is performing a task. Use the right hand to pick up green bok choy from tan table right side to bottom level of wire basket. | <video width="320" controls autoplay loop muted><source src="assets/1.mp4" type="video/mp4"></video> |
+| The robot arm is performing a task. Use the right hand to pick up rubik's cube from top level of the shelf to bottom level of the shelf. | <video width="320" controls autoplay loop muted><source src="assets/2.mp4" type="video/mp4"></video> |
+| The robot arm is performing a task. Use the right hand to pick up banana from teal plate to wooden table. |  <video width="320" controls autoplay loop muted><source src="assets/3.mp4" type="video/mp4"></video> |
+
 
 ## 2. Post Training Cosmos Predict
 
 ## 3. Inference with Post Trained Cosmos Predict
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_gr00t_2026,
+  title={Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning},
+  author={Apte, Rucha and Nanda, Saurav and Jin, Jingyi},
+  organization={NVIDIA},
+  year={2026},
+  month={March},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Rucha Apte, Saurav Nanda, Jingyi Jin (2026). Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html>
 
