@@ -53,6 +53,42 @@ CUDA variants:
 
 Checkpoints are automatically downloaded during inference and post-training. To modify the checkpoint cache location, set the [HF_HOME](https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhome) environment variable.
 
+> **💡 Tip**: Ensure you have sufficient disk space in `HF_HOME`.
+
+## Training Output Directory
+
+Configure where training checkpoints and artifacts will be saved:
+
+```bash
+# Set output directory for training checkpoints and artifacts
+# Default: /tmp/imaginaire4-output
+export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
+```
+
+> **💡 Tip**: Ensure you have sufficient disk space in `IMAGINAIRE_OUTPUT_ROOT`.
+
+## Weights & Biases (W&B) Logging
+
+By default, training will attempt to log metrics to Weights & Biases. You have several options:
+
+### Option 1: Enable W&B
+
+To enable full experiment tracking with W&B:
+
+1. Create a free account at [wandb.ai](https://wandb.ai)
+2. Get your API key from [https://wandb.ai/authorize](https://wandb.ai/authorize)
+3. Set the environment variable:
+
+    ```bash
+    export WANDB_API_KEY=your_api_key_here
+    ```
+
+> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults. Never commit API keys to source control.
+
+### Option 2: Disable W&B
+
+Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
+
 ## Next Steps
 
-Once the setup is complete, proceed to the [post-training tutorial](post-training.md) to learn how to train Cosmos Predict 2.5 on Gr00t Trajectories with LoRA adaptation.
+Once the setup is complete, proceed to the [post-training tutorial](post-training.md) to learn how to train Cosmos Predict 2.5 on Gr00t Trajectories.
