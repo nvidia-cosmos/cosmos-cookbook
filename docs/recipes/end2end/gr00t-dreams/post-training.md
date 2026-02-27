@@ -1,6 +1,6 @@
 # Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning
 
-> **Author:** [Rucha Apte](https://www.linkedin.com/in/ruchaa-apte/), [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
+> **Author:** [Rucha Apte](https://www.linkedin.com/in/ruchaa-apte/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/), [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
 > **Organization:** NVIDIA
 
 
@@ -199,11 +199,8 @@ python scripts/gr1_batch_to_jsonl.py
 
 After running the above script, the jsonl file will have following structure:
 
-```bash
+```jsonl
 {"inference_type": "image2world", "name": "000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p", "prompt": "Use the right hand to pick up green pepper from black shelf to inside brown paper bag.", "input_path": "11_Use the right hand to pick up green pepper from black shelf to inside brown paper bag..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
-{"inference_type": "image2world", "name": "001_40_Use_the_right_hand_to_pick_up_red_apple_from_brown_tray_to_beige_placemat.", "prompt": "Use the right hand to pick up red apple from brown tray to beige placemat.", "input_path": "40_Use the right hand to pick up red apple from brown tray to beige placemat..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
-{"inference_type": "image2world", "name": "002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig", "prompt": "Use the right hand to pick up tall red glass from center of tan table to bright blue plate.", "input_path": "28_Use the right hand to pick up tall red glass from center of tan table to bright blue plate..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
-{"inference_type": "image2world", "name": "003_8_Use_the_right_hand_to_pick_up_rubik_s_cube_from_from_the_bottom_of_the_three-t", "prompt": "Use the right hand to pick up rubik's cube from from the bottom of the three-tiered wooden shelf to to the top of the three-tiered wooden shelf.", "input_path": "8_Use the right hand to pick up rubik's cube from from the bottom of the three-tiered wooden shelf to to the top of the three-tiered wooden shelf..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
 ```
 Batch Video Generation
 
@@ -212,7 +209,6 @@ The following command will generate five separate videos for each input prompt a
 ```bash
 # Adjust paths based on where you cloned the repositories
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/inference.py cosmos-predict2.5/
-
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/config.py cosmos-predict2.5/
 ```
 
@@ -225,6 +221,10 @@ torchrun --nproc_per_node=1 examples/inference.py \
   --experiment predict2_video2world_training_2b_groot_gr1_480
 ```
 
+| Seed 1 | Seed 2 | Seed 3 | Seed 4 | Seed 5 |
+|---------|---------|---------|---------|---------|
+| <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed0.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed1.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed2.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed3.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed4.mp4" controls width="200"></video> |
+
 ## Using Cosmos-Reason1 as Video Critic for Rejection Sampling
 
 ### Citation
@@ -234,7 +234,7 @@ If you use this recipe or reference this work, please cite it as:
 ```bibtex
 @misc{cosmos_cookbook_gr00t_2026,
   title={Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning},
-  author={Apte, Rucha and Nanda, Saurav and Jin, Jingyi},
+  author={Apte, Rucha and Jin, Jingyi and Nanda, Saurav},
   organization={NVIDIA},
   year={2026},
   month={March},
@@ -245,5 +245,5 @@ If you use this recipe or reference this work, please cite it as:
 
 **Suggested text citation:**
 
-> Rucha Apte, Saurav Nanda, Jingyi Jin (2026). Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html>
+> Rucha Apte, Jingyi Jin, Saurav Nanda (2026). Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html>
 
