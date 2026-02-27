@@ -25,7 +25,7 @@ Generalist robotics is emerging, driven by advances in mechatronics and robot fo
   - [Converting DCP Checkpoint to Consolidated PyTorch Format](#31-converting-dcp-checkpoint-to-consolidated-pytorch-format)
   - [Running Inference](#32-running-inference)
 - [Policy Evaluation using Cosmos Predict 2.5](#4-Policy-evaluation-using-cosmos-predict)
-- [Inference with Reason 2 for plausibilty check and filtering](#4-inference-with-Reason2-for-plausibility-check-and-filtering)
+- [Using Cosmos-Reason 2 as Video Critic for Rejection Sampling](#4-using-cosmos-reason-as-video-critic-for-rejection-sampling)
 
 
 ## Prerequisites
@@ -73,7 +73,6 @@ Preview of the Training Dataset
 | The robot arm is performing a task. Use the right hand to pick up green bok choy from tan table right side to bottom level of wire basket. | <video width="320" controls autoplay loop muted><source src="assets/1.mp4" type="video/mp4"></video> |
 | The robot arm is performing a task. Use the right hand to pick up rubik's cube from top level of the shelf to bottom level of the shelf. | <video width="320" controls autoplay loop muted><source src="assets/2.mp4" type="video/mp4"></video> |
 | The robot arm is performing a task. Use the right hand to pick up banana from teal plate to wooden table. |  <video width="320" controls autoplay loop muted><source src="assets/3.mp4" type="video/mp4"></video> |
-
 
 ## 2. Post Training Cosmos Predict 2.5
 
@@ -201,9 +200,9 @@ After running the above script, the jsonl file will have following structure:
 ```jsonl
 {"inference_type": "image2world", "name": "000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p", "prompt": "Use the right hand to pick up green pepper from black shelf to inside brown paper bag.", "input_path": "11_Use the right hand to pick up green pepper from black shelf to inside brown paper bag..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
 ```
-Batch Video Generation
+Multiple Video Rollouts Generation
 
-The following command will generate five separate videos for each input prompt and image saved to its corresponding path.
+Using the same input, the Cosmos Predict2.5 generates multiple video rollouts. Among these, some exhibit greater physical plausibility than others.
 
 ```bash
 # Adjust paths based on where you cloned the repositories
@@ -220,11 +219,61 @@ torchrun --nproc_per_node=1 examples/inference.py \
   --experiment predict2_video2world_training_2b_groot_gr1_480
 ```
 
-| Seed 1 | Seed 2 | Seed 3 | Seed 4 | Seed 5 |
+| Generation 1 | Generation 2 | Generation 3 | Generation 4 | Generation 5 |
 |---------|---------|---------|---------|---------|
 | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed0.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed1.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed2.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed3.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed4.mp4" controls width="200"></video> |
 
-## Using Cosmos-Reason1 as Video Critic for Rejection Sampling
+## Using Cosmos Reason 2 as Video Critic for Rejection Sampling
+Cosmos Reason2 is capable of evaluating if a video adheres to fundamental physical laws such as Gravity, Object Permanency, Collision dynamics, and Cause-and-effect relationships. When paired with a world model such as Cosmos Predict2.5, it enables best-of-N sampling by generating multiple video candidates and selecting the most physically accurate ones, thereby improving generation quality.
+
+### Evaluation Criteria
+
+Each generated video receives human evaluations based on **adherence to physical laws** using a standardized 5-point scale:
+
+| **Score** | **Description** | **Physics Adherence** |
+|-----------|-----------------|----------------------|
+| **1** | No adherence to physical laws | Completely implausible |
+| **2** | Poor adherence to physical laws | Mostly unrealistic |
+| **3** | Moderate adherence to physical laws | Mixed realistic/unrealistic |
+| **4** | Good adherence to physical laws | Mostly realistic |
+| **5** | Perfect adherence to physical laws | Completely plausible |
+
+### Zero Shot Inference 
+
+???+ code "Prompt for Scoring Physical Plausibility"
+
+    ```yaml
+    --8<-- "recipes/end2end/gr00t-dreams/assets/video_reward.yaml"
+    ```
+
+To run zero-shot inference, you need to clone both repositories and copy the necessary files:
+
+```bash
+# Adjust paths based on where you cloned the repositories
+cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/inference_videophy2.py cosmos-reason2/examples/gr00t-dreams
+# Adjust paths based on where you cloned the repositories
+cp cosmos-cookbook/docs/recipes/post_training/reason2/physical-plausibility-check/assets/video_reward.yaml cosmos-reason2/prompts/video_reward.yaml
+```
+
+Run inference on the generated videos using Cosmos Reason 2. From the Cosmos Reason 2 project root directory:
+
+```bash
+uv run examples/gr00t-dreams/inference_videophy2.py \
+  --video-dir ./cosmos-predict2.5/outputs/gr1_object_run \
+  --output-dir outputs/gr1_object_run_critic
+```
+
+The above script will generate a json with scores and explanation for each generated video.
+
+| **Score** | **Video Link** | **Reason2 Explanation** |
+|-----------|---------------|--------------------|
+| 4.0 | <video src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed3.mp4" controls width="200"></video> | The video shows two robotic arms working together to pack items into a paper bag. The left arm holds the bag open while the right arm places a green bell pepper into it. Both arms move smoothly and deliberately, demonstrating coordination and precision. The person in the background observes the process without interfering. All actions are consistent with real-world physics, showing no signs of unrealistic behavior or violations of physical laws. Objects interact naturally, and motions are fluid and logical. |
+| 1.0 | <video src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed1.mp4" controls width="200"></video> | The robot arm fails to grasp the green bell pepper, which contradicts its intended function. The lack of successful grasping suggests a malfunction or error in the programming controlling the robot's movements. Additionally, the person's hand remains stationary throughout the video, showing no interaction with the objects on the table, which is inconsistent with typical human behavior during such tasks. |
+
+Computing Evaluation Metrics
+
+<img src="assets/critic_metrics.png" alt="Critic Evaluation Metrics" width="600">
+
 
 ### Citation
 

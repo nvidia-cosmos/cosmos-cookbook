@@ -10,18 +10,19 @@
 
 ## Installation
 
-Clone the repository:
+Clone the necessary repositories:
 
-```bash
+```shell
 git clone https://github.com/nvidia-cosmos/cosmos-predict2.5.git
-cd cosmos-predict2.5
+git clone https://github.com/nvidia-cosmos/cosmos-reason2.git
 ```
 
-Install system dependencies:
+Install system dependencies for Predict2.5:
 
 [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 ```shell
+cd cosmos-predict2.5
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 ```
