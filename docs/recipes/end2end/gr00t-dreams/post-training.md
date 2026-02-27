@@ -117,11 +117,10 @@ checkpoints/
 └── latest_checkpoint.txt
 ```
 
-Upon completing the post-training you should see similar loss curves in your W&B tracker.
+Upon completing the post-training you should see similar loss curve in your W&B tracker.
 train/loss is the best single indicator of convergence. train/video_loss measures the video generation quality and train/video_edm_loss and train/edm_loss meeasures the diffusion training quality.
 
-| <img src="assets/loss.png" width="160"/> | <img src="assets/video_loss.png" width="160"/> | <img src="assets/video_edm_loss.png" width="160"/> | <img src="assets/edm_loss.png" width="160"/> |
-|:-------------------------------------:|:-------------------------------------:|:-------------------------------------:|:-------------------------------------:|
+<img src="assets/loss.png" width="320"/> 
 
 ## 3. Inference with Post Trained Cosmos Predict 2.5
 
