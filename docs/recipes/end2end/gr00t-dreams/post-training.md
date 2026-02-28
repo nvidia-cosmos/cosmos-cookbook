@@ -38,7 +38,7 @@ Follow the [Setup guide](./setup.md) for general environment setup instructions,
 
 First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/GR1-100) and then preprocess it to create text prompt txt files for each video.
 
-#### Download DreamGen Bench Training Dataset
+### Download DreamGen Bench Training Dataset
 
 ```bash
 cd cosmos-predict2.5
@@ -51,7 +51,7 @@ mv datasets/benchmark_train/hf_gr1/gr1/*mp4 datasets/benchmark_train/gr1/videos 
 mv datasets/benchmark_train/hf_gr1/metadata.csv datasets/benchmark_train/gr1/
 ```
 
-#### Preprocess DreamGen Bench Training Dataset
+### Preprocess DreamGen Bench Training Dataset
 
 ```bash
 python -m scripts.create_prompts_for_gr1_dataset --dataset_path datasets/benchmark_train/gr1
@@ -68,7 +68,7 @@ datasets/benchmark_train/gr1/
 ├── metadata.csv
 ```
 
-#### Preview of the Training Dataset
+### Preview of the Training Dataset
 
 | Input Prompt File | Video File |
 | ----------------- | ---------- |
@@ -165,13 +165,13 @@ Below is an example visualizing the batch inference output.
 
 Lastly, we will download the [GR00T Eval Dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create batch input.
 
-#### Download the DreamGen Benchmark dataset
+### Download the DreamGen Benchmark dataset
 
 ```bash
 huggingface-cli download nvidia/EVAL-175 --repo-type dataset --local-dir dream_gen_benchmark
 ```
 
-#### Prepare batch input json
+### Prepare batch input json
 
 ```bash
 python -m scripts.prepare_batch_input_json \
@@ -180,7 +180,7 @@ python -m scripts.prepare_batch_input_json \
   --output_path dream_gen_benchmark/gr1_object/batch_input.json
 ```
 
-#### Preprocess batch input for inference input
+### Preprocess batch input for inference input
 
 For generating multiple videos with different inputs and prompts, you can use a JSONL file with batch inputs. The JSONL file should contain an array of objects, where each object has:
 
@@ -199,7 +199,7 @@ After running the above script, the jsonl file will have following structure:
 {"inference_type": "image2world", "name": "000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p", "prompt": "Use the right hand to pick up green pepper from black shelf to inside brown paper bag.", "input_path": "11_Use the right hand to pick up green pepper from black shelf to inside brown paper bag..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
 ```
 
-#### Multiple Video Rollouts Generation
+### Multiple Video Rollouts Generation
 
 Using the same input, the Cosmos Predict2.5 generates multiple video rollouts. Among these, some exhibit greater physical plausibility than others.
 
@@ -226,7 +226,7 @@ torchrun --nproc_per_node=1 examples/inference.py \
 
 Cosmos Reason2 is capable of evaluating if a video adheres to fundamental physical laws such as Gravity, Object Permanency, Collision dynamics, and Cause-and-effect relationships. When paired with a world model such as Cosmos Predict2.5, it enables best-of-N sampling by generating multiple video candidates and selecting the most physically accurate ones, thereby improving generation quality.
 
-#### Evaluation Criteria
+### Evaluation Criteria
 
 Each generated video receives human evaluations based on **adherence to physical laws** using a standardized 5-point scale:
 
@@ -238,7 +238,7 @@ Each generated video receives human evaluations based on **adherence to physical
 | **4** | Good adherence to physical laws | Mostly realistic |
 | **5** | Perfect adherence to physical laws | Completely plausible |
 
-#### Zero Shot Inference
+### Zero Shot Inference
 
 ???+ code "Prompt for Scoring Physical Plausibility"
 
