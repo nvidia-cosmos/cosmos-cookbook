@@ -3,16 +3,14 @@
 > **Author:** [Rucha Apte](https://www.linkedin.com/in/ruchaa-apte/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/), [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
 > **Organization:** NVIDIA
 
-
 | **Model**                                                                | **Workload**             | **Use Case**                                   |
 | ------------------------------------------------------------------------ | ------------------------ | ---------------------------------------------- |
 | [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training, Inference | Synthetic Trajectory Generation                |
 | [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2)       | Inference                | Reasoning and filtering synthetic trajectories |
 
-
 This guide walks you through post-training the Cosmos Predict 2.5 model on the [PhysicalAI-Robotics-GR00T-GR1](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) open dataset to generate synthetic robot trajectories for robot learning applications. After post-training, we'll use the fine-tuned model to generate trajectory predictions on the [PhysicalAI-Robotics-GR00T-Eval](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Eval) dataset. Finally, Cosmos Reason 2 is leveraged to evaluate these generated trajectories by assessing their physical plausibility, helping to quantify and filter for valid, realistic, and successful robot motions.
 The process includes the steps outlined below:
-<img src="assets/gr00t_dreams.png" alt="GR00T Dreams" width="600">
+<img src="assets/Gr00t-Dreams.png" alt="GR00T Dreams" width="600">
 
 ## Motivation
 
@@ -39,10 +37,10 @@ Follow the [Setup guide](./setup.md) for general environment setup instructions,
 
 First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/GR1-100) and then preprocess it to create text prompt txt files for each video.
 
-#### Download DreamGen Bench Training Dataset 
+#### Download DreamGen Bench Training Dataset
 
 ```bash
-cd cosmos-predict2.5 
+cd cosmos-predict2.5
 ```
 
 ```bash
@@ -85,6 +83,7 @@ Run the following command to execute an example post-training job with GR1 data.
 ```bash
 torchrun --nproc_per_node=1 --master_port=12341 -m scripts.train --config=cosmos_predict2/_src/predict2/configs/video2world/config.py -- experiment=predict2_video2world_training_2b_groot_gr1_480
 ```
+
 > **Note**: To disabling W&B Logging, add job.wandb_mode=disabled to disable wandb
 
 This script makes use of `predict2_video2world_training_2b_groot_gr1_480` config. See the job config belwo to understand how they are determined.
@@ -198,6 +197,7 @@ After running the above script, the jsonl file will have following structure:
 ```jsonl
 {"inference_type": "image2world", "name": "000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p", "prompt": "Use the right hand to pick up green pepper from black shelf to inside brown paper bag.", "input_path": "11_Use the right hand to pick up green pepper from black shelf to inside brown paper bag..png", "num_output_frames": 93, "resolution": "432,768", "seed": 0, "guidance": 7}
 ```
+
 #### Multiple Video Rollouts Generation
 
 Using the same input, the Cosmos Predict2.5 generates multiple video rollouts. Among these, some exhibit greater physical plausibility than others.
@@ -222,6 +222,7 @@ torchrun --nproc_per_node=1 examples/inference.py \
 | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed0.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed1.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed2.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed3.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed4.mp4" controls width="200"></video> |
 
 ## 5. Using Cosmos Reason as Video Critic for Rejection Sampling
+
 Cosmos Reason2 is capable of evaluating if a video adheres to fundamental physical laws such as Gravity, Object Permanency, Collision dynamics, and Cause-and-effect relationships. When paired with a world model such as Cosmos Predict2.5, it enables best-of-N sampling by generating multiple video candidates and selecting the most physically accurate ones, thereby improving generation quality.
 
 #### Evaluation Criteria
@@ -236,7 +237,7 @@ Each generated video receives human evaluations based on **adherence to physical
 | **4** | Good adherence to physical laws | Mostly realistic |
 | **5** | Perfect adherence to physical laws | Completely plausible |
 
-#### Zero Shot Inference 
+#### Zero Shot Inference
 
 ???+ code "Prompt for Scoring Physical Plausibility"
 
@@ -301,4 +302,3 @@ If you use this recipe or reference this work, please cite it as:
 **Suggested text citation:**
 
 > Rucha Apte, Jingyi Jin, Saurav Nanda (2026). Leveraging World Foundation Models for Synthetic Trajectory Generation in Robot Learning. In *NVIDIA Cosmos Cookbook*. NVIDIA. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/end2end/gr00t-dreams/post-training.html>
-

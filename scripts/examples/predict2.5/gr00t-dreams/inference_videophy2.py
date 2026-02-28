@@ -54,6 +54,7 @@ from cosmos_reason2_utils.vision import VisionConfig
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 
+
 def get_video_data_from_dir(video_dir: str | Path) -> list[dict]:
     """Load video paths from a local directory, grouped by prompt (5 videos per prompt).
 
@@ -74,15 +75,18 @@ def get_video_data_from_dir(video_dir: str | Path) -> list[dict]:
     video_data = []
     for key in sorted(groups.keys()):
         paths = sorted(groups[key], key=lambda p: p.stem)
-        video_data.append({
-            "video_urls": [str(p.resolve()) for p in paths],
-            "ground_truth": None,
-        })
+        video_data.append(
+            {
+                "video_urls": [str(p.resolve()) for p in paths],
+                "ground_truth": None,
+            }
+        )
 
     if video_data:
         n = len(video_data[0]["video_urls"])
         print(f"Sample data: {len(video_data)} prompts, {n} videos per prompt")
     return video_data
+
 
 def parse_answer_from_text(text: str) -> float | None:
     """Parse a numeric answer from model output text.
@@ -295,15 +299,21 @@ def run_inference_for_dataset(args):
                 )
 
                 score = parse_answer_from_text(output_text)
-                results_per_video.append({
-                    "video_url": video_url,
-                    "output_text": output_text,
-                    "pred_score": score,
-                })
+                results_per_video.append(
+                    {
+                        "video_url": video_url,
+                        "output_text": output_text,
+                        "pred_score": score,
+                    }
+                )
                 if score is not None:
                     print(f"   Video {v_idx + 1}/{len(video_urls)}: score {score}")
 
-            scores = [r["pred_score"] for r in results_per_video if r["pred_score"] is not None]
+            scores = [
+                r["pred_score"]
+                for r in results_per_video
+                if r["pred_score"] is not None
+            ]
             mean_score = sum(scores) / len(scores) if scores else None
 
             result_entry = {

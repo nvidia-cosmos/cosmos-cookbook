@@ -26,11 +26,10 @@ import pydantic
 import tyro
 import yaml
 from cosmos_oss.checkpoints_predict2 import register_checkpoints
-from pydantic_core import PydanticUndefined
-from typing_extensions import Self, assert_never
-
 from cosmos_predict2._src.imaginaire.flags import SMOKE
 from cosmos_predict2._src.imaginaire.utils.checkpoint_db import get_checkpoint_by_uuid
+from pydantic_core import PydanticUndefined
+from typing_extensions import Self, assert_never
 
 register_checkpoints()
 
@@ -63,10 +62,16 @@ def load_callable(name: str):
 _PydanticModelT = TypeVar("_PydanticModelT", bound=pydantic.BaseModel)
 
 
-def get_overrides_cls(cls: type[_PydanticModelT], *, exclude: list[str] | None = None) -> type[pydantic.BaseModel]:
+def get_overrides_cls(
+    cls: type[_PydanticModelT], *, exclude: list[str] | None = None
+) -> type[pydantic.BaseModel]:
     """Get overrides class for a given pydantic model."""
     # pyrefly: ignore  # no-matching-overload
-    names = [name for name in cls.model_fields.keys() if exclude is None or name not in exclude]
+    names = [
+        name
+        for name in cls.model_fields.keys()
+        if exclude is None or name not in exclude
+    ]
     fields = {}
     for name in names:
         # pyrefly: ignore  # no-matching-overload
@@ -78,10 +83,15 @@ def get_overrides_cls(cls: type[_PydanticModelT], *, exclude: list[str] | None =
         )
 
         annotation = Annotated[
-            Optional[cls.model_fields["name"].rebuild_annotation()],  # pyrefly: ignore  # no-matching-overload
+            Optional[
+                cls.model_fields["name"].rebuild_annotation()
+            ],  # pyrefly: ignore  # no-matching-overload
             tyro.conf.arg(help_behavior_hint=behavior_hint),
         ]
-        fields[name] = (annotation, pydantic.Field(default=None, description=model_field.description))
+        fields[name] = (
+            annotation,
+            pydantic.Field(default=None, description=model_field.description),
+        )
     # pyrefly: ignore  # no-matching-overload, bad-argument-type, bad-argument-count
     return pydantic.create_model(f"{cls.__name__}Overrides", **fields)
 
@@ -111,7 +121,9 @@ def _resolve_path(v: Path) -> Path:
 
 
 ResolvedFilePath = Annotated[pydantic.FilePath, pydantic.AfterValidator(_resolve_path)]
-ResolvedDirectoryPath = Annotated[pydantic.DirectoryPath, pydantic.AfterValidator(_resolve_path)]
+ResolvedDirectoryPath = Annotated[
+    pydantic.DirectoryPath, pydantic.AfterValidator(_resolve_path)
+]
 
 
 def _validate_checkpoint_uuid(v: str) -> str:
@@ -181,13 +193,25 @@ class ModelKey:
 
 
 MODEL_CHECKPOINTS = {
-    ModelKey(post_trained=False): get_checkpoint_by_uuid("d20b7120-df3e-4911-919d-db6e08bad31c"),
+    ModelKey(post_trained=False): get_checkpoint_by_uuid(
+        "d20b7120-df3e-4911-919d-db6e08bad31c"
+    ),
     ModelKey(): get_checkpoint_by_uuid("81edfebe-bd6a-4039-8c1d-737df1a790bf"),
-    ModelKey(distilled=True): get_checkpoint_by_uuid("575edf0f-d973-4c74-b52c-69929a08d0a5"),
-    ModelKey(post_trained=False, size=ModelSize._14B): get_checkpoint_by_uuid("54937b8c-29de-4f04-862c-e67b04ec41e8"),
-    ModelKey(post_trained=True, size=ModelSize._14B): get_checkpoint_by_uuid("e21d2a49-4747-44c8-ba44-9f6f9243715f"),
-    ModelKey(variant=ModelVariant.AUTO_MULTIVIEW): get_checkpoint_by_uuid("524af350-2e43-496c-8590-3646ae1325da"),
-    ModelKey(variant=ModelVariant.ROBOT_ACTION_COND): get_checkpoint_by_uuid("38c6c645-7d41-4560-8eeb-6f4ddc0e6574"),
+    ModelKey(distilled=True): get_checkpoint_by_uuid(
+        "575edf0f-d973-4c74-b52c-69929a08d0a5"
+    ),
+    ModelKey(post_trained=False, size=ModelSize._14B): get_checkpoint_by_uuid(
+        "54937b8c-29de-4f04-862c-e67b04ec41e8"
+    ),
+    ModelKey(post_trained=True, size=ModelSize._14B): get_checkpoint_by_uuid(
+        "e21d2a49-4747-44c8-ba44-9f6f9243715f"
+    ),
+    ModelKey(variant=ModelVariant.AUTO_MULTIVIEW): get_checkpoint_by_uuid(
+        "524af350-2e43-496c-8590-3646ae1325da"
+    ),
+    ModelKey(variant=ModelVariant.ROBOT_ACTION_COND): get_checkpoint_by_uuid(
+        "38c6c645-7d41-4560-8eeb-6f4ddc0e6574"
+    ),
     ModelKey(variant=ModelVariant.ROBOT_MULTIVIEW_AGIBOT): get_checkpoint_by_uuid(
         "f740321e-2cd6-4370-bbfe-545f4eca2065"
     ),
@@ -280,9 +304,13 @@ class CommonSetupArguments(pydantic.BaseModel):
             data["experiment"] = checkpoint.experiment
         if not data.get("config_file"):
             if model_key.distilled:
-                data["config_file"] = "cosmos_predict2/_src/predict2/distill/configs/registry_predict2p5.py"
+                data[
+                    "config_file"
+                ] = "cosmos_predict2/_src/predict2/distill/configs/registry_predict2p5.py"
             else:
-                data["config_file"] = "cosmos_predict2/_src/predict2/configs/video2world/config.py"
+                data[
+                    "config_file"
+                ] = "cosmos_predict2/_src/predict2/configs/video2world/config.py"
         if data.get("context_parallel_size") is None:
             data["context_parallel_size"] = int(os.environ.get("WORLD_SIZE", "1"))
         return data
@@ -294,7 +322,9 @@ Guidance = Annotated[int, pydantic.Field(ge=0, le=7)]
 class CommonInferenceArguments(pydantic.BaseModel):
     """Common inference arguments."""
 
-    model_config = pydantic.ConfigDict(extra="forbid", frozen=True, use_attribute_docstrings=True)
+    model_config = pydantic.ConfigDict(
+        extra="forbid", frozen=True, use_attribute_docstrings=True
+    )
 
     # Required parameters
     name: str
@@ -343,7 +373,9 @@ class CommonInferenceArguments(pydantic.BaseModel):
         if path.suffix in [".json"]:
             data_list = [json.loads(path.read_text())]
         elif path.suffix in [".jsonl"]:
-            data_list = [json.loads(line) for line in path.read_text().splitlines() if line]
+            data_list = [
+                json.loads(line) for line in path.read_text().splitlines() if line
+            ]
         elif path.suffix in [".yaml", ".yml"]:
             data_list = [yaml.safe_load(path.read_text())]
         else:
@@ -359,14 +391,19 @@ class CommonInferenceArguments(pydantic.BaseModel):
                 objs.append(cls.model_validate(data | override_data))
             except pydantic.ValidationError as e:
                 if is_rank0():
-                    print(f"Error validating parameters from '{path}' at line {i}\n{e}", file=sys.stderr)
+                    print(
+                        f"Error validating parameters from '{path}' at line {i}\n{e}",
+                        file=sys.stderr,
+                    )
                 sys.exit(1)
         os.chdir(cwd)
 
         return objs
 
     @classmethod
-    def from_files(cls, paths: list[Path], overrides: pydantic.BaseModel | None = None) -> list[Self]:
+    def from_files(
+        cls, paths: list[Path], overrides: pydantic.BaseModel | None = None
+    ) -> list[Self]:
         """Load arguments from a list of json/jsonl/yaml files.
 
         Returns a list of arguments.
@@ -394,7 +431,10 @@ class CommonInferenceArguments(pydantic.BaseModel):
         names: set[str] = set()
         for obj in objs:
             if obj.name in names:
-                print(f"Error: Inference samplename {obj.name} is not unique", file=sys.stderr)
+                print(
+                    f"Error: Inference samplename {obj.name} is not unique",
+                    file=sys.stderr,
+                )
                 sys.exit(1)
             names.add(obj.name)
 
@@ -448,7 +488,8 @@ class InferenceArguments(CommonInferenceArguments):
     enable_autoregressive: bool = False
     """Enable autoregressive sliding window mode to generate videos longer than the model's native temporal capacity."""
     chunk_size: int = pydantic.Field(
-        default=77, description="Number of frames the model generates in a single forward pass (chunk size)"
+        default=77,
+        description="Number of frames the model generates in a single forward pass (chunk size)",
     )
     """Number of frames the model generates in a single forward pass (chunk size, cannot be greater than the model's native temporal capacity)."""
     chunk_overlap: int = pydantic.Field(
@@ -473,7 +514,9 @@ class InferenceArguments(CommonInferenceArguments):
         supported_extensions = INPUT_EXTENSIONS[self.inference_type]
         if supported_extensions is not None:
             if self.input_path is None:
-                raise ValueError(f"input_path is required for inference type {self.inference_type}")
+                raise ValueError(
+                    f"input_path is required for inference type {self.inference_type}"
+                )
             if self.input_path.suffix not in supported_extensions:
                 raise ValueError(
                     f"input_path has unsupported file extension '{self.input_path.suffix}' for inference type {self.inference_type}. Supported extensions: {supported_extensions}"

@@ -16,8 +16,9 @@ from pathlib import Path
 
 import numpy as np
 import torch
-
-from cosmos_predict2._src.imaginaire.auxiliary.guardrail.common import presets as guardrail_presets
+from cosmos_predict2._src.imaginaire.auxiliary.guardrail.common import (
+    presets as guardrail_presets,
+)
 from cosmos_predict2._src.imaginaire.flags import SMOKE
 from cosmos_predict2._src.imaginaire.lazy_config.lazy import LazyConfig
 from cosmos_predict2._src.imaginaire.utils import distributed, log
@@ -64,8 +65,10 @@ class Inference:
             self.text_guardrail_runner = guardrail_presets.create_text_guardrail_runner(
                 offload_model_to_cpu=args.offload_guardrail_models
             )
-            self.video_guardrail_runner = guardrail_presets.create_video_guardrail_runner(
-                offload_model_to_cpu=args.offload_guardrail_models
+            self.video_guardrail_runner = (
+                guardrail_presets.create_video_guardrail_runner(
+                    offload_model_to_cpu=args.offload_guardrail_models
+                )
             )
         else:
             # pyrefly: ignore  # bad-assignment
@@ -73,7 +76,9 @@ class Inference:
             # pyrefly: ignore  # bad-assignment
             self.video_guardrail_runner = None
 
-    def generate(self, samples: list[InferenceArguments], output_dir: Path) -> list[str]:
+    def generate(
+        self, samples: list[InferenceArguments], output_dir: Path
+    ) -> list[str]:
         if SMOKE:
             samples = samples[:1]
 
@@ -171,8 +176,12 @@ class Inference:
             if self.video_guardrail_runner is not None:
                 log.info("Running guardrail check on video...")
                 frames = (video * 255.0).clamp(0.0, 255.0).to(torch.uint8)
-                frames = frames.permute(1, 2, 3, 0).cpu().numpy().astype(np.uint8)  # (T, H, W, C)
-                processed_frames = guardrail_presets.run_video_guardrail(frames, self.video_guardrail_runner)
+                frames = (
+                    frames.permute(1, 2, 3, 0).cpu().numpy().astype(np.uint8)
+                )  # (T, H, W, C)
+                processed_frames = guardrail_presets.run_video_guardrail(
+                    frames, self.video_guardrail_runner
+                )
                 if processed_frames is None:
                     message = "Guardrail blocked video2world generation."
                     log.critical(message)
@@ -183,7 +192,10 @@ class Inference:
                 else:
                     log.success("Passed guardrail on generated video")
                 # Convert processed frames back to tensor format
-                processed_video = torch.from_numpy(processed_frames).float().permute(3, 0, 1, 2) / 255.0
+                processed_video = (
+                    torch.from_numpy(processed_frames).float().permute(3, 0, 1, 2)
+                    / 255.0
+                )
                 video = processed_video.to(video.device, dtype=video.dtype)
             else:
                 log.warning("Guardrail checks on video are disabled")
