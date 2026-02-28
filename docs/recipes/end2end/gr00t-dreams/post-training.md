@@ -159,7 +159,7 @@ Below is an example visualizing the batch inference output.
 
 | Prompt | Input Image | Generated Video |
 |--------|-------------|----------------|
-| Use the right hand to pick up red apple from brown tray to beige placemat. | <img src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..png" width="128"/> | <video src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..mp4" width="160" controls></video> |
+| Use the right hand to pick up red apple from brown tray to beige placemat. | <img src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..png" width="160"/> | <video src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..mp4" width="160" controls></video> |
 
 ## 4. Policy Evaluation using Cosmos Predict
 
