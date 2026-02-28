@@ -2,7 +2,7 @@
 
 ## System Requirements
 
-* NVIDIA GPUs with Ampere architecture (RTX 30 Series, A100) or newer
+* NVIDIA GPUs with Ampere architecture (RTX Pro 6000, A100, H100) or newer
 * NVIDIA driver >=570.124.06 compatible with [CUDA 12.8.1](https://docs.nvidia.com/cuda/archive/12.8.1/cuda-toolkit-release-notes/index.html#cuda-toolkit-major-component-versions)
 * Linux x86-64
 * glibc>=2.35 (e.g Ubuntu >=22.04)
