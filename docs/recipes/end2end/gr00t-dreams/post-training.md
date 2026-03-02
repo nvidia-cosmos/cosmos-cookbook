@@ -11,7 +11,9 @@
 This guide walks you through post-training the Cosmos Predict 2.5 model on the [PhysicalAI-Robotics-GR00T-GR1](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) open dataset to generate synthetic robot trajectories for robot learning applications. After post-training, we'll use the fine-tuned model to generate trajectory predictions on the [PhysicalAI-Robotics-GR00T-Eval](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Eval) dataset. Finally, Cosmos Reason 2 is leveraged to evaluate these generated trajectories by assessing their physical plausibility, helping to quantify and filter for valid, realistic, and successful robot motions.
 The process includes the steps outlined below:
 
-<img src="assets/Gr00t-Dreams.png" alt="GR00T Dreams" width="600">
+<p align="center">
+  <img src="assets/Gr00t-Dreams.png" alt="GR00T Dreams" width="900">
+</p>
 
 ## Motivation
 
@@ -70,7 +72,7 @@ datasets/benchmark_train/gr1/
 
 ### Preview of the Training Dataset
 
-| Input Prompt File | Video File |
+| Input Prompt | Video File |
 | ----------------- | ---------- |
 | The robot arm is performing a task. Use the right hand to pick up green bok choy from tan table right side to bottom level of wire basket. | <video width="320" controls autoplay loop muted><source src="assets/1.mp4" type="video/mp4"></video> |
 | The robot arm is performing a task. Use the right hand to pick up rubik's cube from top level of the shelf to bottom level of the shelf. | <video width="320" controls autoplay loop muted><source src="assets/2.mp4" type="video/mp4"></video> |
@@ -85,7 +87,7 @@ Run the following command to execute an example post-training job with GR1 data.
 torchrun --nproc_per_node=1 --master_port=12341 -m scripts.train --config=cosmos_predict2/_src/predict2/configs/video2world/config.py -- experiment=predict2_video2world_training_2b_groot_gr1_480
 ```
 
-> **Note**: To disabling W&B Logging, add job.wandb_mode=disabled to disable wandb
+> **Note**: To disabling W&B Logging, add job.wandb_mode=disabled in the above command
 
 This script makes use of `predict2_video2world_training_2b_groot_gr1_480` config. See the job config belwo to understand how they are determined.
 
