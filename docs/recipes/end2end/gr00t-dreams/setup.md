@@ -61,7 +61,6 @@ Checkpoints are automatically downloaded during inference and post-training. To 
 Configure where training checkpoints and artifacts will be saved:
 
 ```bash
-# Default: /tmp/imaginaire4-output
 export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
 ```
 
