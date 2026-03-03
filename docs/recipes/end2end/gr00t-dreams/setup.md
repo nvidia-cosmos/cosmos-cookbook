@@ -25,7 +25,8 @@ Follow the **official installation instructions** for Cosmos Predict 2.5 (enviro
 cd cosmos-predict2.5
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
-```
+* **[Cosmos Predict 2.5 — Installation](https://docs.nvidia.com/cosmos/latest/predict2.5/installation.html)** (NVIDIA Docs)  
+* Alternatively, see the [Cosmos Predict 2.5 repository README](https://github.com/nvidia-cosmos/cosmos-predict2.5) for clone, `uv`, and `uv sync` steps.
 
 Install the package into a new environment:
 
