@@ -70,7 +70,7 @@ export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
 
 By default, training will attempt to log metrics to Weights & Biases. You have several options:
 
-### Option 1: Enable W&B
+#### Option 1: Enable W&B
 
 To enable full experiment tracking with W&B:
 
