@@ -191,7 +191,7 @@ For generating multiple videos with different inputs and prompts, you can use a 
 # Adjust paths based on where you cloned the repositories
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/gr1_batch_to_jsonl.py cosmos-predict2.5/scripts/
 ```
-
+Run the following from the **cosmos-predict2.5** repository root so that the script’s paths (`dream_gen_benchmark/gr1_object/batch_input.json` and `gr1_batch.jsonl`) resolve to your downloaded and prepared eval data:
 ```bash
 python scripts/gr1_batch_to_jsonl.py
 ```
