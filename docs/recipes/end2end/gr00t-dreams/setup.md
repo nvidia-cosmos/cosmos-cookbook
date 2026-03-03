@@ -47,7 +47,7 @@ After completing both installations, you should be able to run inference from ea
 * `--extra=cu128`: CUDA 12.8
 * `--extra=cu129`: CUDA 12.9
 ## Recipe-specific configuration
-## Downloading Checkpoints
+The following are specific to this GR00T-Dreams workflow, not replacements for the official install.
 
 1. Get a [Hugging Face Access Token](https://huggingface.co/settings/tokens) with `Read` permission
 2. Install [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli): `uv tool install -U "huggingface_hub[cli]"`
