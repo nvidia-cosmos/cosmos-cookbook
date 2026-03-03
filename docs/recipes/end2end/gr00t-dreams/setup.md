@@ -48,7 +48,7 @@ After completing both installations, you should be able to run inference from ea
 * `--extra=cu129`: CUDA 12.9
 ## Recipe-specific configuration
 The following are specific to this GR00T-Dreams workflow, not replacements for the official install.
-
+### Downloading checkpoints (Cosmos Predict 2.5)
 1. Get a [Hugging Face Access Token](https://huggingface.co/settings/tokens) with `Read` permission
 2. Install [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli): `uv tool install -U "huggingface_hub[cli]"`
 3. Login: `hf auth login` and enter the token created in Step 1.
