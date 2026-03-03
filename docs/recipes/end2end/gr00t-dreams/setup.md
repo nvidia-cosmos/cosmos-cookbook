@@ -46,7 +46,7 @@ After completing both installations, you should be able to run inference from ea
 
 * `--extra=cu128`: CUDA 12.8
 * `--extra=cu129`: CUDA 12.9
-
+## Recipe-specific configuration
 ## Downloading Checkpoints
 
 1. Get a [Hugging Face Access Token](https://huggingface.co/settings/tokens) with `Read` permission
