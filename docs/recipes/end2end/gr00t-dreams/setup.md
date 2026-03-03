@@ -33,7 +33,7 @@ source $HOME/.local/bin/env
 ```shell
 uv sync --extra=cu128
 source .venv/bin/activate
-```
+Follow the **official installation instructions** for Cosmos Reason 2 (environment, dependencies, CUDA variant).
 
 Or, install the package into the active environment (e.g. conda):
 
