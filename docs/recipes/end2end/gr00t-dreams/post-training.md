@@ -30,6 +30,7 @@ Generalist robotics is emerging, driven by advances in mechatronics and robot fo
 - [Policy Evaluation using Cosmos Predict](#4-policy-evaluation-using-cosmos-predict)
 - [Using Cosmos-Reason as Video Critic for Rejection Sampling](#5-using-cosmos-reason-as-video-critic-for-rejection-sampling)
 - [Computing Metrics](#6-computing-metrics)
+- [Limitations and Considerations](#limitations-and-considerations)
 - [Conclusion](#7-conclusion)
 
 ## Prerequisites
