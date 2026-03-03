@@ -279,7 +279,13 @@ The above script will generate a json with scores and explanation for each gener
 <p>
 Under the <b>Physical Plausibility</b> criteria, you can filter your synthetic videos by removing those that received scores of <b>1.0</b> or <b>2.0</b>, as they demonstrate poor or no adherence to physical laws. It is recommended to keep videos that received higher scores of <b>4.0</b> or <b>5.0</b>, which indicate good or perfect physical realism.
 </p>
+### Limitations and Considerations
 
+When using this pipeline for education or deployment, keep the following in mind:
+
+- **Synthetic vs. real data**: Generated trajectories are drawn from a learned distribution; they can be physically plausible yet still differ from real robot data. Downstream policies may face a sim-to-real gap when trained only on such synthetic data.
+- **Critic as a proxy**: The Reason 2 video critic is a proxy for physical plausibility, not a ground-truth oracle. It can miss fine-grained physics or be sensitive to prompt and scale. Best-of-N sampling improves quality but does not guarantee correctness.
+- **Domain and scale**: Behavior is strongest for setups and prompts similar to GR1/GR00T-style manipulation. Generalization to very different robots or tasks may require more data or tuning. Best-of-N and multiple roll outs increase compute cost; balance quality versus throughput as needed.
 ## 7. Conclusion
 
 - **End-to-end pipeline**: Prepare GR1 data → post-train Cosmos Predict 2.5 on robot manipulation → run inference to generate multiple video rollouts per prompt → score rollouts with Cosmos Reason 2 → filter by physical plausibility and compute metrics.
