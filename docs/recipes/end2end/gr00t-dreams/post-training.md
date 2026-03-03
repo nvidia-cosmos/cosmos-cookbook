@@ -212,7 +212,7 @@ cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/config.py cosmos-
 ```
 Run the following from the **cosmos-predict2.5** repository root so that the copied `inference.py` and `config.py` are used:
 ```bash
-torchrun --nproc_per_node=1 examples/inference.py \
+torchrun --nproc_per_node=1 inference.py \
   -i dream_gen_benchmark/gr1_object/gr1_batch.jsonl \
   -o outputs/gr1_object_run_ng5 \
   --num-generations 5 \
