@@ -35,7 +35,8 @@ uv sync --extra=cu128
 source .venv/bin/activate
 Follow the **official installation instructions** for Cosmos Reason 2 (environment, dependencies, CUDA variant).
 
-Or, install the package into the active environment (e.g. conda):
+* **[Cosmos Reason 2 — Repository README](https://github.com/nvidia-cosmos/cosmos-reason2)** (clone, `uv`, `uv sync`, inference setup)  
+* For post-training–specific setup (optional for this recipe), see [Cosmos Reason 2 Post-Training Installation](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md).
 
 ```shell
 uv sync --extra=cu128 --active --inexact
