@@ -28,7 +28,7 @@ source $HOME/.local/bin/env
 * **[Cosmos Predict 2.5 — Installation](https://docs.nvidia.com/cosmos/latest/predict2.5/installation.html)** (NVIDIA Docs)  
 * Alternatively, see the [Cosmos Predict 2.5 repository README](https://github.com/nvidia-cosmos/cosmos-predict2.5) for clone, `uv`, and `uv sync` steps.
 
-Install the package into a new environment:
+### 3. Install Cosmos Reason 2
 
 ```shell
 uv sync --extra=cu128
