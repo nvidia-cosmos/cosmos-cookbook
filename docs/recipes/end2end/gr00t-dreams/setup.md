@@ -54,7 +54,7 @@ The following are specific to this GR00T-Dreams workflow, not replacements for t
 3. Login: `hf auth login` and enter the token created in Step 1.
 4. Accept the [NVIDIA Open Model License Agreement](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B).
 
-Checkpoints are automatically downloaded during inference and post-training. To modify the checkpoint cache location, set the [HF_HOME](https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhome) environment variable.
+Checkpoints are downloaded automatically during inference and post-training. To change the cache location, set [HF_HOME](https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhome).
 
 > **💡 Tip**: Ensure you have sufficient disk space in `HF_HOME`.
 
