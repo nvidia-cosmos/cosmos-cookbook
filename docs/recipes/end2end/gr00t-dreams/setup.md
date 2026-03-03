@@ -60,7 +60,7 @@ Checkpoints are downloaded automatically during inference and post-training. To 
 
 ### Training output directory
 
-Configure where training checkpoints and artifacts will be saved:
+Set where Cosmos Predict 2.5 stores checkpoints and artifacts (default: `/tmp/imaginaire4-output`):
 
 ```bash
 export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
