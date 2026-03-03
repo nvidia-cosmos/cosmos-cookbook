@@ -17,7 +17,7 @@ git clone https://github.com/nvidia-cosmos/cosmos-predict2.5.git
 git clone https://github.com/nvidia-cosmos/cosmos-reason2.git
 ```
 
-Install system dependencies for Predict2.5:
+### 2. Install Cosmos Predict 2.5
 
 [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
