@@ -18,7 +18,7 @@ The process includes the steps outlined below:
 ## Motivation
 
 Generalist robotics is emerging, driven by advances in mechatronics and robot foundation models, but scaling skill learning remains limited by the need for massive training data. [NVIDIA Isaac GR00T-Dreams](https://github.com/nvidia/gr00t-dreams), built on [NVIDIA Cosmos](https://www.nvidia.com/en-us/ai/cosmos/?sortBy=developer_learning_library%2Fsort%2Ffeatured_in.cosmos%3Adesc%2Ctitle%3Aasc&hitsPerPage=6), addresses this by generating large-scale synthetic trajectory data from a single image and language prompt. This enables efficient training of models such as [NVIDIA Isaac GR00T N1.5](https://developer.nvidia.com/isaac/gr00t) for reasoning and skill learning.
-
+*World foundation models* predict or reason over future world states (e.g., video or trajectories) from current observations and language. In this recipe, Cosmos Predict 2.5 acts as a world model that generates synthetic trajectories, and Cosmos Reason 2 evaluates whether those trajectories adhere to physical laws.
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
