@@ -38,7 +38,7 @@ Generalist robotics is emerging, driven by advances in mechatronics and robot fo
 Follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies for Cosmos Predict 2.5 and Cosmos Reason 2.
 
 ## 1. Preparing Data
-
+All steps in this section and through **Multiple Video Rollouts Generation** (Section 4) assume you are in the **cosmos-predict2.5** repository root, unless a step specifies otherwise (e.g., Cosmos Reason 2 steps run from the cosmos-reason2 root).
 First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/GR1-100) and then preprocess it to create text prompt txt files for each video.
 
 ### Download DreamGen Bench Training Dataset
