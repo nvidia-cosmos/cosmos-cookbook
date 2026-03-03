@@ -210,7 +210,7 @@ Using the same input, the Cosmos Predict2.5 generates multiple video rollouts. A
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/inference.py cosmos-predict2.5/
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/config.py cosmos-predict2.5/
 ```
-
+Run the following from the **cosmos-predict2.5** repository root so that the copied `inference.py` and `config.py` are used:
 ```bash
 torchrun --nproc_per_node=1 examples/inference.py \
   -i dream_gen_benchmark/gr1_object/gr1_batch.jsonl \
