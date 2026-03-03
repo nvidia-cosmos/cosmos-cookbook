@@ -66,7 +66,7 @@ export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
 
 > **💡 Tip**: Ensure you have sufficient disk space in `IMAGINAIRE_OUTPUT_ROOT`.
 
-## Weights & Biases (W&B) Logging
+### Weights & Biases (W&B) Logging
 
 By default, training will attempt to log metrics to Weights & Biases. You have several options:
 
