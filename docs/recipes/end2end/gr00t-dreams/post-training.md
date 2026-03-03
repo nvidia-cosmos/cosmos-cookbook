@@ -166,7 +166,7 @@ Below is an example visualizing the batch inference output.
 
 ## 4. Policy Evaluation using Cosmos Predict
 
-Lastly, we will download the [GR00T Eval Dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create batch input.
+Lastly, we will download the [GR00T Eval Dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create batch input. The steps below are run from the **cosmos-predict2.5** repository root.
 
 ### Download the DreamGen Benchmark dataset
 
