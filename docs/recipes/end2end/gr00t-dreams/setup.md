@@ -3,7 +3,7 @@ This guide covers the setup requirements for the [GR00T-Dreams post-training rec
 ## System Requirements
 For detailed hardware and software requirements, see the official guides linked below. In brief:
 * NVIDIA GPUs with Ampere architecture (RTX Pro 6000, A100, H100) or newer
-* NVIDIA driver >=570.124.06 compatible with [CUDA 12.8.1](https://docs.nvidia.com/cuda/archive/12.8.1/cuda-toolkit-release-notes/index.html#cuda-toolkit-major-component-versions)
+NVIDIA driver compatible with CUDA 12.8+ (see [Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) / [Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) for exact versions)
 * Linux x86-64
 * glibc>=2.35 (e.g Ubuntu >=22.04)
 * Python 3.10
