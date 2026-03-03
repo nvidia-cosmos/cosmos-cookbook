@@ -58,7 +58,7 @@ Checkpoints are downloaded automatically during inference and post-training. To 
 
 > **💡 Tip**: Ensure you have sufficient disk space in `HF_HOME`.
 
-## Training Output Directory
+### Training output directory
 
 Configure where training checkpoints and artifacts will be saved:
 
