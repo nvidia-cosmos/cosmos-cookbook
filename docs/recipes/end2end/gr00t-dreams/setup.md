@@ -19,7 +19,7 @@ git clone https://github.com/nvidia-cosmos/cosmos-reason2.git
 
 ### 2. Install Cosmos Predict 2.5
 
-[uv](https://docs.astral.sh/uv/getting-started/installation/)
+Follow the **official installation instructions** for Cosmos Predict 2.5 (environment, dependencies, CUDA variant). Do not rely on this page for exact commands.
 
 ```shell
 cd cosmos-predict2.5
