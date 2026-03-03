@@ -89,7 +89,7 @@ torchrun --nproc_per_node=1 --master_port=12341 -m scripts.train --config=cosmos
 
 > **Note**: To disabling W&B Logging, add job.wandb_mode=disabled in the above command
 
-This script makes use of `predict2_video2world_training_2b_groot_gr1_480` config. See the job config belwo to understand how they are determined.
+This script makes use of `predict2_video2world_training_2b_groot_gr1_480` config. See the job config below to understand how they are determined.
 
 ```bash
 predict2_video2world_training_2b_groot_gr1_480 = dict(
