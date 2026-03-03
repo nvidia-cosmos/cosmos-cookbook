@@ -227,7 +227,7 @@ torchrun --nproc_per_node=1 inference.py \
 
 ## 5. Using Cosmos Reason as Video Critic for Rejection Sampling
 
-Cosmos Reason2 is capable of evaluating if a video adheres to fundamental physical laws such as Gravity, Object Permanency, Collision dynamics, and Cause-and-effect relationships. When paired with a world model such as Cosmos Predict2.5, it enables best-of-N sampling by generating multiple video candidates and selecting the most physically accurate ones, thereby improving generation quality.
+Cosmos Reason2 is capable of evaluating if a video adheres to fundamental physical laws such as Gravity, Object Permanency, Collision dynamics, and Cause-and-effect relationships. When paired with a world model such as Cosmos Predict2.5, it enables best-of-N sampling by generating multiple video candidates and selecting the most physically accurate ones, thereby improving generation quality. This recipe uses Cosmos Reason 2 in a **zero-shot** manner (no fine-tuning of the critic). For fine-tuning the critic on physical-plausibility data, see [Physical Plausibility Prediction with Cosmos Reason 2](../../post_training/reason2/physical-plausibility-check/post_training.md).
 
 ### Evaluation Criteria
 
