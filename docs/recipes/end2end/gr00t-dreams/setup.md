@@ -40,7 +40,7 @@ Follow the **official installation instructions** for Cosmos Reason 2 (environme
 
 ```shell
 uv sync --extra=cu128 --active --inexact
-```
+After completing both installations, you should be able to run inference from each repository root as described in their docs.
 
 CUDA variants:
 
