@@ -10,7 +10,7 @@ NVIDIA driver compatible with CUDA 12.8+ (see [Predict 2.5](https://github.com/n
 
 ## Installation
 
-Clone the necessary repositories:
+### 1. Clone the repositories
 
 ```shell
 git clone https://github.com/nvidia-cosmos/cosmos-predict2.5.git
