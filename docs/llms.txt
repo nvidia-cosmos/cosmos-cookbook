@@ -1,0 +1,87 @@
+# Cosmos Cookbook
+
+> NVIDIA Cosmos World Foundation Models — recipes, concepts, and guides for Physical AI practitioners.
+>
+> Cosmos models accelerate synthetic data generation, post-training, and evaluation for robotics,
+> autonomous vehicles, and physical AI. This cookbook provides end-to-end recipes and core concepts
+> for working with the full Cosmos model family.
+>
+> Source: https://github.com/nvidia-cosmos/cosmos-cookbook
+> License: Apache 2.0
+
+
+## Getting Started
+- [Getting Started](docs/getting_started/setup.md): This guide covers the essential tools and dependencies needed to set up your development environment for working with Cosmos models.
+- [Cloud Deployments](docs/getting_started/cloud_platform.md): Get started by deploying on a cloud instance.
+
+## Inference Recipes
+- [Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images](docs/recipes/inference/predict2/inference-its/inference.md): This tutorial demonstrates how to use the Cosmos Predict 2 Text2Image model for Synthetic Data Generation (SDG) to improve the accuracy o...
+- [Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images](docs/recipes/inference/transfer1/inference-its-weather-augmentation/inference.md): This tutorial demonstrates how to use the Cosmos Transfer 1 model for Synthetic Data Generation (SDG) to augment data and improve the acc...
+- [Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking](docs/recipes/inference/transfer1/inference-warehouse-mv/inference.md): This use case demonstrates how to apply Cosmos Transfer 1 for data augmentation over Omniverse (OV) generated synthetic data to close the...
+- [Isaac GR00T-Mimic for Synthetic Manipulation Motion Generation](docs/recipes/inference/transfer1/gr00t-mimic/inference.md): Isaac GR00T-Mimic is a reference workflow for creating large-scale synthetic motion trajectories for robot manipulation from minimal huma...
+- [Cosmos Transfer 2.5 Sim2Real for Simulator Videos](docs/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md): This tutorial demonstrates how to use the Cosmos Transfer 2.5 model to augment synthetic data from simulations, converting limited simula...
+- [Cosmos Transfer Sim2Real for Robotics Navigation Tasks](docs/recipes/inference/transfer1/inference-x-mobility/inference.md): This tutorial demonstrates how to apply Cosmos Transfer to robotics navigation tasks to improve Sim2Real performance.
+- [Multi-Control Recipes with Cosmos Transfer 2.5](docs/recipes/inference/transfer2_5/inference-real-augmentation/inference.md): You can experiment with these recipes and customize them for your own videos using this Brev instance.
+- [Style-Guided Video Generation with Cosmos Transfer 2.5](docs/recipes/inference/transfer2_5/inference-image-prompt/inference.md): Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that combine structural control (edge/depth/segmentation) wit...
+- [Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5](docs/recipes/inference/transfer2_5/biotrove_augmentation/inference.md): This recipe demonstrates a complete domain-transfer pipeline for addressing data scarcity in the BioTrove moth dataset using Cosmos Trans...
+- [Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B](docs/recipes/inference/reason2/intbot_showcase/inference.md): Cosmos-Reason2-8B successfully infers interactive social intent toward the robot, whereas the base model focuses primarily on gesture app...
+- [Video Search and Summarization with Cosmos Reason](docs/recipes/inference/reason2/vss/inference.md): Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail sto...
+- [Worker Safety in a Classical Warehouse with Cosmos Reason 2](docs/recipes/inference/reason2/worker_safety/inference.md): This recipe demonstrates a complete video reasoning pipeline for automating industrial safety inspections in challenging "brownfield" env...
+
+## Post-Training Recipes
+- [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](docs/recipes/post_training/predict2/cosmos_policy/post_training.md): For LIBERO and ALOHA, the latent diffusion sequence differs slightly.
+- [Traffic Anomaly Generation with Cosmos Predict2](docs/recipes/post_training/predict2/its-accident/post_training.md): In Intelligent Transportation Systems (ITS), collecting real-world data for rare events like traffic accidents, jaywalking, or blocked in...
+- [Isaac GR00T-Dreams for Synthetic Trajectory Data Generation](docs/recipes/post_training/predict2/gr00t-dreams/post-training.md): Isaac GR00T-Dreams leverages Cosmos Predict 2 to generate synthetic trajectory data for teaching humanoid robots new actions in novel env...
+- [LoRA Post-training for Sports Video Generation](docs/recipes/post_training/predict2_5/sports/post_training.md): This guide provides instructions on running LoRA (Low-Rank Adaptation) post-training with the Cosmos Predict 2.5 models for sports video...
+- [Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview](docs/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md): Generating realistic multi-camera autonomous vehicle videos requires precise spatial control to ensure consistency across viewpoints and...
+- [Physical Plausibility Prediction with Cosmos Reason 1](docs/recipes/post_training/reason1/physical-plausibility-check/post_training.md): In synthetic video generation, it is crucial to determine the quality of the generated videos and filter out videos of bad quality.
+- [Physical Plausibility Prediction with Cosmos Reason 2](docs/recipes/post_training/reason2/physical-plausibility-check/post_training.md): In synthetic video generation, it is crucial to determine the quality of the generated videos and filter out videos of bad quality.
+- [Intelligent Transportation Post-Training with Cosmos Reason 1](docs/recipes/post_training/reason1/intelligent-transportation/post_training.md): Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or und...
+- [Spatial AI for Warehouse Post-Training with Cosmos Reason 1](docs/recipes/post_training/reason1/spatial-ai-warehouse/post_training.md): Supervised Fine-Tuning (SFT) is used to improve the accuracy of a pre-trained model by teaching it to follow specific instructions or und...
+- [SFT for AV video captioning and VQA](docs/recipes/post_training/reason1/av_video_caption_vqa/post_training.md): Autonomous vehicles must operate under a variety of different conditions.
+- [Cosmos Reason for Mimic Gen temporal localization](docs/recipes/post_training/reason1/temporal_localization/post_training.md): It works by dividing each demonstration into object-centric subtasks annotated with timestamp boundaries.
+- [Wafer Map Anomaly Classification with Cosmos Reason 1](docs/recipes/post_training/reason1/wafermap_classification/post_training.md): In the heart of every modern electronic device lies a silicon chip, the product of a manufacturing process so intricate that even a micro...
+- [Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA](docs/recipes/post_training/reason2/video_caption_vqa/post_training.md): This recipe is a collaboration between Uber and NVIDIA to improve Cosmos Reason 2 as a video captioner for autonomous vehicle (AV) applic...
+- [3D Autonomous Vehicle Grounding Post-Training with Cosmos Reason 1 & 2](docs/recipes/post_training/reason2/av_3d_grounding/post_training.md): 3D vehicle grounding is a computer vision task that enables autonomous vehicles to detect and precisely localize surrounding vehicles in...
+
+## Data Curation Recipes
+- [Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator](docs/recipes/data_curation/predict2_data/data_curation.md): This recipe demonstrates how to curate video data for fine-tuning Cosmos Predict 2 models using Cosmos Curator.
+- [Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors](docs/recipes/data_curation/embedding_analysis/embedding_analysis.md): This recipe shows a minimal, reproducible way to analyze and visualize precomputed embeddings (such as those produced by Cosmos Curator).
+
+## End-to-End Workflows
+- [Synthetic Data Generation (SDG) for Traffic Scenarios](docs/recipes/end2end/smart_city_sdg/workflow_e2e.md): This recipe demonstrates how to utilize Cosmos models for generating photorealistic synthetic data for urban traffic scenarios.
+
+## Core Concepts
+
+### Control Modalities
+- [Cosmos Transfer 2.5 Control Modalities: Core Concepts](docs/core_concepts/control_modalities/overview.md): This document serves as a comprehensive guide to the core concepts required for using the Transfer 2.5 video generation model.
+
+### Data Curation
+- [Data Curation](docs/core_concepts/data_curation/overview.md): Data curation is the foundation of successful post-training.
+- [Core Curation with Cosmos-Curator](docs/core_concepts/data_curation/core_curation.md): Prerequisites: Before proceeding with core curation, ensure you have completed the prerequisite steps outlined in the Data Curation Overv...
+
+### Post-Training
+- [Post-Training](docs/core_concepts/post_training/overview.md): Post-training is a critical step for adapting foundation models to domain-specific tasks and improving performance beyond the capabilitie...
+
+### Evaluation
+- [Evaluation Overview](docs/core_concepts/evaluation/overview.md): Evaluation is a critical component of any post-training workflow.
+- [Model Evaluation Predict](docs/core_concepts/evaluation/evaluation_predict.md): This page focuses on evaluation of Predict (generative video) models.
+- [Transfer Model Evaluation (ControlNet / Cosmos Transfer)](docs/core_concepts/evaluation/evaluation_transfer.md): Evaluate multi‑modality ControlNet models (e.g., Cosmos Transfer) for fidelity to control signals and overall video quality.
+- [Cosmos Reason as Reward Model](docs/core_concepts/evaluation/reason_as_reward.md): NVIDIA Cosmos Reason is an open, customizable, 7B-parameter reasoning vision language model (VLM) for physical AI and robotics.
+- [Model Evaluation Reason](docs/core_concepts/evaluation/evaluation_reason.md): Cosmos Reason models can be evaluated using standardized benchmarks that assess reasoning capabilities across diverse scenarios.
+
+### Distillation
+- [Distillation](docs/core_concepts/distillation/overview.md): Model distillation is a powerful technique for creating efficient "Student" models that maintain the quality and capabilities of "Teacher...
+- [Distilling Cosmos Transfer 1 Models](docs/core_concepts/distillation/distilling_transfer1.md): This tutorial presents a case study on single-step distillation of the 36-step Cosmos Transfer 1-7B Edge model.
+- [Distilling Cosmos Predict 2.5](docs/core_concepts/distillation/distilling_predict2.5.md): The distillation process compresses a pre-trained "teacher" video diffusion model, which requires many inference steps, into a "student"...
+
+## Gallery
+- [Robotics Domain Adaptation Gallery](docs/gallery/robotics_inference.md): This page showcases results from Cosmos Transfer 2.5 for robotics applications.
+- [Autonomous Vehicle Domain Adaptation Gallery](docs/gallery/av_inference.md): This page showcases a collection of results generated using Cosmos Transfer 2.5 for autonomous vehicle (AV) applications.
+- [Vision AI Gallery](docs/gallery/vision_ai_inference.md): We provide a dedicated Brev instance to help you follow along with these examples.
+
+## Reference
+- [Cosmos Cookbook](docs/index.md): Register for NVIDIA GTC happening March 16–19, 2026, and add the Cosmos sessions to your calendar.
+- [Frequently Asked Questions](docs/faq.md): This document contains comprehensive FAQ information compiled from multiple sources.
+- [Glossary](docs/glossary.md): Chain of Thought (CoT) : A reasoning technique where models generate step-by-step explanations of their thought process before arriving a...
+- [How to Contribute](docs/contributing_doc.md): The Cosmos Cookbook is designed to create a dedicated space where the Cosmos team and community can openly share and contribute practical...

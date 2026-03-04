@@ -1,0 +1,113 @@
+# Cosmos Cookbook — YAML Frontmatter Schema
+# ============================================
+# All fields use the `cosmos_` namespace prefix to avoid conflicts with
+# MkDocs Material reserved keys (title, description, template, tags).
+#
+# Usage: paste this block at the top of any recipe .md file, between `---` delimiters.
+# Required fields must be present for the recipe to pass CI validation.
+# Optional fields are encouraged but the file is valid without them.
+#
+# Schema version: 1.0.0  (bump the minor when new optional fields are added,
+#                          bump the major when required fields change)
+
+schema_version: "1.0.0"
+
+fields:
+
+  # ---------------------------------------------------------------------------
+  # REQUIRED FIELDS
+  # ---------------------------------------------------------------------------
+
+  cosmos_model:
+    # Which Cosmos model(s) this recipe targets.
+    # Use the canonical display names exactly as listed in allowed_values.
+    # Multiple models are allowed — e.g., an end-to-end recipe that combines
+    # Cosmos Transfer 2.5 and Cosmos Reason 1 lists both.
+    type: "list[string]"
+    required: true
+    allowed_values:
+      - "Cosmos Predict 2"
+      - "Cosmos Predict 2.5"
+      - "Cosmos Transfer 1"
+      - "Cosmos Transfer 2.5"
+      - "Cosmos Reason 1"
+      - "Cosmos Reason 2"
+      - "Cosmos Curator"         # data-curation recipes that drive the curator pipeline
+    example:
+      - "Cosmos Predict 2"
+
+  cosmos_workload:
+    # The primary workload category for this recipe.
+    # Must be exactly one value from the enum below (lowercase, hyphenated).
+    # Maps to the "Workload" column in the metadata table inside the document body.
+    type: string
+    required: true
+    enum:
+      - inference        # Running a pre-trained model for generation or evaluation
+      - post-training    # Fine-tuning or LoRA adaptation of a Cosmos model
+      - data-curation    # Building or curating a dataset (Cosmos Curator workflows)
+      - end-to-end       # Multi-stage workflows combining inference + post-training + curation
+
+  cosmos_tags:
+    # Free-form thematic tags for filtering and search.
+    # Use lowercase, hyphen-separated terms.
+    # Include at minimum the primary domain tag (e.g., robotics, autonomous-driving,
+    # warehouse, intelligent-transportation).
+    # Prefer tags already in use in the repo before inventing new ones.
+    type: "list[string]"
+    required: true
+    example:
+      - "synthetic-data-generation"
+      - "intelligent-transportation"
+      - "object-detection"
+
+  cosmos_hardware_min:
+    # Minimum GPU hardware required to run this recipe end-to-end.
+    # Format: "<count>x <GPU model>".
+    # If the recipe covers inference only and runs on lighter hardware, note it.
+    type: string
+    required: true
+    example: "1x A100 80GB"
+    common_values:
+      - "1x A100 80GB"
+      - "1x H100 80GB"
+      - "4x H100 80GB"
+      - "8x H100 80GB"
+
+  cosmos_published_date:
+    # Date this recipe was first published or last substantially revised.
+    # ISO 8601 format: YYYY-MM-DD.
+    type: string
+    required: true
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    example: "2025-06-15"
+
+  # ---------------------------------------------------------------------------
+  # OPTIONAL FIELDS
+  # ---------------------------------------------------------------------------
+
+  cosmos_authors:
+    # List of authors in "Display Name" format (first + last name).
+    # Mirrors the `> **Authors:**` blockquote inside the document body.
+    # Including this field enables automated author index generation.
+    type: "list[string]"
+    required: false
+    example:
+      - "Charul Verma"
+      - "Reihaneh Entezari"
+      - "Arihant Jain"
+
+  cosmos_brev_launchable:
+    # Set to true if this recipe has a one-click Brev launch button configured.
+    # Controls whether the Brev badge is rendered in the docs site card for this recipe.
+    type: boolean
+    required: false
+    default: false
+    example: true
+
+  cosmos_use_case:
+    # A short, human-readable use-case label (noun phrase, title case, 2–6 words).
+    # Corresponds to the "Use Case" column in the metadata table inside the document.
+    type: string
+    required: false
+    example: "Synthetic Data Generation"
