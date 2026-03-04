@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: end-to-end
+cosmos_tags:
+  - "end-to-end"
+  - "photorealistic-synthetic-data-generation"
+  - "smart-city"
+  - "synthetic-data-generation"
+  - "transfer-2-5"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-11-26
+cosmos_authors:
+  - "Aidan Ladenburg"
+  - "Adityan Jothi"
+cosmos_use_case: "Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning"
+---
+
 # Synthetic Data Generation (SDG) for Traffic Scenarios
 
 > **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi](https://www.linkedin.com/in/adityan-jothi-23a229105)

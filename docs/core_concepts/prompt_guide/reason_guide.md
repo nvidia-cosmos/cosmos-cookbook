@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "prompt-guide"
+  - "prompting"
+  - "reason-2"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-01-30
+cosmos_authors:
+  - "Tsung-Yi Lin"
+  - "Xuan Li"
+  - "Diego Garzon"
+cosmos_use_case: "Prompt Guide"
+---
+
 # Prompt Guide Cosmos Reason 2
 
 > **Authors:** [Tsung-Yi Lin](https://www.linkedin.com/in/tsung-yi-lin-48a4b541/) • [Xuan Li](https://www.linkedin.com/in/xuanli1030/) • [Diego Garzon](https://www.linkedin.com/in/dgarzon-engineering-art/)

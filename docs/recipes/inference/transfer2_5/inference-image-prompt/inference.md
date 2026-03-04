@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "styleguided-video-generation-using"
+  - "transfer-2-5"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-12-20
+cosmos_authors:
+  - "Fangyin Wei"
+  - "Aryaman Gupta"
+cosmos_use_case: "Style-guided video generation using image references"
+---
+
 # Style-Guided Video Generation with Cosmos Transfer 2.5
 
 > **Authors:** [Fangyin Wei](https://weify627.github.io/) • [Aryaman Gupta](https://www.linkedin.com/in/aryamang/)

@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "autonomous-driving"
+  - "post-training"
+  - "spatiallyconditioned-multiview-video-generation"
+  - "transfer-2-5"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-12-22
+cosmos_authors:
+  - "Tiffany Cai"
+  - "Francesco Ferroni"
+cosmos_use_case: "Spatially-conditioned multiview AV video generation with world scenario map control"
+---
+
 # Transfer2.5 Multiview Generation with World Scenario Map Control with Cosmos Predict2.5 Multiview
 
 > **Authors:** [Tiffany Cai](https://www.linkedin.com/in/tiffany-cai-57681211a/) • [Francesco Ferroni](https://www.linkedin.com/in/francesco-ferroni-44708137/)

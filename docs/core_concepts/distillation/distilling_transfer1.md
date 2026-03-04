@@ -1,3 +1,16 @@
+---
+cosmos_model: ["Cosmos Transfer 1"]
+cosmos_workload: inference
+cosmos_tags:
+  - "distillation"
+  - "inference"
+  - "transfer-1"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Grace Lam"
+---
+
 # Distilling Cosmos Transfer 1 Models
 
 > **Authors:** [Grace Lam](https://www.linkedin.com/in/grace-lam/)

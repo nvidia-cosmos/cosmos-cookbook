@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Reason 1"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "reason-1"
+  - "semiconductor"
+  - "wafer-map-anomaly-classification"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-12-12
+cosmos_authors:
+  - "Anita Chiu"
+  - "Tim Lin"
+cosmos_use_case: "Wafer Map Anomaly Classification"
+---
+
 
 # Wafer Map Anomaly Classification with Cosmos Reason 1
 

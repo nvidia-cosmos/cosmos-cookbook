@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "sim-real-data-augmentation"
+  - "simulation"
+  - "synthetic-data-generation"
+  - "transfer-2-5"
+cosmos_hardware_min: "1x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Ryan Ji"
+  - "Jingyi Jin"
+cosmos_use_case: "Sim to Real data augmentation"
+---
+
 # Cosmos Transfer 2.5 Sim2Real for Simulator Videos
 
 > **Authors:** [Ryan Ji](https://www.linkedin.com/in/ryan-ji-a73300206/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)

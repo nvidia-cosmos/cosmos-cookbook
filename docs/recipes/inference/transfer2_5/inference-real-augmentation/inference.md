@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "multicontrol-video-editing-background"
+  - "transfer-2-5"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-11-09
+cosmos_authors:
+  - "Aiden Chang"
+  - "Akul Santhosh"
+cosmos_use_case: "Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes"
+---
+
 # Multi-Control Recipes with Cosmos Transfer 2.5
 
 > **Authors:** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)

@@ -1,3 +1,17 @@
+---
+cosmos_model: ["Cosmos Curator"]
+cosmos_workload: data-curation
+cosmos_tags:
+  - "curator"
+  - "data-curation"
+  - "video-clustering-time-series"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-01-06
+cosmos_authors:
+  - "Petr Khrapchenkov"
+cosmos_use_case: "Video clustering by Time Series K-Means on embedding vector trajectories"
+---
+
 # Dataset Video Clustering with Time Series K-Means Applied to Embedding Vectors
 
 > **Authors:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)

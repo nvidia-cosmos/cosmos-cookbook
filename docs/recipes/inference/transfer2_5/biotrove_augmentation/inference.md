@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "biology"
+  - "domain-transfer-scarce-biological"
+  - "inference"
+  - "transfer-2-5"
+cosmos_hardware_min: "1x H100 80GB"
+cosmos_published_date: 2025-11-24
+cosmos_authors:
+  - "Paula Ramos, PhD"
+cosmos_use_case: "Domain transfer for scarce biological datasets"
+---
+
 # Domain Transfer for BioTrove Moths with Cosmos Transfer 2.5
 
 > **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)

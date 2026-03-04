@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "reason-2"
+  - "safety"
+  - "zeroshot-safety-compliance-hazard"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-02-04
+cosmos_authors:
+  - "Paula Ramos, PhD"
+cosmos_use_case: "Zero-shot safety compliance and hazard detection"
+---
+
 # Worker Safety in a Classical Warehouse with Cosmos Reason 2
 
 > **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)

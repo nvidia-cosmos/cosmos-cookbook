@@ -1,3 +1,16 @@
+---
+cosmos_model: ["Cosmos Predict 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "distillation"
+  - "inference"
+  - "predict-2-5"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-11-30
+cosmos_authors:
+  - "Qianli Ma"
+---
+
 # Distilling Cosmos Predict 2.5
 
 > **Authors:** [Qianli Ma](https://qianlim.github.io/)

@@ -1,3 +1,16 @@
+---
+cosmos_model: ["Cosmos Reason 1"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "autonomous-driving"
+  - "post-training"
+  - "reason-1"
+  - "video-captioning-visual-question"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-10-13
+cosmos_use_case: "AV video captioning and visual question answering"
+---
+
 # SFT for AV video captioning and VQA
 
 > **Authors:**

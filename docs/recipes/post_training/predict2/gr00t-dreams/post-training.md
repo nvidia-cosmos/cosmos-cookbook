@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Predict 2"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "predict-2"
+  - "robotics"
+  - "synthetic-data-generation"
+  - "synthetic-trajectory-data-generation"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "NVIDIA Isaac Team"
+cosmos_use_case: "Synthetic trajectory data generation for humanoid robots"
+---
+
 # Isaac GR00T-Dreams for Synthetic Trajectory Data Generation
 
 > **Authors:** NVIDIA Isaac Team

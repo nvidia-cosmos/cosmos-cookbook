@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Reason 1"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "reason-1"
+  - "spatial-warehouse-environments"
+  - "warehouse"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Xiaolong Li"
+  - "Chintan Shah"
+  - "Tomasz Kornuta"
+cosmos_use_case: "Spatial AI for warehouse environments"
+---
+
 # Spatial AI for Warehouse Post-Training with Cosmos Reason 1
 
 > **Authors:** [Xiaolong Li](https://www.linkedin.com/in/xiaolong-li19/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)

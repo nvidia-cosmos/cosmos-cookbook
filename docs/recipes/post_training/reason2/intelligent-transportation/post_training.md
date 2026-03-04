@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "intelligent-transportation"
+  - "intelligent-transportation-scene-understanding"
+  - "post-training"
+  - "reason-2"
+cosmos_hardware_min: "8x A100 80GB"
+cosmos_published_date: 2026-01-26
+cosmos_authors:
+  - "Paris Zhang, Deep Rodge, Monika Jhuria"
+cosmos_use_case: "Intelligent transportation scene understanding"
+---
+
 # Intelligent Transportation Post-Training with Cosmos Reason 2
 
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/), [Deep Rodge](https://www.linkedin.com/in/deeprodge/), [Monika Jhuria](https://www.linkedin.com/in/monika-jhuria-07077797/)

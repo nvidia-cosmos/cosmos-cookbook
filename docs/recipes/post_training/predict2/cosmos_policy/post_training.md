@@ -1,3 +1,22 @@
+---
+cosmos_model:
+  - "Cosmos Predict 2"
+  - "Cosmos Predict 2.5"
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "predict-2"
+  - "predict-2-5"
+  - "visionbased-robotic-manipulation-modelbased"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2026-01-28
+cosmos_authors:
+  - "Moo Jin Kim"
+  - "Yuzhu Dong"
+  - "Jinwei Gu"
+cosmos_use_case: "Vision-based robotic manipulation and model-based planning"
+---
+
 # Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning
 
 > **Authors:** [Moo Jin Kim](https://moojink.com) • [Yuzhu Dong](https://www.linkedin.com/in/yuzhudong/) • [Jinwei Gu](https://www.gujinwei.org/)

@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Reason 1"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "reason-1"
+  - "temporal-localization-mimicgen-data"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-11-24
+cosmos_authors:
+  - "Aigul Dzhumamuratova"
+  - "Alexander Efitorov"
+  - "Hesam Rabeti"
+  - "Jingyi Jin"
+cosmos_use_case: "Temporal localization for MimicGen data generation"
+---
+
 # Cosmos Reason for Mimic Gen temporal localization
 
 > **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Alexander Efitorov](https://www.linkedin.com/in/alex-efitorov/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)

@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Curator"]
+cosmos_workload: data-curation
+cosmos_tags:
+  - "curator"
+  - "data-curation"
+  - "video-data-curation-predict"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-10-29
+cosmos_authors:
+  - "Hao Wang"
+  - "NVIDIA Cosmos Curator Team"
+cosmos_use_case: "Video data curation for Predict 2 post-training"
+---
+
 # Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator
 
 > **Authors:** [Hao Wang](https://www.linkedin.com/in/pkuwanghao/) • NVIDIA Cosmos Curator Team

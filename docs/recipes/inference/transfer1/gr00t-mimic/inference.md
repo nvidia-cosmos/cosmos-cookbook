@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Transfer 1"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "robotics"
+  - "synthetic-data-generation"
+  - "synthetic-manipulation-motion-generation"
+  - "transfer-1"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "NVIDIA Isaac Team"
+cosmos_use_case: "Synthetic manipulation motion generation for humanoid robots"
+---
+
 # Isaac GR00T-Mimic for Synthetic Manipulation Motion Generation
 
 > **Authors:** NVIDIA Isaac Team

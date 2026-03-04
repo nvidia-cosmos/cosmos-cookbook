@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "egocentric-social-physical-reasoning"
+  - "inference"
+  - "reason-2"
+  - "robotics"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-01-01
+cosmos_authors:
+  - "Tingyu Zhang"
+  - "Sharon Yang"
+cosmos_use_case: "Egocentric social and physical reasoning for robotics"
+---
+
 # Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B
 
 > **Authors:** [Tingyu Zhang](https://www.linkedin.com/in/tingyu-zhang-b3357314a) • [Sharon Yang](http://linkedin.com/in/sharonxueyangintel)

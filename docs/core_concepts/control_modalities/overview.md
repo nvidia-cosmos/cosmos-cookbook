@@ -1,3 +1,17 @@
+---
+cosmos_model: ["Cosmos Transfer 2.5"]
+cosmos_workload: inference
+cosmos_tags:
+  - "control-modalities"
+  - "inference"
+  - "transfer-2-5"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-11-09
+cosmos_authors:
+  - "Aiden Chang"
+  - "Akul Santhosh"
+---
+
 # Cosmos Transfer 2.5 Control Modalities: Core Concepts
 
 > **Authors:** [Aiden Chang](https://www.linkedin.com/in/aiden-chang/) • [Akul Santhosh](https://www.linkedin.com/in/akulsanthosh/)

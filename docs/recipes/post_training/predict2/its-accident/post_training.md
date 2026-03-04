@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Predict 2"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "intelligent-transportation"
+  - "post-training"
+  - "predict-2"
+  - "traffic-anomaly-generation-improved"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Arslan Ali, Grace Lam, Amol Fasale, Jingyi Jin"
+cosmos_use_case: "Traffic anomaly generation with improved realism and prompt alignment"
+---
+
 # Traffic Anomaly Generation with Cosmos Predict2
 
 > **Authors:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/), [Grace Lam](https://www.linkedin.com/in/grace-lam/), [Amol Fasale](https://www.linkedin.com/in/amolfasale/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)

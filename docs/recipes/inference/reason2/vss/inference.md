@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "large-scale-video-search"
+  - "reason-2"
+  - "video-search"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-01-29
+cosmos_authors:
+  - "Sammy Ochoa"
+cosmos_use_case: "Large scale video search and summarization."
+---
+
 # Video Search and Summarization with Cosmos Reason
 
 > **Authors:** [Sammy Ochoa](https://www.linkedin.com/in/sammy-ochoa/)

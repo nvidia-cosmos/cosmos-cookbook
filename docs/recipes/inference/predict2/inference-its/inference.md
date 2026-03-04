@@ -1,3 +1,22 @@
+---
+cosmos_model: ["Cosmos Predict 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "intelligent-transportation"
+  - "predict-2"
+  - "synthetic-data-generation"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-11-18
+cosmos_authors:
+  - "Charul Verma"
+  - "Reihaneh Entezari"
+  - "Arihant Jain"
+  - "Dharshi Devendran"
+  - "Ratnesh Kumar"
+cosmos_use_case: "Synthetic Data Generation"
+---
+
 # Cosmos Predict 2 Text2Image for Intelligent Transportation System (ITS) Images
 
 > **Authors:** [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/)  • [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)

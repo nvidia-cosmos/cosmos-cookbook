@@ -1,3 +1,21 @@
+---
+cosmos_model: ["Cosmos Transfer 1"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "sim-real-data-augmentation"
+  - "transfer-1"
+  - "warehouse"
+cosmos_hardware_min: "1x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Alice Li"
+  - "Thomas Tang"
+  - "Yuxing Wang"
+  - "Jingyi Jin > **Organization:** NVIDIA"
+cosmos_use_case: "Sim to Real data augmentation"
+---
+
 # Cosmos Transfer 1 Sim2Real for Multi-View Warehouse Detection and Tracking
 
 > **Authors:** [Alice Li](https://www.linkedin.com/in/alice-li-17439713b/) • [Thomas Tang](https://www.linkedin.com/in/zhengthomastang/) • [Yuxing Wang](https://www.linkedin.com/in/yuxing-wang-55394620b/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin) > **Organization:** NVIDIA

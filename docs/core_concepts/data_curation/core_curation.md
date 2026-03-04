@@ -1,3 +1,15 @@
+---
+cosmos_model: ["Cosmos Curator"]
+cosmos_workload: data-curation
+cosmos_tags:
+  - "curator"
+  - "data-curation"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "[Jibin Varghese"
+---
+
 # Core Curation with Cosmos-Curator
 
 > **Authors:** [Jibin Varghese

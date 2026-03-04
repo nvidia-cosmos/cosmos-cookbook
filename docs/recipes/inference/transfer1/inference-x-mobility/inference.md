@@ -1,3 +1,20 @@
+---
+cosmos_model: ["Cosmos Transfer 1"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "sim-real-data-augmentation"
+  - "transfer-1"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2025-10-27
+cosmos_authors:
+  - "Aigul Dzhumamuratova"
+  - "Hesam Rabeti"
+  - "Yan Chang"
+  - "Jingyi Jin"
+cosmos_use_case: "Sim to Real data augmentation"
+---
+
 # Cosmos Transfer Sim2Real for Robotics Navigation Tasks
 
 > **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Yan Chang](https://www.linkedin.com/in/yanchang1/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)

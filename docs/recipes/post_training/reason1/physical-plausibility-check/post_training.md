@@ -1,3 +1,19 @@
+---
+cosmos_model: ["Cosmos Reason 1"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "physical-plausibility-prediction"
+  - "post-training"
+  - "reason-1"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Shun Zhang"
+  - "Zekun Hao"
+  - "Jingyi Jin"
+cosmos_use_case: "Physical plausibility prediction"
+---
+
 # Physical Plausibility Prediction with Cosmos Reason 1
 
 > **Authors:** [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/) • [Zekun Hao](https://www.linkedin.com/in/zekunhao/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)

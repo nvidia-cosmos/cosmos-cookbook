@@ -1,3 +1,22 @@
+---
+cosmos_model: ["Cosmos Transfer 1"]
+cosmos_workload: inference
+cosmos_tags:
+  - "data-augmentation"
+  - "inference"
+  - "intelligent-transportation"
+  - "transfer-1"
+cosmos_hardware_min: "1x H100 80GB"
+cosmos_published_date: 2025-10-09
+cosmos_authors:
+  - "Reihaneh Entezari"
+  - "Charul Verma"
+  - "Arihant Jain"
+  - "Dharshi Devendran"
+  - "Ratnesh Kumar"
+cosmos_use_case: "Data augmentation"
+---
+
 # Cosmos Transfer 1 Weather Augmentation for Intelligent Transportation System (ITS) Images
 
 > **Authors:** [Reihaneh Entezari](https://www.linkedin.com/in/reihanehentezari/) • [Charul Verma](https://www.linkedin.com/in/charul-verma-6bb778172/) • [Arihant Jain](https://www.linkedin.com/in/arihant-jain-5955046b/) • [Dharshi Devendran](https://www.linkedin.com/in/dharshidevendran/) • [Ratnesh Kumar](https://www.linkedin.com/in/rkumar1729/)

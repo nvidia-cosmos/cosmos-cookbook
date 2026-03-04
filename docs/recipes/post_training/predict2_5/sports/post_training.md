@@ -1,3 +1,18 @@
+---
+cosmos_model: ["Cosmos Predict 2.5"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "predict-2-5"
+  - "sports"
+  - "sports-video-generation"
+cosmos_hardware_min: "4x A100 80GB"
+cosmos_published_date: 2025-12-01
+cosmos_authors:
+  - "Arslan Ali"
+cosmos_use_case: "Sports Video Generation"
+---
+
 # LoRA Post-training for Sports Video Generation
 
 > **Author:** [Arslan Ali](https://www.linkedin.com/in/arslan-ali-ph-d-5b314239/)

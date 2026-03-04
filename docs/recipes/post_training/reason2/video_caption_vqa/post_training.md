@@ -1,3 +1,15 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "reason-2"
+  - "video-captioning-visual-question"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2026-01-05
+cosmos_use_case: "AV video captioning and visual question answering"
+---
+
 # Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA
 
 > **NVIDIA:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)\*, [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/)\*, [Xiaodong Yang](https://www.linkedin.com/in/xiaodong-yang-79a44134/)

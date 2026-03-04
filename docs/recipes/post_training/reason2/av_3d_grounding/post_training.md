@@ -1,3 +1,22 @@
+---
+cosmos_model:
+  - "Cosmos Reason 1"
+  - "Cosmos Reason 2"
+cosmos_workload: post-training
+cosmos_tags:
+  - "autonomous-driving"
+  - "post-training"
+  - "reason-1"
+  - "reason-2"
+  - "vehicle-grounding-autonomous-driving"
+cosmos_hardware_min: "4x H100 80GB"
+cosmos_published_date: 2026-02-18
+cosmos_authors:
+  - "Amol Fasale"
+  - "Jingyi Jin"
+cosmos_use_case: "3D vehicle grounding in autonomous driving scenarios"
+---
+
 # 3D Autonomous Vehicle Grounding Post-Training with Cosmos Reason 1 & 2
 
 > **Authors:** [Amol Fasale](https://www.linkedin.com/in/amolfasale/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)

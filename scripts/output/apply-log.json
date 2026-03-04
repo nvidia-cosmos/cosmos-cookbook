@@ -1,0 +1,782 @@
+{
+  "dry_run": false,
+  "total_processed": 37,
+  "applied": 35,
+  "skipped": 2,
+  "errors": 0,
+  "results": [
+    {
+      "file": "docs/recipes/data_curation/embedding_analysis/embedding_analysis.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Curator"
+      ],
+      "workload": "data-curation",
+      "tags": [
+        "curator",
+        "data-curation",
+        "video-clustering-time-series"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2026-01-06",
+      "authors": [
+        "Petr Khrapchenkov"
+      ],
+      "use_case": "Video clustering by Time Series K-Means on embedding vector trajectories",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Curator\"]\ncosmos_workload: data-curation\ncosmos_tags:\n  - \"curator\"\n  - \"data-curation\"\n  - \"video-clustering-time-series\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2026-01-06\ncosmos_authors:\n  - \"Petr Khrapchenkov\"\ncosmos_use_case: \"Video clustering by Time Series K-Means on embedding vector trajectories\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/data_curation/predict2_data/data_curation.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Curator"
+      ],
+      "workload": "data-curation",
+      "tags": [
+        "curator",
+        "data-curation",
+        "video-data-curation-predict"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-10-29",
+      "authors": [
+        "Hao Wang",
+        "NVIDIA Cosmos Curator Team"
+      ],
+      "use_case": "Video data curation for Predict 2 post-training",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Curator\"]\ncosmos_workload: data-curation\ncosmos_tags:\n  - \"curator\"\n  - \"data-curation\"\n  - \"video-data-curation-predict\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-10-29\ncosmos_authors:\n  - \"Hao Wang\"\n  - \"NVIDIA Cosmos Curator Team\"\ncosmos_use_case: \"Video data curation for Predict 2 post-training\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/end2end/smart_city_sdg/workflow_e2e.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "end-to-end",
+      "tags": [
+        "end-to-end",
+        "photorealistic-synthetic-data-generation",
+        "smart-city",
+        "synthetic-data-generation",
+        "transfer-2-5"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-11-26",
+      "authors": [
+        "Aidan Ladenburg",
+        "Adityan Jothi"
+      ],
+      "use_case": "Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: end-to-end\ncosmos_tags:\n  - \"end-to-end\"\n  - \"photorealistic-synthetic-data-generation\"\n  - \"smart-city\"\n  - \"synthetic-data-generation\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-11-26\ncosmos_authors:\n  - \"Aidan Ladenburg\"\n  - \"Adityan Jothi\"\ncosmos_use_case: \"Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/predict2/inference-its/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "intelligent-transportation",
+        "predict-2",
+        "synthetic-data-generation"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-11-18",
+      "authors": [
+        "Charul Verma",
+        "Reihaneh Entezari",
+        "Arihant Jain",
+        "Dharshi Devendran",
+        "Ratnesh Kumar"
+      ],
+      "use_case": "Synthetic Data Generation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Predict 2\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"intelligent-transportation\"\n  - \"predict-2\"\n  - \"synthetic-data-generation\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-11-18\ncosmos_authors:\n  - \"Charul Verma\"\n  - \"Reihaneh Entezari\"\n  - \"Arihant Jain\"\n  - \"Dharshi Devendran\"\n  - \"Ratnesh Kumar\"\ncosmos_use_case: \"Synthetic Data Generation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/reason2/intbot_showcase/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "inference",
+      "tags": [
+        "egocentric-social-physical-reasoning",
+        "inference",
+        "reason-2",
+        "robotics"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2026-01-01",
+      "authors": [
+        "Tingyu Zhang",
+        "Sharon Yang"
+      ],
+      "use_case": "Egocentric social and physical reasoning for robotics",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"egocentric-social-physical-reasoning\"\n  - \"inference\"\n  - \"reason-2\"\n  - \"robotics\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2026-01-01\ncosmos_authors:\n  - \"Tingyu Zhang\"\n  - \"Sharon Yang\"\ncosmos_use_case: \"Egocentric social and physical reasoning for robotics\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/reason2/vss/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "large-scale-video-search",
+        "reason-2",
+        "video-search"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2026-01-29",
+      "authors": [
+        "Sammy Ochoa"
+      ],
+      "use_case": "Large scale video search and summarization.",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"large-scale-video-search\"\n  - \"reason-2\"\n  - \"video-search\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2026-01-29\ncosmos_authors:\n  - \"Sammy Ochoa\"\ncosmos_use_case: \"Large scale video search and summarization.\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/reason2/worker_safety/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "reason-2",
+        "safety",
+        "zeroshot-safety-compliance-hazard"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2026-02-04",
+      "authors": [
+        "Paula Ramos, PhD"
+      ],
+      "use_case": "Zero-shot safety compliance and hazard detection",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"reason-2\"\n  - \"safety\"\n  - \"zeroshot-safety-compliance-hazard\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2026-02-04\ncosmos_authors:\n  - \"Paula Ramos, PhD\"\ncosmos_use_case: \"Zero-shot safety compliance and hazard detection\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer1/gr00t-mimic/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 1"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "robotics",
+        "synthetic-data-generation",
+        "synthetic-manipulation-motion-generation",
+        "transfer-1"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "NVIDIA Isaac Team"
+      ],
+      "use_case": "Synthetic manipulation motion generation for humanoid robots",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 1\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"robotics\"\n  - \"synthetic-data-generation\"\n  - \"synthetic-manipulation-motion-generation\"\n  - \"transfer-1\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"NVIDIA Isaac Team\"\ncosmos_use_case: \"Synthetic manipulation motion generation for humanoid robots\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer1/inference-its-weather-augmentation/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 1"
+      ],
+      "workload": "inference",
+      "tags": [
+        "data-augmentation",
+        "inference",
+        "intelligent-transportation",
+        "transfer-1"
+      ],
+      "hardware_min": "1x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Reihaneh Entezari",
+        "Charul Verma",
+        "Arihant Jain",
+        "Dharshi Devendran",
+        "Ratnesh Kumar"
+      ],
+      "use_case": "Data augmentation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 1\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"data-augmentation\"\n  - \"inference\"\n  - \"intelligent-transportation\"\n  - \"transfer-1\"\ncosmos_hardware_min: \"1x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Reihaneh Entezari\"\n  - \"Charul Verma\"\n  - \"Arihant Jain\"\n  - \"Dharshi Devendran\"\n  - \"Ratnesh Kumar\"\ncosmos_use_case: \"Data augmentation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer1/inference-warehouse-mv/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 1"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "sim-real-data-augmentation",
+        "transfer-1",
+        "warehouse"
+      ],
+      "hardware_min": "1x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Alice Li",
+        "Thomas Tang",
+        "Yuxing Wang",
+        "Jingyi Jin > **Organization:** NVIDIA"
+      ],
+      "use_case": "Sim to Real data augmentation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 1\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"sim-real-data-augmentation\"\n  - \"transfer-1\"\n  - \"warehouse\"\ncosmos_hardware_min: \"1x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Alice Li\"\n  - \"Thomas Tang\"\n  - \"Yuxing Wang\"\n  - \"Jingyi Jin > **Organization:** NVIDIA\"\ncosmos_use_case: \"Sim to Real data augmentation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer1/inference-x-mobility/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 1"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "sim-real-data-augmentation",
+        "transfer-1"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-10-27",
+      "authors": [
+        "Aigul Dzhumamuratova",
+        "Hesam Rabeti",
+        "Yan Chang",
+        "Jingyi Jin"
+      ],
+      "use_case": "Sim to Real data augmentation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 1\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"sim-real-data-augmentation\"\n  - \"transfer-1\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-10-27\ncosmos_authors:\n  - \"Aigul Dzhumamuratova\"\n  - \"Hesam Rabeti\"\n  - \"Yan Chang\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"Sim to Real data augmentation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer2_5/biotrove_augmentation/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "biology",
+        "domain-transfer-scarce-biological",
+        "inference",
+        "transfer-2-5"
+      ],
+      "hardware_min": "1x H100 80GB",
+      "published_date": "2025-11-24",
+      "authors": [
+        "Paula Ramos, PhD"
+      ],
+      "use_case": "Domain transfer for scarce biological datasets",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"biology\"\n  - \"domain-transfer-scarce-biological\"\n  - \"inference\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"1x H100 80GB\"\ncosmos_published_date: 2025-11-24\ncosmos_authors:\n  - \"Paula Ramos, PhD\"\ncosmos_use_case: \"Domain transfer for scarce biological datasets\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "sim-real-data-augmentation",
+        "simulation",
+        "synthetic-data-generation",
+        "transfer-2-5"
+      ],
+      "hardware_min": "1x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Ryan Ji",
+        "Jingyi Jin"
+      ],
+      "use_case": "Sim to Real data augmentation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"sim-real-data-augmentation\"\n  - \"simulation\"\n  - \"synthetic-data-generation\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"1x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Ryan Ji\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"Sim to Real data augmentation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer2_5/inference-image-prompt/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "styleguided-video-generation-using",
+        "transfer-2-5"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-12-20",
+      "authors": [
+        "Fangyin Wei",
+        "Aryaman Gupta"
+      ],
+      "use_case": "Style-guided video generation using image references",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"styleguided-video-generation-using\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-12-20\ncosmos_authors:\n  - \"Fangyin Wei\"\n  - \"Aryaman Gupta\"\ncosmos_use_case: \"Style-guided video generation using image references\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/inference/transfer2_5/inference-real-augmentation/inference.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "multicontrol-video-editing-background",
+        "transfer-2-5"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-11-09",
+      "authors": [
+        "Aiden Chang",
+        "Akul Santhosh"
+      ],
+      "use_case": "Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"multicontrol-video-editing-background\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-11-09\ncosmos_authors:\n  - \"Aiden Chang\"\n  - \"Akul Santhosh\"\ncosmos_use_case: \"Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/predict2/cosmos_policy/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2",
+        "Cosmos Predict 2.5"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "predict-2",
+        "predict-2-5",
+        "visionbased-robotic-manipulation-modelbased"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2026-01-28",
+      "authors": [
+        "Moo Jin Kim",
+        "Yuzhu Dong",
+        "Jinwei Gu"
+      ],
+      "use_case": "Vision-based robotic manipulation and model-based planning",
+      "frontmatter_preview": "---\ncosmos_model:\n  - \"Cosmos Predict 2\"\n  - \"Cosmos Predict 2.5\"\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"predict-2\"\n  - \"predict-2-5\"\n  - \"visionbased-robotic-manipulation-modelbased\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2026-01-28\ncosmos_authors:\n  - \"Moo Jin Kim\"\n  - \"Yuzhu Dong\"\n  - \"Jinwei Gu\"\ncosmos_use_case: \"Vision-based robotic manipulation and model-based planning\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/predict2/gr00t-dreams/post-training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "predict-2",
+        "robotics",
+        "synthetic-data-generation",
+        "synthetic-trajectory-data-generation"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "NVIDIA Isaac Team"
+      ],
+      "use_case": "Synthetic trajectory data generation for humanoid robots",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Predict 2\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"predict-2\"\n  - \"robotics\"\n  - \"synthetic-data-generation\"\n  - \"synthetic-trajectory-data-generation\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"NVIDIA Isaac Team\"\ncosmos_use_case: \"Synthetic trajectory data generation for humanoid robots\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/predict2/its-accident/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "intelligent-transportation",
+        "post-training",
+        "predict-2",
+        "traffic-anomaly-generation-improved"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Arslan Ali, Grace Lam, Amol Fasale, Jingyi Jin"
+      ],
+      "use_case": "Traffic anomaly generation with improved realism and prompt alignment",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Predict 2\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"intelligent-transportation\"\n  - \"post-training\"\n  - \"predict-2\"\n  - \"traffic-anomaly-generation-improved\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Arslan Ali, Grace Lam, Amol Fasale, Jingyi Jin\"\ncosmos_use_case: \"Traffic anomaly generation with improved realism and prompt alignment\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/predict2_5/sports/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2.5"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "predict-2-5",
+        "sports",
+        "sports-video-generation"
+      ],
+      "hardware_min": "4x A100 80GB",
+      "published_date": "2025-12-01",
+      "authors": [
+        "Arslan Ali"
+      ],
+      "use_case": "Sports Video Generation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Predict 2.5\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"predict-2-5\"\n  - \"sports\"\n  - \"sports-video-generation\"\ncosmos_hardware_min: \"4x A100 80GB\"\ncosmos_published_date: 2025-12-01\ncosmos_authors:\n  - \"Arslan Ali\"\ncosmos_use_case: \"Sports Video Generation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/av_video_caption_vqa/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "autonomous-driving",
+        "post-training",
+        "reason-1",
+        "video-captioning-visual-question"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-13",
+      "authors": [],
+      "use_case": "AV video captioning and visual question answering",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"autonomous-driving\"\n  - \"post-training\"\n  - \"reason-1\"\n  - \"video-captioning-visual-question\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-13\ncosmos_use_case: \"AV video captioning and visual question answering\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/intelligent-transportation/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "intelligent-transportation",
+        "intelligent-transportation-scene-understanding",
+        "post-training",
+        "reason-1"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Paris Zhang",
+        "Chintan Shah",
+        "Tomasz Kornuta"
+      ],
+      "use_case": "Intelligent transportation scene understanding",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"intelligent-transportation\"\n  - \"intelligent-transportation-scene-understanding\"\n  - \"post-training\"\n  - \"reason-1\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Paris Zhang\"\n  - \"Chintan Shah\"\n  - \"Tomasz Kornuta\"\ncosmos_use_case: \"Intelligent transportation scene understanding\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/physical-plausibility-check/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "physical-plausibility-prediction",
+        "post-training",
+        "reason-1"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Shun Zhang",
+        "Zekun Hao",
+        "Jingyi Jin"
+      ],
+      "use_case": "Physical plausibility prediction",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"physical-plausibility-prediction\"\n  - \"post-training\"\n  - \"reason-1\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Shun Zhang\"\n  - \"Zekun Hao\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"Physical plausibility prediction\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/spatial-ai-warehouse/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "reason-1",
+        "spatial-warehouse-environments",
+        "warehouse"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Xiaolong Li",
+        "Chintan Shah",
+        "Tomasz Kornuta"
+      ],
+      "use_case": "Spatial AI for warehouse environments",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"reason-1\"\n  - \"spatial-warehouse-environments\"\n  - \"warehouse\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Xiaolong Li\"\n  - \"Chintan Shah\"\n  - \"Tomasz Kornuta\"\ncosmos_use_case: \"Spatial AI for warehouse environments\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/temporal_localization/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "reason-1",
+        "temporal-localization-mimicgen-data"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-11-24",
+      "authors": [
+        "Aigul Dzhumamuratova",
+        "Alexander Efitorov",
+        "Hesam Rabeti",
+        "Jingyi Jin"
+      ],
+      "use_case": "Temporal localization for MimicGen data generation",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"reason-1\"\n  - \"temporal-localization-mimicgen-data\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-11-24\ncosmos_authors:\n  - \"Aigul Dzhumamuratova\"\n  - \"Alexander Efitorov\"\n  - \"Hesam Rabeti\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"Temporal localization for MimicGen data generation\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason1/wafermap_classification/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "reason-1",
+        "semiconductor",
+        "wafer-map-anomaly-classification"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-12-12",
+      "authors": [
+        "Anita Chiu",
+        "Tim Lin"
+      ],
+      "use_case": "Wafer Map Anomaly Classification",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 1\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"reason-1\"\n  - \"semiconductor\"\n  - \"wafer-map-anomaly-classification\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-12-12\ncosmos_authors:\n  - \"Anita Chiu\"\n  - \"Tim Lin\"\ncosmos_use_case: \"Wafer Map Anomaly Classification\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason2/av_3d_grounding/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 1",
+        "Cosmos Reason 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "autonomous-driving",
+        "post-training",
+        "reason-1",
+        "reason-2",
+        "vehicle-grounding-autonomous-driving"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2026-02-18",
+      "authors": [
+        "Amol Fasale",
+        "Jingyi Jin"
+      ],
+      "use_case": "3D vehicle grounding in autonomous driving scenarios",
+      "frontmatter_preview": "---\ncosmos_model:\n  - \"Cosmos Reason 1\"\n  - \"Cosmos Reason 2\"\ncosmos_workload: post-training\ncosmos_tags:\n  - \"autonomous-driving\"\n  - \"post-training\"\n  - \"reason-1\"\n  - \"reason-2\"\n  - \"vehicle-grounding-autonomous-driving\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2026-02-18\ncosmos_authors:\n  - \"Amol Fasale\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"3D vehicle grounding in autonomous driving scenarios\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason2/intelligent-transportation/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "intelligent-transportation",
+        "intelligent-transportation-scene-understanding",
+        "post-training",
+        "reason-2"
+      ],
+      "hardware_min": "8x A100 80GB",
+      "published_date": "2026-01-26",
+      "authors": [
+        "Paris Zhang, Deep Rodge, Monika Jhuria"
+      ],
+      "use_case": "Intelligent transportation scene understanding",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"intelligent-transportation\"\n  - \"intelligent-transportation-scene-understanding\"\n  - \"post-training\"\n  - \"reason-2\"\ncosmos_hardware_min: \"8x A100 80GB\"\ncosmos_published_date: 2026-01-26\ncosmos_authors:\n  - \"Paris Zhang, Deep Rodge, Monika Jhuria\"\ncosmos_use_case: \"Intelligent transportation scene understanding\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason2/physical-plausibility-check/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "physical-plausibility-prediction",
+        "post-training",
+        "reason-2"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2026-01-27",
+      "authors": [
+        "Shun Zhang",
+        "Zekun Hao",
+        "Jingyi Jin"
+      ],
+      "use_case": "Physical plausibility prediction",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"physical-plausibility-prediction\"\n  - \"post-training\"\n  - \"reason-2\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2026-01-27\ncosmos_authors:\n  - \"Shun Zhang\"\n  - \"Zekun Hao\"\n  - \"Jingyi Jin\"\ncosmos_use_case: \"Physical plausibility prediction\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/reason2/video_caption_vqa/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "post-training",
+        "reason-2",
+        "video-captioning-visual-question"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2026-01-05",
+      "authors": [],
+      "use_case": "AV video captioning and visual question answering",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"post-training\"\n  - \"reason-2\"\n  - \"video-captioning-visual-question\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2026-01-05\ncosmos_use_case: \"AV video captioning and visual question answering\"\n---\n"
+    },
+    {
+      "file": "docs/recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "post-training",
+      "tags": [
+        "autonomous-driving",
+        "post-training",
+        "spatiallyconditioned-multiview-video-generation",
+        "transfer-2-5"
+      ],
+      "hardware_min": "4x H100 80GB",
+      "published_date": "2025-12-22",
+      "authors": [
+        "Tiffany Cai",
+        "Francesco Ferroni"
+      ],
+      "use_case": "Spatially-conditioned multiview AV video generation with world scenario map control",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: post-training\ncosmos_tags:\n  - \"autonomous-driving\"\n  - \"post-training\"\n  - \"spatiallyconditioned-multiview-video-generation\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"4x H100 80GB\"\ncosmos_published_date: 2025-12-22\ncosmos_authors:\n  - \"Tiffany Cai\"\n  - \"Francesco Ferroni\"\ncosmos_use_case: \"Spatially-conditioned multiview AV video generation with world scenario map control\"\n---\n"
+    },
+    {
+      "file": "docs/core_concepts/control_modalities/overview.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "control-modalities",
+        "inference",
+        "transfer-2-5"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-11-09",
+      "authors": [
+        "Aiden Chang",
+        "Akul Santhosh"
+      ],
+      "use_case": null,
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"control-modalities\"\n  - \"inference\"\n  - \"transfer-2-5\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-11-09\ncosmos_authors:\n  - \"Aiden Chang\"\n  - \"Akul Santhosh\"\n---\n"
+    },
+    {
+      "file": "docs/core_concepts/data_curation/core_curation.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Curator"
+      ],
+      "workload": "data-curation",
+      "tags": [
+        "curator",
+        "data-curation"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "[Jibin Varghese"
+      ],
+      "use_case": null,
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Curator\"]\ncosmos_workload: data-curation\ncosmos_tags:\n  - \"curator\"\n  - \"data-curation\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"[Jibin Varghese\"\n---\n"
+    },
+    {
+      "file": "docs/core_concepts/data_curation/overview.md",
+      "status": "skipped",
+      "reason": "could not determine model"
+    },
+    {
+      "file": "docs/core_concepts/distillation/distilling_predict2.5.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Predict 2.5"
+      ],
+      "workload": "inference",
+      "tags": [
+        "distillation",
+        "inference",
+        "predict-2-5"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-11-30",
+      "authors": [
+        "Qianli Ma"
+      ],
+      "use_case": null,
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Predict 2.5\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"distillation\"\n  - \"inference\"\n  - \"predict-2-5\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-11-30\ncosmos_authors:\n  - \"Qianli Ma\"\n---\n"
+    },
+    {
+      "file": "docs/core_concepts/distillation/distilling_transfer1.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Transfer 1"
+      ],
+      "workload": "inference",
+      "tags": [
+        "distillation",
+        "inference",
+        "transfer-1"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2025-10-09",
+      "authors": [
+        "Grace Lam"
+      ],
+      "use_case": null,
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Transfer 1\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"distillation\"\n  - \"inference\"\n  - \"transfer-1\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2025-10-09\ncosmos_authors:\n  - \"Grace Lam\"\n---\n"
+    },
+    {
+      "file": "docs/core_concepts/evaluation/evaluation_predict.md",
+      "status": "skipped",
+      "reason": "could not determine model"
+    },
+    {
+      "file": "docs/core_concepts/prompt_guide/reason_guide.md",
+      "status": "applied",
+      "models": [
+        "Cosmos Reason 2"
+      ],
+      "workload": "inference",
+      "tags": [
+        "inference",
+        "prompt-guide",
+        "prompting",
+        "reason-2"
+      ],
+      "hardware_min": "1x A100 80GB",
+      "published_date": "2026-01-30",
+      "authors": [
+        "Tsung-Yi Lin",
+        "Xuan Li",
+        "Diego Garzon"
+      ],
+      "use_case": "Prompt Guide",
+      "frontmatter_preview": "---\ncosmos_model: [\"Cosmos Reason 2\"]\ncosmos_workload: inference\ncosmos_tags:\n  - \"inference\"\n  - \"prompt-guide\"\n  - \"prompting\"\n  - \"reason-2\"\ncosmos_hardware_min: \"1x A100 80GB\"\ncosmos_published_date: 2026-01-30\ncosmos_authors:\n  - \"Tsung-Yi Lin\"\n  - \"Xuan Li\"\n  - \"Diego Garzon\"\ncosmos_use_case: \"Prompt Guide\"\n---\n"
+    }
+  ]
+}
