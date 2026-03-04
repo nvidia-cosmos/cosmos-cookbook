@@ -1,3 +1,16 @@
+---
+cosmos_model: ["Cosmos [Model]"]        # e.g. "Cosmos Predict 2", "Cosmos Reason 2", "Cosmos Transfer 2.5"
+cosmos_workload: post-training
+cosmos_tags:
+  - "post-training"
+  - "[domain-tag]"                      # e.g. autonomous-driving, robotics, industrial
+cosmos_hardware_min: "4x H100 80GB"    # minimum GPU required — adjust as needed
+cosmos_published_date: YYYY-MM-DD       # ISO 8601 first publication date
+cosmos_authors:
+  - "[First Last]"
+cosmos_use_case: "[Brief Use Case Label]"
+---
+
 # [Domain/Task] with [Cosmos Model]
 
 > **Authors:** [Name](LinkedIn URL) • [Name](LinkedIn URL)
@@ -12,6 +25,22 @@
 [Introduce your company/organization, project, and application domain. Describe the specific challenge or pain point you're addressing, why post-training is needed for your use case, and your approach (e.g., LoRA, full fine-tuning, RL).]
 
 - [Setup and System Requirements](setup.md) *(optional)*
+
+## Prerequisites
+
+### Hardware
+
+- [Minimum GPU requirement — e.g., 4× NVIDIA H100 80GB for post-training]
+
+### Software
+
+- [Runtime or framework — e.g., Docker, conda, uv]
+- [Model weights downloaded from NGC / HuggingFace]
+- [Training framework — e.g., Cosmos post-training scripts, NeMo]
+
+### Accounts / Access
+
+- [Any NGC API key, HuggingFace token, or cloud account required]
 
 > **Recommended Structure:** For post-training contributions, we recommend organizing your content to include the following elements:
 >
@@ -59,8 +88,8 @@
 
 [Step-by-step instructions with commands]
 
-```[language]
-# Configuration file
+```yaml
+# Configuration file — replace with the appropriate language (yaml, python, etc.)
 ```
 
 ```bash

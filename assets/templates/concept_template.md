@@ -1,3 +1,14 @@
+---
+cosmos_model: ["Cosmos [Model]"]        # primary model this concept applies to
+cosmos_workload: inference              # inference | post-training | data-curation | end-to-end
+cosmos_tags:
+  - "[concept-category]"               # e.g. prompting, evaluation, distillation, control-modalities
+cosmos_hardware_min: "1x A100 80GB"    # minimum GPU required (omit if concept is CPU-only)
+cosmos_published_date: YYYY-MM-DD       # ISO 8601 first publication date
+cosmos_authors:
+  - "[First Last]"
+---
+
 # [Concept Title]
 
 > **Authors:** [Name](LinkedIn URL) • [Name](LinkedIn URL)
@@ -34,8 +45,8 @@
 
 [Explain architecture, structure, and implementation considerations]
 
-```[language]
-# Code example or diagram
+```python
+# Code example or diagram — replace with the appropriate language (python, bash, yaml, etc.)
 ```
 
 ## Best Practices
@@ -64,14 +75,14 @@
 
 ### [Pattern 1]
 
-```[language]
-# Code example
+```python
+# Code example — replace with the appropriate language
 ```
 
 ### [Pattern 2]
 
-```[language]
-# Code example
+```python
+# Code example — replace with the appropriate language
 ```
 
 ## Troubleshooting

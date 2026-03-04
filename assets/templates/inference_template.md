@@ -1,3 +1,16 @@
+---
+cosmos_model: ["Cosmos [Model]"]        # e.g. "Cosmos Predict 2", "Cosmos Reason 2", "Cosmos Transfer 2.5"
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "[domain-tag]"                      # e.g. intelligent-transportation, robotics, warehouse
+cosmos_hardware_min: "1x A100 80GB"    # minimum GPU required — adjust as needed
+cosmos_published_date: YYYY-MM-DD       # ISO 8601 first publication date
+cosmos_authors:
+  - "[First Last]"
+cosmos_use_case: "[Brief Use Case Label]"
+---
+
 # [Use Case Title] with [Cosmos Model]
 
 > **Authors:** [Name](LinkedIn URL) • [Name](LinkedIn URL)
@@ -12,6 +25,21 @@
 [Introduce your company/organization, project, and application domain. Describe the specific use case, problem statement, and value proposition. Explain why Cosmos inference (vs. post-training) is the right approach for your needs.]
 
 - [Setup and System Requirements](setup.md) *(optional)*
+
+## Prerequisites
+
+### Hardware
+
+- [Minimum GPU requirement — e.g., 1× NVIDIA A100 80GB or equivalent]
+
+### Software
+
+- [Runtime or framework — e.g., Docker, conda, uv]
+- [Model weights downloaded from NGC / HuggingFace]
+
+### Accounts / Access
+
+- [Any NGC API key, HuggingFace token, or cloud account required]
 
 > **Recommended Structure:** For inference contributions, we recommend organizing your content to include the following elements:
 >
@@ -52,8 +80,8 @@
 
 [Detailed explanation with code examples]
 
-```[language]
-# Code example
+```python
+# Code example — replace with the appropriate language (python, bash, yaml, etc.)
 ```
 
 ### Component 2: [Name]
