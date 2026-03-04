@@ -39,7 +39,7 @@ Follow the [Setup guide](./setup.md) for general environment setup instructions,
 
 ## 1. Preparing Data
 All steps in this section and through **Multiple Video Rollouts Generation** (Section 4) assume you are in the **cosmos-predict2.5** repository root, unless a step specifies otherwise (e.g., Cosmos Reason 2 steps run from the cosmos-reason2 root).
-First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/GR1-100) and then preprocess it to create text prompt txt files for each video.
+First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create text prompt txt files for each video.
 
 ### Download DreamGen Bench Training Dataset
 
@@ -158,6 +158,8 @@ torchrun --nproc_per_node=8 examples/inference.py \
   --experiment predict2_video2world_training_2b_groot_gr1_480
 ```
 
+> **Note**: For a single video, --nproc_per_node=1 is usually sufficient. Use 8 GPUs when you need higher throughput with batched inputs; adjust to your setup.
+
 Below is an example visualizing the batch inference output.
 
 | Prompt | Input Image | Generated Video |
@@ -166,7 +168,7 @@ Below is an example visualizing the batch inference output.
 
 ## 4. Policy Evaluation using Cosmos Predict
 
-Lastly, we will download the [GR00T Eval Dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create batch input. The steps below are run from the **cosmos-predict2.5** repository root.
+Lastly, we will download the [GR00T Eval Dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Eval) and then preprocess it to create batch input. The steps below are run from the **cosmos-predict2.5** repository root.
 
 ### Download the DreamGen Benchmark dataset
 
