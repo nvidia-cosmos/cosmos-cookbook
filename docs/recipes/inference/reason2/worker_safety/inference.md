@@ -36,6 +36,15 @@ cosmos_use_case: "Zero-shot safety compliance and hazard detection"
 
 See [Setup and System Requirements](setup.md) for step-by-step environment setup.
 
+### Launch on Brev
+
+Launch a pre-configured 1x A100 environment with all dependencies installed:
+
+[![Open in Brev](https://brev.dev/badge.svg)](https://console.brev.dev/launchable/deploy?repoUrl=https://github.com/nv-asotelo/cosmos-cookbook&filePath=docs/recipes/inference/reason2/worker_safety/brev.yaml)
+
+> **Estimated setup time:** 10–20 minutes on first launch (model download from Hugging Face).
+> After setup, open `worker_safety.ipynb` in JupyterLab and select the `Python (cosmos-reason2)` kernel.
+
 ## Overview
 
 This recipe demonstrates a complete video reasoning pipeline for automating industrial safety inspections in challenging **"brownfield"** environments using [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) and [FiftyOne](https://github.com/voxel51/fiftyone).
