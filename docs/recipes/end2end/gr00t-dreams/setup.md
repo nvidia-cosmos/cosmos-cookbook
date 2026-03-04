@@ -1,5 +1,6 @@
 # Setup Guide
 This guide covers the setup requirements for the [GR00T-Dreams post-training recipe](post-training.md). Install and configure **Cosmos Predict 2.5** and **Cosmos Reason 2** by following each repository’s official installation instructions; this page only summarizes what you need and adds recipe-specific steps.
+
 ## System Requirements
 For detailed hardware and software requirements, see the official guides linked below. In brief:
 * NVIDIA GPUs with Ampere architecture (RTX Pro 6000, A100, H100) or newer
