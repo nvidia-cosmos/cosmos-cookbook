@@ -1,7 +1,40 @@
+---
+cosmos_model: ["Cosmos Reason 2"]
+cosmos_workload: inference
+cosmos_tags:
+  - "inference"
+  - "reason-2"
+  - "safety"
+  - "zeroshot-safety-compliance-hazard"
+cosmos_hardware_min: "1x A100 80GB"
+cosmos_published_date: 2026-02-04
+cosmos_authors:
+  - "Paula Ramos, PhD"
+cosmos_use_case: "Zero-shot safety compliance and hazard detection"
+---
+
 # Worker Safety in a Classical Warehouse with Cosmos Reason 2
 
 > **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
 > **Organization:** [NVIDIA](https://nvidia.com/)
+
+## Prerequisites
+
+### Hardware
+- 1x NVIDIA A100 80GB GPU (or equivalent — tested on RTX PRO 5000 Blackwell with CUDA 13.0)
+
+### Software
+- Ubuntu Linux (tested on Ubuntu 24.04)
+- CUDA 13.0 (adjust `uv sync --extra` flag for your CUDA version)
+- [`uv`](https://github.com/astral-sh/uv) for environment management
+- `ffmpeg` installed system-wide (`sudo apt-get install -y ffmpeg`)
+- Python packages: `fiftyone`, `transformers`, `torch`, `qwen-vl-utils`
+
+### Accounts & Access
+- [Hugging Face](https://huggingface.co/) account with access to [`nvidia/Cosmos-Reason2-2B`](https://huggingface.co/nvidia/Cosmos-Reason2-2B)
+- [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset (public, no special access required)
+
+See [Setup and System Requirements](setup.md) for step-by-step environment setup.
 
 ## Overview
 
