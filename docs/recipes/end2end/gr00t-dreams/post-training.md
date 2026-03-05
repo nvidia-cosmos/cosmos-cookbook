@@ -19,6 +19,7 @@ The process includes the steps outlined below:
 
 Generalist robotics is emerging, driven by advances in mechatronics and robot foundation models, but scaling skill learning remains limited by the need for massive training data. [NVIDIA Isaac GR00T-Dreams](https://github.com/nvidia/gr00t-dreams), built on [NVIDIA Cosmos](https://www.nvidia.com/en-us/ai/cosmos/?sortBy=developer_learning_library%2Fsort%2Ffeatured_in.cosmos%3Adesc%2Ctitle%3Aasc&hitsPerPage=6), addresses this by generating large-scale synthetic trajectory data from a single image and language prompt. This enables efficient training of models such as [NVIDIA Isaac GR00T N1.5](https://developer.nvidia.com/isaac/gr00t) for reasoning and skill learning.
 *World foundation models* predict or reason over future world states (e.g., video or trajectories) from current observations and language. In this recipe, Cosmos Predict 2.5 acts as a world model that generates synthetic trajectories, and Cosmos Reason 2 evaluates whether those trajectories adhere to physical laws.
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -38,6 +39,7 @@ Generalist robotics is emerging, driven by advances in mechatronics and robot fo
 Follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies for Cosmos Predict 2.5 and Cosmos Reason 2.
 
 ## 1. Preparing Data
+
 All steps in this section and through **Multiple Video Rollouts Generation** (Section 4) assume you are in the **cosmos-predict2.5** repository root, unless a step specifies otherwise (e.g., Cosmos Reason 2 steps run from the cosmos-reason2 root).
 First, we will download the [GR1 training dataset](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) and then preprocess it to create text prompt txt files for each video.
 
@@ -193,7 +195,9 @@ For generating multiple videos with different inputs and prompts, you can use a 
 # Adjust paths based on where you cloned the repositories
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/gr1_batch_to_jsonl.py cosmos-predict2.5/scripts/
 ```
+
 Run the following from the **cosmos-predict2.5** repository root so that the script’s paths (`dream_gen_benchmark/gr1_object/batch_input.json` and `gr1_batch.jsonl`) resolve to your downloaded and prepared eval data:
+
 ```bash
 python scripts/gr1_batch_to_jsonl.py
 ```
@@ -213,7 +217,9 @@ Using the same input, the Cosmos Predict2.5 generates multiple video rollouts. A
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/inference.py cosmos-predict2.5/
 cp -r cosmos-cookbook/scripts/examples/predict2.5/gr00t-dreams/config.py cosmos-predict2.5/
 ```
+
 Run the following from the **cosmos-predict2.5** repository root so that the copied `inference.py` and `config.py` are used:
+
 ```bash
 torchrun --nproc_per_node=1 inference.py \
   -i dream_gen_benchmark/gr1_object/gr1_batch.jsonl \

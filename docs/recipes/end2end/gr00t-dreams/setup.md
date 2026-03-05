@@ -1,8 +1,11 @@
 # Setup Guide
+
 This guide covers the setup requirements for the [GR00T-Dreams post-training recipe](post-training.md). Install and configure **Cosmos Predict 2.5** and **Cosmos Reason 2** by following each repository’s official installation instructions; this page only summarizes what you need and adds recipe-specific steps.
 
 ## System Requirements
+
 For detailed hardware and software requirements, see the official guides linked below. In brief:
+
 * NVIDIA GPUs with Ampere architecture (RTX Pro 6000, A100, H100) or newer
 NVIDIA driver compatible with CUDA 12.8+ (see [Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) / [Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) for exact versions)
 * Linux x86-64
@@ -26,7 +29,7 @@ Follow the **official installation instructions** for Cosmos Predict 2.5 (enviro
 cd cosmos-predict2.5
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
-* **[Cosmos Predict 2.5 — Installation](https://docs.nvidia.com/cosmos/latest/predict2.5/installation.html)** (NVIDIA Docs)  
+* **[Cosmos Predict 2.5 — Installation](https://docs.nvidia.com/cosmos/latest/predict2.5/installation.html)** (NVIDIA Docs)
 * Alternatively, see the [Cosmos Predict 2.5 repository README](https://github.com/nvidia-cosmos/cosmos-predict2.5) for clone, `uv`, and `uv sync` steps.
 
 ### 3. Install Cosmos Reason 2
@@ -36,7 +39,7 @@ uv sync --extra=cu128
 source .venv/bin/activate
 Follow the **official installation instructions** for Cosmos Reason 2 (environment, dependencies, CUDA variant).
 
-* **[Cosmos Reason 2 — Repository README](https://github.com/nvidia-cosmos/cosmos-reason2)** (clone, `uv`, `uv sync`, inference setup)  
+* **[Cosmos Reason 2 — Repository README](https://github.com/nvidia-cosmos/cosmos-reason2)** (clone, `uv`, `uv sync`, inference setup)
 * For post-training–specific setup (optional for this recipe), see [Cosmos Reason 2 Post-Training Installation](https://github.com/nvidia-cosmos/cosmos-reason2/blob/main/examples/cosmos_rl/README.md).
 
 ```shell
