@@ -40,7 +40,7 @@ See [Setup and System Requirements](setup.md) for step-by-step environment setup
 
 Launch a pre-configured 1x A100 environment with all dependencies installed:
 
-[![Open in Brev](https://brev.dev/badge.svg)](https://console.brev.dev/launchable/deploy?repoUrl=https://github.com/nv-asotelo/cosmos-cookbook&filePath=docs/recipes/inference/reason2/worker_safety/brev.yaml)
+[![Open in Brev](https://brev.dev/badge.svg)](https://console.brev.dev/launchable/deploy?repoUrl=https://github.com/nvidia-cosmos/cosmos-cookbook&filePath=docs/recipes/inference/reason2/worker_safety/brev.yaml)
 
 > **Estimated setup time:** 10–20 minutes on first launch (model download from Hugging Face).
 > After setup, open `worker_safety.ipynb` in JupyterLab and select the `Python (cosmos-reason2)` kernel.
