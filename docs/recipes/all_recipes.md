@@ -222,6 +222,16 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./end2end/gr00t-dreams/post-training.html">
+          <div class="recipe-media recipe-media--video" aria-hidden="true">
+            <video autoplay loop muted playsinline preload="none" tabindex="-1">
+              <source src="./end2end/gr00t-dreams/assets/3.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="recipe-title">GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning</div>
+          <div class="recipe-tag recipe-tag--workflow">Workflow</div>
+        </a>
         <a class="recipe-card" href="./post_training/predict2/cosmos_policy/post_training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">

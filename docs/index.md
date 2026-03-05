@@ -21,6 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
 | Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
 | Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
 | Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
@@ -123,6 +124,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 
 | **Workflow** | **Description** | **Link** |
 |--------------|-----------------|----------|
+| **GR00T-Dreams** | End-to-end pipeline for synthetic robot trajectory generation: post-train Cosmos Predict 2.5 on GR1 data, generate trajectories, and use Cosmos Reason 2 as a video critic for rejection sampling | [GR00T-Dreams](recipes/end2end/gr00t-dreams/post-training.md) |
 | **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
 
 ## Cosmos Models for Physical AI
