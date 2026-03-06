@@ -61,6 +61,30 @@
 
 
 
+<!-- Script to delete old cookies -->
+<script type="text/javascript">
+var now = new Date();
+now.setTime(now.getTime() + 1 * 3600 * 1000 * 24 * 365);
+delete_cookie();
+function delete_cookie() {
+    if ( !getCookie('cleared-onetrust-cookies')) {
+console.log("entered");
+    document.cookie = "OptanonAlertBoxClosed" + "=" + "; path=/" + "; domain=.nvidia-cosmos.github.io" + '; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+    document.cookie = "OptanonConsent" + "=" + "; path=/" + "; domain=.nvidia-cosmos.github.io" + '; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+console.log("exit");
+    }
+    document.cookie = "cleared-onetrust-cookies" + "=" + "; path=/" + "; domain=.nvidia-cosmos.github.io" + "; expires="+now;
+    console.log("test");
+}
+
+function getCookie( cookieName ) {
+    var value = '; ' + document.cookie;
+    var parts = value.split( '; ' + cookieName + '=' );
+    if ( parts.length == 2 ) {
+    return true;
+  }
+}
+</script>
 
 <!-- OneTrust Cookies Consent Notice start for nvidia-cosmos.github.io -->
 
