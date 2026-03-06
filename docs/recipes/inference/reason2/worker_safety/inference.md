@@ -1,22 +1,55 @@
 ---
-cosmos_model: ["Cosmos Reason 2"]
-cosmos_workload: inference
+cosmos_model: "nvidia/Cosmos-Reason2-2B"
+cosmos_vertical: "metropolis"
+cosmos_workload: "inference"
+cosmos_status: "stable"
+cosmos_summary: "Zero-shot warehouse safety inspection using Cosmos Reason 2 to classify worker behaviors from video without custom model training."
+cosmos_compute: "1x A100 80GB (~30 min)"
+cosmos_output: "classification labels per video clip (JSON, one label per 8-class taxonomy)"
+cosmos_prerequisites:
+  - "../../../../getting_started/setup"
+cosmos_pipeline_position: null
+cosmos_license: "NVIDIA Open Model License"
 cosmos_tags:
   - "inference"
   - "reason-2"
   - "safety"
-  - "zeroshot-safety-compliance-hazard"
-cosmos_hardware_min: "1x A100 80GB"
-cosmos_published_date: 2026-02-04
-cosmos_authors:
-  - "Paula Ramos, PhD"
-cosmos_use_case: "Zero-shot safety compliance and hazard detection"
+  - "metropolis"
 ---
+
+> Zero-shot warehouse safety inspection using Cosmos Reason 2 to classify worker behaviors from video without custom model training.
 
 # Worker Safety in a Classical Warehouse with Cosmos Reason 2
 
-> **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
-> **Organization:** [NVIDIA](https://nvidia.com/)
+## Overview
+
+This recipe demonstrates a complete video reasoning pipeline for automating industrial safety inspections in challenging **"brownfield"** environments using [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) and [FiftyOne](https://github.com/voxel51/fiftyone).
+
+Modern factories are often pristine, but many real-world facilities are "classical" warehouses — older buildings with irregular layouts, poor illumination, and worn infrastructure. In these environments, standard computer vision models often fail because they confuse faded floor markings with active safety zones. The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality: 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days in a facility where the environment itself is a confounding variable.
+
+The core technique: prompt Cosmos Reason 2 to act as an **expert inspector** with explicit negative constraints — ignore the "old warehouse" aesthetic, focus strictly on visual definitions from the dataset paper (Green Paths, Green Vests, Block Counts). No custom model training required.
+
+This recipe produces a reproducible pipeline that:
+
+1. Loads the safety dataset into FiftyOne.
+2. Constructs a context-aware prompt based on the dataset's ground truth.
+3. Runs Cosmos Reason 2 inference on video clips.
+4. Parses structured JSON output for hazard detection.
+5. Visualizes results and compares with ground truth.
+
+Main notebook: [Worker Safety notebook](worker_safety.ipynb)
+
+<video src="assets/overload_forklift.webm" controls width="720"></video>
+
+*Forklift overload example: the model should classify this as "Carrying Overload with Forklift" when 3+ blocks are visible.*
+
+---
+
+## Setup
+
+Before running this recipe, complete environment setup using the [Setup and System Requirements](../../../../getting_started/setup.md) guide.
+
+---
 
 ## Prerequisites
 
@@ -33,81 +66,6 @@ cosmos_use_case: "Zero-shot safety compliance and hazard detection"
 ### Accounts & Access
 - [Hugging Face](https://huggingface.co/) account with access to [`nvidia/Cosmos-Reason2-2B`](https://huggingface.co/nvidia/Cosmos-Reason2-2B)
 - [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset (public, no special access required)
-
-See [Setup and System Requirements](setup.md) for step-by-step environment setup.
-
-### Launch on Brev
-
-Launch a pre-configured 1x A100 environment with all dependencies installed:
-
-[![Open in Brev](https://brev.dev/badge.svg)](https://console.brev.dev/launchable/deploy?repoUrl=https://github.com/nvidia-cosmos/cosmos-cookbook&filePath=docs/recipes/inference/reason2/worker_safety/brev.yaml)
-
-> **Estimated setup time:** 10–20 minutes on first launch (model download from Hugging Face).
-> After setup, open `worker_safety.ipynb` in JupyterLab and select the `Python (cosmos-reason2)` kernel.
-
-## Overview
-
-This recipe demonstrates a complete video reasoning pipeline for automating industrial safety inspections in challenging **"brownfield"** environments using [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) and [FiftyOne](https://github.com/voxel51/fiftyone).
-
-It shows how to prompt a Video Language Model (VLM) to ignore environmental noise (like faded paint or old machinery) and strictly classify worker behaviors based on visual ground truths defined in the Video Dataset for Safe and Unsafe Behaviours.
-
-Main notebook: [Worker Safety notebook](worker_safety.ipynb)
-Setup guide: [Setup and system requirements](setup.md)
-
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Zero-shot safety compliance and hazard detection |
-
-<video src="assets/overload_forklift.webm" controls width="720"></video>
-
-*Forklift overload example: the model should classify this as “Carrying Overload with Forklift” when 3+ blocks are visible.*
-
----
-
-## Setup
-
-Before running this recipe, ensure you have the necessary environment configuration.
-
-Prerequisites:
-
-- An NVIDIA GPU with CUDA support (this recipe was tested on an NVIDIA RTX PRO 5000 Blackwell GPU with CUDA 13.0).
-- `fiftyone`, `transformers`, `torch`, and `qwen-vl-utils` installed.
-- The [`pjramg/Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset available on Hugging Face.
-
----
-
-## Motivation: Safety in "Classical" Warehouses
-
-Modern factories are often pristine, but many real-world facilities are "classical" warehouses - older buildings with irregular layouts, poor illumination, and worn infrastructure. In these environments, standard computer vision models often fail because they confuse faded floor markings with active safety zones.
-The Safe/Unsafe Behaviours Dataset, collected from a metal manufacturing plant, captures this reality perfectly. It contains 8 specific behavior classes (4 safe, 4 unsafe) recorded over 39 days. The dataset we are using in this recipe is just a sample of the original dataset ([Paper](https://www.sciencedirect.com/science/article/pii/S235234092400756X), [Dataset](https://data.mendeley.com/datasets/xjmtb22pff/1))
-
-The challenges defined in the dataset:
-
-- Environmental noise: faded yellow lines, unpainted areas, and complex backgrounds.
-- 2D projection limits: camera angles make workers appear "on" a path when they are actually walking alongside it.
-- Strict compliance: safety rules are binary (e.g., a vest is either worn or not), but visual data is messy.
-
-The solution: Cosmos Reason 2 allows us to bypass training a custom classifier. Instead, we use **prompt engineering** to act as an **expert inspector**. We instruct the model to ignore the **"old warehouse"** aesthetic and focus strictly on the visual definitions provided in the dataset paper - specifically Green Paths, Green Vests, and Block Counts.
-
-This recipe demonstrates a reproducible pipeline that:
-
-1. Loads the safety dataset into FiftyOne.
-2. Constructs a context-aware prompt based on the dataset's ground truth.
-3. Runs Cosmos Reason 2 inference on video clips.
-4. Parses structured JSON output for hazard detection.
-5. Visualizes the results and compare with ground truth.
-
----
-
-## Pipeline Overview
-
-This is the end-to-end flow:
-
-1. Load data: ingest the [`Safe_Unsafe_Test`](https://huggingface.co/datasets/pjramg/Safe_Unsafe_Test) dataset from Hugging Face.
-2. Define prompts: encode the dataset's specific visual rules into system and user prompts.
-3. Run inference: process videos using [`Cosmos-Reason2-2B`](https://huggingface.co/nvidia/Cosmos-Reason2-2B) via Hugging Face Transformers.
-4. Parse output: extract JSON predictions (Class ID, Label, Rationale).
-5. Visualize: explore the results in FiftyOne to verify accuracy against the "old warehouse" constraints.
 
 ---
 
@@ -206,7 +164,11 @@ We use the transformers library to run the model. Note that we define a conversa
 
 ```python
 import torch
-import transformers
+from transformers import AutoProcessor, AutoModelForVision2Seq
+
+model_id = "nvidia/Cosmos-Reason2-2B"
+processor = AutoProcessor.from_pretrained(model_id)
+model = AutoModelForVision2Seq.from_pretrained(model_id, torch_dtype=torch.bfloat16).to("cuda")
 
 def run_inference(model, processor, video_path):
     conversation = [
@@ -229,7 +191,8 @@ def run_inference(model, processor, video_path):
     ).to(model.device)
 
     generated_ids = model.generate(**inputs, max_new_tokens=1024)
-    # ... decode output ...
+    output_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    return output_text
 ```
 
 ---
@@ -237,21 +200,26 @@ def run_inference(model, processor, video_path):
 ## 4. Parsing and Storing Results
 
 The model returns a structured JSON object containing the `prediction_class_id`, `prediction_label`, and a `hazard_detection` flag. We parse this string and store it directly into the FiftyOne sample.
-This allows us to leverage FiftyOne's powerful filtering capabilities later - for example, isolating all "Class 3" (Forklift Overload) predictions to verify if the model correctly counted the blocks.
+
+This allows us to leverage FiftyOne's powerful filtering capabilities later — for example, isolating all "Class 3" (Forklift Overload) predictions to verify if the model correctly counted the blocks.
 
 ```python
-try:
-    # Clean and parse the JSON output
-    clean_json = output_text.strip().replace("```json", "").replace("```", "")
-    json_data = json.loads(clean_json)
+import json
 
-    # Store in FiftyOne
-    sample["cosmos_analysis"] = json_data
-    sample["safety_label"] = fo.Classification(label=json_data.get("prediction_label"))
-    sample.save()
+for sample in dataset.iter_samples(progress=True):
+    output_text = run_inference(model, processor, sample.filepath)
+    try:
+        # Clean and parse the JSON output
+        clean_json = output_text.strip().replace("```json", "").replace("```", "")
+        json_data = json.loads(clean_json)
 
-except Exception as e:
-    print(f"JSON Parsing failed: {e}")
+        # Store in FiftyOne
+        sample["cosmos_analysis"] = json_data
+        sample["safety_label"] = fo.Classification(label=json_data.get("prediction_label"))
+        sample.save()
+
+    except Exception as e:
+        print(f"JSON Parsing failed: {e}")
 ```
 
 ---
@@ -297,13 +265,9 @@ This recipe demonstrates:
 - The importance of prompt engineering in overcoming "brownfield" environmental noise.
 - How to map academic dataset definitions (like those in the Safe and Unsafe Behaviours paper) into executable model constraints.
 
-This approach can be generalized to:
+This approach generalizes to construction site monitoring (PPE detection), retail loss prevention, and logistics and inventory auditing.
 
-- Construction site monitoring (PPE detection).
-- Retail loss prevention.
-- Logistics and inventory auditing.
-
-For the full code and to run this analysis yourself, verify you have the `pjramg/Safe_Unsafe_Test` dataset and the Cosmos-Reason2 model accessible in your environment.
+For the full code and to run this analysis yourself, verify you have the `pjramg/Safe_Unsafe_Test` dataset and the `nvidia/Cosmos-Reason2-2B` model accessible in your environment.
 
 Run the full workflow in the main notebook: [Worker Safety notebook](worker_safety.ipynb).
 
@@ -311,24 +275,3 @@ Run the full workflow in the main notebook: [Worker Safety notebook](worker_safe
 
 - Safe and Unsafe Behaviours Dataset: [Mendeley Data](https://data.mendeley.com/datasets/xjmtb22pff/1)
 - Original Paper: Fernandes, P., et al. (2024). "Video Dataset for Safe and Unsafe Behaviours Detection in Industrial Environments." *Data in Brief*. [DOI: 10.1016/j.dib.2024.111258](https://www.sciencedirect.com/science/article/pii/S235234092400756X)
-
----
-
-## Document Information
-
-**Publication Date:** February 4, 2026
-
-### Citation
-
-If you use this recipe or reference this work, please cite it as:
-
-```bibtex
-@misc{cosmos_cookbook_worker_safety_2026,
-  title={Worker Safety in a Classical Warehouse with Cosmos Reason 2},
-  author={Ramos, Paula},
-  organization={NVIDIA},
-  year={2026},
-  month={February},
-  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html}},
-  note={NVIDIA Cosmos Cookbook}
-}
