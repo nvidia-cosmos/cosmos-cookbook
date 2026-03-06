@@ -283,7 +283,10 @@ def on_post_build(config):
     print("\n=== Building nav_pages.json ===")
     nav_pages = {
         "getting_started": scan_section_pages(site_dir, "getting_started"),
-        "recipes": [{"title": r["name"], "url": r["url"]} for r in recipes],
+        "recipes": [
+            {"title": r["name"], "url": r["url"], "category": r.get("category", "Vision AI")}
+            for r in recipes
+        ],
         "core_concepts": scan_section_pages(site_dir, "core_concepts"),
     }
     nav_pages_path = Path(site_dir) / "nav_pages.json"
