@@ -95,20 +95,48 @@ function OptanonWrapper() {
         <ul class="md-nav__list">
           <li class="md-nav__item">
             <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="getting_started">
-              <span class="md-ellipsis">✓ Get Started</span>
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Get Started</span>
             </a>
           </li>
           <li class="md-nav__item">
             <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="recipes">
+              <span class="filter-checkbox" aria-hidden="true"></span>
               <span class="md-ellipsis">Recipes</span>
             </a>
           </li>
           <li class="md-nav__item">
             <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="core_concepts">
+              <span class="filter-checkbox" aria-hidden="true"></span>
               <span class="md-ellipsis">Concepts</span>
             </a>
           </li>
         </ul>
+        <div id="category-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Category</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link category-filter active" data-category="Robotics">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Robotics</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link category-filter" data-category="Autonomous Vehicles">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Autonomous Vehicles</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link category-filter" data-category="Vision AI">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Vision AI</span>
+              </a>
+            </li>
+          </ul>
+        </div>
         <ul id="dynamic-nav-list" class="md-nav__list"></ul>
       </nav>
     `;
@@ -136,6 +164,7 @@ function OptanonWrapper() {
     }
 
     let navData = null;
+    let currentContentFilter = 'getting_started';
     // Path from current page to site root (where index.html and nav_pages.json live)
     function getBaseToRoot() {
       const pathname = (window.location.pathname || '').replace(/^\//, '').replace(/\/$/, '');
@@ -153,7 +182,11 @@ function OptanonWrapper() {
     function renderNavList(sectionKey) {
       const container = document.getElementById('dynamic-nav-list');
       if (!container || !navData || !navData[sectionKey]) return;
-      const pages = navData[sectionKey];
+      let pages = navData[sectionKey];
+      if (sectionKey === 'recipes' && typeof pages[0] === 'object' && 'category' in (pages[0] || {})) {
+        const cat = localStorage.getItem('navCategoryFilter') || 'Robotics';
+        pages = pages.filter(function(p) { return p.category === cat; });
+      }
       const baseToRoot = getBaseToRoot();
       const currentPath = (window.location.pathname || '').replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
       container.innerHTML = '';
@@ -177,22 +210,29 @@ function OptanonWrapper() {
     }
 
     function setFilterActive(filterType) {
-      document.querySelectorAll('.content-filter').forEach(el => {
+      document.querySelectorAll('.content-filter').forEach(function(el) {
         el.classList.remove('active');
-        const span = el.querySelector('.md-ellipsis');
-        if (span) span.textContent = span.textContent.replace('✓ ', '');
       });
-      const active = document.querySelector('.content-filter[data-filter="' + filterType + '"]');
-      if (active) {
-        active.classList.add('active');
-        const span = active.querySelector('.md-ellipsis');
-        if (span && !span.textContent.startsWith('✓ ')) span.textContent = '✓ ' + span.textContent;
-      }
+      var active = document.querySelector('.content-filter[data-filter="' + filterType + '"]');
+      if (active) active.classList.add('active');
       localStorage.setItem('navFilter', filterType);
     }
 
+    function setCategoryActive(category) {
+      document.querySelectorAll('.category-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.category-filter[data-category="' + category + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navCategoryFilter', category);
+    }
+
     function applyFilter(filterType) {
+      currentContentFilter = filterType;
       setFilterActive(filterType);
+      var categoryBlock = document.getElementById('category-filter-block');
+      if (categoryBlock) categoryBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (filterType === 'recipes') setCategoryActive(localStorage.getItem('navCategoryFilter') || 'Robotics');
       renderNavList(filterType);
     }
 
@@ -208,6 +248,14 @@ function OptanonWrapper() {
       filter.addEventListener('click', function(e) {
         e.preventDefault();
         applyFilter(this.getAttribute('data-filter'));
+      });
+    });
+    document.querySelectorAll('.category-filter').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var cat = this.getAttribute('data-category');
+        setCategoryActive(cat);
+        renderNavList(currentContentFilter);
       });
     });
 
@@ -226,17 +274,50 @@ function OptanonWrapper() {
 </script>
 
 <style>
+  .filter-checkbox {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .content-filter.active .filter-checkbox::after,
+  .category-filter.active .filter-checkbox::after {
+    content: "✓";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7em;
+    font-weight: bold;
+    line-height: 1;
+  }
   .content-filter {
     cursor: pointer !important;
     transition: background-color 0.2s ease, color 0.2s ease;
     user-select: none;
   }
-  
   .content-filter:hover {
     background-color: var(--md-accent-fg-color--transparent) !important;
   }
-  
   .content-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+  .category-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  .category-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  .category-filter.active {
     background-color: var(--md-accent-fg-color--transparent) !important;
     color: var(--md-accent-fg-color) !important;
     font-weight: 700;
