@@ -1,5 +1,7 @@
 # Setup Guide
 
+Run this setup **after** you clone the repository in [README §1.1](README.md#11-clone-the-repository). Complete all steps below before continuing with the rest of the post-training tutorial.
+
 ## System Requirements
 
 * NVIDIA GPUs with Ampere architecture (RTX 30 Series, A100) or newer
@@ -13,7 +15,7 @@
 Install system dependencies:
 
 ```shell
-sudo apt install curl ffmpeg tree wget
+sudo apt install curl ffmpeg parallel tree wget
 ```
 
 [uv](https://docs.astral.sh/uv/getting-started/installation/)
@@ -36,6 +38,12 @@ Or, install the package into the active environment (e.g. conda):
 uv sync --extra=cu128 --active --inexact
 ```
 
+For the SutureBot→LeRobot conversion (Post-training §2.3), install lerobot 0.3.3 in the same environment:
+
+```shell
+uv pip install lerobot==0.3.3
+```
+
 CUDA variants:
 
 * `--extra=cu128`: CUDA 12.8
@@ -44,12 +52,16 @@ CUDA variants:
 ## Downloading Checkpoints
 
 1. Get a [Hugging Face Access Token](https://huggingface.co/settings/tokens) with `Read` permission
-2. Install [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli): `uv tool install -U "huggingface_hub[cli]"`
+2. Install [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli): `uv tool install -U huggingface_hub`
 3. Login: `hf auth login`
 4. Accept the [NVIDIA Open Model License Agreement](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B).
 
 Checkpoints are automatically downloaded during inference and post-training. To modify the checkpoint cache location, set the [`HF_HOME`](https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhome) environment variable.
 
+## Optional: Slurm
+
+To run finetuning with **Slurm** (`sbatch scripts/run_finetuning.sh`) on your own cluster, see [Slurm setup](setup_slurm.md). If you have a single server without Slurm, use [run_finetuning_standalone.sh](scripts/run_finetuning_standalone.sh) instead (see [README §4](README.md#4-finetuning)).
+
 ## Next Steps
 
-Once the setup is complete, proceed to the [post-training tutorial](post_training.md) to learn how to use Cosmos Predict 2 for action-controlled surgical robotics.
+Once this setup is complete, return to the [post-training tutorial](README.md) and continue from **§1.5 Hugging Face Configuration** onward.

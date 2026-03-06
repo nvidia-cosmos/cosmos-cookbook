@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 A script to convert DVRK (da Vinci Research Kit) robotics data into the LeRobot format (v2.1).
 
@@ -16,7 +30,7 @@ The script expects a directory structure organized by tissue and subtasks:
 │   │   ├── episode_001/                # Individual episode
 │   │   │   ├── left_img_dir/           # Left endoscope images
 │   │   │   │   └── frame000000_left.jpg
-│   │   │   ├── right_img_dir/          # Right endoscope images  
+│   │   │   ├── right_img_dir/          # Right endoscope images
 │   │   │   │   └── frame000000_right.jpg
 │   │   │   ├── endo_psm1/              # PSM1 wrist camera
 │   │   │   │   └── frame000000_psm1.jpg
@@ -38,7 +52,7 @@ Usage:
 ------
     # Default output to HF_LEROBOT_HOME:
     python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --repo-id dataset-name
-    
+
     # Custom output location (set env var before running):
     export HF_LEROBOT_HOME=/custom/output
     python convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset --repo-id dataset-name
@@ -55,20 +69,33 @@ Dependencies:
 """
 
 import json
+import os
 import shutil
+import time
 import traceback
 from pathlib import Path
-from tqdm import tqdm
-import tyro
+
 import numpy as np
-import os
 import pandas as pd
 import torch
+import tyro
 from PIL import Image
-import time
-from scipy.spatial.transform import Rotation
-from lerobot.datasets.lerobot_dataset import LeRobotDataset
-from lerobot.constants import HF_LEROBOT_HOME
+from tqdm import tqdm
+
+try:
+    from lerobot.constants import HF_LEROBOT_HOME
+    from lerobot.datasets.lerobot_dataset import LeRobotDataset
+except ModuleNotFoundError as e:
+    try:
+        import lerobot
+
+        ver = getattr(lerobot, "__version__", "unknown")
+    except Exception:
+        ver = "not installed"
+    raise SystemExit(
+        f"This script requires lerobot==0.3.3 (package layout changed in 0.4.x). "
+        f"You have lerobot {ver}. Install with: pip install lerobot==0.3.3"
+    ) from e
 
 states_name = [
     "psm1_pose.position.x",
@@ -155,6 +182,7 @@ def quat_to_6d_rotation(quat: np.ndarray) -> np.ndarray:
 
     return np.array([r11, r12, r13, r21, r22, r23], dtype=np.float32)
 
+
 def rotation_6d_to_matrix(rot6d):
     """
     Convert 6D rotation representation to rotation matrix.
@@ -188,6 +216,7 @@ def rotation_6d_to_matrix(rot6d):
     # Stack into rotation matrix (as rows)
     R = np.stack([row1, row2, row3], axis=-2)
     return R
+
 
 def compute_rel_actions(actions):
     """
@@ -229,17 +258,12 @@ def compute_rel_actions(actions):
 
     return rel_actions
 
+
 def read_images(image_dir: str, file_pattern: str) -> np.ndarray:
     """Reads images from a directory into a NumPy array."""
     images = []
     ## count images in the dir
-    num_images = len(
-        [
-            name
-            for name in os.listdir(image_dir)
-            if os.path.isfile(os.path.join(image_dir, name))
-        ]
-    )
+    num_images = len([name for name in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, name))])
     for idx in range(num_images):
         filename = os.path.join(image_dir, file_pattern.format(idx))
         if not os.path.exists(filename):
@@ -277,9 +301,7 @@ def process_episode(dataset, episode_path, states_name, actions_name, subtask_pr
 
     for i in range(num_frames):
         frame = {
-            "observation.state": np.hstack(
-                [kinematics_data[n][i] for n in states_name]
-            ).astype(np.float32),
+            "observation.state": np.hstack([kinematics_data[n][i] for n in states_name]).astype(np.float32),
             "action": _build_action_6d(kinematics_data, i, actions_name),
             "instruction.text": subtask_prompt,
             "observation.meta.tool.psm1": "Large Needle Driver",
@@ -418,12 +440,12 @@ def _derive_annotation_entries(features: dict) -> dict | None:
 def generate_modality_metadata(features: dict, embodiment: str, description: str = None) -> dict:
     """
     Generate modality metadata from features dict.
-    
+
     Args:
         features: Dict of feature definitions (from LeRobotDataset or info.json)
         embodiment: Robot type identifier
         description: Optional description for the dataset
-    
+
     Returns:
         Dict containing modality metadata for state, action, video, and annotation entries
     """
@@ -446,7 +468,7 @@ def generate_modality_metadata(features: dict, embodiment: str, description: str
 def _write_modality_metadata(dataset_path: Path, features: dict, robot_type: str):
     """
     Generate and write modality.json to the dataset's meta directory.
-    
+
     Args:
         dataset_path: Path to the dataset root directory
         features: Dict of feature definitions
@@ -455,12 +477,10 @@ def _write_modality_metadata(dataset_path: Path, features: dict, robot_type: str
     meta_dir = dataset_path / "meta"
     if not meta_dir.exists():
         meta_dir.mkdir(parents=True, exist_ok=True)
-    
+
     try:
         modality_metadata = generate_modality_metadata(
-            features, 
-            embodiment=robot_type,
-            description="DVRK surgical robot dataset with dual-arm PSM control"
+            features, embodiment=robot_type, description="DVRK surgical robot dataset with dual-arm PSM control"
         )
         modality_path = meta_dir / "modality.json"
         with modality_path.open("w", encoding="utf-8") as f:
@@ -484,20 +504,20 @@ def _compute_and_write_stats(
     """
     Compute normalization statistics for relative actions and states,
     then write them to stats.json in the dataset's meta directory.
-    
+
     IMPORTANT: Statistics are computed on PER-CHUNK relative actions to match
     the training pipeline. During training:
     1. Each sample is a chunk of `num_frames` frames sampled at `timestep_interval`
     2. RelativeActionTransform converts these to (num_frames-1) relative actions
     3. Each relative action is relative to the FIRST frame of its chunk
-    
+
     This is different from computing relative actions over the entire episode,
     which would produce a very different distribution (larger variance, drifting mean).
-    
+
     NOTE: chunk_stride=1 (default) samples ALL possible chunks like training does,
     giving representative statistics. This may take longer but ensures the stats
     match the actual training distribution.
-    
+
     Args:
         dataset_path: Path to the dataset root directory
         num_frames: Number of frames per chunk (must match training, default=13 for dvrk)
@@ -516,7 +536,7 @@ def _compute_and_write_stats(
     # For dvrk: delta_indices = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36]
     delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
     max_delta = delta_indices[-1]  # Last frame offset needed
-    
+
     print(f"Computing per-chunk stats from {len(parquet_files)} parquet files...")
     print(f"  num_frames={num_frames}, timestep_interval={timestep_interval}")
     print(f"  delta_indices={delta_indices}")
@@ -533,19 +553,19 @@ def _compute_and_write_stats(
         # Extract all actions for this episode
         actions = np.vstack(df["action"].values)  # [T, 20]
         episode_len = len(actions)
-        
+
         # Skip episodes too short for even one chunk
         if episode_len <= max_delta:
             skipped_short_episodes += 1
             continue
-        
+
         # Iterate through chunks, sampling frames at delta_indices
         # This matches how training samples data
         for base_idx in range(0, episode_len - max_delta, chunk_stride):
             # Sample frames at delta_indices (like training does)
             chunk_indices = [base_idx + d for d in delta_indices]
             chunk_actions = actions[chunk_indices]  # [num_frames, 20]
-            
+
             # Compute relative actions for this chunk
             # Output: [num_frames-1, 20] actions relative to chunk_actions[0]
             chunk_rel_actions = compute_rel_actions(chunk_actions)
@@ -558,7 +578,7 @@ def _compute_and_write_stats(
             all_states.append(states)
 
     if not all_rel_actions:
-        print(f"Error: No valid chunks found. All episodes may be too short.")
+        print("Error: No valid chunks found. All episodes may be too short.")
         print(f"  Minimum episode length needed: {max_delta + 1} frames")
         return
 
@@ -587,21 +607,17 @@ def _compute_and_write_stats(
         json.dump(stats, f, indent=2)
 
     print(f"Saved stats to {output_path}")
-    
+
     # Print summary of action stats for verification
     action_stats = stats["action"]
-    print(f"\nAction statistics summary (should be used for normalization):")
+    print("\nAction statistics summary (should be used for normalization):")
     print(f"  Mean range: [{min(action_stats['mean']):.6f}, {max(action_stats['mean']):.6f}]")
     print(f"  Std range:  [{min(action_stats['std']):.6f}, {max(action_stats['std']):.6f}]")
 
 
 def _discover_episodes(data_path: Path):
     episodes = []
-    tissue_dirs = sorted(
-        d
-        for d in data_path.iterdir()
-        if d.is_dir() and d.name.startswith("tissue_")
-    )
+    tissue_dirs = sorted(d for d in data_path.iterdir() if d.is_dir() and d.name.startswith("tissue_"))
     for tissue_dir in tissue_dirs:
         for subtask_name in sorted(os.listdir(tissue_dir)):
             subtask_dir = os.path.join(tissue_dir, subtask_name)
@@ -621,9 +637,7 @@ def _discover_episodes(data_path: Path):
     return episodes
 
 
-def convert_data_to_lerobot(
-    data_path: Path, repo_id: str, *, push_to_hub: bool = False
-):
+def convert_data_to_lerobot(data_path: Path, repo_id: str, *, push_to_hub: bool = False):
     """
     Converts a single Zarr store with episode boundaries to a LeRobotDataset.
 
@@ -631,16 +645,26 @@ def convert_data_to_lerobot(
         data_path: The path to the source dataset directory.
         repo_id: The repository ID for the dataset on the Hugging Face Hub.
         push_to_hub: Whether to push the dataset to the Hub after conversion.
-    
+
     Note:
         Output location is determined by HF_LEROBOT_HOME environment variable.
         Set it before running Python to customize the output path:
             export HF_LEROBOT_HOME=/your/custom/path
     """
+    # Use h264 for broad compatibility (default libsvtav1 is AV1 which can cause
+    # codec issues in some environments and is not needed for training).
+    import functools
+
+    import lerobot.datasets.lerobot_dataset as _lerobot_ds_mod
+    import lerobot.datasets.video_utils as _lerobot_vid_mod
+
+    _lerobot_vid_mod.encode_video_frames = functools.partial(_lerobot_vid_mod.encode_video_frames, vcodec="h264")
+    _lerobot_ds_mod.encode_video_frames = functools.partial(_lerobot_ds_mod.encode_video_frames, vcodec="h264")
+
     final_output_path = os.path.join(HF_LEROBOT_HOME, repo_id)
     print(f"Output path: {final_output_path}")
-    print(f"(To change output location, set HF_LEROBOT_HOME env var before running)")
-    
+    print("(To change output location, set HF_LEROBOT_HOME env var before running)")
+
     if os.path.exists(final_output_path):
         print(f"Removing existing dataset at {final_output_path}")
         shutil.rmtree(final_output_path)
@@ -698,15 +722,25 @@ def convert_data_to_lerobot(
 
     for episode_dir, subtask_prompt in tqdm(episodes, desc="Processing episodes"):
         try:
-            dataset = process_episode(
-                dataset, episode_dir, states_name, actions_name, subtask_prompt
-            )
+            dataset = process_episode(dataset, episode_dir, states_name, actions_name, subtask_prompt)
             dataset.save_episode()
         except Exception as e:
             print(f"Error processing episode {episode_dir}: {e}")
             traceback.print_exc()
             dataset.clear_episode_buffer()
     print(f"Total episodes processed: {len(episodes)}")
+
+    # Encode any remaining videos that didn't fill a complete batch.
+    # With batch_encoding_size=12, episodes are encoded in groups of 12.
+    # Any trailing episodes (count < 12) are left un-encoded and must be
+    # flushed here, otherwise the videos/ directory won't be created.
+    if dataset.episodes_since_last_encoding > 0:
+        start_ep = dataset.num_episodes - dataset.episodes_since_last_encoding
+        print(
+            f"Encoding remaining {dataset.episodes_since_last_encoding} episodes "
+            f"({start_ep}–{dataset.num_episodes - 1})..."
+        )
+        dataset.batch_encode_videos(start_ep, dataset.num_episodes)
 
     # Compute and write normalization stats for PER-CHUNK relative actions.
     # IMPORTANT: Stats must be computed on per-chunk deltas (not whole-episode deltas)
@@ -716,8 +750,8 @@ def convert_data_to_lerobot(
     # chunk_stride=1 (default) samples ALL possible chunks like training does.
     _compute_and_write_stats(
         Path(final_output_path),
-        num_frames=13,           # Must match training (groot_configs.py)
-        timestep_interval=3,     # Must match training (dvrk timestep_interval)
+        num_frames=13,  # Must match training (groot_configs.py)
+        timestep_interval=3,  # Must match training (dvrk timestep_interval)
         # chunk_stride=1 is default - samples all chunks like training
     )
 
@@ -761,7 +795,7 @@ def main(
         data_path: The path to the source dataset.
         repo_id: The dataset name (subdirectory name for the output).
         push_to_hub: If True, uploads the dataset to the Hub after conversion.
-    
+
     Note:
         To customize output location, set HF_LEROBOT_HOME before running:
             export HF_LEROBOT_HOME=/your/custom/path
@@ -783,27 +817,27 @@ def recompute_stats(
 ):
     """
     Standalone function to recompute stats.json for an existing LeRobot dataset.
-    
+
     Use this when you need to fix statistics without re-running the full conversion.
-    
+
     Args:
         dataset_path: Path to the LeRobot dataset (containing data/, meta/, videos/)
         num_frames: Number of frames per chunk (default=13 for dvrk)
         timestep_interval: Frame sampling interval (default=3 for dvrk)
         chunk_stride: Stride between chunks (default=1 for full coverage like training)
-    
+
     Example:
         python convert_suturebot_to_lerobot_v3.py recompute-stats --dataset-path /SutureBot
     """
     if not dataset_path.exists():
         print(f"Error: Dataset path does not exist: {dataset_path}")
         return
-    
+
     if not (dataset_path / "data").exists():
         print(f"Error: No 'data' directory found in {dataset_path}")
         print("Expected LeRobot format with data/, meta/, videos/ directories.")
         return
-    
+
     print(f"Recomputing stats for dataset: {dataset_path}")
     _compute_and_write_stats(
         dataset_path,
@@ -817,6 +851,7 @@ def recompute_stats(
 if __name__ == "__main__":
     # Use tyro.extras.subcommand_cli to support both main conversion and stats recomputation
     import sys
+
     if len(sys.argv) > 1 and sys.argv[1] == "recompute-stats":
         # Remove 'recompute-stats' from argv so tyro can parse the rest
         sys.argv.pop(1)

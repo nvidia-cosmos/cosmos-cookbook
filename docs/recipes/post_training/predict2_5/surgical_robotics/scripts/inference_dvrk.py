@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 Intended Script Location: cosmos_predict2/_src/predict2/action/inference/inference_dvrk.py
 
@@ -16,29 +30,26 @@ Uses LeRobotDataset directly to ensure actions are transformed identically to tr
 
 Usage:
     CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python cosmos_predict2/_src/predict2/action/inference/inference_dvrk.py \
-        --experiment=ac_predict2p5_video2world_2b_suturebot_training \
+        --experiment=cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss \
         --ckpt_path /path/to/checkpoint/model_ema_bf16.pt \
         --dataset_path /path/to/suturebot_lerobot \
         --save_root results/dvrk_eval \
-        --data_split test \
-        --episode_ids 1880, 1881, 1882
+        --data_split train \
+        --episode_ids 0,1,2
 """
 
 import argparse
+import json
 import os
+from pathlib import Path
 
 import mediapy
 import numpy as np
+import pandas as pd
 import torch
+from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import LeRobotDataset
+from cosmos_predict2._src.predict2.action.inference.inference_pipeline import ActionVideo2WorldInference
 from loguru import logger
-
-from cosmos_predict2._src.predict2.action.inference.inference_pipeline import (
-    ActionVideo2WorldInference,
-)
-from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import (
-    LeRobotDataset,
-)
-
 
 # Constants matching training config in groot_configs.py for dVRK
 NUM_FRAMES = 13
@@ -77,12 +88,12 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--episode_ids",
         type=str,
-        required=True,
-        help="Comma-separated list of episode IDs to evaluate (e.g., '0,1,2'). If not specified, evaluates all episodes in the split.",
+        default=None,
+        help="Comma-separated episode IDs to evaluate (e.g., '0,1,2'). Defaults to all episodes in the split.",
     )
 
     # Inference arguments
-    parser.add_argument("--guidance", type=float, default=0, help="Classifier-free guidance scale")
+    parser.add_argument("--guidance", type=float, default=7, help="Classifier-free guidance scale")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
     # Output arguments
@@ -219,7 +230,7 @@ def main():
         args=None,
         dataset_path=args.dataset_path,
         data_split=args.data_split,
-        embodiment="dvrk",
+        embodiment="suturebot",
         downscaled_res=False,
     )
 
@@ -254,6 +265,44 @@ def main():
     if args.save_comparison:
         os.makedirs(os.path.join(args.save_root, "comparison"), exist_ok=True)
 
+    # -------------------------------------------------------------------------
+    # Action log: records three stages of the action pipeline for each chunk so
+    # the pipeline can be verified offline against the raw parquet data.
+    #
+    # Stage 1 — raw_parquet_actions_13x20:
+    #     Absolute Cartesian setpoints as stored in the parquet file.
+    #     Shape (13, 20): 13 frames sampled at TIMESTEP_INTERVAL=3,
+    #     layout [psm1_xyz(3), psm1_rot6d(6), psm1_jaw(1),
+    #             psm2_xyz(3), psm2_rot6d(6), psm2_jaw(1)].
+    #
+    # Stage 2 — normalized_rel_actions_12x20:
+    #     Output of dataset[idx]["action"]: RelativeActionTransform converts the
+    #     13-frame window to 12 per-chunk relative actions, then mean/std
+    #     normalization is applied using stats.json.
+    #     Shape (12, 20), dtype float32.
+    #
+    # Stage 3 — padded_actions_12x44:
+    #     Stage 2 zero-padded to the model's unified 44D action space.
+    #     Shape (12, 44). This is the tensor passed to step_inference().
+    # -------------------------------------------------------------------------
+    stats_path = os.path.join(args.dataset_path, "meta", "stats.json")
+    with open(stats_path) as f:
+        _stats = json.load(f)
+    action_mean = np.array(_stats["action"]["mean"])
+    action_std = np.array(_stats["action"]["std"])
+
+    inner_dataset = dataset.lerobot_datasets[0]
+
+    action_log: dict = {
+        "dataset_path": args.dataset_path,
+        "stats_path": stats_path,
+        "action_mean_20d": action_mean.tolist(),
+        "action_std_20d": action_std.tolist(),
+        "num_frames": NUM_FRAMES,
+        "timestep_interval": TIMESTEP_INTERVAL,
+        "episodes": {},
+    }
+
     # Process each episode
     for episode_id in episode_ids:
         logger.info(f"Processing episode {episode_id}")
@@ -273,6 +322,11 @@ def main():
 
             logger.info(f"Episode {episode_id}: {len(chunk_indices)} chunks")
 
+            # Load raw parquet for this episode once (used for action log Stage 1)
+            parquet_files = sorted(Path(args.dataset_path).glob(f"data/chunk-*/episode_{episode_id:06d}.parquet"))
+            df_episode = pd.read_parquet(parquet_files[0]) if parquet_files else None
+
+            episode_action_log = []
             predicted_chunks = []
             gt_chunks = []  # For comparison
             current_frame = None
@@ -284,6 +338,45 @@ def main():
                 # video shape: (C, T, H, W) -> need (T, H, W, C) for inference
                 video = data["video"].permute(1, 2, 3, 0).numpy()  # (T, H, W, C)
                 actions = data["action"].numpy()  # (chunk_size, action_dim) - already normalized
+
+                # Save Stage 2 actions before padding
+                actions_20d = actions.copy()  # (12, 20) normalized relative actions
+
+                # The Open-H pre-trained model uses a unified 44D action space.
+                # SutureBot has 20D actions; zero-pad to 44D to match the model's
+                # action_embedder input (same padding applied by MixedLeRobotDataset
+                # during training).
+                if actions.shape[-1] < 44:
+                    pad = 44 - actions.shape[-1]
+                    actions = np.pad(actions, ((0, 0), (0, pad)), mode="constant")
+
+                # -----------------------------------------------------------------
+                # Build action log entry for this chunk
+                # -----------------------------------------------------------------
+                _, base_index = inner_dataset._all_steps[dataset_idx]
+                frame_indices = [int(base_index) + t * TIMESTEP_INTERVAL for t in range(NUM_FRAMES)]
+
+                raw_parquet_actions = None
+                if df_episode is not None and frame_indices[-1] < len(df_episode):
+                    raw_parquet_actions = np.vstack([np.array(df_episode["action"].iloc[i]) for i in frame_indices])
+
+                episode_action_log.append(
+                    {
+                        "chunk_idx": chunk_idx,
+                        "dataset_idx": int(dataset_idx),
+                        "base_index": int(base_index),
+                        "frame_indices": frame_indices,
+                        # Stage 1: absolute Cartesian setpoints from parquet (13 frames × 20D)
+                        "raw_parquet_actions_13x20": raw_parquet_actions.tolist()
+                        if raw_parquet_actions is not None
+                        else None,
+                        # Stage 2: relative + normalized actions from dataset pipeline (12 × 20D)
+                        "normalized_rel_actions_12x20": actions_20d.tolist(),
+                        # Stage 3: zero-padded to model's unified action space (12 × 44D)
+                        "padded_actions_12x44": actions.tolist(),
+                    }
+                )
+                # -----------------------------------------------------------------
 
                 if chunk_idx == 0:
                     # First chunk: use ground truth first frame as conditioning
@@ -307,6 +400,8 @@ def main():
                 current_frame = next_frame
 
                 logger.info(f"  Chunk {chunk_idx + 1}/{len(chunk_indices)} complete")
+
+            action_log["episodes"][str(episode_id)] = episode_action_log
 
             if not predicted_chunks:
                 logger.warning(f"No chunks generated for episode {episode_id}")
@@ -347,8 +442,15 @@ def main():
         except Exception as e:
             logger.error(f"Error processing episode {episode_id}: {e}")
             import traceback
+
             traceback.print_exc()
             continue
+
+    # Save action log
+    log_path = os.path.join(args.save_root, "action_log.json")
+    with open(log_path, "w") as f:
+        json.dump(action_log, f, indent=2)
+    logger.info(f"Saved action log to {log_path}")
 
     # Cleanup
     video2world.cleanup()

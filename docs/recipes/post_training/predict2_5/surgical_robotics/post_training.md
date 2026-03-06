@@ -1,868 +1,560 @@
-# Post-training for Action-Controlled Surgical Robotics
+# Post-Training Cosmos-H-Surgical-Simulator for Custom Surgical Robotics Dataset
 
-> **Author:** [Lukas Zbinden](https://www.linkedin.com/in/lukas-zbinden-49667316b/) • [Nigel Nelson](https://www.linkedin.com/in/nigel-nelson-nvidia/)
-> **Organization:** NVIDIA
+This tutorial guides you through post-training (finetuning) Cosmos-H-Surgical-Simulator, a pre-trained version
+of [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) on the [Open-H embodiment](https://github.com/open-h-embodiment/data-collection) surgical robotics dataset.
+The resulting model functions as a learned simulator for policy evaluation and synthetic data generation, implicitly capturing both robot kinematics and task-relevant environment dynamics.
 
-## Overview
+The approach builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) and uses the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset,
+which contains endoscopic video paired with kinematic action sequences from the da Vinci Research Kit (dVRK), as a custom surgical dataset for downstream finetuning.
+While demonstrated on surgical robotics, this tutorial generalizes to other robotic systems and broader embodied AI applications.
 
-| **Model** | **Workload** | **Use Case**      |
-|-----------|--------------|-------------------|
-| [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Surgical Robotics |
+Cosmos-H-Surgical-Simulator was finetuned on the Open-H embodiment surgical datasets with a unified 44-dimensional action space, where the CMR Surgical Versius uses the full 44D (30D actions + 14D state conditioning) and every other embodiment (dVRK JHU, Stanford, Hamlyn, etc.) is zero-padded to 44D. For the SutureBot downstream finetuning described in this tutorial, SutureBot's native 20D actions are zero-padded to 44D to remain compatible with the pre-trained model's action MLP. The 24 trailing zeros occupy the same positions as CMR's extra channels, which the Cosmos-predict2.5 model has already learned can be zero since all non-CMR Open-H datasets had zeros there during pre-finetuning.
 
-This recipe builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) by reproducing its core methodology with the improved Cosmos Predict 2.5 model, replacing the original Cosmos Predict 2 backbone while preserving the overall training approach.
-
-Building on this foundation, we post‑train the Cosmos Predict world foundation model (WFM) to function as a learned simulator for policy evaluation. Developers are guided on how to finetune an action‑conditioned variant of Cosmos Predict 2.5 using domain‑specific surgical robotic data, leveraging the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset, which contains endoscopic video paired with kinematic action sequences from the da Vinci Research Kit (dVRK). The resulting model implicitly captures both robot kinematics and task‑relevant environment dynamics, including realistic deformation and tool–deformable object interactions. This learned model forms the basis for simulation‑based policy evaluation, executed via a software‑in‑the‑loop rollout loop for autonomous surgical systems. While demonstrated on a surgical robotic use case, this recipe generalizes to other robotic systems and broader embodied AI applications.
-
-TODO RECIPE FEEDBACK:
-- recipes are encouraged to be more visual:
-- in the overview, illustrate the painpoint/motivation for the work through a failure case
+Because the Cosmos-H-Surgical-Simulator has already learned surgical visual appearance, dVRK kinematics, and action-conditioned video dynamics from the diverse Open-H embodiment collection, which itself includes closely related dVRK suturing data, downstream finetuning on a new surgical robotics dataset like SutureBot is expected to converge in substantially fewer iterations than training from the base Cosmos-predict2.5 model alone.
 
 ## Table of Contents
 
 - [Prerequisites](#1-prerequisites)
 - [Preparing Data](#2-preparing-data)
+  - [Bring Your Own Dataset](#24-bring-your-own-dataset)
+  - [Action Format](#25-action-format)
 - [Model Configuration](#3-model-configuration)
 - [Finetuning](#4-finetuning)
 - [Inference & Evaluation](#5-inference--evaluation)
 - [Results](#6-results)
-- [Conclusion](#7-conclusion)
-
+- [Slurm / Multi-Node](#7-slurm--multi-node)
+- [Downloading Artifacts](#8-downloading-artifacts)
+- [Further Reading](#further-reading)
 
 ## 1. Prerequisites
 
-### 1.1. Environment Setup
+> **Recommended setup:** Build the Docker image (§1.5) and run all finetuning and inference commands inside the container. Docker handles all CUDA, PyTorch, and Cosmos dependencies without any host-level configuration. The host Python environment (§1.4) is only needed for the data preparation scripts in §2.
 
-Clone the following cosmos-predict2.5-cookbook repository, which is a fork of the official [cosmos-predict2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) repo that has all the code changes of this recipe already applied:
+Complete the steps below in order.
 
-```bash
-git clone https://github.com/lukaszbinden/cosmos-predict2.5-cookbook.git
-cd cosmos-predict2.5-cookbook
-```
+### 1.1 Clone This Tutorial Repository
 
-Then, follow the [Setup guide](./setup.md) for general environment setup instructions, including installing dependencies.
-
-### 1.2. Hugging Face Configuration
-
-Model checkpoints are automatically downloaded during post-training if they are not present. Configure Hugging Face as follows:
+Clone the Isaac for Healthcare tutorials repository, which contains the data preparation scripts and documentation for this tutorial:
 
 ```bash
-# Login with your Hugging Face token (required for downloading models)
-hf auth login
-
-# Set custom cache directory for HF models
-# Default: ~/.cache/huggingface
-export HF_HOME=/path/to/your/hf/cache
+gh repo clone isaac-for-healthcare/i4h-tutorials-internal
+cd i4h-tutorials-internal/synthetic-data-generation/cosmos_h_surgical_simulator
 ```
 
-> **💡 Tip**: Ensure you have sufficient disk space in `HF_HOME`.
+### 1.2 System Setup (Fresh Cloud Instances)
 
-### 1.3. Training Output Directory
-
-Configure where training checkpoints and artifacts will be saved:
+If you are working on a freshly provisioned cloud instance (e.g. via [brev](https://brev.dev) or similar), run the system setup script first. It configures Docker and containerd to use the largest available drive, cleans up logs to free disk space, and sets DNS for Docker:
 
 ```bash
-# Set output directory for training checkpoints and artifacts
-# Default: /tmp/imaginaire4-output
-export IMAGINAIRE_OUTPUT_ROOT=/path/to/your/output/directory
+sudo bash scripts/01-system-setup.sh
 ```
 
-> **💡 Tip**: By default, `IMAGINAIRE_OUTPUT_ROOT` is `/tmp/imaginaire4-output`. We strongly recommend setting `IMAGINAIRE_OUTPUT_ROOT` to a location with sufficient storage space for your checkpoints.
+> Skip this step if your instance already has Docker configured with sufficient storage.
 
-### 1.4. Weights & Biases (W&B) Logging
+### 1.3 Clone the Cosmos-H-Surgical-Simulator Repository
 
-By default, training will attempt to log metrics to Weights & Biases. You have several options:
+Clone the Cosmos-H-Surgical-Simulator repository (a fork of [cosmos-predict2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) with this tutorial's code changes applied):
 
-#### Option 1: Enable W&B
+```bash
+git clone https://github.com/NVIDIA-Medtech/Cosmos-H-Surgical-Simulator.git
+cd Cosmos-H-Surgical-Simulator
+```
 
-To enable full experiment tracking with W&B:
+### 1.4 Run the Setup Guide
 
-1. Create a free account at [wandb.ai](https://wandb.ai)
-2. Get your API key from [https://wandb.ai/authorize](https://wandb.ai/authorize)
-3. Set the environment variable:
+Follow the [Setup guide](setup.md): install system dependencies, uv, Python env (`uv sync --extra=cu128`), and HF CLI. **Finish all steps before continuing.**
 
-    ```bash
-    export WANDB_API_KEY=your_api_key_here
-    ```
+> **Important:** Run `uv sync` as the same user who will run the data preparation scripts (§2), not as root. If `uv sync` was run as root, remove and recreate the venv as the current user:
+>
+> ```bash
+> sudo rm -rf /path/to/Cosmos-H-Surgical-Simulator/.venv
+> cd /path/to/Cosmos-H-Surgical-Simulator && uv sync --extra=cu128
+> uv pip install lerobot==0.3.3
+> ```
 
-> ⚠️ **Security Warning:** Store API keys in environment variables or secure vaults. Never commit API keys to source control.
+### 1.5 Build the Docker Image (for Containerized Runs)
 
-#### Option 2: Disable W&B
+If you will run finetuning via Docker (recommended), build the image from the Cosmos-H-Surgical-Simulator repository:
 
-Add `job.wandb_mode=disabled` to your training command to disable wandb logging.
+```bash
+cd /path/to/Cosmos-H-Surgical-Simulator
+docker build -f Dockerfile -t cosmos-predict2.5:local .
+export COSMOS_CONTAINER_IMAGE=cosmos-predict2.5:local
+```
+
+### 1.6 Configure Environment Variables
+
+All paths and credentials are managed through a single environment file. Copy the template, fill in every value, then source it before running any command in this tutorial:
+
+```bash
+cp scripts/env.sh.template scripts/env.sh
+# Edit scripts/env.sh — fill in all values (see descriptions below)
+source scripts/env.sh
+```
+
+> **`scripts/env.sh` is gitignored and must never be committed** — it contains your API keys and machine-specific paths.
+
+The variables and why they matter:
+
+| Variable | Description |
+| --------- | ------------- |
+| `HF_HOME` | HuggingFace cache for model weights and LeRobot datasets. Needs ~100 GB. Authenticate first: `huggingface-cli login` |
+| `IMAGINAIRE_OUTPUT_ROOT` | Root directory for training checkpoints (saved every 200 steps). Needs ~500 GB for a full run. |
+| `WANDB_API_KEY` | [Weights & Biases](https://wandb.ai) API key for experiment tracking. Get yours at wandb.ai/settings. Required to monitor training loss and convergence. |
+| `COSMOS_CONTAINER_IMAGE` | Docker image tag built in §1.5 (default: `cosmos-predict2.5:local`). |
+| `COSMOS_CODE_PATH` | Absolute path to the Cosmos-H-Surgical-Simulator repo cloned in §1.3. |
+| `SUTUREBOT_LEROBOT_PATH` | Absolute path to the converted LeRobot dataset (§2.3). Start with the mini dataset path; swap for the full dataset when ready. |
+| `COSMOS_H_CKPT_PATH` | Path to the downloaded Cosmos-H DCP checkpoint directory (`iter_000023000/`). |
+| `SAVE_ROOT` | Output directory for inference videos (§5.3). |
 
 ## 2. Preparing Data
 
-### 2.1 Exploration
-SutureBot is dataset for autonomous end-to-end suturing on the da Vinci Research Kit (dVRK), covering subtasks 
-like needle pickup, needle insertion, and knot tying. It provides multi-camera surgical video paired 
-with robot kinematics to support imitation learning and evaluation of VLA/robotic policies. 
-SutureBot contains about 1,890 demonstrations, amounting to 6 hours of video or 629,183 samples. 
-Public access is via the [project 
-page](https://suturebot.github.io/) and a [Hugging Face release](https://huggingface.co/datasets/jchen396/SutureBot).
+All training data must be in **[LeRobot v3](https://github.com/huggingface/lerobot) format** — a standardized structure used by the Cosmos-H training pipeline. This section converts the public SutureBot dataset to that format. To adapt the workflow to a different robot or task, see §2.4.
 
-Following is an example for each surgical task:
+> **Getting started:** Use the mini dataset (§2.3) to verify the full pipeline end-to-end before committing to a full dataset conversion or long training run.
+> **Prerequisites:** The scripts in this section require the packages installed in §1.4. Activate the venv before running any commands:
+>
+> ```bash
+> source /path/to/Cosmos-H-Surgical-Simulator/.venv/bin/activate
+> ```
 
-| Needle pickup                                                                                                              | Needle insertion                                                                                                          | Knot tying                                                                                                              |
-|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_pickup.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_needle_throw.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/suturebot_knot_tying.mp4" type="video/mp4"></video> |
+### 2.1 About the SutureBot Dataset
 
+[SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) is a dataset for autonomous end-to-end suturing on the dVRK, covering subtasks like needle pickup, needle insertion, and knot tying. It provides multi-camera surgical video paired with robot kinematics to support imitation learning and evaluation of VLA/robotic policies. SutureBot contains about 1,890 demonstrations, amounting to 6 hours of video or 629,183 samples.
 
+| Needle pickup | Needle insertion | Knot tying |
+| ------------- | ---------------- | ----------- |
+| [Needle pickup (video)](assets/suturebot_needle_pickup.mp4) | [Needle insertion (video)](assets/suturebot_needle_throw.mp4) | [Knot tying (video)](assets/suturebot_knot_tying.mp4) |
 
-### 2.2 Location
+### 2.2 Download
 
-The [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset should be organized in a directory structure that you'll specify in the configuration. Set your dataset path to point to your dataset root folder:
+Set the dataset destination and run the download script:
 
-```
-/path/to/dataset/SutureBot
-```
-
-Replace this path with the actual download location of the SutureBot dataset. The dataset should contain da Vinci robot 
-video clips stored as individual JPG files at 640x480 resolution.
-
-### 2.3 Download
-In your environment (conda, docker, etc.), install the HuggingFace library:
-```python
-python -m pip install --upgrade huggingface_hub
-```
-then download the dataset as follows:
-```python
-python - << 'EOF'
-from huggingface_hub import snapshot_download
-
-snapshot_download(
-    repo_id="jchen396/SutureBot",
-    repo_type="dataset",
-    local_dir="/path/to/dataset/SutureBot",
-    local_dir_use_symlinks=False,
-)
-EOF
+```bash
+export SUTUREBOT_DATASET_DIR=/path/to/dataset/SutureBot
+./scripts/download_suturebot.sh
 ```
 
 Unpack zip files:
 
 ```bash
-cd /path/to/dataset/SutureBot
+cd $SUTUREBOT_DATASET_DIR
 ls -1 *.zip | parallel 'echo "Unzipping {}"; unzip -q -o "{}"'
 ```
 
-### 2.4 Convert to LeRobot Dataset format
-To be compatible with Cosmos data processing, we need to convert the raw SutureBot data to the LeRobot Dataset format. 
+### 2.3 Convert to LeRobot Dataset Format
 
-Run the following script to convert the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset to the LeRobot format (notice lerobot==0.3.3 is expected). Notice that the output path is retrieved from the env variable \$HF_LEROBOT_HOME. Override \$HF_LEROBOT_HOME to change the location of the output.  
+To be compatible with Cosmos data processing, convert the raw SutureBot data to the [LeRobot](https://github.com/huggingface/lerobot) Dataset format.
+
+The converted dataset is written to `$HF_HOME/lerobot/<repo_id>` by default (lerobot follows the HuggingFace cache convention). Since `HF_HOME` is already set from §1.5, no extra path configuration is needed. To override the output location, set `HF_LEROBOT_HOME` before running.
+
+**Mini dataset (for quick testing):** because full conversion takes about 1.5–2.5 hours, you can create a small subset first:
+
 ```bash
-# optional: export HF_LEROBOT_HOME=/path/to/dataset/SutureBot/LeRobot
-python3 -u convert_suturebot_to_lerobot_v3.py --data-path /path/to/dataset/SutureBot 
+python3 -u scripts/create_mini_suturebot.py \
+  --source $SUTUREBOT_DATASET_DIR \
+  --output $SUTUREBOT_DATASET_DIR/SutureBot_mini \
+  --max-episodes 3 \
+  --tissue tissue_1
 ```
-The script will save the SutureBot dataset in LeRobot format at the location as specified by $HF_LEROBOT_HOME.
+
+This copies a subset of episodes and then runs `convert_suturebot_to_lerobot_v3.py` on that folder. Add `--no-convert` to only create the mini folder. The LeRobot dataset is written to `$HF_HOME/lerobot/suturebot_lerobot_mini`.
+
+**Full dataset conversion:** run the converter directly on the full dataset (lerobot==0.3.3 is expected):
+
+```bash
+python3 -u scripts/convert_suturebot_to_lerobot_v3.py --data-path $SUTUREBOT_DATASET_DIR
+```
+
+The output is written to `$HF_HOME/lerobot/suturebot_lerobot`.
+
+### 2.4 Bring Your Own Dataset
+
+To fine-tune on a custom robot or task, your data must be in **LeRobot v3 format**:
+
+```text
+<dataset_root>/
+├── meta/
+│   ├── info.json         # fps, feature names, episode/frame counts
+│   ├── episodes.json
+│   └── stats.json        # action mean/std for normalization
+├── data/chunk-000/
+│   └── episode_000000.parquet   # per-frame observations and actions
+└── videos/chunk-000/<camera_key>/
+    └── episode_000000.mp4
+```
+
+The [LeRobot library](https://github.com/huggingface/lerobot) provides utilities for building and validating datasets in this format. Once your dataset is ready, three additional steps integrate it with the training pipeline:
+
+1. **Register an embodiment tag** — add a new entry to `EmbodimentTag` and a config block in `groot_configs.py` (§3.1, §3.4).
+2. **Register the dataset** — add train/val dataset entries in `data.py` and an experiment config (§3.2–§3.3).
+3. **Update inference** — change `embodiment="suturebot"` in `inference_dvrk.py` to your new embodiment tag.
+
+See §3 for a concrete example of all three changes applied for SutureBot.
+
+### 2.5 Action Format
+
+Understanding the action representation is important for interpreting inference results and for adapting this workflow to other robots.
+
+#### Dataset (SutureBot LeRobot)
+
+Each frame in the converted parquet files stores a **20-dimensional absolute Cartesian setpoint** for the two PSM arms:
+
+| Dimensions | Field | Description |
+| ---------- | ----- | ----------- |
+| 0–2 | `psm1_xyz` | PSM1 end-effector position (metres) |
+| 3–8 | `psm1_rot6d` | PSM1 orientation as first two rows of rotation matrix |
+| 9 | `psm1_jaw` | PSM1 jaw angle (radians) |
+| 10–12 | `psm2_xyz` | PSM2 end-effector position (metres) |
+| 13–18 | `psm2_rot6d` | PSM2 orientation as first two rows of rotation matrix |
+| 19 | `psm2_jaw` | PSM2 jaw angle (radians) |
+
+At training and inference time, `RelativeActionTransform` converts each 13-frame chunk into **20D per-chunk relative actions**:
+
+- **Translation**: global frame delta — `Δxyz = xyz_target − xyz_base`
+- **Rotation**: local frame delta — `ΔR = R_base.T @ R_target` in 6D form (first two rows of the relative rotation matrix)
+- **Jaw**: absolute setpoint (not a delta)
+
+The base pose is always the first frame of the chunk. Normalization uses `stats.json` computed from the SutureBot dataset itself (mean/std of per-chunk deltas).
+
+#### Pre-trained Cosmos-H Model
+
+The [Cosmos-H-Surgical-Simulator](https://huggingface.co/nvidia/Cosmos-H-Surgical-Simulator) checkpoint was pre-trained on the **Open-H** community surgical dataset (~3M frames across 9 institutions and 11 robot types). It uses a **44-dimensional unified action space**: each robot contributes its native action dimensions, with trailing zeros padding to 44D.
+
+SutureBot-type data (`suturebot_2`, `suturebot_3`, `suturebot_tissue_2` from JHU) was included in pre-training under the `jhu_dvrk_mono` embodiment, processed with `GenericRelativeActionTransform` (per-key relative xyz + rot6d) and normalized with Open-H community statistics (`stats_cosmos.json`).
+
+#### Fine-tuning and Inference Alignment
+
+Fine-tuning registers SutureBot as a distinct embodiment (`suturebot`) that uses `RelativeActionTransform` with the dataset's own `stats.json`. The inference script zero-pads actions from 20D to 44D before passing them to the model, matching the padding applied during fine-tuning.
+
+> **Note:** Running inference with the **pre-trained** Cosmos-H checkpoint on SutureBot data will produce near-static output. The pre-trained model's action embedder was calibrated to Open-H statistics, while the SutureBot dataset uses a different normalization distribution, causing the action signal to be misinterpreted. Meaningful motion generation requires fine-tuning on the SutureBot dataset first (§4).
 
 ## 3. Model Configuration
-The finetuning wil be performed at 720x960 resolution (to match 720p pre-training) with 12 frames prediction horizon.
 
-Note: thanks to the cloned repository from step 1.1 which has all code changes integrated already, you can skip this section which is left for informational purposes only. 
+The finetuning is performed at 288x512 resolution (to match the Cosmos-H-Surgical-Simulator pre-finetuning) with a 12-frame prediction horizon.
 
-~~Before executing the finetuning script, the following source code changes must be applied to the cloned repository (as described in [Setup guide](./setup.md)). Those changes will address both model configuration and [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) data processing:~~
+**If you cloned the [Cosmos-H-Surgical-Simulator](https://github.com/NVIDIA-Medtech/Cosmos-H-Surgical-Simulator.git) repository in step 1.1,** these code changes are already applied. **Skip this section and go to [Finetuning](#4-finetuning).**
 
-TODO RECIPE FEEDBACK:
-- make presentation of code changes more intuitive, i.e. for tutorial purposes only thanks to fork
+If you are using the upstream [cosmos-predict2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) repository instead (v1.4.1), you must apply the following changes. The subsections below document them for reference.
 
-### 3.1 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
-Rationale: Register the embodiment 'dvrk'.
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
-index e31586f..9133347 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py
-@@ -48,3 +48,5 @@ class EmbodimentTag(Enum):
-     """
-     AGIBOT = "agibot"
-+
-+    DVRK = "dvrk"
-```
+### 3.1 Register the 'dvrk' embodiment
 
-### 3.2 cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
-Rationale: Configure the 2B Cosmos-predict 2.5 model for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
-index 108267f..f59f22d 100644
---- a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
-+++ b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py
-@@ -833,6 +833,39 @@ AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS = LazyDict(
-     flags={"allow_objects": True},
- )
+File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py`
 
-+AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS = LazyDict(
-+    dict(
-+        defaults=[
-+            "/experiment/2b_bridge_action_conditioned_oss",
-+            {"override /net": "cosmos_v1_2B_action_chunk_conditioned"},
-+            {"override /data_train": "suturebot_train"},
-+            {"override /data_val": "suturebot_val"},
-+            "_self_",
-+        ],
-+        job=dict(
-+            group="official_runs_vid2vid",
-+            name="cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss",
-+            project="cosmos_predict2_action_conditioned",
-+        ),
-+        model=dict(
-+            config=dict(
-+                state_t=1 + 12 // 4,
-+                net=dict(
-+                    action_dim=20,
-+                ),
-+            ),
-+        ),
-+        dataloader_train=dict(
-+            batch_size=4
-+        ),
-+        optimizer=dict(
-+            lr=4e-5,
-+            weight_decay=0.1,
-+        ),
-+    ),
-+    flags={"allow_objects": True},
-+)
-+
+Add a new `DVRK = "dvrk"` entry to the `EmbodimentTag` enum.
 
- cs = ConfigStore.instance()
+### 3.2 Configure the 2B model for SutureBot
 
-@@ -875,6 +908,10 @@ for _item, _item_wo_resume, _item_mock_wo_resume in [
-         AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS,
-         *build_debug_runs(AC_CHUNK_MULTI_VIEW_2B_GR00T_GR1_CUSTOMIZED_13FRAME_FULL_16NODES_OSS),
-     ],
-+    [
-+        AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS,
-+        *build_debug_runs(AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS),
-+    ],
- ]:
-     cs.store(group="experiment", package="_global_", name=f"{_item['job']['name']}", node=_item)
-     if _item_wo_resume is not None:
-```
+File: `cosmos_predict2/_src/predict2/action/configs/action_conditioned/experiment/exp_2B_action_conditioned_rectify_flow_gr00t.py`
 
-### 3.3 cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
-Rationale: Define the data loading for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
-index 6b45363..f7316ed 100644
---- a/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
-+++ b/cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py
-@@ -93,6 +93,48 @@ bridge_13frame_480_640_val_dataset = L(Dataset_3D)(
-     mode="val",
- )
+Add a new `AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS` config dict defining: single-view SutureBot dataset references, action dimension of 20, batch size of 4, learning rate 4e-5, and weight decay 0.1.
 
-+# experiment for action-sequence video prediction
-+base_path_suturebot_ds = "/SutureBot"
-+# Construct modality configs and transforms
-+from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import LeRobotDataset
-+from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.groot_configs import (
-+    construct_modality_config_and_transforms,
-+)
-+modality_configs, train_transform, test_transform = construct_modality_config_and_transforms(
-+    num_frames=13, embodiment="dvrk", downscaled_res=False
-+)
-+
-+suturebot_train_dataset = L(LeRobotDataset)(
-+    num_frames=13,
-+    time_division_factor=4,
-+    time_division_remainder=1,
-+    max_pixels=1920 * 1080,
-+    data_file_keys=("video",),
-+    image_file_extension=("jpg", "jpeg", "png", "webp"),
-+    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
-+    repeat=1,
-+    args=None,
-+    dataset_path=base_path_suturebot_ds,
-+    data_split="train",
-+    embodiment="dvrk",
-+    downscaled_res=False,
-+)
-+
-+suturebot_val_dataset = L(LeRobotDataset)(
-+    num_frames=13,
-+    time_division_factor=4,
-+    time_division_remainder=1,
-+    max_pixels=1920 * 1080,
-+    data_file_keys=("video",),
-+    image_file_extension=("jpg", "jpeg", "png", "webp"),
-+    video_file_extension=("mp4", "avi", "mov", "wmv", "mkv", "flv", "webm"),
-+    repeat=1,
-+    args=None,
-+    dataset_path=base_path_suturebot_ds,
-+    data_split="test",
-+    embodiment="dvrk",
-+    downscaled_res=False,
-+)
+### 3.3 Define SutureBot data loading
 
- # ------------------------------------------------------------
+File: `cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py`
 
-@@ -153,6 +195,19 @@ bridge_13frame_480_640_val_dataloader = L(DataLoader)(
-     drop_last=True,
- )
+Register `suturebot_train` and `suturebot_val` datasets and dataloaders using the `LeRobotDataset` class with 13 frames, `embodiment="dvrk"`, and `max_pixels=1920*1080`.
 
-+suturebot_train_dataloader = L(DataLoader)(
-+    dataset=suturebot_train_dataset,
-+    sampler=L(get_sampler)(dataset=suturebot_train_dataset),
-+    batch_size=1,
-+    drop_last=True,
-+)
-+suturebot_val_dataloader = L(DataLoader)(
-+    dataset=suturebot_val_dataset,
-+    sampler=L(get_sampler)(dataset=suturebot_val_dataset),
-+    batch_size=1,
-+    drop_last=True,
-+)
-+
+### 3.4 Add dVRK configuration (resolution, delta actions, normalization)
 
- def register_training_and_val_data():
-     cs = ConfigStore.instance()
-@@ -199,6 +254,19 @@ def register_training_and_val_data():
-         node=bridge_13frame_480_640_val_dataloader,
-     )
+File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py`
 
-+    cs.store(
-+        group="data_train",
-+        package="dataloader_train",
-+        name="suturebot_train",
-+        node=suturebot_train_dataloader,
-+    )
-+    cs.store(
-+        group="data_val",
-+        package="dataloader_val",
-+        name="suturebot_val",
-+        node=suturebot_val_dataloader,
-+    )
-+
-     # Register gr00t_customized_gr1 data
-     if register_gr00t_customized_gr1_data is not None:
-         register_gr00t_customized_gr1_data()
-```
+Add `dvrk` embodiment config with timestep_interval=3, resolution 960x720, and switch normalization to `mean_std`. Add `RelativeActionTransform` to the transform pipeline.
 
-### 3.4 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-Rationale: Add more configuration required for the [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset (e.g., resolution, delta action computation, normalization).
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-index 9932214..6f14d54 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py
-@@ -23,6 +23,7 @@ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset imp
- from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.base import ComposedModalityTransform
- from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.concat import ConcatTransform
- from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.state_action import (
-+    RelativeActionTransform,
-     StateActionToTensor,
-     StateActionTransform,
- )
-@@ -127,6 +128,23 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-                 ],
-             ),
-         }
-+    elif embodiment == "dvrk":
-+        timestep_interval = 3  # LZ: downsampling rate
-+        delta_indices = list(range(0, num_frames * timestep_interval, timestep_interval))
-+        config = {
-+            "video": ModalityConfig(
-+                delta_indices=delta_indices,
-+                modality_keys=["video.observation.images.main"],
-+            ),
-+            "state": ModalityConfig(
-+                delta_indices=[0],
-+                modality_keys=["state.observation.state"],
-+            ),
-+            "action": ModalityConfig(
-+                delta_indices=delta_indices,
-+                modality_keys=['action.action']
-+            ),
-+        }
+### 3.5–3.6 Bugfixes in the Cosmos OSS code
 
-     video_modality, state_modality, action_modality = config["video"], config["state"], config["action"]
-     if embodiment == "gr1" or embodiment == "gr1_video_only":
-@@ -135,6 +153,11 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-     elif embodiment == "agibot":
-         width = 640 if not downscaled_res else 256
-         height = 480 if not downscaled_res else 256
-+    elif embodiment == "dvrk":
-+        # width = 512 if not downscaled_res else 256
-+        # height = 320 if not downscaled_res else 256
-+        width = 960 if not downscaled_res else 256
-+        height = 720 if not downscaled_res else 256
+Files:
 
-     train_transform = ComposedModalityTransform(
-         transforms=[
-@@ -145,12 +168,13 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-             StateActionToTensor(apply_to=state_modality.modality_keys),
-             StateActionTransform(
-                 apply_to=state_modality.modality_keys,
--                normalization_modes={key: "min_max" for key in state_modality.modality_keys},
-+                normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
-             ),
-             StateActionToTensor(apply_to=action_modality.modality_keys),
-+            RelativeActionTransform(apply_to=action_modality.modality_keys),
-             StateActionTransform(
-                 apply_to=action_modality.modality_keys,
--                normalization_modes={key: "min_max" for key in action_modality.modality_keys},
-+                normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
-             ),
-             ConcatTransform(
-                 video_concat_order=video_modality.modality_keys,
-@@ -166,12 +190,13 @@ def construct_modality_config_and_transforms(num_frames, embodiment, downscaled_
-             StateActionToTensor(apply_to=state_modality.modality_keys),
-             StateActionTransform(
-                 apply_to=state_modality.modality_keys,
--                normalization_modes={key: "min_max" for key in state_modality.modality_keys},
-+                normalization_modes={key: "mean_std" for key in state_modality.modality_keys},
-             ),
-             StateActionToTensor(apply_to=action_modality.modality_keys),
-+            RelativeActionTransform(apply_to=action_modality.modality_keys),
-             StateActionTransform(
-                 apply_to=action_modality.modality_keys,
--                normalization_modes={key: "min_max" for key in action_modality.modality_keys},
-+                normalization_modes={key: "mean_std" for key in action_modality.modality_keys},
-             ),
-             ConcatTransform(
-                 video_concat_order=video_modality.modality_keys,
-```
+- `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py`
+- `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py`
 
-### 3.5 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
-Rationale: A small bugfix on the Cosmos OSS code.
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
-index 5eb4a32..5b022a8 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/video.py
-@@ -127,7 +127,7 @@ class VideoTransform(ModalityTransform):
-         super().set_metadata(dataset_metadata)
-         self.original_resolutions = {}
-         for key in self.apply_to:
--            split_keys = key.split(".")
-+            split_keys = key.split(".", 1)
-             assert len(split_keys) == 2, f"Invalid key: {key}. Expected format: modality.key"
-             sub_key = split_keys[1]
-             if sub_key in dataset_metadata.modalities.video:
-```
+Fix `.split(".")` calls to `.split(".", 1)` to handle keys with multiple dots (e.g. `video.observation.images.main`).
 
-### 3.6 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
-Rationale: A small bugfix on the Cosmos OSS code.
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
-index 9f9b537..9804503 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/concat.py
-@@ -73,7 +73,7 @@ class ConcatTransform(InvertibleModalityTransform):
-         grouped_keys = {}
-         for key in data.keys():
-             try:
--                modality, _ = key.split(".")
-+                modality, _ = key.split(".", 1)
-             except:  # noqa: E722
-                 ### Handle language annotation special case
-                 if "annotation" in key:
-@@ -173,7 +173,7 @@ class ConcatTransform(InvertibleModalityTransform):
-         return self.apply(data)
+### 3.7 Relative action computation
 
-     def get_modality_metadata(self, key: str) -> StateActionMetadata:
--        modality, subkey = key.split(".")
-+        modality, subkey = key.split(".", 1)
-         assert self.dataset_metadata is not None, "Metadata not set"
-         modality_config = getattr(self.dataset_metadata.modalities, modality)
-         assert subkey in modality_config, f"{subkey=} not found in {modality_config=}"
-```
+File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py`
 
-### 3.7 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
-Rationale: Functions to compute the kinematic delta action representation following [Stanford's UMI implementation](https://github.com/real-stanford/universal_manipulation_interface). 
-```python
- diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
-index 06c82d9..6572892 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/transform/state_action.py
-@@ -18,6 +18,7 @@ import random
- from typing import Any, ClassVar
+Add `RelativeActionTransform` class and helper functions `compute_rel_actions` / `compute_rel_actions_local` that compute kinematic delta actions following [Stanford's UMI implementation](https://github.com/real-stanford/universal_manipulation_interface).
 
- import numpy as np
-+from scipy.spatial.transform import Rotation
+### 3.8 Video loading bugfix (AV1 codec)
 
- # import pytorch3d.transforms as pt
- import torch
-@@ -34,6 +35,131 @@ from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.transform.b
- )
+File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py`
 
+Fix frame matching logic by using closest-timestamp matching instead of sequential loading, which broke for certain video codecs (AV1).
 
-+def rotation_6d_to_matrix(rot6d):
-+    """
-+    Convert 6D rotation representation to rotation matrix.
-+    6D rotation is the first two ROWS of a rotation matrix (row-major format),
-+    orthonormalized via Gram-Schmidt.
-+
-+    This matches the incoming dVRK/SutureBot data format:
-+        [r11, r12, r13, r21, r22, r23] = [row1, row2]
-+
-+    Args:
-+        rot6d: Array of shape (..., 6) containing [row1 (3), row2 (3)]
-+
-+    Returns:
-+        Rotation matrices of shape (..., 3, 3)
-+    """
-+    shape = rot6d.shape[:-1]
-+    rot6d = rot6d.reshape(*shape, 2, 3)
-+
-+    # First row (normalized)
-+    row1 = rot6d[..., 0, :]
-+    row1 = row1 / (np.linalg.norm(row1, axis=-1, keepdims=True) + 1e-8)
-+
-+    # Second row (orthogonalized and normalized)
-+    row2 = rot6d[..., 1, :]
-+    row2 = row2 - np.sum(row1 * row2, axis=-1, keepdims=True) * row1
-+    row2 = row2 / (np.linalg.norm(row2, axis=-1, keepdims=True) + 1e-8)
-+
-+    # Third row (cross product)
-+    row3 = np.cross(row1, row2)
-+
-+    # Stack into rotation matrix (as rows)
-+    R = np.stack([row1, row2, row3], axis=-2)
-+    return R
-+
-+
-+def compute_rel_actions(actions):
-+    """
-+    Computes relative actions for a dual-arm robot.
-+    Global translation delta, local (tooltip frame) rotation delta in 6D format.
-+
-+    Reference: https://github.com/real-stanford/universal_manipulation_interface
-+
-+    actions[0] is used as the base pose, actions[1:] are the targets.
-+
-+    Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
-+    Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
-+    Output per-arm: [delta_xyz (3), delta_rot6d (6), gripper (1)] = 10
-+    Dual-arm output: [n_actions-1, arm1 (10) + arm2 (10)] = [n_actions-1, 20]
-+
-+    The relative rotation R_rel = R_base.T @ R_target is represented in 6D format
-+    (first two rows of the rotation matrix, flattened).
-+    """
-+    if isinstance(actions, torch.Tensor):
-+        actions = actions.numpy()
-+
-+    base = actions[0]
-+    targets = actions[1:]
-+    n_targets = targets.shape[0]
-+    rel_actions = np.zeros((n_targets, 20))
-+
-+    for arm in range(2):
-+        i = arm * 10  # Both input and output use same stride
-+        R_base = rotation_6d_to_matrix(base[i + 3 : i + 9])
-+        R_tgt = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
-+
-+        # Global translation delta
-+        rel_actions[:, i : i + 3] = targets[:, i : i + 3] - base[i : i + 3]
-+        # Relative rotation in 6D format (first 2 rows of R_rel, flattened)
-+        R_rel = R_base.T @ R_tgt  # [n_targets, 3, 3]
-+        rel_actions[:, i + 3 : i + 9] = R_rel[:, :2, :].reshape(n_targets, 6)
-+        # Gripper (absolute value, not delta)
-+        rel_actions[:, i + 9] = targets[:, i + 9]
-+
-+    return rel_actions
-+
-+
-+def compute_rel_actions_local(actions):
-+    """
-+    Computes relative actions for a dual-arm robot using SE(3) transformation.
-+    Both translation and rotation deltas are in the local (tooltip) frame.
-+
-+    Follows UMI 'relative' mode: T_rel = T_base^(-1) @ T_action
-+    Reference: https://github.com/real-stanford/universal_manipulation_interface
-+
-+    actions[0] is used as the base pose, actions[1:] are the targets.
-+
-+    Input per-arm: [xyz (3), 6D_rotation (6), gripper (1)] = 10
-+    Dual-arm input: [n_actions, arm1 (10) + arm2 (10)] = [n_actions, 20]
-+    Output per-arm: [delta_xyz (3), delta_rotvec (3), gripper (1)] = 7
-+    Dual-arm output: [n_actions-1, arm1 (7) + arm2 (7)] = [n_actions-1, 14]
-+    """
-+    if isinstance(actions, torch.Tensor):
-+        actions = actions.numpy()
-+
-+    base = actions[0]
-+    targets = actions[1:]
-+    n_targets = targets.shape[0]
-+    rel_actions = np.zeros((n_targets, 14))
-+
-+    for arm in range(2):
-+        i, o = arm * 10, arm * 7
-+
-+        # Build 4x4 base pose matrix
-+        T_base = np.eye(4)
-+        T_base[:3, :3] = rotation_6d_to_matrix(base[i + 3 : i + 9])
-+        T_base[:3, 3] = base[i : i + 3]
-+
-+        # Build 4x4 target pose matrices
-+        T_targets = np.zeros((n_targets, 4, 4))
-+        T_targets[:, :3, :3] = rotation_6d_to_matrix(targets[:, i + 3 : i + 9])
-+        T_targets[:, :3, 3] = targets[:, i : i + 3]
-+        T_targets[:, 3, 3] = 1.0
-+
-+        # SE(3) relative: T_rel = T_base^(-1) @ T_target
-+        T_base_inv = np.linalg.inv(T_base)
-+        T_rel = T_base_inv @ T_targets
-+
-+        # Extract components
-+        rel_actions[:, o : o + 3] = T_rel[:, :3, 3]
-+        rel_actions[:, o + 3 : o + 6] = Rotation.from_matrix(T_rel[:, :3, :3]).as_rotvec()
-+        rel_actions[:, o + 6] = targets[:, i + 9]
-+
-+    return rel_actions
-+
-+
- class RotationTransform:
-     """Adapted from https://github.com/real-stanford/diffusion_policy/blob/548a52bbb105518058e27bf34dcf90bf6f73681a/diffusion_policy/model/common/rotation_transformer.py"""
+### 3.9 Dataset class changes for delta actions
 
-@@ -379,7 +505,7 @@ class StateActionTransform(InvertibleModalityTransform):
+File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py`
 
-         # Check that all state keys specified in apply_to have their modality_metadata
-         for key in self.apply_to:
--            split_key = key.split(".")
-+            split_key = key.split(".", 1)
-             assert len(split_key) == 2, "State keys should have two parts: 'modality.key'"
-             if key not in self.modality_metadata:
-                 modality, state_key = split_key
-@ -389,7 +515,7 @@ class StateActionTransform(InvertibleModalityTransform):
-
-         # Check that all state keys specified in normalization_modes have their statistics in state_statistics
-         for key in self.normalization_modes:
--            split_key = key.split(".")
-+            split_key = key.split(".", 1)
-             assert len(split_key) == 2, "State keys should have two parts: 'modality.key'"
-             modality, state_key = split_key
-             assert hasattr(dataset_statistics, modality), f"{modality} statistics not found"
-@@ -414,7 +540,7 @@ class StateActionTransform(InvertibleModalityTransform):
-
-         # Initialize the normalizers
-         for key in self.normalization_modes:
--            modality, state_key = key.split(".")
-+            modality, state_key = key.split(".", 1)
-             # If the state has a nontrivial rotation, we need to handle it more carefully
-             # For absolute rotations, we need to convert them to the target representation and normalize them using min_max mode,
-             # since we can infer the bounds by the representation
-@@ -501,6 +627,36 @@ class StateActionTransform(InvertibleModalityTransform):
-         return data
-
-
-+class RelativeActionTransform(ModalityTransform):
-+    """
-+    Converts absolute actions to relative actions using compute_rel_actions.
-+
-+    This transform is used for dVRK (da Vinci Research Kit) datasets where:
-+    - Input: 20D absolute actions [T, 20] (xyz + 6D_rot + gripper per arm)
-+    - Output: 20D relative actions [T-1, 20] (delta_xyz + delta_rot6d + gripper per arm)
-+
-+    The relative actions are computed using global translation delta and local
-+    (tooltip frame) rotation delta. The rotation delta is represented in 6D format
-+    (first two rows of the relative rotation matrix).
-+    """
-+
-+    apply_to: list[str] = Field(..., description="The action keys to transform to relative actions.")
-+
-+    def apply(self, data: dict[str, Any]) -> dict[str, Any]:
-+        for key in self.apply_to:
-+            if key not in data:
-+                continue
-+            actions = data[key]
-+            # Convert to numpy if tensor
-+            is_tensor = isinstance(actions, torch.Tensor)
-+            actions_np = actions.numpy() if is_tensor else actions
-+            # Compute relative actions: [T, 20] -> [T-1, 20]
-+            rel_actions = compute_rel_actions(actions_np)
-+            # Convert back to tensor if input was tensor
-+            data[key] = torch.from_numpy(rel_actions).to(actions.dtype) if is_tensor else rel_actions
-+        return data
-+
-+
- class StateActionPerturbation(ModalityTransform):
-     """
-     Class for state or action perturbation.
-```
-
-### 3.8 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
-Rationale: A bugfix on the Cosmos OSS code (occurs in case dataset videos in mp4 format use AV1 codec).
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
-index 58a777f..9996f36 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/utils/video.py
-@@ -107,7 +107,7 @@ def get_frames_by_timestamps(
-         # Note: closest key frame timestamp is usally smaller than `first_ts` (e.g. key frame can be the first frame of the video)
-         # for details on what `seek` is doing see: https://pyav.basswood-io.com/docs/stable/api/container.html?highlight=inputcontainer#av.container.InputContainer.seek
-         reader.seek(first_ts, keyframes_only=True)
--        # load all frames until last requested frame
-+        # load all frames from first to last requested timestamp
-         loaded_frames = []
-         loaded_ts = []
-         for frame in reader:
-@@ -116,11 +116,18 @@ def get_frames_by_timestamps(
-             loaded_ts.append(current_ts)
-             if current_ts >= last_ts:
-                 break
--            if len(loaded_frames) >= len(timestamps):
--                break
-         reader.container.close()
-         reader = None
--        frames = np.array(loaded_frames)
-+
-+        if len(loaded_frames) == 0:
-+            raise ValueError(f"No frames loaded from {video_path} for timestamps {timestamps[0]:.3f} to {timestamps[-1]:.3f}")
-+
-+        # Match requested timestamps to closest loaded frames (like decord/opencv backends do)
-+        loaded_ts = np.array(loaded_ts).reshape(-1, 1)  # (num_loaded, 1)
-+        requested_ts = np.array(timestamps)  # (num_requested,)
-+        # Find closest loaded frame for each requested timestamp
-+        indices = np.abs(loaded_ts - requested_ts).argmin(axis=0)
-+        frames = np.array([loaded_frames[i] for i in indices])
-         return frames.transpose(0, 2, 3, 1)
-     else:
-         raise NotImplementedError
-```
-
-
-### 3.9 cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
-Rationale: Minor code changes to facilitate kinematic delta action representation following [Stanford's UMI implementation](https://github.com/real-stanford/universal_manipulation_interface).
-```python
-diff --git a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
-index 0aed5bb..7d0c1f0 100644
---- a/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
-+++ b/cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/dataset.py
-@@ -1066,8 +1066,8 @@ class LeRobotDataset(torch.utils.data.Dataset):
-         self.lerobot_datasets = []
-         for p in self.dataset_path:
-             config, train_transform, test_transform = construct_modality_config_and_transforms(
--                num_frames=(num_frames + 1), embodiment=embodiment, downscaled_res=downscaled_res
--            )  # Add an additional prefix frame as baseline to compute delta actions
-+                num_frames=num_frames, embodiment=embodiment, downscaled_res=downscaled_res
-+            )
-             self.lerobot_datasets.append(
-                 WrappedLeRobotSingleDataset(
-                     dataset_path=p,
-@@ -1098,7 +1098,7 @@ class LeRobotDataset(torch.utils.data.Dataset):
-
-         video = lerobot_data["video"]
-         video_frames = []
--        for i in range(1, video.shape[1]):  # Skip first frame (used only as action baseline)
-+        for i in range(video.shape[1]):
-             frame = video[:, i, :, :]
-             frame = Image.fromarray(frame.permute(1, 2, 0).numpy())
-             video_frames.append(frame)
-@@ -1106,24 +1106,17 @@ class LeRobotDataset(torch.utils.data.Dataset):
-             print(
-                 f"Warning: Expected {self.num_frames} frames, but got {len(video_frames)} frames. Randomly sampling an item instead."
-             )
--            return self.__getitem__(random.randint(0, len(self) - 1))  # noqa: F821
-+            return self.__getitem__(randint(0, len(self) - 1))  # noqa: F821
-         video_frames = np.stack([np.array(frame, dtype=np.uint8) for frame in video_frames])
-
--        # Cumulative baselined delta actions (old version)
--        # NOTE: Need to tweak this after (num_frames + 1) change
--        # delta_actions = lerobot_data["action"][1:] - lerobot_data["action"][[0]]
--        # Chunked cumulative baselined delta actions (for chunked action architecture)
-+        # Actions are now relative after RelativeActionTransform in the pipeline
-+        # The transform converts 20D absolute actions to 20D relative actions
-         actions = lerobot_data["action"]
--        delta_actions = []
--        for t in range(1, len(actions) - 1, self.time_division_factor):
--            delta_actions.append(actions[t : t + self.time_division_factor] - actions[t - 1])
--        delta_actions = torch.cat(delta_actions, dim=0)
-
-         data = {
-             "prompt": prompt,
-             "video": torch.from_numpy(video_frames).permute(3, 0, 1, 2),
--            # "action": torch.from_numpy(delta_actions),
--            "action": (delta_actions),
-+            "action": actions,
-             "ai_caption": "",
-             "text": prompt,
-             "t5_text_embeddings": torch.zeros(512, 1024, dtype=torch.bfloat16).cuda(),
-@@ -1143,3 +1136,4 @@ class LeRobotDataset(torch.utils.data.Dataset):
-
-     def __len__(self):
-         return sum([len(d) for d in self.lerobot_datasets]) * self.repeat
-+
-```
+Simplify the `LeRobotDataset` to use the `RelativeActionTransform` in the pipeline instead of manually computing delta actions in the `__getitem__` method.
 
 ## 4. Finetuning
-With the code changes applied, we are set to start the finetuning, using 4 nodes (32 GPUs). 
-The batch size was configured to be 4, resulting in a global batch size of 128. 
-We recommend using at least 1 node with 8 GPUs for finetuning the 2B Cosmos model (global batch size of 32).
 
-Adapt the reference script 'run_finetuning.sh' to your environment.
+Fine-tuning adapts the Cosmos-H-Surgical-Simulator checkpoint to your dataset by jointly training the action embedder and diffusion backbone.
+
+### Prerequisites
+
+Before starting, ensure you have completed:
+
+- §1.5 — Docker image built (`cosmos-predict2.5:local`)
+- §1.6 — `scripts/env.sh` filled in and sourced (`source scripts/env.sh`)
+- §2.3 — LeRobot dataset prepared (start with the mini dataset)
+
+### Download Cosmos-H-Surgical-Simulator Checkpoint
+
+Download the pre-trained DCP checkpoint from HuggingFace:
+
 ```bash
-mkdir logs
-sbatch run_finetuning.sh
+huggingface-cli download nvidia/Cosmos-H-Surgical-Simulator \
+    --include "checkpoints/iter_000023000/model/*" \
+    --local-dir /path/to/checkpoints
+
+export COSMOS_H_CKPT_PATH=/path/to/checkpoints/checkpoints/iter_000023000
 ```
 
-Run the finetuning for 20,000 steps.
+`COSMOS_H_CKPT_PATH` points to the `iter_000023000` directory (not `model/` — the trainer appends that internally). If left unset, training warm-starts from the base Cosmos 2B model.
 
-The checkpoints in distributed format (DCP) will be saved in:
+### Run Finetuning
+
+**Using Docker (recommended):**
+
 ```bash
-cd ${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/official_runs_vid2vid/cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss/checkpoints
+export COSMOS_CODE_PATH=/path/to/Cosmos-H-Surgical-Simulator
+export SUTUREBOT_LEROBOT_PATH=/path/to/suturebot_lerobot_mini   # mini dataset (§2.3); swap for full dataset when ready
+export COSMOS_H_CKPT_PATH=/path/to/checkpoints/checkpoints/iter_000023000
+export IMAGINAIRE_OUTPUT_ROOT=/path/to/training_output
+export COSMOS_CONTAINER_IMAGE=cosmos-predict2.5:local
+export HF_HOME=/path/to/huggingface_cache
+
+./scripts/run_finetuning_standalone.sh
 ```
-TODO RECIPE FEEDBACK:
-- please include more information, such as training log (you can include wandb log screen shots), 
-and also give an approximate training elapsed time.
-- (optional) have you done experiments with different parameter setups? 
-provide intuition on the choice of hyperparameters or data blending
 
+Set `NGPUS=<n>` to control GPU count (default: all available). Set `WANDB_API_KEY=<key>` to enable W&B logging.
 
-## 5 Inference & Evaluation
+**Reference run (8×H100, mini dataset):** the exact configuration used in this tutorial:
 
-This recipe is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates in Cosmos simulation against real-world robot execution. Across three SutureBot tasks and six VLA models, that approach achieved a strong positive correlation with the real-world dVRK rollouts (Pearson r = 0.718, p < 0.001).
+```bash
+export COSMOS_CODE_PATH=/ephemeral/Cosmos-H-Surgical-Simulator
+export SUTUREBOT_LEROBOT_PATH=/ephemeral/data/suturebot_lerobot_mini
+export COSMOS_H_CKPT_PATH=/ephemeral/checkpoints/checkpoints/iter_000023000
+export IMAGINAIRE_OUTPUT_ROOT=/ephemeral/checkpoints/training_output
+export COSMOS_CONTAINER_IMAGE=cosmos-predict2.5:local
+export HF_HOME=/ephemeral/cache/huggingface
+export WANDB_API_KEY=your_api_key_here   # optional
 
-Notice that the public SutureBot dataset lacks the failure trajectories used in the [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) to balance training. Without this negative data, WFMs will tend to hallucinate success (false positives). Therefore, instead of replicating the full policy rollout validation, this recipe demonstrates how to run open-loop inference on held-out test data. This generates video outputs that users can visually compare against ground truth to assess the model's kinematic faithfulness and physical realism.
+./scripts/run_finetuning_standalone.sh
+```
 
-The `inference_dvrk.py` script runs autoregressive video generation for policy evaluation. It:
+**Without Docker (host venv):**
+
+```bash
+export SUTUREBOT_LEROBOT_PATH=/path/to/suturebot_lerobot
+export COSMOS_CODE_PATH=/path/to/Cosmos-H-Surgical-Simulator
+export COSMOS_H_CKPT_PATH=/path/to/checkpoints/checkpoints/iter_000023000
+export IMAGINAIRE_OUTPUT_ROOT=/path/to/training_output
+./scripts/run_finetuning_standalone.sh
+```
+
+For multi-node Slurm clusters, see §7.
+
+### Key Training Parameters
+
+| Parameter | Default | How to Change |
+| --------- | ------- | ------------- |
+| GPUs | all available | `NGPUS=<n>` env var |
+| Batch size (per GPU) | 4 (global: `NGPUS × 4`) | Edit experiment config in §3.2 |
+| Learning rate | 4e-5 | Append `optimizer.lr=<value>` to the training command |
+| Checkpoint save interval | every 200 steps | Change `checkpoint.save_iter=200` in `run_finetuning_standalone.sh` |
+| W&B logging | off | Set `WANDB_API_KEY` |
+
+### Training Details
+
+Checkpoints are saved every 200 steps to:
+
+```text
+${IMAGINAIRE_OUTPUT_ROOT}/cosmos_predict2_action_conditioned/official_runs_vid2vid/cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss/checkpoints/
+```
+
+**Expected training time on 8×H100 PCIe (~20 steps/min):**
+
+| Steps | Time | Notes |
+| ----- | ---- | ----- |
+| 5,000 | ~4 h | Early improvement visible on mini dataset |
+| 13,000 | ~11 h | Reference run used in this tutorial |
+| 23,000 | ~20 h | Published Cosmos-H-Surgical-Simulator checkpoint |
+
+For the **mini dataset** (3 episodes), the model converges quickly — suitable for pipeline verification. For the **full SutureBot dataset** (~1,890 episodes), plan for 15,000–23,000 steps for strong results. Training time scales approximately linearly with fewer GPUs (e.g., 1×H100 ≈ 8× longer).
+
+> **Note:** The step counts above were established with an intermediate Cosmos-H-Surgical-Simulator checkpoint (pre-finetuned on Open-H). Convergence using the final checkpoint is expected to be substantially faster since the model already encodes surgical visual priors and dVRK action dynamics. This may be the case as well for any downstream surgical robotics dataset. Monitor validation loss and sample quality to determine an appropriate early stopping point.
+
+To use a fine-tuned checkpoint for inference, convert the DCP to a `.pt` file (see §5.1).
+
+## 5. Inference & Evaluation
+
+This tutorial is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates in Cosmos simulation against real-world robot execution (Pearson r = 0.718, p < 0.001).
+
+The [inference_dvrk.py](scripts/inference_dvrk.py) script runs autoregressive video generation for policy evaluation:
 
 1. Loads only the **first frame** from the dataset as initial conditioning
 2. Generates frames using ground-truth actions from the dataset
 3. Uses each chunk's **last predicted frame** as conditioning for the next chunk
 4. Stitches all chunks into a full episode video
 
-This demonstrates policy evaluation: the GT actions serve as a proxy for any action source. Replace them with policy-predicted actions to evaluate a learned policy.
-
 ### 5.1 Convert Checkpoint
 
-Training produces distributed checkpoints (DCP). Convert to PyTorch format:
+Training produces distributed checkpoints (DCP) that must be converted to a single `.pt` file before inference. The conversion script lives inside the **Cosmos-H-Surgical-Simulator** repo.
+
+Set `COSMOS_CODE_PATH`, `CHECKPOINTS_DIR`, and `CHECKPOINT_ITER` for whichever checkpoint you want to convert:
+
+**Pre-trained checkpoint (downloaded from HuggingFace in §4):**
 
 ```bash
-CHECKPOINTS_DIR=/your/checkpoint/dir
-CHECKPOINT_ITER=iter_000020000
+# Download only the model weights (skip optimizer/scheduler for inference)
+huggingface-cli download nvidia/Cosmos-H-Surgical-Simulator \
+    --include "checkpoints/iter_000023000/model/*" \
+    --local-dir /path/to/checkpoints
 
+COSMOS_CODE_PATH=/path/to/Cosmos-H-Surgical-Simulator
+CHECKPOINTS_DIR=/path/to/checkpoints/checkpoints
+CHECKPOINT_ITER=iter_000023000
+```
+
+**Fine-tuned checkpoint (from your training run in §4):**
+
+```bash
+COSMOS_CODE_PATH=/path/to/Cosmos-H-Surgical-Simulator
+CHECKPOINTS_DIR=$IMAGINAIRE_OUTPUT_ROOT/cosmos_predict2_action_conditioned/official_runs_vid2vid/cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss/checkpoints
+CHECKPOINT_ITER=iter_000013000    # replace with your chosen iteration
+```
+
+Once those variables are set, run the conversion:
+
+**Using Docker (recommended):**
+
+```bash
+docker run --rm \
+  -v $COSMOS_CODE_PATH:/workspace \
+  -v $CHECKPOINTS_DIR:$CHECKPOINTS_DIR \
+  -w /workspace \
+  $COSMOS_CONTAINER_IMAGE \
+  bash -c "source .venv/bin/activate 2>/dev/null || true && \
+python scripts/convert_distcp_to_pt.py \
+    $CHECKPOINTS_DIR/$CHECKPOINT_ITER/model \
+    $CHECKPOINTS_DIR/$CHECKPOINT_ITER"
+```
+
+**Without Docker (host venv):**
+
+```bash
+cd $COSMOS_CODE_PATH
+source .venv/bin/activate
 python scripts/convert_distcp_to_pt.py \
     $CHECKPOINTS_DIR/$CHECKPOINT_ITER/model \
     $CHECKPOINTS_DIR/$CHECKPOINT_ITER
 ```
 
-This conversion will create three files:
+This creates three files in `$CHECKPOINTS_DIR/$CHECKPOINT_ITER/`:
 
-- `model.pt`: Full checkpoint containing both regular and EMA weights
-- `model_ema_fp32.pt`: EMA weights only in float32 precision
-- `model_ema_bf16.pt`: EMA weights only in bfloat16 precision (recommended for inference)
+- `model.pt` — full checkpoint (regular + EMA weights)
+- `model_ema_fp32.pt` — EMA weights in float32
+- `model_ema_bf16.pt` — EMA weights in bfloat16 (recommended for inference)
 
+### 5.2 Copy Inference Script
 
-### 5.2 Run Inference
-Run model inference using the latest checkpoint from the finetuning step above. The script will generate several rollouts given the ground truth kinematic action trajectories and an initial frame, both selected from the dataset test split.
+The inference script must be placed inside the Cosmos-H-Surgical-Simulator repo before running:
+
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python scripts/inference_dvrk.py \
-    --experiment=ac_predict2p5_video2world_2b_suturebot_training \
+cp scripts/inference_dvrk.py \
+    /path/to/Cosmos-H-Surgical-Simulator/cosmos_predict2/_src/predict2/action/inference/
+```
+
+### 5.3 Run Inference
+
+Set the paths (reuse variables from §5.1, or redefine them here for a new terminal session):
+
+```bash
+COSMOS_CODE_PATH=/path/to/Cosmos-H-Surgical-Simulator
+CHECKPOINTS_DIR=/path/to/checkpoints/checkpoints    # same value as in §5.1
+CHECKPOINT_ITER=iter_000023000                      # whichever iter you converted
+
+SUTUREBOT_LEROBOT_PATH=$HF_HOME/lerobot/suturebot_lerobot_mini   # mini dataset (§2.3)
+# SUTUREBOT_LEROBOT_PATH=$HF_HOME/lerobot/suturebot_lerobot       # full dataset
+
+SAVE_ROOT=/path/to/results/dvrk_eval
+```
+
+The script generates rollouts given ground-truth kinematic action trajectories and an initial frame from the dataset.
+
+> **Note on `--experiment`:** The inference command uses the `open_h-fixed` experiment config rather than the `suturebot` training config. This is intentional: the inference pipeline reads the experiment config only to set up the model architecture, while data loading is handled separately in `inference_dvrk.py` using `embodiment="suturebot"` and the dataset's own `stats.json`. Both configs share the same 2B architecture and 44D action space, so the `open_h-fixed` config is correct for inference regardless of which checkpoint you use.
+
+**Using Docker (recommended):**
+
+```bash
+docker run --rm --gpus all \
+  -v $COSMOS_CODE_PATH:/workspace \
+  -v $CHECKPOINTS_DIR:$CHECKPOINTS_DIR \
+  -v $SUTUREBOT_LEROBOT_PATH:$SUTUREBOT_LEROBOT_PATH \
+  -v $SAVE_ROOT:$SAVE_ROOT \
+  -w /workspace \
+  $COSMOS_CONTAINER_IMAGE \
+  bash -c "source .venv/bin/activate 2>/dev/null || true && \
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python \
+    cosmos_predict2/_src/predict2/action/inference/inference_dvrk.py \
+    --experiment=cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss \
     --ckpt_path $CHECKPOINTS_DIR/$CHECKPOINT_ITER/model_ema_bf16.pt \
-    --dataset_path /path/to/dataset/SutureBot/LeRobot \
-    --save_root results/dvrk_eval \
-    --data_split test \
+    --dataset_path $SUTUREBOT_LEROBOT_PATH \
+    --save_root $SAVE_ROOT \
+    --data_split train \
+    --episode_ids 0,1,2 \
+    --save_comparison"
+```
+
+**Without Docker (host venv):**
+
+```bash
+cd $COSMOS_CODE_PATH
+source .venv/bin/activate
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=. python cosmos_predict2/_src/predict2/action/inference/inference_dvrk.py \
+    --experiment=cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss \
+    --ckpt_path $CHECKPOINTS_DIR/$CHECKPOINT_ITER/model_ema_bf16.pt \
+    --dataset_path $SUTUREBOT_LEROBOT_PATH \
+    --save_root $SAVE_ROOT \
+    --data_split train \
     --episode_ids 0,1,2 \
     --save_comparison
 ```
 
-The `--save_comparison` flag generates side-by-side videos (GT left, predicted right).
+> **Note:** The `--data_split train` flag is used here because the mini dataset from §2.3 contains only a `train` split. For a full dataset conversion (which produces `train`/`test` splits), use `--data_split test`.
 
-> For more inference options and advanced usage, see the Cosmos Predict 2 [inference documentation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/docs/inference.md).
+The `--save_comparison` flag generates side-by-side videos (ground truth on the left, predicted on the right).
 
-### 5.3 Swapping in a Surgical Policy
+### 5.4 Inference Results
 
-To evaluate a surgical policy (a VLA model) instead of GT actions, modify the inference loop in `inference_dvrk.py` as follows:
+The following metrics are from the reference run (iter_000013000, mini dataset, 1×H100 PCIe):
+
+| Metric | Value |
+| ------ | ----- |
+| GPU memory | ~20 GB |
+| Denoising speed | ~9.9 it/s (36 steps/chunk) |
+| Time per 12-frame chunk | ~4 s |
+| Time per episode (~10 chunks) | ~40–45 s |
+
+Output files are written to `$SAVE_ROOT`:
+
+```text
+dvrk_eval/
+├── episode_0/
+│   ├── predicted_0.mp4   # generated video
+│   └── comparison_0.mp4  # side-by-side: ground truth (left) vs predicted (right)
+├── episode_1/
+└── episode_2/
+```
+
+> **Base model vs fine-tuned:** Running inference with the pre-trained Cosmos-H checkpoint (without SutureBot fine-tuning) produces near-static output — the predicted frames barely change from the conditioning frame. This is expected: the pre-trained model uses Open-H action statistics, which are incompatible with the SutureBot normalization (see §2.5). Fine-tuning on SutureBot data (§4) is required to generate meaningful motion.
+
+### 5.5 Swapping in a Surgical Policy
+
+To evaluate a surgical policy (a VLA model) instead of ground-truth actions, modify the inference loop in `inference_dvrk.py`:
 
 ```python
 # Current (GT actions from dataset):
@@ -872,33 +564,105 @@ actions = data["action"].numpy()
 actions = policy.predict(current_frame)  # Returns (12, action_dim)
 ```
 
-The finetuned Cosmos model expects **normalized** action sequences matching the expected shape `(chunk_size, action_dim)` and following the **relative action formulation** used above in this recipe.
+The finetuned Cosmos model expects **normalized** action sequences matching the shape `(chunk_size, action_dim)` and following the **relative action formulation** used during training.
 
-> Note: Running Cosmos with a policy's output actions generates video rollouts (MP4 files) for manual review. To automate this evaluation process, [Cosmos-Reason2](https://github.com/nvidia-cosmos/cosmos-reason2) can be post-trained to serve as a judge, automatically detecting task successes, failures, and physics anomalies.
-
-
+> **Note:** Running Cosmos with a policy's output actions generates video rollouts (MP4 files) for manual review. To automate this evaluation process, [Cosmos-Reason2](https://github.com/nvidia-cosmos/cosmos-reason2) can be post-trained to serve as a judge, automatically detecting task successes, failures, and physics anomalies.
 
 ## 6. Results
 
-### Comparison: Base Model vs Post-Trained Model
-The post-trained Cosmos-predict 2.5 model generates faithful and highly realistic rollouts as compared to the ground truth video. Below is a comparison of videos generated by the post-trained model versus the real-world ground truth videos:
+The post-trained Cosmos-H-Surgical-Simulator model generates faithful and highly realistic rollouts as compared to the ground-truth video. Below is a comparison of videos generated by the post-trained model versus the real-world ground truth (run inference as in §5.3 to generate these videos):
 
-| Sample | Ground Truth                                                                                               | Post-Trained Model |
-|--------|------------------------------------------------------------------------------------------------------------|-------------------|
-| **Sample 1** | <video width="320" controls autoplay loop muted><source src="assets/base/0.mp4" type="video/mp4"></video>  | <video width="320" controls autoplay loop muted><source src="assets/post_trained/0.mp4" type="video/mp4"></video> |
-| **Sample 2** | <video width="320" controls autoplay loop muted><source src="assets/base/12.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/post_trained/12.mp4" type="video/mp4"></video> |
-| **Sample 3** | <video width="320" controls autoplay loop muted><source src="assets/base/5.mp4" type="video/mp4"></video>  | <video width="320" controls autoplay loop muted><source src="assets/post_trained/5.mp4" type="video/mp4"></video> |
+| Sample | Ground Truth | Post-Trained Model |
+| ------ | ------------ | ------------------ |
+| **Sample 1** | Ground truth *(§5.3)* | Post-trained *(§5.3)* |
+| **Sample 2** | Ground truth *(§5.3)* | Post-trained *(§5.3)* |
+| **Sample 3** | Ground truth *(§5.3)* | Post-trained *(§5.3)* |
 
+## 7. Slurm / Multi-Node
 
-## 7. Conclusion
-TODO RECIPE FEEDBACK: 
-- add one section for conclusion, with your message for key takeaways. You can include insights, 
-or limitations that you which can be aimed for the future.
+For large-scale training on Slurm clusters, the Cosmos-H-Surgical-Simulator repository includes a reference Slurm script at `train_scripts/train_suturebot.sh`. It uses Pyxis/enroot to run the container (`--container-image`, `--container-mounts`) and `srun` for multi-node `torchrun` launch.
 
+The key training command inside the script is:
+
+```bash
+torchrun --nnodes=$n_node --nproc_per_node=8 \
+    --master_port=25001 --master_addr $MASTER_ADDR --node_rank=$CURRENT_RANK \
+    -m scripts.train \
+        --config=cosmos_predict2/_src/predict2/action/configs/action_conditioned/config.py \
+        -- \
+        experiment="cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss" \
+        checkpoint.save_iter=200 \
+        ~dataloader_train.dataloaders
+```
+
+To adapt it for your cluster:
+
+1. Replace the hardcoded `CODE_PATH` and `DATASET_PATH` variables with your paths.
+2. Replace the `--container-image` `.sqsh` path with the `cosmos-predict2.5:local` image built in §1.3 (or a Pyxis-compatible image on your cluster).
+3. Adjust `#SBATCH --nodes`, `--gres`, `--partition`, and `--account` to match your cluster.
+4. Set `IMAGINAIRE_OUTPUT_ROOT` and `HF_HOME` inside the container invocation (add `-e` flags or `export` them in the `bash -c` block).
+
+## 8. Downloading Artifacts
+
+After running the tutorial on a cloud instance (e.g. [brev](https://brev.dev)), use the commands below to pull results to your local machine. Replace `<instance-name>` with your brev instance name (visible in `brev ls`).
+
+Each artifact has two download options:
+
+- **`brev copy`** — purpose-built for brev instances; no SSH config required
+- **`rsync`** — works with any SSH-accessible host; brev adds instance entries to `~/.ssh/config` so `<instance-name>` works directly as a hostname
+
+### Evaluation Videos
+
+Side-by-side comparison videos and predicted rollouts from §5.3:
+
+```bash
+# brev
+brev copy <instance-name>:/ephemeral/results/dvrk_eval/finetuned_iter13000_mini10ep dvrk_eval_iter13000
+
+# rsync
+rsync -avz --progress <instance-name>:/ephemeral/results/dvrk_eval/finetuned_iter13000_mini10ep/ dvrk_eval_iter13000/
+```
+
+### Converted Model Checkpoint
+
+The EMA bf16 checkpoint (4 GB) produced by §5.1 — suitable for inference and further fine-tuning:
+
+```bash
+# brev
+brev copy <instance-name>:/ephemeral/checkpoints/converted_iter13000/model_ema_bf16.pt model_ema_bf16.pt
+
+# rsync
+rsync -avz --progress <instance-name>:/ephemeral/checkpoints/converted_iter13000/model_ema_bf16.pt ./model_ema_bf16.pt
+```
+
+To download the full checkpoint directory (includes fp32 and full weights, ~24 GB total):
+
+```bash
+# brev
+brev copy <instance-name>:/ephemeral/checkpoints/converted_iter13000 converted_iter13000
+
+# rsync
+rsync -avz --progress <instance-name>:/ephemeral/checkpoints/converted_iter13000/ converted_iter13000/
+```
+
+### LeRobot Dataset
+
+The converted mini dataset from §2.3 (~few GB depending on episode count):
+
+```bash
+# brev
+brev copy <instance-name>:/ephemeral/cache/huggingface/lerobot/suturebot_lerobot_mini suturebot_lerobot_mini
+
+# rsync
+rsync -avz --progress <instance-name>:/ephemeral/cache/huggingface/lerobot/suturebot_lerobot_mini/ suturebot_lerobot_mini/
+```
 
 ## Further Reading
 
-1. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) - World foundation model-based automated online evaluation of surgical robot policy learning
-2. [Cosmos Predict 2.5 Model](https://github.com/nvidia-cosmos/cosmos-predict2.5) - Model weights and documentation.
-3. [SutureBot](https://suturebot.github.io/) - A Precision Framework & Benchmark For Autonomous End-to-End Suturing.
-4. [The da Vinci Research Kit](https://www.intuitive-foundation.org/dvrk/) - A community effort supporting research in the field of telerobotic surgery
+1. [Cosmos-H-Surgical-Simulator repo](https://github.com/NVIDIA-Medtech/Cosmos-H-Surgical-Simulator.git) — Cosmos-predict2.5 fine-tuned on the Open-H embodiment dataset
+2. [Cosmos-H-Surgical-Simulator checkpoint](https://huggingface.co/nvidia/Cosmos-H-Surgical-Simulator/tree/main/checkpoints) - Cosmos-H-Surgical-Simulator checkpoint on Hugging Face.
+3. [Open-H embodiment](https://github.com/open-h-embodiment/data-collection)  — Open-H-Embodiment community‑driven dataset
+4. [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) — Model weights and documentation
+5. [SutureBot](https://suturebot.github.io/) — A Precision Framework & Benchmark for Autonomous End-to-End Suturing
+6. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) — World foundation model-based automated online evaluation of surgical robot policy learning
+7. [The da Vinci Research Kit](https://www.intuitive-foundation.org/dvrk/) — A community effort supporting research in telerobotic surgery
