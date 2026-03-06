@@ -13,6 +13,7 @@ nav:
   - FAQ: faq.md
 plugins:
   - search
+  - mkdocs-jupyter
   - literate-nav:
       nav_file: SUMMARY.md
   - exclude-unused-files:
@@ -70,6 +71,7 @@ extra_css:
   - assets/css/fonts.css
   - assets/css/custom-material.css
 extra_javascript:
+  - assets/js/cloud-nav.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:

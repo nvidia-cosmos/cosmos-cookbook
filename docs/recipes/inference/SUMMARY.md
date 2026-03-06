@@ -9,3 +9,6 @@
 - [Transfer Multi-Control Video Editing](./transfer2_5/inference-real-augmentation/inference.md)
 - [Transfer Style-Guided Video Generation](./transfer2_5/inference-image-prompt/inference.md)
 - [Transfer for Data Augmentation in Biodiversity](./transfer2_5/biotrove_augmentation/inference.md)
+- [Reason for Egocentric Social Reasoning](./reason2/intbot_showcase/inference.md)
+- [Video Search and Summarization with Cosmos Reason](./reason2/vss/inference.md)
+- [Reason for Worker Safety in a Classical Warehouse](./reason2/worker_safety/inference.md)

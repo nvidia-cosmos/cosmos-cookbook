@@ -354,3 +354,28 @@ Cosmos Transfer 2.5 addresses critical challenges in Physical AI:
 By leveraging advanced generative AI with physical scene understanding from Cosmos Reason 1, this pipeline empowers businesses and researchers to build more robust Physical AI systems. The combination of photorealistic quality and preserved ground truth makes it particularly valuable for autonomous vehicle development, where both visual fidelity and behavioral accuracy are paramount.
 
 For implementation details and additional use cases, please refer to the [setup guide](setup.md) and explore more examples in the Cosmos ecosystem.
+
+---
+
+## Document Information
+
+**Publication Date:** October 09, 2025
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_cosmos_transfer_25_2025,
+  title={Cosmos Transfer 2.5 Sim2Real for Simulator Videos},
+  author={Ji, Ryan and Jin, Jingyi},
+  year={2025},
+  month={October},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Ryan Ji, & Jingyi Jin (2025). Cosmos Transfer 2.5 Sim2Real for Simulator Videos. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.html>

@@ -1,0 +1,38 @@
+[custom.dataset]
+path = "../../data/videophy2_train"
+
+[train]
+seed = 42
+train_batch_per_replica = 32
+epoch = 10
+optm_lr = 1e-6
+optm_weight_decay = 0.01
+optm_warmup_steps = 0.03
+optm_decay_type = "cosine"
+optm_grad_norm_clip = 1.0
+output_dir = "../../outputs/videophy2_sft_cosmos_rl"
+compile = false
+
+[policy]
+model_name_or_path = "nvidia/Cosmos-Reason2-8B"
+model_max_length = 4096
+
+[logging]
+logger = ['console', 'wandb']
+project_name = "cosmos_reason2_physical_plausibility"
+experiment_name = "cosmos_rl/videophy2_sft"
+
+[train.train_policy]
+type = "sft"
+conversation_column_name = "conversations"
+mini_batch = 4
+
+[train.ckpt]
+enable_checkpoint = true
+max_keep = 20
+
+[policy.parallelism]
+tp_size = 1
+cp_size = 1
+dp_shard_size = 8
+pp_size = 1

@@ -9,9 +9,19 @@
 |-----------|--------------|--------------|
 | Cosmos [Model] | Inference | [Brief description] |
 
-[Describe the use case, problem statement, and value. Include specific domain details.]
+[Introduce your company/organization, project, and application domain. Describe the specific use case, problem statement, and value proposition. Explain why Cosmos inference (vs. post-training) is the right approach for your needs.]
 
 - [Setup and System Requirements](setup.md) *(optional)*
+
+> **Recommended Structure:** For inference contributions, we recommend organizing your content to include the following elements:
+>
+> 1. **Problem & Use Case** - Define the real-world application and value proposition
+> 2. **Model Selection** - Why this Cosmos model fits your needs (out-of-the-box capabilities)
+> 3. **Pipeline Design** - Architecture and component breakdown
+> 4. **Implementation** - Code examples, configuration, and inference setup
+> 5. **Results & Impact** - Demonstrate output quality, performance, and real-world impact
+>
+> This structure helps readers understand how to apply Cosmos models to similar problems. Feel free to adapt this format to best suit your use case.
 
 ## Key Features
 
@@ -52,13 +62,22 @@
 
 ## Results
 
-[Visual demonstrations, metrics, and output examples]
+[Visual demonstrations, metrics, and output examples. Include quantitative metrics (e.g., inference speed, accuracy) and qualitative analysis showing real-world impact.]
 
-## Applications
+## Conclusion
+
+[Key achievements, lessons learned, and impact on your project/organization]
+
+**Potential Applications:**
 
 - Application area 1
 - Application area 2
 - Application area 3
+
+**Next Steps:**
+
+- Suggestion for extending the recipe
+- Future improvements or variations
 
 ## Resources
 

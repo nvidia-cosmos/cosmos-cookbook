@@ -137,14 +137,6 @@
   display: var(--md-footer-logo-dark-mode);
 }
 
-#logo_light_mode {
-  display: var(--md-footer-logo-light-mode);
-}
-
-#logo_dark_mode {
-  display: var(--md-footer-logo-dark-mode);
-}
-
 .md-header__button.md-logo svg {
   fill: var(--svg-color);
 }
@@ -185,6 +177,23 @@
 }
 
 /* Make Gallery navigation item bold (only the top-level item, not subpages) */
-.md-nav__item:has(a[href="gallery/"]) > .md-nav__link {
+.md-nav__item:has(a[href="gallery/"])>.md-nav__link {
   font-weight: bold;
+}
+
+/* Cloud Deployments sub-items: hide unless that page is active */
+.cloud-nav-subitem {
+  display: none;
+}
+
+body.cloud-nav-open .cloud-nav-subitem {
+  display: list-item;
+}
+
+.cloud-nav-subitem .md-nav__link {
+  font-size: 0.9em;
+  opacity: 0.9;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 1.1rem;
 }
