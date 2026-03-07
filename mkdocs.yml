@@ -77,7 +77,7 @@ extra_javascript:
 extra:
   github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
 copyright: |
-  &copy; Copyright 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  &copy; Copyright 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 use_directory_urls: false
 validation:
   omitted_files: ignore
