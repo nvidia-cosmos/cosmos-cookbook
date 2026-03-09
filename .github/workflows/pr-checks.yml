@@ -73,16 +73,16 @@ jobs:
           fi
 
       - name: Set up Python
-        if: steps.changed.outputs.files != ''
+        if: "steps.changed.outputs.files != ''"
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install huggingface_hub
-        if: steps.changed.outputs.files != ''
+        if: "steps.changed.outputs.files != ''"
         run: pip install huggingface_hub
 
       - name: Validate CLAUDE.md files
-        if: steps.changed.outputs.files != ''
+        if: "steps.changed.outputs.files != ''"
         run: |
           python .github/scripts/validate_claude_md.py ${{ steps.changed.outputs.files }}
