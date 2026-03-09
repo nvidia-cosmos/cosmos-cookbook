@@ -197,6 +197,111 @@ Use the appropriate template for your contribution:
 - [Post-Training Recipe Template](assets/templates/post_training_template.md) - Fine-tuning and domain adaptation
 - [Concept Template](assets/templates/concept_template.md) - Explanatory guides on fundamental topics
 
+### CLAUDE.md — AI Agent Specification File (Recommended)
+
+To make your recipe immediately understandable and runnable by AI coding agents (such as [Claude Code](https://claude.ai/code)), include a `CLAUDE.md` file in your recipe directory. When Claude Code opens your recipe folder, it reads this file first and uses it to understand how to set up, run, and extend your work without manual explanation.
+
+**This file is not rendered on the cookbook site** — it is purely a machine-readable specification for AI agents and contributors who use them.
+
+#### File Location
+
+Place the file at the root of your recipe directory alongside your main content file:
+
+```
+docs/recipes/inference/[model-name]/[recipe-name]/
+├── inference.md        ← Human-readable guide (rendered on site)
+├── CLAUDE.md           ← AI agent specification (not rendered)
+├── setup.md
+└── assets/
+```
+
+#### CLAUDE.md Template
+
+```markdown
+# [Recipe Name]
+
+## What This Recipe Does
+<!-- One sentence: what problem it solves and how. -->
+Classifies worker safety compliance in warehouse video by prompting Cosmos Reason 2
+to act as an expert inspector and output structured JSON per clip.
+
+## Model
+<!-- Exact HuggingFace model ID used. -->
+nvidia/Cosmos-Reason2-8B
+
+## Entry Points
+<!-- Exact commands to run this recipe end-to-end, in order. -->
+\`\`\`bash
+pip install -r requirements.txt
+python worker_safety.py --input ./assets/sample.mp4 --output ./output
+
+# Or interactively:
+jupyter notebook worker_safety.ipynb
+\`\`\`
+
+## Data Source
+<!-- How to obtain the input data. Must be a runnable command or a direct URL. -->
+\`\`\`bash
+huggingface-cli download pjramg/Safe_Unsafe_Test --repo-type dataset --local-dir ./data
+\`\`\`
+
+## Dependencies
+\`\`\`
+torch>=2.0
+transformers>=4.40
+fiftyone
+qwen-vl-utils
+\`\`\`
+
+## Required Environment Variables
+| Variable   | Description                          |
+|------------|--------------------------------------|
+| `HF_TOKEN` | HuggingFace token to download model  |
+
+## Setup Prerequisites
+<!-- Blocking steps that must complete before entry points will work. -->
+- [ ] `huggingface-cli login` completed with a token that has access to gated models
+- [ ] FiftyOne initialized: run `fiftyone app` once to set up its local database
+
+## Key Files
+| File                  | Role                                                    |
+|-----------------------|---------------------------------------------------------|
+| `worker_safety.py`    | Main pipeline — load data, run inference, write results |
+| `worker_safety.ipynb` | Identical pipeline as an interactive notebook           |
+| `setup.md`            | Full environment setup and system requirements          |
+
+## Code Structure
+<!-- Name real functions/classes and describe how they connect. -->
+- `load_dataset()` — pulls HuggingFace dataset into FiftyOne
+- `build_prompt(sample)` — constructs system + user prompt encoding the visual classification rules
+- `run_inference(prompt, video_path)` — calls the model via HuggingFace Transformers, returns raw text
+- `parse_output(raw)` — extracts `{class_id, label, rationale}` from the model's JSON response
+- `visualize(dataset)` — launches FiftyOne UI to compare predictions vs. ground truth
+
+## Expected Output
+\`\`\`json
+{
+  "class_id": 3,
+  "label": "Carrying Overload with Forklift",
+  "rationale": "Three or more blocks are visible on the forks."
+}
+\`\`\`
+
+## Gotchas
+<!-- Things that will waste a contributor's time if they don't know them. -->
+- FiftyOne launches a local MongoDB instance on first run — this is expected behavior
+- The prompt is tightly coupled to the dataset's visual definitions; modifying it degrades accuracy
+- The model outputs plain text — `parse_output()` handles JSON extraction with a regex fallback
+```
+
+#### Tips for a Useful CLAUDE.md
+
+- **Entry points must work** — test them in a clean environment before submitting
+- **Data Source must be a command**, not a prose description — the agent needs to run it, not read it
+- **Code Structure should name real functions** — vague step descriptions are not useful
+- **Gotchas are the most valuable section** — if something surprised you during development, document it
+- **Keep it short** — this file is context, not documentation; `inference.md` and `setup.md` cover the rest
+
 ### Updating Index Files (Optional)
 
 When adding new recipes or documentation pages, you may optionally update the following index files to make your content more discoverable:
@@ -246,3 +351,4 @@ For a new recipe at `docs/recipes/inference/transfer2_5/my-new-recipe/inference.
 You may optionally sign off your commits using `git commit -s`, which appends `Signed-off-by: Your Name <your@email.com>` to your commit message.
 
 By signing off, you certify that you have the right to submit the contribution under the project's open source license, following the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
+
