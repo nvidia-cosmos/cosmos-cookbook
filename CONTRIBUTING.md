@@ -351,4 +351,3 @@ For a new recipe at `docs/recipes/inference/transfer2_5/my-new-recipe/inference.
 You may optionally sign off your commits using `git commit -s`, which appends `Signed-off-by: Your Name <your@email.com>` to your commit message.
 
 By signing off, you certify that you have the right to submit the contribution under the project's open source license, following the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
-
