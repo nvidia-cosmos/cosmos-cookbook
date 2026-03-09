@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 #!/usr/bin/env python3
 """
 Validates CLAUDE.md files added or modified in a PR.
