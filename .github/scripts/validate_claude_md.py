@@ -25,6 +25,7 @@ import urllib.error
 try:
     from huggingface_hub import dataset_info, model_info
     from huggingface_hub.utils import GatedRepoError, RepositoryNotFoundError
+
     HF_HUB_AVAILABLE = True
 except ImportError:
     HF_HUB_AVAILABLE = False
@@ -33,6 +34,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Parsing
 # ---------------------------------------------------------------------------
+
 
 def parse_data_source_block(text):
     """
@@ -74,6 +76,7 @@ def _code_block(text):
 # ---------------------------------------------------------------------------
 # Validation
 # ---------------------------------------------------------------------------
+
 
 def validate_hf_repo(repo_id, repo_type="dataset"):
     """
@@ -124,9 +127,7 @@ def validate_command(command):
         return False, "No download command found in Data Source section."
 
     # huggingface-cli download <repo-id> [--repo-type dataset|model]
-    hf_match = re.search(
-        r"huggingface-cli\s+download\s+([\w\-./]+)(.*)", command
-    )
+    hf_match = re.search(r"huggingface-cli\s+download\s+([\w\-./]+)(.*)", command)
     if hf_match:
         repo_id = hf_match.group(1)
         rest = hf_match.group(2)
@@ -153,6 +154,7 @@ def validate_command(command):
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def check_file(path):
     print(f"\n=== Checking: {path} ===")
