@@ -240,10 +240,61 @@ jupyter notebook worker_safety.ipynb
 \`\`\`
 
 ## Data Source
-<!-- How to obtain the input data. Must be a runnable command or a direct URL. -->
+<!--
+  Access: [Public | Gated — requires HuggingFace agreement at <URL> | Restricted — requires separate application]
+  Size: ~Xgb
+  License: [license name, e.g. Apache-2.0 / CC-BY-4.0 / non-commercial]
+
+  If access is Gated or Restricted and you cannot confirm the data is obtainable by a
+  contributor who agrees to the linked terms, do not create this CLAUDE.md.
+-->
+**Access:** Public
+**Size:** ~2GB
+**License:** Apache-2.0
+
 \`\`\`bash
 huggingface-cli download pjramg/Safe_Unsafe_Test --repo-type dataset --local-dir ./data
 \`\`\`
+
+## Compute Requirements
+<!--
+  Claude Agent: Before running any entry points, check whether the user has sufficient
+  local GPU resources. If they do not meet the Minimum column, ask the user:
+    "This recipe requires at least [Minimum GPUs]. You can provision a matching instance
+     on NVIDIA Brev. Do you have a Brev API token? If so, please paste it and I will
+     set up the environment for you."
+  Then use the Brev Provisioning section below to complete setup.
+-->
+| Resource    | Minimum       | Recommended   |
+|-------------|---------------|---------------|
+| GPUs        | 1× A100 40GB  | 1× H100 80GB  |
+| GPU Memory  | 40 GB         | 80 GB         |
+| System RAM  | 32 GB         | 64 GB         |
+| Disk Space  | 50 GB free    | 100 GB free   |
+| Launcher    | `python`      | `python`      |
+
+## Brev Provisioning
+<!--
+  Claude Agent: If the user provides a Brev token, run the commands below verbatim,
+  substituting their token. Do not skip this section if local compute is insufficient.
+-->
+\`\`\`bash
+# Install the Brev CLI
+pip install brev
+
+# Authenticate — Claude will prompt the user for their token if not already set
+brev login --token $BREV_TOKEN
+
+# Create a workspace that satisfies Compute Requirements
+brev create --gpu a100 --gpu-count 1 cosmos-recipe-workspace
+
+# SSH into the workspace when it is ready
+brev shell cosmos-recipe-workspace
+\`\`\`
+
+| Variable     | Description                                                          |
+|--------------|----------------------------------------------------------------------|
+| `BREV_TOKEN` | NVIDIA Brev API token — retrieve from https://brev.nvidia.com/settings |
 
 ## Dependencies
 \`\`\`
@@ -296,8 +347,10 @@ qwen-vl-utils
 
 #### Tips for a Useful CLAUDE.md
 
+- **Do not create this file if the data is not accessible** — if the dataset is gated, restricted, or requires an application that a typical contributor cannot complete, omit the CLAUDE.md entirely rather than listing a download command that will fail silently
+- **Data Source must be a command**, not a prose description — the agent needs to run it, not read it; include the `Access`, `Size`, and `License` metadata fields so the agent can warn the user before attempting a download
 - **Entry points must work** — test them in a clean environment before submitting
-- **Data Source must be a command**, not a prose description — the agent needs to run it, not read it
+- **Compute Requirements must be honest** — if the recipe needs 8× H100s, say so; an agent will use this to decide whether to provision Brev compute or abort with a clear message
 - **Code Structure should name real functions** — vague step descriptions are not useful
 - **Gotchas are the most valuable section** — if something surprised you during development, document it
 - **Keep it short** — this file is context, not documentation; `inference.md` and `setup.md` cover the rest
