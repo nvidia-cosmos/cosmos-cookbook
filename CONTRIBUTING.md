@@ -256,8 +256,8 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
   local GPU resources. If they do not meet the Minimum column, ask the user:
     "This recipe requires at least [Minimum GPUs]. You can provision a matching instance
      on NVIDIA Brev. Do you have a Brev API token? If so, please paste it and I will
-     set up the environment for you."
-  Then use the Brev Provisioning section below to complete setup.
+     set up the environment for you. See the Brev setup guide at
+     docs/getting_started/brev.md for provisioning steps."
 -->
 | Resource   | Minimum          | Recommended      |
 |------------|------------------|------------------|
@@ -266,22 +266,6 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
 | System RAM | [X] GB           | [X] GB           |
 | Disk Space | [X] GB free      | [X] GB free      |
 | Launcher   | `python`         | `python`         |
-
-## Brev Provisioning
-<!--
-  Claude Agent: If the user provides a Brev token, run the commands below verbatim,
-  substituting their token. Do not skip this section if local compute is insufficient.
--->
-\`\`\`bash
-uv pip install brev
-brev login --token $BREV_TOKEN
-brev create --gpu [gpu-type] --gpu-count [N] cosmos-recipe-workspace
-brev shell cosmos-recipe-workspace
-\`\`\`
-
-| Variable     | Description                                                             |
-|--------------|-------------------------------------------------------------------------|
-| `BREV_TOKEN` | NVIDIA Brev API token — retrieve from https://brev.nvidia.com/settings  |
 
 ## Dependencies
 \`\`\`
