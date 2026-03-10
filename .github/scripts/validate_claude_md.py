@@ -37,8 +37,15 @@ except ImportError:
 
 def parse_data_source_block(text):
     """
-    Extract the ## Data Source section from CLAUDE.md content.
+    Extract the ## Data Source section from a CLAUDE.md file and parse its fields.
+
+    Locates the section by its markdown heading, strips HTML comment blocks (which
+    contain contributor guidance and should not be treated as field values), then
+    extracts the Access, Size, and License bold-field values and the first bash
+    code block (the download command).
+
     Returns a dict with keys: access, size, license, command.
+    Returns None if the ## Data Source section is not present at all.
     """
     # Find the Data Source section
     section_match = re.search(
@@ -63,11 +70,23 @@ def parse_data_source_block(text):
 
 
 def _field(text, name):
+    """
+    Extract the value of a bold markdown field of the form **Name:** value.
+
+    Used to pull Access, Size, and License out of the Data Source section.
+    Returns the stripped value string, or None if the field is not found.
+    """
     m = re.search(rf"\*\*{name}:\*\*\s*(.+)", text)
     return m.group(1).strip() if m else None
 
 
 def _code_block(text):
+    """
+    Extract the content of the first fenced code block (``` or ```bash) in text.
+
+    Used to isolate the download command from the Data Source section.
+    Returns the stripped command string, or None if no code block is found.
+    """
     m = re.search(r"```(?:bash)?\s*\n(.*?)```", text, re.DOTALL)
     return m.group(1).strip() if m else None
 
@@ -79,7 +98,16 @@ def _code_block(text):
 
 def validate_hf_repo(repo_id, repo_type="dataset"):
     """
-    Check that a HuggingFace repo exists and is not gated.
+    Verify that a HuggingFace repository exists and is freely accessible.
+
+    Calls the HuggingFace Hub API (dataset_info or model_info) without downloading
+    any files. This catches two failure modes that would block a contributor:
+      - The repo does not exist (typo, wrong org, deleted)
+      - The repo is gated (contributor marked it Public but it requires a license agreement)
+
+    Falls back to passing with a warning if huggingface_hub is not installed,
+    so the check does not hard-fail in environments without the package.
+
     Returns (ok: bool, message: str).
     """
     if not HF_HUB_AVAILABLE:
@@ -103,7 +131,16 @@ def validate_hf_repo(repo_id, repo_type="dataset"):
 
 
 def validate_url(url):
-    """HEAD request to confirm a URL is reachable. Returns (ok, message)."""
+    """
+    Confirm that a direct URL is reachable without downloading its content.
+
+    Issues an HTTP HEAD request so only headers are returned, keeping CI fast
+    even for large files. Treats any response below HTTP 400 as success.
+    Used as a fallback for Data Source commands that use wget or curl rather
+    than the HuggingFace CLI.
+
+    Returns (ok: bool, message: str).
+    """
     try:
         req = urllib.request.Request(url, method="HEAD")
         req.add_header("User-Agent", "cosmos-cookbook-ci/1.0")
@@ -119,8 +156,20 @@ def validate_url(url):
 
 def validate_command(command):
     """
-    Dispatch to the appropriate validator based on the command shape.
-    Returns (ok, message).
+    Parse the Data Source download command and dispatch to the right validator.
+
+    Supports three command shapes, tried in order:
+      1. huggingface-cli download <repo-id> [--repo-type dataset|model]
+         → validated via the HuggingFace Hub API (no download)
+      2. wget <url> or curl <url>
+         → validated via an HTTP HEAD request
+      3. A bare https:// URL anywhere in the command
+         → validated via an HTTP HEAD request
+
+    Fails if none of these patterns are recognised, prompting the contributor
+    to use a supported download tool.
+
+    Returns (ok: bool, message: str).
     """
     if not command:
         return False, "No download command found in Data Source section."
@@ -156,6 +205,19 @@ def validate_command(command):
 
 
 def check_file(path):
+    """
+    Run all validation checks against a single CLAUDE.md file.
+
+    Enforces the following rules in order:
+      1. The ## Data Source section must exist.
+      2. The Access field must be present and set to Public, Gated, or Restricted.
+      3. If Access is Public, the download command must be reachable and not gated.
+      4. If Access is Gated or Restricted, CI passes but prints a warning so human
+         reviewers know manual approval is required.
+
+    Returns True if the file passes (or is flagged for human review), False if it
+    should block the PR from merging.
+    """
     print(f"\n=== Checking: {path} ===")
     with open(path, encoding="utf-8") as f:
         content = f.read()
@@ -200,6 +262,10 @@ def check_file(path):
 
 
 def main():
+    """
+    Entry point. Accepts one or more CLAUDE.md file paths as arguments,
+    runs check_file on each, and exits non-zero if any file fails validation.
+    """
     if len(sys.argv) < 2:
         print("Usage: validate_claude_md.py <CLAUDE.md> [...]")
         sys.exit(1)
