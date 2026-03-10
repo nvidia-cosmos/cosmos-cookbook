@@ -335,19 +335,19 @@ When adding new recipes or documentation pages, you may optionally update the fo
 
 #### Example Update
 
-For a new recipe at `docs/recipes/inference/transfer2_5/my-new-recipe/inference.md`:
+For a new recipe at `docs/recipes/[category]/[model-name]/[recipe-name]/[recipe-name].md`:
 
 ```markdown
 <!-- In docs/index.md under appropriate model section -->
-| **Inference** | Description of my new recipe | [My New Recipe](recipes/inference/transfer2_5/my-new-recipe/inference.md) |
+| **[Inference|Post-Training|Curation|Workflow]** | Description of your recipe | [Recipe Title](recipes/[category]/[model-name]/[recipe-name]/[recipe-name].md) |
 
 <!-- In docs/recipes/all_recipes.md under appropriate category -->
-<a class="recipe-card" href="./inference/transfer2_5/my-new-recipe/inference.md">
+<a class="recipe-card" href="./[category]/[model-name]/[recipe-name]/[recipe-name].md">
   <div class="recipe-media recipe-media--image" aria-hidden="true">
-    <img src="./inference/transfer2_5/my-new-recipe/assets/hero.png" alt="" loading="lazy" />
+    <img src="./[category]/[model-name]/[recipe-name]/assets/hero.png" alt="" loading="lazy" />
   </div>
-  <div class="recipe-title">My New Recipe Title</div>
-  <div class="recipe-tag recipe-tag--inference">Inference</div>
+  <div class="recipe-title">[Recipe Title]</div>
+  <div class="recipe-tag recipe-tag--[inference|post-training|curation|workflow]">[Tag]</div>
 </a>
 ```
 
