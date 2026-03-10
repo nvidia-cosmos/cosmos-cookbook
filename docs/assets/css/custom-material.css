@@ -206,7 +206,6 @@
 .nvidia-legal__links a:hover {
   color: #fff;
   text-decoration: underline;
-  text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
 }
 
 .nvidia-legal__copyright {
