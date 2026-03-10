@@ -6,9 +6,9 @@
 >
 > \* Equal contribution
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles |
 
 ## Overview
 

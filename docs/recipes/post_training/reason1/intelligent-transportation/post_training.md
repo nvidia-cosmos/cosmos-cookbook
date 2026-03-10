@@ -3,9 +3,9 @@
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Intelligent transportation scene understanding |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Intelligent transportation scene understanding | domain:autonomous-vehicles |
 
 ## Overview
 

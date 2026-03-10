@@ -45,11 +45,16 @@ function OptanonWrapper() {
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">_satellite.pageBottom();</script>
+{% set _nav_depth = (page.url.count('/') + 1) if page.url else 0 %}
+<script>window.NAV_PAGES_JSON_REL = "{{ ('../' * _nav_depth) }}nav_pages.json";</script>
+{% set _url_after_protocol = config.site_url.split('://')[1] if config.site_url and '://' in config.site_url else '' %}
+{% set _first_path_segment = _url_after_protocol.split('/')[1] if _url_after_protocol and _url_after_protocol.split('/')|length > 1 else '' %}
+<script>window.MKDOCS_BASE_PATH = "{{ '/' + _first_path_segment if _first_path_segment else '' }}";</script>
 
 <!-- Custom Navigation Filter: sidebar list is generated from nav_pages.json (like index.md filtered list) -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const navList = document.querySelector('.md-nav--primary > .md-nav__list');
+    const navList = document.querySelector('.md-nav--primary > .md-nav__list') || document.querySelector('.md-nav--primary .md-nav__list');
     if (!navList) return;
 
     // Hide MkDocs nav items that belong to Getting Started, Recipes, or Concepts (we replace them with a data-driven list)
@@ -112,27 +117,39 @@ function OptanonWrapper() {
             </a>
           </li>
         </ul>
-        <div id="category-filter-block" style="display: none;">
+        <div id="domain-filter-block" style="display: none;">
           <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
-            <span class="md-ellipsis">Category</span>
+            <span class="md-ellipsis">Domain</span>
           </label>
           <ul class="md-nav__list">
             <li class="md-nav__item">
-              <a href="javascript:void(0)" class="md-nav__link category-filter active" data-category="Robotics">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter active" data-domain="domain:humanoid-robotics">
                 <span class="filter-checkbox" aria-hidden="true"></span>
-                <span class="md-ellipsis">Robotics</span>
+                <span class="md-ellipsis">Humanoid Robotics</span>
               </a>
             </li>
             <li class="md-nav__item">
-              <a href="javascript:void(0)" class="md-nav__link category-filter" data-category="Autonomous Vehicles">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:autonomous-vehicles">
                 <span class="filter-checkbox" aria-hidden="true"></span>
                 <span class="md-ellipsis">Autonomous Vehicles</span>
               </a>
             </li>
             <li class="md-nav__item">
-              <a href="javascript:void(0)" class="md-nav__link category-filter" data-category="Vision AI">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:smart-city">
                 <span class="filter-checkbox" aria-hidden="true"></span>
-                <span class="md-ellipsis">Vision AI</span>
+                <span class="md-ellipsis">Smart City</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:industrial">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Industrial</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:medical">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Medical</span>
               </a>
             </li>
           </ul>
@@ -165,29 +182,33 @@ function OptanonWrapper() {
 
     let navData = null;
     let currentContentFilter = 'getting_started';
-    // Path from current page to site root (where index.html and nav_pages.json live)
+    // Path from current page to site root (for links and for resolving nav_pages.json).
     function getBaseToRoot() {
-      const pathname = (window.location.pathname || '').replace(/^\//, '').replace(/\/$/, '');
-      const segments = pathname ? pathname.split('/') : [];
-      // Go up (n-1) levels from current file to reach its directory, then (n-1)-1 more to reach site root.
-      // So from file at depth n we need max(0, n-2) "../" (0 when at root or one level deep).
-      const depth = segments.length;
-      const up = depth <= 2 ? 0 : depth - 2;
-      return up ? '../'.repeat(up) : '';
+      const pathname = (window.location.pathname || '/').replace(/^\//, '').replace(/\/$/, '');
+      const segments = pathname ? pathname.split('/').filter(Boolean) : [];
+      return segments.length ? '../'.repeat(segments.length) : '';
     }
     function getNavJsonUrl() {
-      return getBaseToRoot() + 'nav_pages.json';
+      var rel = (typeof window.NAV_PAGES_JSON_REL === 'string' && window.NAV_PAGES_JSON_REL) ? window.NAV_PAGES_JSON_REL : (getBaseToRoot() + 'nav_pages.json');
+      return new URL(rel, window.location.href).href;
     }
 
     function renderNavList(sectionKey) {
       const container = document.getElementById('dynamic-nav-list');
-      if (!container || !navData || !navData[sectionKey]) return;
-      let pages = navData[sectionKey];
-      if (sectionKey === 'recipes' && typeof pages[0] === 'object' && 'category' in (pages[0] || {})) {
-        const cat = localStorage.getItem('navCategoryFilter') || 'Robotics';
-        pages = pages.filter(function(p) { return p.category === cat; });
+      if (!container || !navData) return;
+      var pages = Array.isArray(navData[sectionKey]) ? navData[sectionKey] : [];
+      // Only filter by domain/tags for Recipes. Get Started and Concepts have no tags — show all pages when selected.
+      if (sectionKey === 'recipes' && typeof pages[0] === 'object') {
+        var domainTag = localStorage.getItem('navDomainFilter') || 'domain:humanoid-robotics';
+        pages = pages.filter(function(p) {
+          var tags = p.tags;
+          if (!tags || !Array.isArray(tags)) return true;
+          if (tags.length === 0) return true;
+          return tags.indexOf(domainTag) !== -1;
+        });
       }
-      const baseToRoot = getBaseToRoot();
+      const basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      const linkPrefix = basePath ? basePath + (basePath.endsWith('/') ? '' : '/') : getBaseToRoot();
       const currentPath = (window.location.pathname || '').replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
       container.innerHTML = '';
       pages.forEach(function(page) {
@@ -195,12 +216,12 @@ function OptanonWrapper() {
         li.className = 'md-nav__item';
         const a = document.createElement('a');
         a.className = 'md-nav__link';
-        a.href = baseToRoot + page.url;
+        a.href = linkPrefix + page.url;
         const span = document.createElement('span');
         span.className = 'md-ellipsis';
         span.textContent = page.title;
         a.appendChild(span);
-        const pagePath = new URL(baseToRoot + page.url, window.location.href).pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
+        const pagePath = new URL(linkPrefix + page.url, window.location.href).pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
         if (currentPath === pagePath || (pagePath && currentPath.endsWith(pagePath))) {
           a.classList.add('md-nav__link--active');
         }
@@ -218,21 +239,21 @@ function OptanonWrapper() {
       localStorage.setItem('navFilter', filterType);
     }
 
-    function setCategoryActive(category) {
-      document.querySelectorAll('.category-filter').forEach(function(el) {
+    function setDomainActive(domainTag) {
+      document.querySelectorAll('.domain-filter').forEach(function(el) {
         el.classList.remove('active');
       });
-      var active = document.querySelector('.category-filter[data-category="' + category + '"]');
+      var active = document.querySelector('.domain-filter[data-domain="' + domainTag + '"]');
       if (active) active.classList.add('active');
-      localStorage.setItem('navCategoryFilter', category);
+      localStorage.setItem('navDomainFilter', domainTag);
     }
 
     function applyFilter(filterType) {
       currentContentFilter = filterType;
       setFilterActive(filterType);
-      var categoryBlock = document.getElementById('category-filter-block');
-      if (categoryBlock) categoryBlock.style.display = filterType === 'recipes' ? '' : 'none';
-      if (filterType === 'recipes') setCategoryActive(localStorage.getItem('navCategoryFilter') || 'Robotics');
+      var domainBlock = document.getElementById('domain-filter-block');
+      if (domainBlock) domainBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (filterType === 'recipes') setDomainActive(localStorage.getItem('navDomainFilter') || 'domain:humanoid-robotics');
       renderNavList(filterType);
     }
 
@@ -250,26 +271,121 @@ function OptanonWrapper() {
         applyFilter(this.getAttribute('data-filter'));
       });
     });
-    document.querySelectorAll('.category-filter').forEach(function(btn) {
+    document.querySelectorAll('.domain-filter').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
-        var cat = this.getAttribute('data-category');
-        setCategoryActive(cat);
+        var domainTag = this.getAttribute('data-domain');
+        setDomainActive(domainTag);
         renderNavList(currentContentFilter);
       });
     });
 
-    fetch(getNavJsonUrl())
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(data) {
-        navData = data || { getting_started: [], recipes: [], core_concepts: [] };
-        const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
-        applyFilter(initialFilter);
-      })
-      .catch(function() {
-        navData = { getting_started: [], recipes: [], core_concepts: [] };
-        applyFilter(localStorage.getItem('navFilter') || 'getting_started');
-      });
+    function loadNavAndApply() {
+      const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
+      applyFilter(initialFilter);
+    }
+    if (typeof window.__NAV_PAGES__ === 'object' && window.__NAV_PAGES__ != null) {
+      navData = window.__NAV_PAGES__;
+      loadNavAndApply();
+    } else {
+      fetch(getNavJsonUrl())
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          navData = data || { getting_started: [], recipes: [], core_concepts: [] };
+          loadNavAndApply();
+        })
+        .catch(function() {
+          navData = { getting_started: [], recipes: [], core_concepts: [] };
+          loadNavAndApply();
+        });
+    }
+  });
+</script>
+
+<!-- Recipe tags: key:value tags grouped by General / Domain / Technique, badges at top -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.indexOf('/recipes/') === -1) return;
+    var main = document.querySelector('.md-content__inner') || document.querySelector('.md-main__inner') || document.querySelector('main');
+    if (!main) return;
+    var table = main.querySelector('table');
+    if (!table) return;
+    var headerRow = table.querySelector('thead tr');
+    var bodyRow = table.querySelector('tbody tr');
+    if (!headerRow || !bodyRow) return;
+    var headers = headerRow.querySelectorAll('th');
+    var tagsColIndex = -1;
+    for (var i = 0; i < headers.length; i++) {
+      if (headers[i].textContent.replace(/\s+/g, ' ').toLowerCase().indexOf('tags') !== -1) {
+        tagsColIndex = i;
+        break;
+      }
+    }
+    if (tagsColIndex === -1) return;
+    var cell = bodyRow.querySelectorAll('td')[tagsColIndex];
+    if (!cell) return;
+    var raw = (cell.textContent || '').trim().toLowerCase();
+    if (!raw) return;
+    var tags = raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (tags.length === 0) return;
+    var groupLabel = { general: 'General', domain: 'Domain', technique: 'Technique' };
+    var tagToLabel = {
+      'general:partner-recipe': 'Partner recipe',
+      'general:cookoff-recipe': 'Cookoff recipe',
+      'general:ai-friendly': 'AI-friendly',
+      'domain:humanoid-robotics': 'Humanoid robotics',
+      'domain:autonomous-vehicles': 'Autonomous vehicles',
+      'domain:smart-city': 'Smart city',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical',
+      'technique:style-transfer': 'Style transfer',
+      'technique:simulation': 'Simulation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-training',
+      'technique:pre-training': 'Pre-training',
+      'technique:data-curation': 'Data curation',
+      'technique:distillation': 'Distillation'
+    };
+    var order = ['general', 'domain', 'technique'];
+    var byGroup = { general: [], domain: [], technique: [] };
+    tags.forEach(function(tag) {
+      var key = tag.indexOf(':') !== -1 ? tag.split(':')[0] : '';
+      if (byGroup[key]) byGroup[key].push(tag);
+    });
+    function makeTagSpan(tag) {
+      var s = document.createElement('span');
+      s.className = 'recipe-tag';
+      s.textContent = tagToLabel[tag] || tag;
+      s.setAttribute('title', tag);
+      return s;
+    }
+    function makeGroupDiv(key) {
+      var groupTags = byGroup[key];
+      if (!groupTags || groupTags.length === 0) return null;
+      var wrap = document.createElement('div');
+      wrap.className = 'recipe-tag-group';
+      var label = document.createElement('span');
+      label.className = 'recipe-tag-group-label';
+      label.textContent = groupLabel[key] + ':';
+      wrap.appendChild(label);
+      var list = document.createElement('span');
+      list.className = 'recipe-tag-list';
+      groupTags.forEach(function(tag) { list.appendChild(makeTagSpan(tag)); });
+      wrap.appendChild(list);
+      return wrap;
+    }
+    var bar = document.createElement('div');
+    bar.className = 'recipe-tags-bar';
+    order.forEach(function(key) {
+      var g = makeGroupDiv(key);
+      if (g) bar.appendChild(g);
+    });
+    table.parentNode.insertBefore(bar, table);
+    cell.innerHTML = '';
+    order.forEach(function(key) {
+      (byGroup[key] || []).forEach(function(tag) { cell.appendChild(makeTagSpan(tag)); });
+    });
   });
 </script>
 
@@ -286,7 +402,8 @@ function OptanonWrapper() {
     flex-shrink: 0;
   }
   .content-filter.active .filter-checkbox::after,
-  .category-filter.active .filter-checkbox::after {
+  .category-filter.active .filter-checkbox::after,
+  .domain-filter.active .filter-checkbox::after {
     content: "✓";
     position: absolute;
     left: 50%;
@@ -309,18 +426,62 @@ function OptanonWrapper() {
     color: var(--md-accent-fg-color) !important;
     font-weight: 700;
   }
-  .category-filter {
+  .category-filter,
+  .domain-filter {
     cursor: pointer !important;
     transition: background-color 0.2s ease, color 0.2s ease;
     user-select: none;
   }
-  .category-filter:hover {
+  .category-filter:hover,
+  .domain-filter:hover {
     background-color: var(--md-accent-fg-color--transparent) !important;
   }
-  .category-filter.active {
+  .category-filter.active,
+  .domain-filter.active {
     background-color: var(--md-accent-fg-color--transparent) !important;
     color: var(--md-accent-fg-color) !important;
     font-weight: 700;
+  }
+  .recipe-tags-bar {
+    margin-bottom: 1rem;
+  }
+  .recipe-tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .recipe-tag-group:last-child {
+    margin-bottom: 0;
+  }
+  .recipe-tag-group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--md-default-fg-color--light);
+    margin-right: 0.25rem;
+  }
+  .recipe-tag-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .recipe-tag {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 4px;
+    background: var(--md-default-fg-color--lightest);
+    color: var(--md-default-fg-color);
+  }
+  [data-md-color-scheme="default"] .recipe-tag {
+    background: rgba(0, 0, 0, 0.06);
+  }
+  [data-md-color-scheme="slate"] .recipe-tag {
+    background: rgba(255, 255, 255, 0.1);
   }
 </style>
 {% endblock %}

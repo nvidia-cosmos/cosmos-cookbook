@@ -3,9 +3,9 @@
 > **Authors:** [Tingyu Zhang](https://www.linkedin.com/in/tingyu-zhang-b3357314a) • [Sharon Yang](http://linkedin.com/in/sharonxueyangintel)
 > **Organization:** [IntBot Inc.](https://www.intbot.ai/)
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics | domain:humanoid-robotics |
 
 - [Setup and System Requirements](https://github.com/nvidia-cosmos/cosmos-reason2#setup)
 

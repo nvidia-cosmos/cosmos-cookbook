@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Temporal localization for MimicGen data generation |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Temporal localization for MimicGen data generation | domain:humanoid-robotics |
 
 [MimicGen](https://mimicgen.github.io/) is a system for automatically synthesizing large-scale, diverse robot-learning datasets from only a small number of human demonstrations.
 
