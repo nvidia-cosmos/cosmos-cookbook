@@ -230,7 +230,7 @@ docs/recipes/[category]/[model-name]/[recipe-name]/
 <!-- Exact commands to run this recipe end-to-end, in order. -->
 \`\`\`bash
 uv pip install -r requirements.txt
-python run.py --input ./data --output ./output
+[command to run the recipe]
 \`\`\`
 
 ## Data Source
