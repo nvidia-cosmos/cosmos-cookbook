@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| Cosmos Transfer 2.5 | Inference | Style-guided video generation using image references |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| Cosmos Transfer 2.5 | Inference | Style-guided video generation using image references | domain:industrial |
 
 Cosmos Transfer 2.5 introduces a powerful new capability: generating videos that combine structural control (edge/depth/segmentation) with style guidance from reference images. This enables users to create videos that maintain specific visual aesthetics while following precise motion and structure patterns.
 

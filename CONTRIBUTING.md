@@ -189,6 +189,16 @@ docs/recipes/
         └── assets/
 ```
 
+**Recipe metadata and tags:** Each recipe should include a metadata table at the top with **Model**, **Workload**, and **Use Case** (and optionally **Category**). You may add a **Tags** column with comma-separated **key:value** tags from the allowed list below. Tags are shown grouped (General, Domain, Technique) at the top of the recipe page and are used for filtering.
+
+Allowed tags (use exactly as shown, comma-separated in the Tags cell):
+
+- **General:** `general:partner-recipe`, `general:cookoff-recipe`, `general:ai-friendly`
+- **Domain:** `domain:humanoid-robotics`, `domain:autonomous-vehicles`, `domain:smart-city`, `domain:industrial`, `domain:medical`
+- **Technique:** `technique:style-transfer`, `technique:simulation`, `technique:prediction`, `technique:reasoning`, `technique:post-training`, `technique:pre-training`, `technique:data-curation`, `technique:distillation`
+
+Example: `general:ai-friendly, domain:industrial, technique:data-curation`
+
 ### Content Templates
 
 Use the appropriate template for your contribution:
