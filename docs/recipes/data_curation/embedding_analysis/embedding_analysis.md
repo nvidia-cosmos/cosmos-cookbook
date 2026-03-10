@@ -3,9 +3,9 @@
 > **Authors:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)
 > **Organization:** [AI Robot Association (AIRoA)](https://www.airoa.org/)
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Video clustering by Time Series K-Means on embedding vector trajectories | domain:industrial, technique:data-curation |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Video clustering by Time Series K-Means on embedding vector trajectories | domain:industrial, technique:data-curation, general:partner-recipe | 01-08-2026 |
 
 ## Overview
 

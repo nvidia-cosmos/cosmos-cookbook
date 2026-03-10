@@ -6,7 +6,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles |
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training |
 
 ## Overview
 

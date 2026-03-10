@@ -58,10 +58,10 @@
       text-align: center;
     }
 
-    /* Featured Recipes */
+    /* Featured Recipes: two rows of three */
     .featured-recipes {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.75rem;
       margin-bottom: 1.5rem;
     }
@@ -398,47 +398,18 @@
     <p>A practical guide with recipes to build, fine-tune, and deploy physical-AI</p>
   </div>
 
-  <!-- Featured Recipes Section -->
+  <!-- Featured Recipes Section (loaded dynamically: partner/cookoff tags, 6 most recent by date) -->
   <div class="container">
-    <div class="section-header">Featured recipes</div>
+    <div class="section-header">Featured Recipes</div>
     
-    <div class="featured-recipes">
-      <a href="recipes/inference/reason2/intbot_showcase/inference.html" class="recipe-card">
-        <img src="recipes/inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="Egocentric Social and Physical Reasoning" class="recipe-thumbnail">
-        <div class="recipe-content">
-          <div class="recipe-title">Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B</div>
-          <div class="recipe-description">Robotics, Inference</div>
-        </div>
-      </a>
-
-      <a href="recipes/post_training/reason2/video_caption_vqa/post_training.html" class="recipe-card">
-        <img src="recipes/post_training/reason2/video_caption_vqa/assets/mcq_vqa_results.png" alt="Post-train Cosmos Reason 2 for AV Video Captioning & VQA" class="recipe-thumbnail">
-        <div class="recipe-content">
-          <div class="recipe-title">Post-train Cosmos Reason 2 for AV Video Captioning & VQA</div>
-          <div class="recipe-description">Autonomous Vehicles, Post-training</div>
-        </div>
-      </a>
-
-      <a href="recipes/post_training/reason1/physical-plausibility-check/post_training.html" class="recipe-card">
-        <img src="recipes/post_training/reason1/physical-plausibility-check/assets/sft_accuracy.png" alt="Physical Plausibility Prediction with Cosmos Reason 1" class="recipe-thumbnail">
-        <div class="recipe-content">
-          <div class="recipe-title">Physical Plausibility Prediction with Cosmos Reason 1</div>
-          <div class="recipe-description">Vision AI, Post-training</div>
-        </div>
-      </a>
-
-      <a href="recipes/data_curation/embedding_analysis/embedding_analysis.html" class="recipe-card">
-        <img src="recipes/data_curation/embedding_analysis/assets/clusters.png" alt="Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator" class="recipe-thumbnail">
-        <div class="recipe-content">
-          <div class="recipe-title">Curate data for Cosmos Predict Fine-Tuning using Cosmos Curator</div>
-          <div class="recipe-description">Vision AI, Curation</div>
-        </div>
-      </a>
+    <div class="featured-recipes" id="featuredRecipesContainer">
+      <!-- Populated by JavaScript from recipes.json -->
+      <div class="featured-recipes-loading" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Loading featured recipes…</div>
     </div>
 
     <!-- All Recipes Section -->
     <div class="all-recipes-section">
-      <div class="section-header">All recipes</div>
+      <div class="section-header">All Recipes</div>
       
       <div class="filter-controls">
         <button class="filter-btn active" data-domain="all">All</button>
@@ -620,6 +591,77 @@
       renderRecipeTable();
     });
 
+    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column (MM-DD-YYYY)
+    function parseDateForSort(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return 0;
+      var parts = dateStr.trim().split(/[-/]/);
+      if (parts.length !== 3) return 0;
+      var mm = parseInt(parts[0], 10), dd = parseInt(parts[1], 10), yyyy = parseInt(parts[2], 10);
+      if (parts[0].length === 4) { yyyy = parseInt(parts[0], 10); mm = parseInt(parts[1], 10); dd = parseInt(parts[2], 10); }
+      if (!yyyy || !mm || !dd) return 0;
+      return yyyy * 10000 + mm * 100 + dd;
+    }
+    function getFeaturedRecipes() {
+      var hasPartnerOrCookoff = function(r) {
+        var tags = r.tags && Array.isArray(r.tags) ? r.tags : [];
+        return tags.some(function(t) {
+          var x = (t || '').toLowerCase();
+          return x === 'general:partner-recipe' || x === 'general:cookoff-recipe';
+        });
+      };
+      var partnerOrCookoff = recipes.filter(hasPartnerOrCookoff);
+      partnerOrCookoff.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
+      var featured = partnerOrCookoff.slice(0, 6);
+      if (featured.length < 6) {
+        var featuredUrls = {};
+        featured.forEach(function(r) { featuredUrls[r.url] = true; });
+        var rest = recipes.filter(function(r) { return !featuredUrls[r.url]; });
+        rest.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
+        while (featured.length < 6 && rest.length > 0) {
+          featured.push(rest.shift());
+        }
+      }
+      return featured;
+    }
+    function renderFeaturedRecipes() {
+      var container = document.getElementById('featuredRecipesContainer');
+      if (!container) return;
+      var featured = getFeaturedRecipes();
+      container.innerHTML = '';
+      if (featured.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">No featured recipes at this time.</div>';
+        return;
+      }
+      featured.forEach(function(recipe) {
+        var a = document.createElement('a');
+        a.href = recipe.url;
+        a.className = 'recipe-card';
+        var thumb = document.createElement('div');
+        thumb.className = 'recipe-thumbnail';
+        thumb.style.background = 'linear-gradient(135deg, #76b900 0%, #5f9300 100%)';
+        thumb.style.display = 'flex';
+        thumb.style.alignItems = 'center';
+        thumb.style.justifyContent = 'center';
+        thumb.style.color = 'white';
+        thumb.style.fontSize = '1.5rem';
+        thumb.style.fontWeight = '700';
+        thumb.textContent = (recipe.name || '').charAt(0).toUpperCase() || '?';
+        a.appendChild(thumb);
+        var content = document.createElement('div');
+        content.className = 'recipe-content';
+        var title = document.createElement('div');
+        title.className = 'recipe-title';
+        title.textContent = recipe.name || 'Recipe';
+        content.appendChild(title);
+        var desc = document.createElement('div');
+        desc.className = 'recipe-description';
+        desc.textContent = [recipe.category, recipe.workload].filter(Boolean).join(', ') || 'Recipe';
+        content.appendChild(desc);
+        a.appendChild(content);
+        container.appendChild(a);
+      });
+    }
+
     // Load recipes from JSON and initialize
     async function loadRecipes() {
       try {
@@ -630,9 +672,11 @@
         recipes = await response.json();
         isLoading = false;
         renderRecipeTable();
+        renderFeaturedRecipes();
       } catch (error) {
         console.error('Error loading recipes:', error);
         isLoading = false;
+        renderFeaturedRecipes();
         // Show error message in table
         const tbody = document.getElementById('recipeTableBody');
         tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #999;">Failed to load recipes. Please try refreshing the page.</td></tr>';

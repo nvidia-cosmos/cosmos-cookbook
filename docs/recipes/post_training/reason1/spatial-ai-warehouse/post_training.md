@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Spatial AI for warehouse environments | domain:industrial |
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Spatial AI for warehouse environments | domain:industrial, technique:post-training |
 
 ## Overview
 

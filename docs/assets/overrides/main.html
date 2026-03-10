@@ -123,7 +123,13 @@ function OptanonWrapper() {
           </label>
           <ul class="md-nav__list">
             <li class="md-nav__item">
-              <a href="javascript:void(0)" class="md-nav__link domain-filter active" data-domain="domain:humanoid-robotics">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter active" data-domain="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:humanoid-robotics">
                 <span class="filter-checkbox" aria-hidden="true"></span>
                 <span class="md-ellipsis">Humanoid Robotics</span>
               </a>
@@ -150,6 +156,67 @@ function OptanonWrapper() {
               <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:medical">
                 <span class="filter-checkbox" aria-hidden="true"></span>
                 <span class="md-ellipsis">Medical</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="technique-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Technique</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter active" data-technique="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:style-transfer">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Style Transfer</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:simulation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Simulation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:prediction">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Prediction</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:reasoning">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Reasoning</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:post-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Post-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:pre-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Pre-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:data-curation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Data Curation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:distillation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Distillation</span>
               </a>
             </li>
           </ul>
@@ -197,15 +264,26 @@ function OptanonWrapper() {
       const container = document.getElementById('dynamic-nav-list');
       if (!container || !navData) return;
       var pages = Array.isArray(navData[sectionKey]) ? navData[sectionKey] : [];
-      // Only filter by domain/tags for Recipes. Get Started and Concepts have no tags — show all pages when selected.
+      // Filter by domain and technique for Recipes when a specific value is selected. "All" = no filter.
       if (sectionKey === 'recipes' && typeof pages[0] === 'object') {
-        var domainTag = localStorage.getItem('navDomainFilter') || 'domain:humanoid-robotics';
-        pages = pages.filter(function(p) {
-          var tags = p.tags;
-          if (!tags || !Array.isArray(tags)) return true;
-          if (tags.length === 0) return true;
-          return tags.indexOf(domainTag) !== -1;
-        });
+        var domainTag = localStorage.getItem('navDomainFilter') || 'all';
+        if (domainTag && domainTag !== 'all') {
+          pages = pages.filter(function(p) {
+            var tags = p.tags;
+            if (!tags || !Array.isArray(tags)) return true;
+            if (tags.length === 0) return true;
+            return tags.indexOf(domainTag) !== -1;
+          });
+        }
+        var techniqueTag = localStorage.getItem('navTechniqueFilter') || 'all';
+        if (techniqueTag && techniqueTag !== 'all') {
+          pages = pages.filter(function(p) {
+            var tags = p.tags;
+            if (!tags || !Array.isArray(tags)) return true;
+            if (tags.length === 0) return true;
+            return tags.indexOf(techniqueTag) !== -1;
+          });
+        }
       }
       const basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
       const linkPrefix = basePath ? basePath + (basePath.endsWith('/') ? '' : '/') : getBaseToRoot();
@@ -248,12 +326,26 @@ function OptanonWrapper() {
       localStorage.setItem('navDomainFilter', domainTag);
     }
 
+    function setTechniqueActive(techniqueTag) {
+      document.querySelectorAll('.technique-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.technique-filter[data-technique="' + techniqueTag + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navTechniqueFilter', techniqueTag);
+    }
+
     function applyFilter(filterType) {
       currentContentFilter = filterType;
       setFilterActive(filterType);
       var domainBlock = document.getElementById('domain-filter-block');
+      var techniqueBlock = document.getElementById('technique-filter-block');
       if (domainBlock) domainBlock.style.display = filterType === 'recipes' ? '' : 'none';
-      if (filterType === 'recipes') setDomainActive(localStorage.getItem('navDomainFilter') || 'domain:humanoid-robotics');
+      if (techniqueBlock) techniqueBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (filterType === 'recipes') {
+        setDomainActive(localStorage.getItem('navDomainFilter') || 'all');
+        setTechniqueActive(localStorage.getItem('navTechniqueFilter') || 'all');
+      }
       renderNavList(filterType);
     }
 
@@ -276,6 +368,14 @@ function OptanonWrapper() {
         e.preventDefault();
         var domainTag = this.getAttribute('data-domain');
         setDomainActive(domainTag);
+        renderNavList(currentContentFilter);
+      });
+    });
+    document.querySelectorAll('.technique-filter').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var techniqueTag = this.getAttribute('data-technique');
+        setTechniqueActive(techniqueTag);
         renderNavList(currentContentFilter);
       });
     });
@@ -378,12 +478,14 @@ function OptanonWrapper() {
     var bar = document.createElement('div');
     bar.className = 'recipe-tags-bar';
     order.forEach(function(key) {
+      if (key === 'general') return;
       var g = makeGroupDiv(key);
       if (g) bar.appendChild(g);
     });
     table.parentNode.insertBefore(bar, table);
     cell.innerHTML = '';
     order.forEach(function(key) {
+      if (key === 'general') return;
       (byGroup[key] || []).forEach(function(tag) { cell.appendChild(makeTagSpan(tag)); });
     });
   });
@@ -403,7 +505,8 @@ function OptanonWrapper() {
   }
   .content-filter.active .filter-checkbox::after,
   .category-filter.active .filter-checkbox::after,
-  .domain-filter.active .filter-checkbox::after {
+  .domain-filter.active .filter-checkbox::after,
+  .technique-filter.active .filter-checkbox::after {
     content: "✓";
     position: absolute;
     left: 50%;
@@ -427,17 +530,20 @@ function OptanonWrapper() {
     font-weight: 700;
   }
   .category-filter,
-  .domain-filter {
+  .domain-filter,
+  .technique-filter {
     cursor: pointer !important;
     transition: background-color 0.2s ease, color 0.2s ease;
     user-select: none;
   }
   .category-filter:hover,
-  .domain-filter:hover {
+  .domain-filter:hover,
+  .technique-filter:hover {
     background-color: var(--md-accent-fg-color--transparent) !important;
   }
   .category-filter.active,
-  .domain-filter.active {
+  .domain-filter.active,
+  .technique-filter.active {
     background-color: var(--md-accent-fg-color--transparent) !important;
     color: var(--md-accent-fg-color) !important;
     font-weight: 700;

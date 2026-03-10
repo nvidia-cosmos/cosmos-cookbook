@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Intelligent transportation scene understanding | domain:autonomous-vehicles |
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Intelligent transportation scene understanding | domain:autonomous-vehicles, technique:post-training |
 
 ## Overview
 

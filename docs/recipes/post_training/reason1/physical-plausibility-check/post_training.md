@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Physical plausibility prediction | domain:industrial |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Physical plausibility prediction | domain:industrial, technique:post-training, general:partner-recipe | 03-05-2026 |
 
 In synthetic video generation, it is crucial to determine the quality of the generated videos and filter out videos of bad quality.
 In this case study, we demonstrate using the Cosmos Reason 1 model for physical plausibility prediction. Physics plausibility assessment involves evaluating whether the physical interactions and behaviors observed in videos are consistent with real-world physics laws and constraints.
