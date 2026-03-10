@@ -5,6 +5,44 @@ import shutil
 from pathlib import Path
 from html.parser import HTMLParser
 
+# Allowed recipe tags (key:value). Defined early so parse_tags is always available.
+ALLOWED_TAGS = frozenset({
+    "general:partner-recipe",
+    "general:cookoff-recipe",
+    "general:ai-friendly",
+    "domain:humanoid-robotics",
+    "domain:autonomous-vehicles",
+    "domain:smart-city",
+    "domain:industrial",
+    "domain:medical",
+    "technique:style-transfer",
+    "technique:simulation",
+    "technique:prediction",
+    "technique:reasoning",
+    "technique:post-training",
+    "technique:pre-training",
+    "technique:data-curation",
+    "technique:distillation",
+})
+
+
+def parse_tags(tags_str):
+    """Parse comma-separated key:value tags; return only allowed tags (lowercased for match)."""
+    if tags_str is None:
+        return []
+    if not isinstance(tags_str, str):
+        tags_str = str(tags_str)
+    seen = set()
+    result = []
+    for raw in tags_str.split(","):
+        tag = raw.strip().lower()
+        if not tag:
+            continue
+        if tag in ALLOWED_TAGS and tag not in seen:
+            result.append(tag)
+            seen.add(tag)
+    return result
+
 
 class H1Parser(HTMLParser):
     """Extract the first H1 heading from HTML."""
@@ -193,7 +231,7 @@ def scan_recipes(site_dir):
     # Find all HTML files in recipes
     for html_file in recipes_dir.rglob("*.html"):
         # Skip SUMMARY.html and other non-recipe files
-        if html_file.name in ['SUMMARY.html', 'index.html', 'all_recipes.html']:
+        if html_file.name in ['SUMMARY.html', 'index.html', 'all_recipes.html', 'additional_examples.html']:
             continue
         
         try:
@@ -218,7 +256,7 @@ def scan_recipes(site_dir):
                 # Get category and workload from metadata (or auto-detect)
                 category, workload = categorize_recipe(metadata, html_file)
                 
-                # Build recipe entry
+                # Build recipe entry (tags from optional **Tags** column, comma-separated)
                 recipe = {
                     'name': title,
                     'type': 'Recipe',
@@ -226,7 +264,8 @@ def scan_recipes(site_dir):
                     'workload': workload,
                     'url': rel_url,
                     'model': metadata.get('model', ''),
-                    'date': metadata.get('date', '')  # Optional field
+                    'date': metadata.get('date', ''),
+                    'tags': parse_tags(metadata.get('tags', '')),
                 }
                 
                 recipes.append(recipe)
@@ -262,36 +301,61 @@ def scan_section_pages(site_dir, section_path):
 
 
 def on_post_build(config):
-    """Generate recipes.json after build."""
+    """Generate recipes.json and nav_pages.json after build. Always write nav_pages.json so the sidebar can load."""
     site_dir = config["site_dir"]
-    
-    print("\n=== Custom Build Steps ===")
-    
-    # Scan recipes and generate recipes.json
-    print("\n=== Scanning for recipes ===")
-    recipes = scan_recipes(site_dir)
-    
-    if recipes:
-        recipes_json_path = Path(site_dir) / "recipes.json"
-        with open(recipes_json_path, 'w', encoding='utf-8') as f:
-            json.dump(recipes, f, indent=2)
-        print(f"\n✓ Generated recipes.json with {len(recipes)} recipes")
-    else:
-        print("\n⚠ No recipes found")
+    nav_pages = {"getting_started": [], "recipes": [], "core_concepts": []}
 
-    # Generate nav_pages.json for sidebar (getting_started, recipes, core_concepts)
-    print("\n=== Building nav_pages.json ===")
-    nav_pages = {
-        "getting_started": scan_section_pages(site_dir, "getting_started"),
-        "recipes": [
-            {"title": r["name"], "url": r["url"], "category": r.get("category", "Vision AI")}
+    print("\n=== Custom Build Steps ===")
+
+    try:
+        # Scan recipes and generate recipes.json
+        print("\n=== Scanning for recipes ===")
+        recipes = scan_recipes(site_dir)
+
+        if recipes:
+            recipes_json_path = Path(site_dir) / "recipes.json"
+            with open(recipes_json_path, 'w', encoding='utf-8') as f:
+                json.dump(recipes, f, indent=2)
+            print(f"\n✓ Generated recipes.json with {len(recipes)} recipes")
+        else:
+            print("\n⚠ No recipes found")
+
+        # Build nav_pages for sidebar
+        print("\n=== Building nav_pages.json ===")
+        nav_pages["getting_started"] = scan_section_pages(site_dir, "getting_started")
+        nav_pages["core_concepts"] = scan_section_pages(site_dir, "core_concepts")
+        nav_pages["recipes"] = [
+            {
+                "title": r["name"],
+                "url": r["url"],
+                "category": r.get("category", "Vision AI"),
+                "tags": r.get("tags") if isinstance(r.get("tags"), list) else [],
+            }
             for r in recipes
-        ],
-        "core_concepts": scan_section_pages(site_dir, "core_concepts"),
-    }
+        ]
+    except Exception as e:
+        print(f"\n⚠ Build step error (writing partial nav_pages.json): {e}")
+        import traceback
+        traceback.print_exc()
+
     nav_pages_path = Path(site_dir) / "nav_pages.json"
     with open(nav_pages_path, "w", encoding="utf-8") as f:
         json.dump(nav_pages, f, indent=2)
     print(f"✓ Generated nav_pages.json (getting_started: {len(nav_pages['getting_started'])}, recipes: {len(nav_pages['recipes'])}, core_concepts: {len(nav_pages['core_concepts'])})")
 
+    # Inject nav data into every HTML page so the sidebar filter works without fetch (avoids path/CORS issues)
+    nav_json = json.dumps(nav_pages).replace("</", "<\\/")
+    inject_script = f'<script>window.__NAV_PAGES__={nav_json};</script>'
+    site_path = Path(site_dir)
+    injected = 0
+    for html_file in site_path.rglob("*.html"):
+        try:
+            content = html_file.read_text(encoding="utf-8")
+            if "</body>" in content and inject_script not in content:
+                content = content.replace("</body>", inject_script + "\n</body>", 1)
+                html_file.write_text(content, encoding="utf-8")
+                injected += 1
+        except Exception as e:
+            print(f"  Warning: could not inject nav data into {html_file}: {e}")
+    print(f"✓ Injected nav data into {injected} HTML page(s)")
     print("=== Build complete ===\n")

@@ -151,6 +151,8 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
     }
 
     .filter-btn {
@@ -163,6 +165,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       font-family: inherit;
+      pointer-events: auto;
+      position: relative;
     }
 
     .filter-btn:hover,
@@ -437,10 +441,12 @@
       <div class="section-header">All recipes</div>
       
       <div class="filter-controls">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="Robotics">Robotics</button>
-        <button class="filter-btn" data-category="Autonomous Vehicles">Autonomous Vehicles</button>
-        <button class="filter-btn" data-category="Vision AI">Vision AI</button>
+        <button class="filter-btn active" data-domain="all">All</button>
+        <button class="filter-btn" data-domain="domain:humanoid-robotics">Humanoid Robotics</button>
+        <button class="filter-btn" data-domain="domain:autonomous-vehicles">Autonomous Vehicles</button>
+        <button class="filter-btn" data-domain="domain:smart-city">Smart City</button>
+        <button class="filter-btn" data-domain="domain:industrial">Industrial</button>
+        <button class="filter-btn" data-domain="domain:medical">Medical</button>
       </div>
 
       <div class="search-container">
@@ -485,19 +491,20 @@
     // State
     let currentPage = 1;
     let itemsPerPage = 15;
-    let currentCategory = 'all';
+    let currentDomain = 'all';
     let searchQuery = '';
     let isLoading = true;
 
-    // Get filtered recipes
+    // Get filtered recipes (by Domain tag, same as sidebar; recipes with no tags appear under all domains)
     function getFilteredRecipes() {
       return recipes.filter(recipe => {
-        const matchesCategory = currentCategory === 'all' || recipe.category === currentCategory;
-        const matchesSearch = searchQuery === '' || 
+        const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
+        const matchesDomain = currentDomain === 'all' || tags.length === 0 || tags.indexOf(currentDomain) !== -1;
+        const matchesSearch = searchQuery === '' ||
           recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          recipe.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          recipe.category.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
+          (recipe.type && recipe.type.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (recipe.category && recipe.category.toLowerCase().includes(searchQuery.toLowerCase()));
+        return matchesDomain && matchesSearch;
       });
     }
 
@@ -560,16 +567,19 @@
       document.getElementById('lastPage').disabled = currentPage === totalPages || totalPages === 0;
     }
 
-    // Category filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    // Domain filter buttons (match sidebar Domain options) — use delegation so every button stays clickable
+    const filterControls = document.querySelector('.all-recipes-section .filter-controls');
+    if (filterControls) {
+      filterControls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.all-recipes-section .filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        currentCategory = btn.dataset.category;
+        currentDomain = btn.getAttribute('data-domain') || 'all';
         currentPage = 1;
         renderRecipeTable();
       });
-    });
+    }
 
     // Search input
     document.getElementById('searchInput').addEventListener('input', (e) => {
