@@ -329,7 +329,7 @@ When adding new recipes or documentation pages, you may optionally update the fo
    - Ensure the description matches the entry in `docs/index.md`
 
 3. **`docs/recipes/all_recipes.md`** - Recipe gallery page
-   - Add a new recipe card in the appropriate category section (Robotics, Autonomous Vehicles, or Vision AI)
+   - Add a new recipe card in the appropriate category section
    - Include the recipe title, link, media (image/video), and tag (Inference, Post-Training, Curation, or Workflow)
 
 #### Example Update
