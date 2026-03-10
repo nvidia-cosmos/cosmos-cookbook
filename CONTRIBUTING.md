@@ -208,9 +208,9 @@ To make your recipe immediately understandable and runnable by AI coding agents 
 Place the file at the root of your recipe directory alongside your main content file:
 
 ```
-docs/recipes/inference/[model-name]/[recipe-name]/
-├── inference.md        ← Human-readable guide (rendered on site)
-├── CLAUDE.md           ← AI agent specification (not rendered)
+docs/recipes/[category]/[model-name]/[recipe-name]/
+├── [inference|post_training|data_curation|...].md  ← Human-readable guide (rendered on site)
+├── CLAUDE.md                                        ← AI agent specification (not rendered)
 ├── setup.md
 └── assets/
 ```
@@ -329,7 +329,7 @@ transformers>=4.40
 - **Compute Requirements must be honest** — if the recipe needs 8× H100s, say so; an agent will use this to decide whether to provision Brev compute or abort with a clear message
 - **Code Structure should name real functions** — vague step descriptions are not useful
 - **Gotchas are the most valuable section** — if something surprised you during development, document it
-- **Keep it short** — this file is context, not documentation; `inference.md` and `setup.md` cover the rest
+- **Keep it short** — this file is context, not documentation; your main recipe file and `setup.md` cover the rest
 
 ### Updating Index Files (Optional)
 
