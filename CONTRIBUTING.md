@@ -229,7 +229,7 @@ docs/recipes/[category]/[model-name]/[recipe-name]/
 ## Entry Points
 <!-- Exact commands to run this recipe end-to-end, in order. -->
 \`\`\`bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python run.py --input ./data --output ./output
 \`\`\`
 
@@ -273,7 +273,7 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
   substituting their token. Do not skip this section if local compute is insufficient.
 -->
 \`\`\`bash
-pip install brev
+uv pip install brev
 brev login --token $BREV_TOKEN
 brev create --gpu [gpu-type] --gpu-count [N] cosmos-recipe-workspace
 brev shell cosmos-recipe-workspace
