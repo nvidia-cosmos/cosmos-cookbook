@@ -11,7 +11,7 @@ You can experiment with these recipes and customize them for your own videos usi
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes | domain:industrial |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Multi-control video editing for background replacement, lighting adjustment, object transformation, and color/texture changes | domain:industrial, technique:style-transfer |
 
 Please make sure to read the core concepts on control modalities in the
 [Control Modalities Summary](../../../../core_concepts/control_modalities/overview.md) before proceeding. It is important to understand each control modality before proceeding.
