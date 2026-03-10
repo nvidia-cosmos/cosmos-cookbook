@@ -166,7 +166,7 @@ Below is an example visualizing the batch inference output.
 
 | Prompt | Input Image | Generated Video |
 |--------|-------------|----------------|
-| Use the right hand to pick up red apple from brown tray to beige placemat. | <img src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..png" width="160"/> | <video src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..mp4" width="160" controls></video> |
+| Use the right hand to pick up red apple from brown tray to beige placemat. | <img src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..png" width="160"/> | <video width="320" controls autoplay loop muted><source src="assets/40_Use the right hand to pick up red apple from brown tray to beige placemat..mp4" type="video/mp4"></video> |
 
 ## 4. Policy Evaluation using Cosmos Predict
 
@@ -231,7 +231,7 @@ torchrun --nproc_per_node=1 inference.py \
 
 | Generation 1 | Generation 2 | Generation 3 | Generation 4 | Generation 5 |
 |---------|---------|---------|---------|---------|
-| <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed0.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed1.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed2.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed3.mp4" controls width="200"></video> | <video src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed4.mp4" controls width="200"></video> |
+| <video width="320" controls autoplay loop muted><source src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed0.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed1.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed2.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed3.mp4" type="video/mp4"></video> | <video width="320" controls autoplay loop muted><source src="assets/002_28_Use_the_right_hand_to_pick_up_tall_red_glass_from_center_of_tan_table_to_brig_seed4.mp4" type="video/mp4"></video> |
 
 ## 5. Using Cosmos Reason as Video Critic for Rejection Sampling
 
@@ -277,8 +277,8 @@ The above script will generate a json with scores and explanation for each gener
 
 | **Score** | **Video Link** | **Reason2 Explanation** |
 |-----------|---------------|--------------------|
-| 4.0 | <video src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed3.mp4" controls width="200"></video> | The video shows two robotic arms working together to pack items into a paper bag. The left arm holds the bag open while the right arm places a green bell pepper into it. Both arms move smoothly and deliberately, demonstrating coordination and precision. The person in the background observes the process without interfering. All actions are consistent with real-world physics, showing no signs of unrealistic behavior or violations of physical laws. Objects interact naturally, and motions are fluid and logical. |
-| 1.0 | <video src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed1.mp4" controls width="200"></video> | The robot arm fails to grasp the green bell pepper, which contradicts its intended function. The lack of successful grasping suggests a malfunction or error in the programming controlling the robot's movements. Additionally, the person's hand remains stationary throughout the video, showing no interaction with the objects on the table, which is inconsistent with typical human behavior during such tasks. |
+| 4.0 | <video width="320" controls autoplay loop muted><source src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed3.mp4" type="video/mp4"></video> | The video shows two robotic arms working together to pack items into a paper bag. The left arm holds the bag open while the right arm places a green bell pepper into it. Both arms move smoothly and deliberately, demonstrating coordination and precision. The person in the background observes the process without interfering. All actions are consistent with real-world physics, showing no signs of unrealistic behavior or violations of physical laws. Objects interact naturally, and motions are fluid and logical. |
+| 1.0 | <video width="320" controls autoplay loop muted><source src="assets/000_11_Use_the_right_hand_to_pick_up_green_pepper_from_black_shelf_to_inside_brown_p_seed1.mp4" type="video/mp4"></video> | The robot arm fails to grasp the green bell pepper, which contradicts its intended function. The lack of successful grasping suggests a malfunction or error in the programming controlling the robot's movements. Additionally, the person's hand remains stationary throughout the video, showing no interaction with the objects on the table, which is inconsistent with typical human behavior during such tasks. |
 
 ## 6. Computing Metrics
 
