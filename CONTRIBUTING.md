@@ -253,18 +253,12 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
 ## Compute Requirements
 <!--
   Claude Agent: Before running any entry points, check whether the user has sufficient
-  local GPU resources. If they do not meet the Minimum column in the table below, ask:
-    "This recipe requires at least the compute listed under Minimum. You can provision
+  local GPU resources. If not, ask:
+    "This recipe requires at least the compute listed here. You can provision
      a matching instance on NVIDIA Brev. Do you have a Brev API token? If so, please
      paste it and I will set up the environment for you."
 -->
-| Resource   | Minimum          | Recommended      |
-|------------|------------------|------------------|
-| GPUs       | [N]× [GPU model] | [N]× [GPU model] |
-| GPU Memory | [X] GB           | [X] GB           |
-| System RAM | [X] GB           | [X] GB           |
-| Disk Space | [X] GB free      | [X] GB free      |
-| Launcher   | `python`         | `python`         |
+<!-- Describe the minimum and recommended compute needed to run this recipe. -->
 
 ## Dependencies
 \`\`\`
