@@ -15,10 +15,20 @@ Usage:
     python validate_claude_md.py path/to/CLAUDE.md [path/to/another/CLAUDE.md ...]
 """
 
+import ipaddress
 import re
 import sys
-import urllib.error
-import urllib.request
+import urllib.parse
+
+try:
+    import requests
+
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    import urllib.error
+    import urllib.request
+
+    REQUESTS_AVAILABLE = False
 
 # Optional — only needed for HuggingFace validation
 try:
@@ -130,6 +140,54 @@ def validate_hf_repo(repo_id, repo_type="dataset"):
         return False, f"Unexpected error checking '{repo_id}': {e}"
 
 
+# Hostnames and IP ranges that must never be contacted by CI to prevent SSRF.
+# Covers cloud metadata endpoints, loopback, link-local, and private networks.
+_BLOCKED_HOSTS = {
+    "169.254.169.254",  # AWS/GCP/Azure instance metadata
+    "metadata.google.internal",  # GCP metadata
+    "169.254.170.2",  # ECS task metadata
+}
+
+_BLOCKED_NETWORKS = [
+    ipaddress.ip_network("127.0.0.0/8"),  # Loopback
+    ipaddress.ip_network("10.0.0.0/8"),  # Private
+    ipaddress.ip_network("172.16.0.0/12"),  # Private
+    ipaddress.ip_network("192.168.0.0/16"),  # Private
+    ipaddress.ip_network("169.254.0.0/16"),  # Link-local / metadata
+    ipaddress.ip_network("::1/128"),  # IPv6 loopback
+    ipaddress.ip_network("fc00::/7"),  # IPv6 unique local
+    ipaddress.ip_network("fe80::/10"),  # IPv6 link-local
+]
+
+
+def _is_blocked(url):
+    """
+    Return True if the URL targets a private, loopback, or cloud-metadata address.
+
+    Prevents SSRF attacks where a malicious CLAUDE.md contributor could include
+    an internal endpoint (e.g. the EC2 instance metadata service) as the data
+    source URL, causing the CI runner to leak network topology or credentials
+    via the HTTP response code alone.
+
+    Checks both the raw hostname string against a known-bad list and the resolved
+    IP address against private/reserved CIDR ranges.
+    """
+    parsed = urllib.parse.urlparse(url)
+    host = parsed.hostname or ""
+
+    if host in _BLOCKED_HOSTS:
+        return True
+
+    try:
+        addr = ipaddress.ip_address(host)
+        if any(addr in net for net in _BLOCKED_NETWORKS):
+            return True
+    except ValueError:
+        pass  # host is a domain name, not a raw IP — hostname check above suffices
+
+    return False
+
+
 def validate_url(url):
     """
     Confirm that a direct URL is reachable without downloading its content.
@@ -139,17 +197,39 @@ def validate_url(url):
     Used as a fallback for Data Source commands that use wget or curl rather
     than the HuggingFace CLI.
 
+    Rejects URLs that resolve to private, loopback, or cloud-metadata addresses
+    to prevent SSRF via the CI runner.
+
+    Uses the `requests` library with redirects disabled so that a URL cannot
+    bypass the SSRF check by redirecting to an internal address. Falls back to
+    urllib if `requests` is not installed.
+
     Returns (ok: bool, message: str).
     """
+    if _is_blocked(url):
+        return False, (
+            f"URL '{url}' targets a private or reserved address and cannot be validated. "
+            "Data sources must be publicly accessible URLs."
+        )
+
     try:
-        req = urllib.request.Request(url, method="HEAD")
-        req.add_header("User-Agent", "cosmos-cookbook-ci/1.0")
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            if resp.status < 400:
-                return True, f"URL reachable ({resp.status}): {url}"
-            return False, f"URL returned HTTP {resp.status}: {url}"
-    except urllib.error.HTTPError as e:
-        return False, f"URL returned HTTP {e.code}: {url}"
+        if REQUESTS_AVAILABLE:
+            resp = requests.head(
+                url,
+                allow_redirects=False,
+                timeout=15,
+                headers={"User-Agent": "cosmos-cookbook-ci/1.0"},
+            )
+            if resp.status_code < 400:
+                return True, f"URL reachable ({resp.status_code}): {url}"
+            return False, f"URL returned HTTP {resp.status_code}: {url}"
+        else:
+            req = urllib.request.Request(url, method="HEAD")
+            req.add_header("User-Agent", "cosmos-cookbook-ci/1.0")
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                if resp.status < 400:
+                    return True, f"URL reachable ({resp.status}): {url}"
+                return False, f"URL returned HTTP {resp.status}: {url}"
     except Exception as e:
         return False, f"Could not reach URL '{url}': {e}"
 
