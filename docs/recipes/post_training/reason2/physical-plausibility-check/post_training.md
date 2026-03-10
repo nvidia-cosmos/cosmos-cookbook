@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Physical plausibility prediction | domain:industrial |
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Physical plausibility prediction | domain:industrial, technique:post-training |
 
 > **Note**: For experiments using Cosmos Reason 1, please refer to the [Physical Plausibility Prediction with Cosmos Reason 1](../../reason1/physical-plausibility-check/post_training.md) recipe.
 

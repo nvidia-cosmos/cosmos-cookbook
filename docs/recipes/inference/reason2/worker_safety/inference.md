@@ -14,7 +14,7 @@ Setup guide: [Setup and system requirements](setup.md)
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Zero-shot safety compliance and hazard detection | domain:industrial |
+| [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Zero-shot safety compliance and hazard detection | domain:industrial, technique:reasoning |
 
 <video src="assets/overload_forklift.webm" controls width="720"></video>
 
