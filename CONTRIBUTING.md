@@ -222,38 +222,32 @@ docs/recipes/inference/[model-name]/[recipe-name]/
 
 ## What This Recipe Does
 <!-- One sentence: what problem it solves and how. -->
-Classifies worker safety compliance in warehouse video by prompting Cosmos Reason 2
-to act as an expert inspector and output structured JSON per clip.
 
 ## Model
-<!-- Exact HuggingFace model ID used. -->
-nvidia/Cosmos-Reason2-8B
+<!-- Exact HuggingFace model ID. -->
 
 ## Entry Points
 <!-- Exact commands to run this recipe end-to-end, in order. -->
 \`\`\`bash
 pip install -r requirements.txt
-python worker_safety.py --input ./assets/sample.mp4 --output ./output
-
-# Or interactively:
-jupyter notebook worker_safety.ipynb
+python run.py --input ./data --output ./output
 \`\`\`
 
 ## Data Source
 <!--
   Access: [Public | Gated — requires HuggingFace agreement at <URL> | Restricted — requires separate application]
-  Size: ~Xgb
-  License: [license name, e.g. Apache-2.0 / CC-BY-4.0 / non-commercial]
+  Size: ~XGB
+  License: [e.g. Apache-2.0 / CC-BY-4.0 / non-commercial]
 
   If access is Gated or Restricted and you cannot confirm the data is obtainable by a
   contributor who agrees to the linked terms, do not create this CLAUDE.md.
 -->
-**Access:** Public
-**Size:** ~2GB
-**License:** Apache-2.0
+**Access:** [Public | Gated | Restricted]
+**Size:** ~XGB
+**License:** [license name]
 
 \`\`\`bash
-huggingface-cli download pjramg/Safe_Unsafe_Test --repo-type dataset --local-dir ./data
+huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./data
 \`\`\`
 
 ## Compute Requirements
@@ -265,13 +259,13 @@ huggingface-cli download pjramg/Safe_Unsafe_Test --repo-type dataset --local-dir
      set up the environment for you."
   Then use the Brev Provisioning section below to complete setup.
 -->
-| Resource    | Minimum       | Recommended   |
-|-------------|---------------|---------------|
-| GPUs        | 1× A100 40GB  | 1× H100 80GB  |
-| GPU Memory  | 40 GB         | 80 GB         |
-| System RAM  | 32 GB         | 64 GB         |
-| Disk Space  | 50 GB free    | 100 GB free   |
-| Launcher    | `python`      | `python`      |
+| Resource   | Minimum          | Recommended      |
+|------------|------------------|------------------|
+| GPUs       | [N]× [GPU model] | [N]× [GPU model] |
+| GPU Memory | [X] GB           | [X] GB           |
+| System RAM | [X] GB           | [X] GB           |
+| Disk Space | [X] GB free      | [X] GB free      |
+| Launcher   | `python`         | `python`         |
 
 ## Brev Provisioning
 <!--
@@ -279,70 +273,52 @@ huggingface-cli download pjramg/Safe_Unsafe_Test --repo-type dataset --local-dir
   substituting their token. Do not skip this section if local compute is insufficient.
 -->
 \`\`\`bash
-# Install the Brev CLI
 pip install brev
-
-# Authenticate — Claude will prompt the user for their token if not already set
 brev login --token $BREV_TOKEN
-
-# Create a workspace that satisfies Compute Requirements
-brev create --gpu a100 --gpu-count 1 cosmos-recipe-workspace
-
-# SSH into the workspace when it is ready
+brev create --gpu [gpu-type] --gpu-count [N] cosmos-recipe-workspace
 brev shell cosmos-recipe-workspace
 \`\`\`
 
-| Variable     | Description                                                          |
-|--------------|----------------------------------------------------------------------|
-| `BREV_TOKEN` | NVIDIA Brev API token — retrieve from https://brev.nvidia.com/settings |
+| Variable     | Description                                                             |
+|--------------|-------------------------------------------------------------------------|
+| `BREV_TOKEN` | NVIDIA Brev API token — retrieve from https://brev.nvidia.com/settings  |
 
 ## Dependencies
 \`\`\`
 torch>=2.0
 transformers>=4.40
-fiftyone
-qwen-vl-utils
+[additional packages]
 \`\`\`
 
 ## Required Environment Variables
-| Variable   | Description                          |
-|------------|--------------------------------------|
-| `HF_TOKEN` | HuggingFace token to download model  |
+| Variable      | Description                         |
+|---------------|-------------------------------------|
+| `HF_TOKEN`    | HuggingFace token to download model |
 
 ## Setup Prerequisites
 <!-- Blocking steps that must complete before entry points will work. -->
-- [ ] `huggingface-cli login` completed with a token that has access to gated models
-- [ ] FiftyOne initialized: run `fiftyone app` once to set up its local database
+- [ ] `huggingface-cli login` completed
 
 ## Key Files
-| File                  | Role                                                    |
-|-----------------------|---------------------------------------------------------|
-| `worker_safety.py`    | Main pipeline — load data, run inference, write results |
-| `worker_safety.ipynb` | Identical pipeline as an interactive notebook           |
-| `setup.md`            | Full environment setup and system requirements          |
+| File          | Role                          |
+|---------------|-------------------------------|
+| `run.py`      | Main pipeline entry point     |
+| `setup.md`    | Full environment setup guide  |
 
 ## Code Structure
 <!-- Name real functions/classes and describe how they connect. -->
-- `load_dataset()` — pulls HuggingFace dataset into FiftyOne
-- `build_prompt(sample)` — constructs system + user prompt encoding the visual classification rules
-- `run_inference(prompt, video_path)` — calls the model via HuggingFace Transformers, returns raw text
-- `parse_output(raw)` — extracts `{class_id, label, rationale}` from the model's JSON response
-- `visualize(dataset)` — launches FiftyOne UI to compare predictions vs. ground truth
+- `load_data()` — description
+- `run_inference()` — description
+- `save_output()` — description
 
 ## Expected Output
-\`\`\`json
-{
-  "class_id": 3,
-  "label": "Carrying Overload with Forklift",
-  "rationale": "Three or more blocks are visible on the forks."
-}
+\`\`\`
+[paste a representative sample of what successful output looks like]
 \`\`\`
 
 ## Gotchas
 <!-- Things that will waste a contributor's time if they don't know them. -->
-- FiftyOne launches a local MongoDB instance on first run — this is expected behavior
-- The prompt is tightly coupled to the dataset's visual definitions; modifying it degrades accuracy
-- The model outputs plain text — `parse_output()` handles JSON extraction with a regex fallback
+-
 ```
 
 #### Tips for a Useful CLAUDE.md
