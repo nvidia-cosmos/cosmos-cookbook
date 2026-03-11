@@ -8,7 +8,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Synthetic trajectory data generation for humanoid robots | domain:humanoid-robotics, technique:post-training |
+| [Cosmos Predict 2](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Synthetic trajectory data generation for humanoid robots | domain:robotics, technique:post-training |
 
 Isaac GR00T-Dreams leverages **Cosmos Predict 2** to generate synthetic trajectory data for teaching humanoid robots new actions in novel environments. By using world foundation models, a small team can create training data that would otherwise require thousands of demonstrators.
 
