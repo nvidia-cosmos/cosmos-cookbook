@@ -37,6 +37,7 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
 <!-- Describe the minimum and recommended compute needed to run this recipe. -->
 
 ## Dependencies
+
 ```
 torch>=2.0
 [additional packages]
@@ -56,6 +57,7 @@ torch>=2.0
 - [ ] `huggingface-cli login` completed
 
 ## Key Files
+
 | File          | Role                          |
 |---------------|-------------------------------|
 | `run.py`      | Main pipeline entry point     |
@@ -68,6 +70,7 @@ torch>=2.0
 - `save_output()` — description
 
 ## Expected Output
+
 ```
 [paste a representative sample of what successful output looks like]
 ```

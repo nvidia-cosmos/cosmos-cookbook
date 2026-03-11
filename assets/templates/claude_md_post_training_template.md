@@ -39,6 +39,7 @@ huggingface-cli download [org/dataset-name] --repo-type dataset --local-dir ./da
 <!-- Describe the minimum and recommended compute needed to run this recipe. -->
 
 ## Dependencies
+
 ```
 torch>=2.0
 [additional packages]
@@ -59,6 +60,7 @@ torch>=2.0
 - [ ] Training data downloaded and preprocessed
 
 ## Key Files
+
 | File               | Role                             |
 |--------------------|----------------------------------|
 | `train.py`         | Main training entry point        |
@@ -73,6 +75,7 @@ torch>=2.0
 - `save_checkpoint()` — description
 
 ## Expected Output
+
 ```
 [describe what a successful training run produces, e.g. checkpoint location, final metrics]
 ```
