@@ -413,7 +413,7 @@
       
       <div class="filter-controls">
         <button class="filter-btn active" data-domain="all">All</button>
-        <button class="filter-btn" data-domain="domain:humanoid-robotics">Humanoid Robotics</button>
+        <button class="filter-btn" data-domain="domain:robotics">Robotics</button>
         <button class="filter-btn" data-domain="domain:autonomous-vehicles">Autonomous Vehicles</button>
         <button class="filter-btn" data-domain="domain:smart-city">Smart City</button>
         <button class="filter-btn" data-domain="domain:industrial">Industrial</button>

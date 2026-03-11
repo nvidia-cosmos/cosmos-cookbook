@@ -10,7 +10,7 @@ ALLOWED_TAGS = frozenset({
     "general:partner-recipe",
     "general:cookoff-recipe",
     "general:ai-friendly",
-    "domain:humanoid-robotics",
+    "domain:robotics",
     "domain:autonomous-vehicles",
     "domain:smart-city",
     "domain:industrial",

@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
 |-----------|--------------|--------------|----------|----------|
-| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics | domain:humanoid-robotics, technique:reasoning, general:partner-recipe, general:cookoff-recipe | 02-14-2026 |
+| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics | domain:robotics, technique:reasoning, general:partner-recipe, general:cookoff-recipe | 02-14-2026 |
 
 - [Setup and System Requirements](https://github.com/nvidia-cosmos/cosmos-reason2#setup)
 
