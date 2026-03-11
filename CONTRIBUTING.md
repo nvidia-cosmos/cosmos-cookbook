@@ -217,11 +217,14 @@ docs/recipes/[category]/[model-name]/[recipe-name]/
 
 #### CLAUDE.md Template
 
-Use the [CLAUDE.md template](assets/templates/claude_md_template.md) as your starting point.
+Use the appropriate template as your starting point:
+
+- [Inference template](assets/templates/claude_md_inference_template.md)
+- [Post-training template](assets/templates/claude_md_post_training_template.md)
 
 #### Tips for a Useful CLAUDE.md
 
-- **Do not create this file if the data is not accessible** — if the dataset is gated, restricted, or requires an application that a typical contributor cannot complete, omit the CLAUDE.md entirely rather than listing a download command that will fail silently
+- **Declare data accessibility honestly** — set `Access` to `Public`, `Gated`, or `Restricted`; public datasets are validated automatically, gated and restricted datasets pass CI but require a human reviewer to confirm they are obtainable
 - **Data Source must be a command**, not a prose description — the agent needs to run it, not read it; include the `Access`, `Size`, and `License` metadata fields so the agent can warn the user before attempting a download
 - **Entry points must work** — test them in a clean environment before submitting
 - **Compute Requirements must be honest** — if the recipe needs 8× H100s, say so; an agent will use this to decide whether to provision Brev compute or abort with a clear message
