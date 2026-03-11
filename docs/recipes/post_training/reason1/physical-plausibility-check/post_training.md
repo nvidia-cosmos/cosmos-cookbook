@@ -1,27 +1,3 @@
----
-cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_workload: "post-training"
-cosmos_status: "stable"
-cosmos_summary: "Fine-tunes Cosmos Reason 1 on the VideoPhy-2 dataset to score video physical plausibility on a 1–5 scale, enabling quality filtering of synthetically generated video in Cosmos Predict/Transfer SDG pipelines."
-cosmos_compute: "1x A100 80GB (min)"
-cosmos_output: "fine-tuned Cosmos Reason 1-7B checkpoint assigning physical plausibility scores (1–5 scale) to video clips"
-cosmos_prerequisites:
-  - "../../../../getting_started/setup"
-cosmos_pipeline_position: null
-cosmos_license: "NVIDIA Open Model License"
-cosmos_domain:
-  - "domain:robotics"
-  - "domain:autonomous-vehicles"
-cosmos_technique:
-  - "technique:post-training"
-  - "technique:data-curation"
-cosmos_tags:
-  - "post-training"
-  - "reason-1"
-  - "physical-plausibility"
-  - "data-quality"
----
-
 > Fine-tunes Cosmos Reason 1 on the VideoPhy-2 dataset to score video physical plausibility on a 1–5 scale, enabling quality filtering of synthetically generated video in Cosmos Predict/Transfer SDG pipelines.
 
 # Physical Plausibility Prediction with Cosmos Reason 1

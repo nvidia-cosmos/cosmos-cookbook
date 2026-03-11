@@ -1,25 +1,3 @@
----
-cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_workload: "post-training"
-cosmos_status: "stable"
-cosmos_summary: "Fine-tunes Cosmos Reason 1 on an internal NVIDIA AV dataset to produce high-quality domain-specific video captions and labels for autonomous vehicle scenario retrieval and training data curation."
-cosmos_compute: "8x A100 80GB (min)"
-cosmos_output: "fine-tuned Cosmos Reason 1-7B checkpoint for AV video captioning and domain-specific VQA"
-cosmos_prerequisites:
-  - "../../../../getting_started/setup"
-cosmos_pipeline_position: null
-cosmos_license: "NVIDIA Open Model License"
-cosmos_domain:
-  - "domain:autonomous-vehicles"
-cosmos_technique:
-  - "technique:post-training"
-cosmos_tags:
-  - "post-training"
-  - "reason-1"
-  - "captioning"
-  - "vqa"
----
-
 > Fine-tunes Cosmos Reason 1 on an internal NVIDIA AV dataset to produce high-quality domain-specific video captions and labels for autonomous vehicle scenario retrieval and training data curation.
 
 # SFT for AV video captioning and VQA
