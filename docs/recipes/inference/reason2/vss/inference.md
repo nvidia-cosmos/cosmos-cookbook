@@ -1,3 +1,24 @@
+---
+cosmos_model: "nvidia/Cosmos-Reason2-8B"
+cosmos_vertical: "metropolis"
+cosmos_workload: "inference"
+cosmos_status: "stable"
+cosmos_summary: "Deploys Cosmos Reason 2 as the vision-language backbone in NVIDIA's Video Search and Summarization Blueprint for large-scale video captioning, semantic Q&A, and streaming event alerts across warehouses, factories, and smart city infrastructure."
+cosmos_compute: "1x H100 80GB (single-GPU profile) or 8x H100 80GB (multi-GPU profile)"
+cosmos_output: "video captions, natural language summaries, Q&A responses, and live streaming event alerts"
+cosmos_prerequisites:
+  - "../../../../getting_started/setup"
+cosmos_pipeline_position: null
+cosmos_license: "NVIDIA Open Model License"
+cosmos_tags:
+  - "inference"
+  - "reason-2"
+  - "metropolis"
+  - "video-search"
+---
+
+> Deploys Cosmos Reason 2 as the vision-language backbone in NVIDIA's Video Search and Summarization Blueprint for large-scale video captioning, semantic Q&A, and streaming event alerts across warehouses, factories, and smart city infrastructure.
+
 # Video Search and Summarization with Cosmos Reason
 
 > **Authors:** [Sammy Ochoa](https://www.linkedin.com/in/sammy-ochoa/)

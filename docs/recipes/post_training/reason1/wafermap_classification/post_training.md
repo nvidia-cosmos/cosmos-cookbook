@@ -1,3 +1,23 @@
+---
+cosmos_model: "nvidia/Cosmos-Reason1-7B"
+cosmos_vertical: "metropolis"
+cosmos_workload: "post-training"
+cosmos_status: "stable"
+cosmos_summary: "Fine-tunes Cosmos Reason 1-7B on wafer map defect images to classify 8 semiconductor manufacturing defect patterns using SFT, achieving 96.8% classification accuracy."
+cosmos_compute: "1x A100 80GB (min)"
+cosmos_output: "fine-tuned Cosmos Reason 1-7B checkpoint classifying 8 wafer map defect patterns with 96.8% accuracy"
+cosmos_prerequisites:
+  - "../../../../getting_started/setup"
+cosmos_pipeline_position: null
+cosmos_license: "NVIDIA Open Model License"
+cosmos_tags:
+  - "post-training"
+  - "reason-1"
+  - "metropolis"
+  - "semiconductor"
+---
+
+> Fine-tunes Cosmos Reason 1-7B on wafer map defect images to classify 8 semiconductor manufacturing defect patterns using SFT, achieving 96.8% classification accuracy.
 
 # Wafer Map Anomaly Classification with Cosmos Reason 1
 

@@ -1,3 +1,24 @@
+---
+cosmos_model: "nvidia/Cosmos-Reason2-8B"
+cosmos_vertical: "auto"
+cosmos_workload: "post-training"
+cosmos_status: "stable"
+cosmos_summary: "Fine-tunes Cosmos Reason 2-8B on the WovenTraffic Safety dataset for intelligent transportation scene understanding, road attribute recognition, and pedestrian situation analysis using SFT."
+cosmos_compute: "8x A100 80GB (min)"
+cosmos_output: "fine-tuned Cosmos Reason 2-8B checkpoint for traffic scene understanding and transportation VQA"
+cosmos_prerequisites:
+  - "../../../../getting_started/setup"
+cosmos_pipeline_position: null
+cosmos_license: "NVIDIA Open Model License"
+cosmos_tags:
+  - "post-training"
+  - "reason-2"
+  - "auto"
+  - "transportation"
+---
+
+> Fine-tunes Cosmos Reason 2-8B on the WovenTraffic Safety dataset for intelligent transportation scene understanding, road attribute recognition, and pedestrian situation analysis using SFT.
+
 # Intelligent Transportation Post-Training with Cosmos Reason 2
 
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/), [Deep Rodge](https://www.linkedin.com/in/deeprodge/), [Monika Jhuria](https://www.linkedin.com/in/monika-jhuria-07077797/)
