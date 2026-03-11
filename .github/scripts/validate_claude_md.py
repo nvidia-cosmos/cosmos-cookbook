@@ -7,8 +7,8 @@ Validates CLAUDE.md files added or modified in a PR.
 Rules:
 - If Data Source Access is "Public", verify the dataset/model/URL is reachable
   and not gated, without downloading it.
-- If Data Source Access is "Gated" or "Restricted", emit a warning and exit
-  successfully (human reviewers must approve these).
+- If Data Source Access is "Gated" or "Restricted", emit a warning and pass CI —
+  a human reviewer must confirm the data is obtainable.
 - If the Access field is missing entirely, fail — contributors must declare it.
 
 Usage:
@@ -17,18 +17,11 @@ Usage:
 
 import ipaddress
 import re
+import socket
 import sys
 import urllib.parse
 
-try:
-    import requests
-
-    REQUESTS_AVAILABLE = True
-except ImportError:
-    import urllib.error
-    import urllib.request
-
-    REQUESTS_AVAILABLE = False
+import requests
 
 # Optional — only needed for HuggingFace validation
 try:
@@ -169,8 +162,9 @@ def _is_blocked(url):
     source URL, causing the CI runner to leak network topology or credentials
     via the HTTP response code alone.
 
-    Checks both the raw hostname string against a known-bad list and the resolved
-    IP address against private/reserved CIDR ranges.
+    Checks the raw hostname against a known-bad list, then resolves the hostname
+    via DNS and checks every resolved IP address against private/reserved CIDR
+    ranges. This prevents bypass via a domain that resolves to an internal IP.
     """
     parsed = urllib.parse.urlparse(url)
     host = parsed.hostname or ""
@@ -178,12 +172,15 @@ def _is_blocked(url):
     if host in _BLOCKED_HOSTS:
         return True
 
+    # Resolve the hostname and check all returned addresses against blocked ranges
     try:
-        addr = ipaddress.ip_address(host)
-        if any(addr in net for net in _BLOCKED_NETWORKS):
-            return True
-    except ValueError:
-        pass  # host is a domain name, not a raw IP — hostname check above suffices
+        resolved = socket.getaddrinfo(host, None)
+        for _, _, _, _, sockaddr in resolved:
+            addr = ipaddress.ip_address(sockaddr[0])
+            if any(addr in net for net in _BLOCKED_NETWORKS):
+                return True
+    except (socket.gaierror, ValueError):
+        pass  # Unresolvable hostname — let the HTTP request fail naturally
 
     return False
 
@@ -192,17 +189,13 @@ def validate_url(url):
     """
     Confirm that a direct URL is reachable without downloading its content.
 
-    Issues an HTTP HEAD request so only headers are returned, keeping CI fast
-    even for large files. Treats any response below HTTP 400 as success.
-    Used as a fallback for Data Source commands that use wget or curl rather
-    than the HuggingFace CLI.
+    Issues an HTTP HEAD request with redirects disabled so only headers are
+    returned. Treats any response below HTTP 400 as success. Used as a fallback
+    for Data Source commands that use wget or curl rather than the HuggingFace CLI.
 
     Rejects URLs that resolve to private, loopback, or cloud-metadata addresses
-    to prevent SSRF via the CI runner.
-
-    Uses the `requests` library with redirects disabled so that a URL cannot
-    bypass the SSRF check by redirecting to an internal address. Falls back to
-    urllib if `requests` is not installed.
+    to prevent SSRF via the CI runner. Redirects are disabled so a URL cannot
+    bypass the SSRF check by redirecting to an internal address.
 
     Returns (ok: bool, message: str).
     """
@@ -213,23 +206,15 @@ def validate_url(url):
         )
 
     try:
-        if REQUESTS_AVAILABLE:
-            resp = requests.head(
-                url,
-                allow_redirects=False,
-                timeout=15,
-                headers={"User-Agent": "cosmos-cookbook-ci/1.0"},
-            )
-            if resp.status_code < 400:
-                return True, f"URL reachable ({resp.status_code}): {url}"
-            return False, f"URL returned HTTP {resp.status_code}: {url}"
-        else:
-            req = urllib.request.Request(url, method="HEAD")
-            req.add_header("User-Agent", "cosmos-cookbook-ci/1.0")
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                if resp.status < 400:
-                    return True, f"URL reachable ({resp.status}): {url}"
-                return False, f"URL returned HTTP {resp.status}: {url}"
+        resp = requests.head(
+            url,
+            allow_redirects=False,
+            timeout=15,
+            headers={"User-Agent": "cosmos-cookbook-ci/1.0"},
+        )
+        if resp.status_code < 400:
+            return True, f"URL reachable ({resp.status_code}): {url}"
+        return False, f"URL returned HTTP {resp.status_code}: {url}"
     except Exception as e:
         return False, f"Could not reach URL '{url}': {e}"
 
@@ -240,11 +225,11 @@ def validate_command(command):
 
     Supports three command shapes, tried in order:
       1. huggingface-cli download <repo-id> [--repo-type dataset|model]
-         → validated via the HuggingFace Hub API (no download)
+         -> validated via the HuggingFace Hub API (no download)
       2. wget <url> or curl <url>
-         → validated via an HTTP HEAD request
+         -> validated via an HTTP HEAD request
       3. A bare https:// URL anywhere in the command
-         → validated via an HTTP HEAD request
+         -> validated via an HTTP HEAD request
 
     Fails if none of these patterns are recognised, prompting the contributor
     to use a supported download tool.
