@@ -1,4 +1,4 @@
-# This workflow runs on all branches to perform quality checks.
+# This workflow runs on pull requests targeting main to perform quality checks.
 name: PR Quality Checks
 on:
   pull_request:
@@ -60,10 +60,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
       - name: Find changed CLAUDE.md files
         id: changed
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*/CLAUDE.md' | tr '\n' ' ')
+          if [ -z "$BASE_REF" ]; then
+            echo "No base ref (workflow_dispatch) — skipping CLAUDE.md detection."
+            echo "files=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          FILES=$(git diff --name-only origin/$BASE_REF...HEAD -- '**/CLAUDE.md' | tr '\n' ' ')
           echo "files=$FILES" >> $GITHUB_OUTPUT
           if [ -z "$FILES" ]; then
             echo "No CLAUDE.md files changed — skipping validation."
@@ -71,14 +80,16 @@ jobs:
             echo "Changed CLAUDE.md files: $FILES"
           fi
       - name: Set up Python
-        if: "steps.changed.outputs.files != ''"
+        if: steps.changed.outputs.files != ''
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Install huggingface_hub
-        if: "steps.changed.outputs.files != ''"
-        run: uv pip install huggingface_hub requests
+      - name: Install dependencies
+        if: steps.changed.outputs.files != ''
+        run: uv pip install --system huggingface_hub requests
       - name: Validate CLAUDE.md files
-        if: "steps.changed.outputs.files != ''"
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
-          python .github/scripts/validate_claude_md.py ${{ steps.changed.outputs.files }}
+          python .github/scripts/validate_claude_md.py $CHANGED_FILES
