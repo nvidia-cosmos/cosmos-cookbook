@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_vertical: "robotics"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Post-trains Cosmos Reason 1 to automatically generate timestamp annotations for robot manipulation subtask boundaries in simulation videos, enabling scalable MimicGen dataset creation from a small number of human demonstrations."
@@ -10,11 +9,15 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:robotics"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-1"
-  - "robotics"
   - "temporal-localization"
+  - "manipulation"
 ---
 
 > Post-trains Cosmos Reason 1 to automatically generate timestamp annotations for robot manipulation subtask boundaries in simulation videos, enabling scalable MimicGen dataset creation from a small number of human demonstrations.

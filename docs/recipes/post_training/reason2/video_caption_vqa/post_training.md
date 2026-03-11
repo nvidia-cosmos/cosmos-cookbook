@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "auto"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 2 in collaboration with Uber to produce AV-specific video captions and improve VQA accuracy for autonomous vehicle scenario retrieval, safety validation, and model training data curation."
@@ -10,11 +9,15 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:autonomous-vehicles"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-2"
-  - "auto"
-  - "video-captioning"
+  - "captioning"
+  - "vqa"
 ---
 
 > Fine-tunes Cosmos Reason 2 in collaboration with Uber to produce AV-specific video captions and improve VQA accuracy for autonomous vehicle scenario retrieval, safety validation, and model training data curation.

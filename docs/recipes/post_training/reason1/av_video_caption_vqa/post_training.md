@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_vertical: "auto"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 1 on an internal NVIDIA AV dataset to produce high-quality domain-specific video captions and labels for autonomous vehicle scenario retrieval and training data curation."
@@ -10,11 +9,15 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:autonomous-vehicles"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-1"
-  - "auto"
-  - "video-captioning"
+  - "captioning"
+  - "vqa"
 ---
 
 > Fine-tunes Cosmos Reason 1 on an internal NVIDIA AV dataset to produce high-quality domain-specific video captions and labels for autonomous vehicle scenario retrieval and training data curation.

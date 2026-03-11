@@ -2,7 +2,6 @@
 cosmos_model:
   - "nvidia/Cosmos-Reason1-7B"
   - "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "auto"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 1 and 2 via supervised fine-tuning to predict 3D bounding box coordinates (position, dimensions, orientation) for vehicles in autonomous driving camera images."
@@ -12,11 +11,14 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:autonomous-vehicles"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-1"
   - "reason-2"
-  - "auto"
   - "3d-grounding"
 ---
 

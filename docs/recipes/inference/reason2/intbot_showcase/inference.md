@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "robotics"
 cosmos_workload: "inference"
 cosmos_status: "stable"
 cosmos_summary: "Evaluates Cosmos-Reason2-8B on egocentric video tests for humanoid robot social and physical reasoning, benchmarked against Qwen3-VL-8B-Instruct on greetings, object motion, shared attention, and social context tasks."
@@ -10,11 +9,14 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:robotics"
+cosmos_technique:
+  - "technique:reasoning"
 cosmos_tags:
   - "inference"
   - "reason-2"
-  - "robotics"
-  - "egocentric"
+  - "inspection"
 ---
 
 > Evaluates Cosmos-Reason2-8B on egocentric video tests for humanoid robot social and physical reasoning, benchmarked against Qwen3-VL-8B-Instruct on greetings, object motion, shared attention, and social context tasks.

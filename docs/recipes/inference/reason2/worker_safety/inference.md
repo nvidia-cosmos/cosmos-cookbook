@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-2B"
-cosmos_vertical: "metropolis"
 cosmos_workload: "inference"
 cosmos_status: "stable"
 cosmos_summary: "Zero-shot warehouse safety inspection using Cosmos Reason 2 to classify worker behaviors from video without custom model training."
@@ -10,11 +9,14 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:industrial"
+cosmos_technique:
+  - "technique:reasoning"
 cosmos_tags:
   - "inference"
   - "reason-2"
   - "safety"
-  - "metropolis"
 ---
 
 > Zero-shot warehouse safety inspection using Cosmos Reason 2 to classify worker behaviors from video without custom model training.

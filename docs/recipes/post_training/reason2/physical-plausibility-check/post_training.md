@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "general"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 2 on the VideoPhy-2 dataset to score video physical plausibility on a 1–5 scale, enabling quality filtering of synthetically generated video in Cosmos Predict/Transfer SDG pipelines."
@@ -10,11 +9,17 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:robotics"
+  - "domain:autonomous-vehicles"
+cosmos_technique:
+  - "technique:post-training"
+  - "technique:data-curation"
 cosmos_tags:
   - "post-training"
   - "reason-2"
-  - "data-curation"
   - "physical-plausibility"
+  - "data-quality"
 ---
 
 > Fine-tunes Cosmos Reason 2 on the VideoPhy-2 dataset to score video physical plausibility on a 1–5 scale, enabling quality filtering of synthetically generated video in Cosmos Predict/Transfer SDG pipelines.

@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_vertical: "metropolis"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 1-7B on a synthetic warehouse dataset for spatial intelligence tasks including distance estimation, object counting, and spatial relationship reasoning among pallets and transporters."
@@ -10,11 +9,15 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:industrial"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-1"
-  - "metropolis"
   - "spatial-ai"
+  - "warehouse"
 ---
 
 > Fine-tunes Cosmos Reason 1-7B on a synthetic warehouse dataset for spatial intelligence tasks including distance estimation, object counting, and spatial relationship reasoning among pallets and transporters.

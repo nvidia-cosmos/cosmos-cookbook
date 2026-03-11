@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "auto"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 2-8B on the WovenTraffic Safety dataset for intelligent transportation scene understanding, road attribute recognition, and pedestrian situation analysis using SFT."
@@ -10,10 +9,13 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:autonomous-vehicles"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-2"
-  - "auto"
   - "transportation"
 ---
 

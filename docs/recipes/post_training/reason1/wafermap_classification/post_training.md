@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason1-7B"
-cosmos_vertical: "metropolis"
 cosmos_workload: "post-training"
 cosmos_status: "stable"
 cosmos_summary: "Fine-tunes Cosmos Reason 1-7B on wafer map defect images to classify 8 semiconductor manufacturing defect patterns using SFT, achieving 96.8% classification accuracy."
@@ -10,10 +9,14 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:industrial"
+cosmos_technique:
+  - "technique:post-training"
 cosmos_tags:
   - "post-training"
   - "reason-1"
-  - "metropolis"
+  - "wafermap"
   - "semiconductor"
 ---
 

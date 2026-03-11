@@ -1,6 +1,5 @@
 ---
 cosmos_model: "nvidia/Cosmos-Reason2-8B"
-cosmos_vertical: "metropolis"
 cosmos_workload: "inference"
 cosmos_status: "stable"
 cosmos_summary: "Deploys Cosmos Reason 2 as the vision-language backbone in NVIDIA's Video Search and Summarization Blueprint for large-scale video captioning, semantic Q&A, and streaming event alerts across warehouses, factories, and smart city infrastructure."
@@ -10,10 +9,14 @@ cosmos_prerequisites:
   - "../../../../getting_started/setup"
 cosmos_pipeline_position: null
 cosmos_license: "NVIDIA Open Model License"
+cosmos_domain:
+  - "domain:smart-city"
+  - "domain:industrial"
+cosmos_technique:
+  - "technique:reasoning"
 cosmos_tags:
   - "inference"
   - "reason-2"
-  - "metropolis"
   - "video-search"
 ---
 
