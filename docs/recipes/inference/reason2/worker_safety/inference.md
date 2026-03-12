@@ -1,5 +1,3 @@
-> Zero-shot warehouse safety inspection using Cosmos Reason 2 to classify worker behaviors from video without custom model training.
-
 # Worker Safety in a Classical Warehouse with Cosmos Reason 2
 
 > **Authors:** [Paula Ramos, PhD](https://www.linkedin.com/in/paula-ramos-phd/)
