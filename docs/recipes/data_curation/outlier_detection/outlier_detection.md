@@ -35,6 +35,8 @@ We follow the steps from the [embedding analysis / trajectory clustering recipe]
 1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/outlier_analysis_trajectories.json)
 2. Jupyter Notebook implementation
 
+The sample JSON file above contains embeddings from the public [HSR Household Service Robot Teleoperation Dataset](https://huggingface.co/datasets/airoa-org/airoa-moma), created with the [Cosmos-Embed1-336p](https://huggingface.co/nvidia/Cosmos-Embed1-336p) model.
+
 The instructions below were tested with the following uv + jupyter notebook setup:
 
 ```shell
@@ -103,6 +105,7 @@ These two parameters will be used in the subsequent sections, and depending on y
 # ── Configuration ─────────────────────────────────────────────
 N_COMPONENTS = 3 # Number of PCA dimensions
 N_CLUSTERS = 6 # Number of Time Series K-Means clusters
+RANDOM_SEED = 1234
 ```
 
 ### 4 - Reduce dimensionality with PCA
@@ -116,7 +119,7 @@ import time
 
 flat = interpolated.reshape(n_traj * t_len, dim)
 
-pca = PCA(n_components=N_COMPONENTS, random_state=int(time.time()) % 2**32)
+pca = PCA(n_components=N_COMPONENTS, random_state=RANDOM_SEED)
 flat_reduced = pca.fit_transform(flat)
 
 trajectories_reduced = flat_reduced.reshape(n_traj, t_len, N_COMPONENTS)
@@ -145,7 +148,7 @@ model = TimeSeriesKMeans(
     n_clusters=N_CLUSTERS,
     metric=TS_METRIC,
     max_iter=50,
-    random_state=int(time.time()) % 2**32,
+    random_state=RANDOM_SEED,
     verbose=False,
 )
 print("Fitting model... (may take about 5 minutes depending on data)")
@@ -196,25 +199,24 @@ for cid in range(N_CLUSTERS):
 Now we can start to visualize the data. We will start by just showing the trajectories, color-coded per cluster, so we can see the data further reduced to the first two principal components.
 
 ```py
-# ── Trajectory cluster visualization with barycenters ────────
+# ── Trajectory cluster visualization ────────
 
 import matplotlib.pyplot as plt
-
-traj_means = trajectories_reduced.mean(axis=1)  # (n_traj, N_COMPONENTS)
 
 cmap = plt.get_cmap("tab10")
 color_map = {cid: cmap(cid % cmap.N) for cid in range(N_CLUSTERS)}
 
-# Plot 1: all points colored by cluster
-flat_points = trajectories_reduced.reshape(-1, N_COMPONENTS)
-flat_labels = np.repeat(traj_labels, t_len)
-
 plt.figure(figsize=(10, 8))
-for cid in range(N_CLUSTERS):
-    m = flat_labels == cid
-    plt.scatter(flat_points[m, 0], flat_points[m, 1], s=6, alpha=0.7,
-                color=color_map[cid], label=f"Cluster {cid}")
-plt.title("All points (PC1 vs PC2) colored by trajectory cluster")
+labeled = set()
+for i in range(n_traj):
+    cid = int(traj_labels[i])
+    label = f"Cluster {cid}" if cid not in labeled else None
+    labeled.add(cid)
+    plt.plot(trajectories_reduced[i, :, 0], trajectories_reduced[i, :, 1],
+             linewidth=0.5, alpha=0.20, color=color_map[cid], label=label)
+    plt.scatter(trajectories_reduced[i, :, 0], trajectories_reduced[i, :, 1],
+                s=6, alpha=0.7, color=color_map[cid])
+plt.title("All trajectories (PC1 vs PC2) colored by cluster")
 plt.xlabel("PC 1")
 plt.ylabel("PC 2")
 plt.legend(title="Cluster", loc="best", markerscale=2, fontsize=9)
@@ -227,7 +229,7 @@ plt.show()
 More interesting is how we can compare the overall trajectories to the barycenters for each cluster, which we graph here as bold lines on top of the rest of the trajectories.
 
 ```py
-# Plot 2: trajectories + barycenters
+# ── Trajectory cluster visualization with barycenters ────────
 plt.figure(figsize=(10, 8))
 for i in range(n_traj):
     cid = int(traj_labels[i])
@@ -280,28 +282,48 @@ plt.show()
 
 ![](assets/inliers_vs_outliers.png)
 
-And we can further put the data back in the spatial context, to see which data points are considered outliers, indicated as red "x"s, compared to the inliers.
+And we can further put the data back in the spatial context, to see which trajectories are considered outliers, indicated highlighted trajectories with "x"s, compared to the faint inliers.
 
 ```py
-# Scatter: trajectory means with outliers highlighted
-fig_sc, ax = plt.subplots(figsize=(8, 6))
+# ── Trajectory with barycenters, outliers highlighted ────────
+
+plt.figure(figsize=(10, 8))
+
+# Inlier trajectories: thin, low alpha
+for i in range(n_traj):
+    if is_outlier[i]:
+        continue
+    cid = int(traj_labels[i])
+    plt.plot(trajectories_reduced[i, :, 0], trajectories_reduced[i, :, 1],
+             linewidth=0.5, alpha=0.35, color=color_map[cid])
+
+# Outlier trajectories: thicker, high alpha, with point markers
+for i in range(n_traj):
+    if not is_outlier[i]:
+        continue
+    cid = int(traj_labels[i])
+    plt.plot(trajectories_reduced[i, :, 0], trajectories_reduced[i, :, 1],
+             linewidth=1.5, alpha=0.8, color=color_map[cid], zorder=8)
+    plt.scatter(trajectories_reduced[i, :, 0], trajectories_reduced[i, :, 1],
+                s=30, marker="x", color=color_map[cid], alpha=0.8, zorder=9)
+
+# Barycenters: bold lines on top
 for cid in range(N_CLUSTERS):
-    inlier_mask = (traj_labels == cid) & (~is_outlier)
-    ax.scatter(traj_means[inlier_mask, 0], traj_means[inlier_mask, 1],
-               label=f"Cluster {cid}", alpha=0.6, s=40, color=color_map[cid])
+    plt.plot(centers[cid, :, 0], centers[cid, :, 1],
+             linewidth=6.0, alpha=1.0, color="black", zorder=10)
+    plt.plot(centers[cid, :, 0], centers[cid, :, 1],
+             linewidth=3.0, alpha=1.0, color=color_map[cid],
+             label=f"Cluster {cid} barycenter", zorder=11)
 
-ax.scatter(traj_means[is_outlier, 0], traj_means[is_outlier, 1],
-           label="Outlier", marker="x", s=80, linewidths=2, color="red", zorder=5)
-
-ax.set_xlabel("PC 1")
-ax.set_ylabel("PC 2")
-ax.set_title("Cluster Scatter with Outliers Highlighted")
-ax.legend()
+plt.title("Trajectory clusters + barycenters (outliers highlighted)")
+plt.xlabel("PC 1")
+plt.ylabel("PC 2")
+plt.legend(loc="best", fontsize=9)
 plt.tight_layout()
 plt.show()
 ```
 
-![](assets/outliers_tagged_scatterplot.png)
+![](assets/outlier_trajectories.png)
 
 ### 9 - Inspect distance distributions and outlier details
 
