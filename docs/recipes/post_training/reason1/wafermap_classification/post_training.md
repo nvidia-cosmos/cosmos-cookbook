@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 1-7B on wafer map defect images to classify 8 semiconductor manufacturing defect patterns using SFT, achieving 96.8% classification accuracy.
-
 # Wafer Map Anomaly Classification with Cosmos Reason 1
 
 > **Authors:** [Anita Chiu](https://www.linkedin.com/in/yihsuanchiu/) • [Tim Lin](https://www.linkedin.com/in/ting-hung-lin-89a92a22/)

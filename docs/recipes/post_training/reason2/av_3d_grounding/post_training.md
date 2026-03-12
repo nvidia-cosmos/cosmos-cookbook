@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 1 and 2 via supervised fine-tuning to predict 3D bounding box coordinates (position, dimensions, orientation) for vehicles in autonomous driving camera images.
-
 # 3D Autonomous Vehicle Grounding Post-Training with Cosmos Reason 1 & 2
 
 > **Authors:** [Amol Fasale](https://www.linkedin.com/in/amolfasale/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)

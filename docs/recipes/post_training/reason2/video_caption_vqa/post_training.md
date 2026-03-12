@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 2 in collaboration with Uber to produce AV-specific video captions and improve VQA accuracy for autonomous vehicle scenario retrieval, safety validation, and model training data curation.
-
 # Post-train Cosmos Reason 2 for Autonomous Vehicle Video Captioning and VQA
 
 > **NVIDIA:** [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)\*, [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/)\*, [Xiaodong Yang](https://www.linkedin.com/in/xiaodong-yang-79a44134/)

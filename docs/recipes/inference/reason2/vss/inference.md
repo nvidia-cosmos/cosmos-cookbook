@@ -1,5 +1,3 @@
-> Deploys Cosmos Reason 2 as the vision-language backbone in NVIDIA's Video Search and Summarization Blueprint for large-scale video captioning, semantic Q&A, and streaming event alerts across warehouses, factories, and smart city infrastructure.
-
 # Video Search and Summarization with Cosmos Reason
 
 > **Authors:** [Sammy Ochoa](https://www.linkedin.com/in/sammy-ochoa/)

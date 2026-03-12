@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 1-7B on a synthetic warehouse dataset for spatial intelligence tasks including distance estimation, object counting, and spatial relationship reasoning among pallets and transporters.
-
 # Spatial AI for Warehouse Post-Training with Cosmos Reason 1
 
 > **Authors:** [Xiaolong Li](https://www.linkedin.com/in/xiaolong-li19/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)

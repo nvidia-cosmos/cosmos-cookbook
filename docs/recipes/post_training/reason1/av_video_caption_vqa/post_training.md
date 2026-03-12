@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 1 on an internal NVIDIA AV dataset to produce high-quality domain-specific video captions and labels for autonomous vehicle scenario retrieval and training data curation.
-
 # SFT for AV video captioning and VQA
 
 > **Authors:**

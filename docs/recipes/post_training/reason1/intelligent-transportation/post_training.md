@@ -1,5 +1,3 @@
-> Fine-tunes Cosmos Reason 1-7B on the WovenTraffic Safety dataset for intelligent transportation scene understanding, road attribute recognition, and pedestrian situation analysis using SFT.
-
 # Intelligent Transportation Post-Training with Cosmos Reason 1
 
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)

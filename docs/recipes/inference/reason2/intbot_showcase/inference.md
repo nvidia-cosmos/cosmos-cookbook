@@ -1,5 +1,3 @@
-> Evaluates Cosmos-Reason2-8B on egocentric video tests for humanoid robot social and physical reasoning, benchmarked against Qwen3-VL-8B-Instruct on greetings, object motion, shared attention, and social context tasks.
-
 # Egocentric Social and Physical Reasoning with Cosmos-Reason2-8B
 
 > **Authors:** [Tingyu Zhang](https://www.linkedin.com/in/tingyu-zhang-b3357314a) • [Sharon Yang](http://linkedin.com/in/sharonxueyangintel)

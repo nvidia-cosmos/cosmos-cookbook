@@ -1,5 +1,3 @@
-> Post-trains Cosmos Reason 1 to automatically generate timestamp annotations for robot manipulation subtask boundaries in simulation videos, enabling scalable MimicGen dataset creation from a small number of human demonstrations.
-
 # Cosmos Reason for Mimic Gen temporal localization
 
 > **Authors:** [Aigul Dzhumamuratova](https://www.linkedin.com/in/aigul-dzhumamuratova-78232b234/) • [Alexander Efitorov](https://www.linkedin.com/in/alex-efitorov/) • [Hesam Rabeti](https://www.linkedin.com/in/hesamrabeti/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
