@@ -8,12 +8,12 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-| --- | --- | --- |
-| [Cosmos-Predict2-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Vision-based robotic manipulation and model-based planning |
-| [Cosmos-Predict2.5-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Vision-based robotic manipulation and model-based planning |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos-Predict2-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Vision-based robotic manipulation and model-based planning | domain:robotics, technique:post-training, general:partner-recipe |
+| [Cosmos-Predict2.5-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Vision-based robotic manipulation and model-based planning | |
 
-![Cosmos Policy](assets/cosmos_policy_figure1.jpeg)
+<img src="assets/cosmos_policy_figure1.jpeg" width="720" media-featured="true"/>
 
 Cosmos Policy adapts the Cosmos-Predict2-2B and Cosmos-Predict2.5-2B-Video2World video foundation model into a **state-of-the-art robot policy** through a single stage of post-training on robot demonstration data, with **no architectural modifications**. The approach leverages the video model's pretrained priors to:
 

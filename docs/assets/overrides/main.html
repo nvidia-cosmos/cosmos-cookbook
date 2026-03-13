@@ -45,4 +45,549 @@ function OptanonWrapper() {
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">_satellite.pageBottom();</script>
+{% set _nav_depth = (page.url.count('/') + 1) if page.url else 0 %}
+<script>window.NAV_PAGES_JSON_REL = "{{ ('../' * _nav_depth) }}nav_pages.json";</script>
+{% set _url_after_protocol = config.site_url.split('://')[1] if config.site_url and '://' in config.site_url else '' %}
+{% set _first_path_segment = _url_after_protocol.split('/')[1] if _url_after_protocol and _url_after_protocol.split('/')|length > 1 else '' %}
+<script>window.MKDOCS_BASE_PATH = "{{ '/' + _first_path_segment if _first_path_segment else '' }}";</script>
+
+<!-- Custom Navigation Filter: sidebar list is generated from nav_pages.json (like index.md filtered list) -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const navList = document.querySelector('.md-nav--primary > .md-nav__list') || document.querySelector('.md-nav--primary .md-nav__list');
+    if (!navList) return;
+
+    // Hide MkDocs nav items that belong to Getting Started, Recipes, or Concepts (we replace them with a data-driven list)
+    const navItems = Array.from(navList.children).filter(item => item.classList.contains('md-nav__item'));
+    navItems.forEach(item => {
+      const directLink = item.querySelector(':scope > a.md-nav__link[href]');
+      if (directLink) {
+        const href = directLink.getAttribute('href');
+        const linkText = (directLink.textContent || '').trim().toLowerCase();
+        if (href === 'recipes/' || href === 'recipes/index.html' || (href && href.match(/^recipes\/?$/) && linkText.includes('recipe'))) {
+          item.style.display = 'none';
+        } else if (href === 'core_concepts/' || href === 'core_concepts/index.html' || (href && href.match(/^core_concepts\/?$/) && linkText.includes('concept'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('recipes/') || href.includes('/recipes/'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('core_concepts/') || href.includes('/core_concepts/'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('getting_started/') || href.includes('/getting_started/'))) {
+          item.style.display = 'none';
+        }
+      }
+      if (item.classList.contains('md-nav__item--nested')) {
+        const nestedLinks = item.querySelectorAll('nav a[href]');
+        const allHrefs = Array.from(nestedLinks).map(a => a.getAttribute('href'));
+        const allGettingStarted = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('getting_started/') || h.includes('/getting_started/')));
+        const allRecipes = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('recipes/') || h.includes('/recipes/')));
+        const allConcepts = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('core_concepts/') || h.includes('/core_concepts/')));
+        if (allGettingStarted || allRecipes || allConcepts) {
+          item.style.display = 'none';
+        }
+      }
+    });
+
+    // Build filter section with Content Type buttons and container for dynamic list
+    const filterSection = document.createElement('li');
+    filterSection.className = 'md-nav__item md-nav__item--section';
+    filterSection.style.cssText = 'border-top: 1px solid var(--md-default-fg-color--lightest); margin-top: 1rem; padding-top: 0.5rem;';
+    filterSection.innerHTML = `
+      <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none;">
+        <span class="md-ellipsis">Content Type</span>
+      </label>
+      <nav class="md-nav" aria-label="Filter">
+        <ul class="md-nav__list">
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="getting_started">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Get Started</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="recipes">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Recipes</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="core_concepts">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Concepts</span>
+            </a>
+          </li>
+        </ul>
+        <div id="domain-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Domain</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter active" data-domain="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:robotics">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Robotics</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:autonomous-vehicles">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Autonomous Vehicles</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:smart-city">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Smart City</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:industrial">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Industrial</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:medical">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Medical</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="technique-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Technique</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter active" data-technique="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:style-transfer">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Style Transfer</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:simulation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Simulation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:prediction">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Prediction</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:reasoning">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Reasoning</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:post-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Post-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:pre-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Pre-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:data-curation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Data Curation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:distillation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Distillation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ul id="dynamic-nav-list" class="md-nav__list"></ul>
+      </nav>
+    `;
+
+    // Insert filter section before Glossary
+    const navItemsArray = Array.from(navList.children);
+    let insertIndex = navItemsArray.length;
+    for (let i = 0; i < navItemsArray.length; i++) {
+      if (navItemsArray[i].querySelector('a[href*="glossary"]')) {
+        insertIndex = i;
+        break;
+      }
+    }
+    if (insertIndex < navItemsArray.length) {
+      navList.insertBefore(filterSection, navItemsArray[insertIndex]);
+    } else {
+      navList.appendChild(filterSection);
+    }
+
+    const glossaryItem = Array.from(navList.children).find(item => item.querySelector('a[href*="glossary"]'));
+    if (glossaryItem) {
+      glossaryItem.style.borderTop = '1px solid var(--md-default-fg-color--lightest)';
+      glossaryItem.style.marginTop = '1rem';
+      glossaryItem.style.paddingTop = '0.5rem';
+    }
+
+    let navData = null;
+    let currentContentFilter = 'getting_started';
+    // Path from current page to site root (for links and for resolving nav_pages.json).
+    function getBaseToRoot() {
+      const pathname = (window.location.pathname || '/').replace(/^\//, '').replace(/\/$/, '');
+      const segments = pathname ? pathname.split('/').filter(Boolean) : [];
+      return segments.length ? '../'.repeat(segments.length) : '';
+    }
+    function getNavJsonUrl() {
+      var rel = (typeof window.NAV_PAGES_JSON_REL === 'string' && window.NAV_PAGES_JSON_REL) ? window.NAV_PAGES_JSON_REL : (getBaseToRoot() + 'nav_pages.json');
+      return new URL(rel, window.location.href).href;
+    }
+
+    function renderNavList(sectionKey) {
+      const container = document.getElementById('dynamic-nav-list');
+      if (!container || !navData) return;
+      var pages = Array.isArray(navData[sectionKey]) ? navData[sectionKey] : [];
+      // Filter by domain and technique for Recipes when a specific value is selected. "All" = no filter.
+      if (sectionKey === 'recipes' && typeof pages[0] === 'object') {
+        var domainTag = localStorage.getItem('navDomainFilter') || 'all';
+        if (domainTag && domainTag !== 'all') {
+          pages = pages.filter(function(p) {
+            var tags = p.tags;
+            if (!tags || !Array.isArray(tags)) return true;
+            if (tags.length === 0) return true;
+            return tags.indexOf(domainTag) !== -1;
+          });
+        }
+        var techniqueTag = localStorage.getItem('navTechniqueFilter') || 'all';
+        if (techniqueTag && techniqueTag !== 'all') {
+          pages = pages.filter(function(p) {
+            var tags = p.tags;
+            if (!tags || !Array.isArray(tags)) return true;
+            if (tags.length === 0) return true;
+            return tags.indexOf(techniqueTag) !== -1;
+          });
+        }
+      }
+      const basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      const linkPrefix = basePath ? basePath + (basePath.endsWith('/') ? '' : '/') : getBaseToRoot();
+      const currentPath = (window.location.pathname || '').replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
+      container.innerHTML = '';
+      pages.forEach(function(page) {
+        const li = document.createElement('li');
+        li.className = 'md-nav__item';
+        const a = document.createElement('a');
+        a.className = 'md-nav__link';
+        a.href = linkPrefix + page.url;
+        const span = document.createElement('span');
+        span.className = 'md-ellipsis';
+        span.textContent = page.title;
+        a.appendChild(span);
+        const pagePath = new URL(linkPrefix + page.url, window.location.href).pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
+        if (currentPath === pagePath || (pagePath && currentPath.endsWith(pagePath))) {
+          a.classList.add('md-nav__link--active');
+        }
+        li.appendChild(a);
+        container.appendChild(li);
+      });
+    }
+
+    function setFilterActive(filterType) {
+      document.querySelectorAll('.content-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.content-filter[data-filter="' + filterType + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navFilter', filterType);
+    }
+
+    function setDomainActive(domainTag) {
+      document.querySelectorAll('.domain-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.domain-filter[data-domain="' + domainTag + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navDomainFilter', domainTag);
+    }
+
+    function setTechniqueActive(techniqueTag) {
+      document.querySelectorAll('.technique-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.technique-filter[data-technique="' + techniqueTag + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navTechniqueFilter', techniqueTag);
+    }
+
+    function applyFilter(filterType) {
+      currentContentFilter = filterType;
+      setFilterActive(filterType);
+      var domainBlock = document.getElementById('domain-filter-block');
+      var techniqueBlock = document.getElementById('technique-filter-block');
+      if (domainBlock) domainBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (techniqueBlock) techniqueBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (filterType === 'recipes') {
+        setDomainActive(localStorage.getItem('navDomainFilter') || 'all');
+        setTechniqueActive(localStorage.getItem('navTechniqueFilter') || 'all');
+      }
+      renderNavList(filterType);
+    }
+
+    function getSectionFromPath() {
+      const path = window.location.pathname || '';
+      if (path.includes('getting_started') || path.includes('get_started')) return 'getting_started';
+      if (path.includes('/recipes/') || path.includes('/recipes')) return 'recipes';
+      if (path.includes('core_concepts')) return 'core_concepts';
+      return null;
+    }
+
+    document.querySelectorAll('.content-filter').forEach(function(filter) {
+      filter.addEventListener('click', function(e) {
+        e.preventDefault();
+        applyFilter(this.getAttribute('data-filter'));
+      });
+    });
+    document.querySelectorAll('.domain-filter').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var domainTag = this.getAttribute('data-domain');
+        setDomainActive(domainTag);
+        renderNavList(currentContentFilter);
+      });
+    });
+    document.querySelectorAll('.technique-filter').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var techniqueTag = this.getAttribute('data-technique');
+        setTechniqueActive(techniqueTag);
+        renderNavList(currentContentFilter);
+      });
+    });
+
+    function loadNavAndApply() {
+      const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
+      applyFilter(initialFilter);
+    }
+    if (typeof window.__NAV_PAGES__ === 'object' && window.__NAV_PAGES__ != null) {
+      navData = window.__NAV_PAGES__;
+      loadNavAndApply();
+    } else {
+      fetch(getNavJsonUrl())
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          navData = data || { getting_started: [], recipes: [], core_concepts: [] };
+          loadNavAndApply();
+        })
+        .catch(function() {
+          navData = { getting_started: [], recipes: [], core_concepts: [] };
+          loadNavAndApply();
+        });
+    }
+  });
+</script>
+
+<!-- Recipe tags: key:value tags grouped by General / Domain / Technique, badges at top -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.indexOf('/recipes/') === -1) return;
+    var main = document.querySelector('.md-content__inner') || document.querySelector('.md-main__inner') || document.querySelector('main');
+    if (!main) return;
+    var table = main.querySelector('table');
+    if (!table) return;
+    var headerRow = table.querySelector('thead tr');
+    var bodyRow = table.querySelector('tbody tr');
+    if (!headerRow || !bodyRow) return;
+    var headers = headerRow.querySelectorAll('th');
+    var tagsColIndex = -1;
+    for (var i = 0; i < headers.length; i++) {
+      if (headers[i].textContent.replace(/\s+/g, ' ').toLowerCase().indexOf('tags') !== -1) {
+        tagsColIndex = i;
+        break;
+      }
+    }
+    if (tagsColIndex === -1) return;
+    var cell = bodyRow.querySelectorAll('td')[tagsColIndex];
+    if (!cell) return;
+    var raw = (cell.textContent || '').trim().toLowerCase();
+    if (!raw) return;
+    var tags = raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (tags.length === 0) return;
+    var groupLabel = { general: 'General', domain: 'Domain', technique: 'Technique' };
+    var tagToLabel = {
+      'general:partner-recipe': 'Partner recipe',
+      'general:cookoff-recipe': 'Cookoff recipe',
+      'general:ai-friendly': 'AI-friendly',
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous vehicles',
+      'domain:smart-city': 'Smart city',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical',
+      'technique:style-transfer': 'Style transfer',
+      'technique:simulation': 'Simulation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-training',
+      'technique:pre-training': 'Pre-training',
+      'technique:data-curation': 'Data curation',
+      'technique:distillation': 'Distillation'
+    };
+    var order = ['general', 'domain', 'technique'];
+    var byGroup = { general: [], domain: [], technique: [] };
+    tags.forEach(function(tag) {
+      var key = tag.indexOf(':') !== -1 ? tag.split(':')[0] : '';
+      if (byGroup[key]) byGroup[key].push(tag);
+    });
+    function makeTagSpan(tag) {
+      var s = document.createElement('span');
+      s.className = 'recipe-tag';
+      s.textContent = tagToLabel[tag] || tag;
+      s.setAttribute('title', tag);
+      return s;
+    }
+    function makeGroupDiv(key) {
+      var groupTags = byGroup[key];
+      if (!groupTags || groupTags.length === 0) return null;
+      var wrap = document.createElement('div');
+      wrap.className = 'recipe-tag-group';
+      var label = document.createElement('span');
+      label.className = 'recipe-tag-group-label';
+      label.textContent = groupLabel[key] + ':';
+      wrap.appendChild(label);
+      var list = document.createElement('span');
+      list.className = 'recipe-tag-list';
+      groupTags.forEach(function(tag) { list.appendChild(makeTagSpan(tag)); });
+      wrap.appendChild(list);
+      return wrap;
+    }
+    var bar = document.createElement('div');
+    bar.className = 'recipe-tags-bar';
+    order.forEach(function(key) {
+      if (key === 'general') return;
+      var g = makeGroupDiv(key);
+      if (g) bar.appendChild(g);
+    });
+    table.parentNode.insertBefore(bar, table);
+    cell.innerHTML = '';
+    order.forEach(function(key) {
+      if (key === 'general') return;
+      (byGroup[key] || []).forEach(function(tag) { cell.appendChild(makeTagSpan(tag)); });
+    });
+  });
+</script>
+
+<style>
+  .filter-checkbox {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .content-filter.active .filter-checkbox::after,
+  .category-filter.active .filter-checkbox::after,
+  .domain-filter.active .filter-checkbox::after,
+  .technique-filter.active .filter-checkbox::after {
+    content: "✓";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7em;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .content-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  .content-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  .content-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+  .category-filter,
+  .domain-filter,
+  .technique-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  .category-filter:hover,
+  .domain-filter:hover,
+  .technique-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  .category-filter.active,
+  .domain-filter.active,
+  .technique-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+  .recipe-tags-bar {
+    margin-bottom: 1rem;
+  }
+  .recipe-tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .recipe-tag-group:last-child {
+    margin-bottom: 0;
+  }
+  .recipe-tag-group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--md-default-fg-color--light);
+    margin-right: 0.25rem;
+  }
+  .recipe-tag-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .recipe-tag {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 4px;
+    background: var(--md-default-fg-color--lightest);
+    color: var(--md-default-fg-color);
+  }
+  [data-md-color-scheme="default"] .recipe-tag {
+    background: rgba(0, 0, 0, 0.06);
+  }
+  [data-md-color-scheme="slate"] .recipe-tag {
+    background: rgba(255, 255, 255, 0.1);
+  }
+</style>
 {% endblock %}

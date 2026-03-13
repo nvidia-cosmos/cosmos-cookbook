@@ -3,9 +3,9 @@
 > **Authors:** [Paris Zhang](https://www.linkedin.com/in/pariszhang11/), [Deep Rodge](https://www.linkedin.com/in/deeprodge/), [Monika Jhuria](https://www.linkedin.com/in/monika-jhuria-07077797/)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Intelligent transportation scene understanding |
+| **Model** | **Workload** | **Use Case** | **Tags** |
+|-----------|--------------|--------------|----------|
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Intelligent transportation scene understanding | domain:autonomous-vehicles, technique:post-training |
 
 ## Overview
 
