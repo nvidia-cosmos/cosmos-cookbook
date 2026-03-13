@@ -32,7 +32,7 @@ We follow the steps from the [embedding analysis / trajectory clustering recipe]
 
 ### Files
 
-1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/outlier_analysis_trajectories.json)
+1. <a href="./assets/outlier_analysis_trajectories.json" download>JSON sample data file</a>
 
 The sample JSON file above contains embeddings from the public [HSR Household Service Robot Teleoperation Dataset](https://huggingface.co/datasets/airoa-org/airoa-moma), created with the [Cosmos-Embed1-336p](https://huggingface.co/nvidia/Cosmos-Embed1-336p) model.
 
