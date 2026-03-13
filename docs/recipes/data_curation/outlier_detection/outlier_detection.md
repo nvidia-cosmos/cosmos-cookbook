@@ -1,6 +1,6 @@
 # Outlier Detection in Embedding Vector Trajectories
 
-> **Authors:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)
+> **Author:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)
 > **Organization:** [AI Robot Association (AIRoA)](https://www.airoa.org/)
 
 | **Model** | **Workload** | **Use Case** |
