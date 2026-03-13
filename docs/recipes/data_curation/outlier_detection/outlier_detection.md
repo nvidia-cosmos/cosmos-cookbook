@@ -133,7 +133,7 @@ print(f"  Total explained variance: {explained.sum()*100:.2f}%")
 
 ### 5 - Run Time Series K-Means clustering
 
-Like the [previous cookbook](../embedding_analysis/embedding_analysis.md), we use Time Series K-Means with Soft-DTW to compute clusters and barycenters. We then compute the distances between each trajectory and its barycenter using the soft_dtw metric. These distances will be useful in identifying outliers in the next step.
+Like the [previous recipe](../embedding_analysis/embedding_analysis.md), we use Time Series K-Means with Soft-DTW to compute clusters and barycenters. We then compute the distances between each trajectory and its barycenter using the soft_dtw metric. These distances will be useful in identifying outliers in the next step.
 
 ```py
 # ── Time Series K-Means clustering ───────────────────────────
