@@ -148,6 +148,79 @@ def extract_h1_title(html_content):
     return None
 
 
+def _content_fragment(html_content, max_chars=300000):
+    """
+    Extract the main page content fragment so we only pick images from the
+    recipe/guide body, not from theme header/nav/logo. MkDocs Material uses
+    .md-content__inner for the main content area.
+    """
+    m = re.search(
+        r'<(?:article|div)[^>]*class="[^"]*md-content__inner[^"]*"[^>]*>',
+        html_content,
+        re.IGNORECASE,
+    )
+    if m:
+        start = m.start()
+        return html_content[start : start + max_chars]
+    return html_content[:max_chars]
+
+
+def _resolve_media_url(src, recipe_rel_url):
+    """Resolve a relative media URL to site-root-relative (no leading slash)."""
+    if not src or src.startswith(('data:', 'http://', 'https://')):
+        return src if src else None
+    recipe_dir = Path(recipe_rel_url).parent
+    return (recipe_dir / src.lstrip("./")).as_posix()
+
+
+def _get_src_from_tag(attrs_str):
+    """Extract src or poster from an HTML tag's attribute string."""
+    # (^|\s) so we match when src/poster is first attribute
+    m = re.search(r'(^|\s)(?:src|poster)\s*=\s*["\']([^"\']+)["\']', attrs_str, re.IGNORECASE)
+    return m.group(2).strip() if m else None
+
+
+def _has_featured_marker(attrs_str):
+    """True if tag has media-featured=\"true\" or class containing media-featured."""
+    # Match attribute name media-featured=, not text inside another attr value.
+    # Preceded by start, space, or "> so we don't match e.g. alt="media-featured=..."
+    if re.search(r'(^|[\s">])media-featured\s*=\s*["\']?true["\']?', attrs_str, re.IGNORECASE):
+        return True
+    # Fallback: class="media-featured"
+    m = re.search(r'\sclass\s*=\s*["\']([^"\']+)["\']', attrs_str, re.IGNORECASE)
+    return bool(m and re.search(r'\bmedia-featured\b', m.group(1), re.IGNORECASE))
+
+
+def extract_first_image_url(html_content, recipe_rel_url):
+    """
+    Thumbnail for Featured Recipes: prefer an image or video explicitly marked
+    with media-featured="true"; otherwise use the first image in the main content.
+    Returns a site-root-relative URL or None.
+    """
+    # 1) Look for media-featured in the ENTIRE document so we always find the
+    #    marked image regardless of DOM structure (e.g. multiple md-content blocks).
+    #    Use the LAST match so if multiple images are marked, we pick the intended one.
+    featured_src = None
+    for m in re.finditer(r'<img\s([^>]+)>', html_content, re.IGNORECASE):
+        if _has_featured_marker(m.group(1)):
+            src = _get_src_from_tag(m.group(1))
+            if src:
+                featured_src = src
+    for m in re.finditer(r'<video\s([^>]+)>', html_content, re.IGNORECASE):
+        if _has_featured_marker(m.group(1)):
+            src = _get_src_from_tag(m.group(1))
+            if src:
+                featured_src = src
+    if featured_src:
+        return _resolve_media_url(featured_src, recipe_rel_url)
+    # 2) Fallback: first <img> in the main content only (avoid theme/header images)
+    fragment = _content_fragment(html_content)
+    match = re.search(r'<img\s[^>]*?src=["\']([^"\']+)["\']', fragment, re.IGNORECASE)
+    if not match:
+        return None
+    return _resolve_media_url(match.group(1).strip(), recipe_rel_url)
+
+
 def extract_recipe_metadata(html_content, file_path):
     """Extract metadata from a recipe HTML file."""
     parser = RecipeMetadataParser()
@@ -256,6 +329,9 @@ def scan_recipes(site_dir):
                 # Get category and workload from metadata (or auto-detect)
                 category, workload = categorize_recipe(metadata, html_file)
                 
+                # Thumbnail for Featured Recipes: first image in the recipe body (not stored in metadata table)
+                thumbnail_url = extract_first_image_url(content, rel_url)
+
                 # Build recipe entry (tags from optional **Tags** column, comma-separated)
                 recipe = {
                     'name': title,
@@ -266,6 +342,7 @@ def scan_recipes(site_dir):
                     'model': metadata.get('model', ''),
                     'date': metadata.get('date', ''),
                     'tags': parse_tags(metadata.get('tags', '')),
+                    'thumbnail': thumbnail_url or None,
                 }
                 
                 recipes.append(recipe)
@@ -274,7 +351,30 @@ def scan_recipes(site_dir):
         except Exception as e:
             print(f"  Warning: Could not parse {html_file}: {e}")
             continue
-    
+
+    # Append featured slot 6 (Prompt Guide) so it gets a thumbnail from its HTML
+    slot6_path = site_path / "getting_started" / "prompt_guide" / "reason_guide.html"
+    if slot6_path.exists():
+        try:
+            content = slot6_path.read_text(encoding="utf-8")
+            rel_url = "getting_started/prompt_guide/reason_guide.html"
+            title = extract_h1_title(content) or "Prompt Guide Cosmos Reason 2"
+            thumbnail_url = extract_first_image_url(content, rel_url)
+            recipes.append({
+                "name": title,
+                "type": "Recipe",
+                "category": "Getting Started",
+                "workload": "Prompt Guide",
+                "url": rel_url,
+                "model": "",
+                "date": "",
+                "tags": [],
+                "thumbnail": thumbnail_url or None,
+            })
+            print(f"  Found featured slot 6: {title}")
+        except Exception as e:
+            print(f"  Warning: Could not parse featured slot 6: {e}")
+
     return recipes
 
 
