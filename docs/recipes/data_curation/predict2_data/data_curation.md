@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
 |-----------|--------------|--------------|----------|----------|
-| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training | domain:industrial, technique:data-curation, general:cookoff-recipe | 02-28-2026 |
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training | domain:industrial, technique:data-curation | |
 
 ## Overview
 
