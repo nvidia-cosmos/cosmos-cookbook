@@ -22,7 +22,7 @@ You will:
 
 Once a team has adopted Cosmos Curator, a common use case is to classify clips into different groupings, often for training on specific tasks or scenarios. With the method explained here, you will be able to further classify videos based on how typical they are within their grouping. This new information can be used for selective manual review, or for special selection depending on interest in having more typical videos or more exceptional ones within any given task.
 
-### Overview
+### Approach
 
 This recipe builds on the previous one, where we employ a similar clustering technique described in the [embedding analysis / trajectory clustering recipe](../embedding_analysis/embedding_analysis.md). Here we extend it with **outlier detection** and visualization. At [AIRoA](https://www.airoa.org/), we have been using this technique to further understand and refine our training data, and reveal opportunities to improve our processes.
 
@@ -33,7 +33,6 @@ We follow the steps from the [embedding analysis / trajectory clustering recipe]
 ### Files
 
 1. [JSON sample data file](https://github.com/nvidia-cosmos/cosmos-cookbook/releases/download/assets/outlier_analysis_trajectories.json)
-2. Jupyter Notebook implementation
 
 The sample JSON file above contains embeddings from the public [HSR Household Service Robot Teleoperation Dataset](https://huggingface.co/datasets/airoa-org/airoa-moma), created with the [Cosmos-Embed1-336p](https://huggingface.co/nvidia/Cosmos-Embed1-336p) model.
 
@@ -102,9 +101,11 @@ n_traj, t_len, dim = interpolated.shape
 These two parameters will be used in the subsequent sections, and depending on your data may need to be tuned. These values should be fine for the referenced sample data.
 
 ```py
-# ── Configuration ─────────────────────────────────────────────
+# ── Parameters ─────────────────────────────────────────────---
 N_COMPONENTS = 3 # Number of PCA dimensions
 N_CLUSTERS = 6 # Number of Time Series K-Means clusters
+
+# -- Random Seed --─────────────────────────────────────────────
 RANDOM_SEED = 1234
 ```
 
@@ -115,7 +116,6 @@ The trajectories provided are very high-dimensional vectors, which we reduce usi
 ```py
 # ── Dimension reduction (PCA) ────────────────────────────────
 from sklearn.decomposition import PCA
-import time
 
 flat = interpolated.reshape(n_traj * t_len, dim)
 
@@ -140,7 +140,6 @@ Like the [previous recipe](../embedding_analysis/embedding_analysis.md), we use 
 
 from tslearn.clustering import TimeSeriesKMeans
 from tslearn.metrics import soft_dtw
-import time
 
 TS_METRIC = "softdtw"
 
@@ -453,7 +452,6 @@ for rank, i in enumerate(outlier_indices):
 
 In this table, each row is a reference back to our original video clips. From here we can now take direct action on each clip, such as removing them from our training pool, flagging them for human review, or even putting them up for consideration as interesting cases not handled by our solutions.
 
-
 ---
 
 ## Document Information
@@ -465,7 +463,7 @@ In this table, each row is a reference back to our original video clips. From he
 If you use this recipe or reference this work, please cite it as:
 
 ```bibtex
-@misc{cosmos_cookbook_dataset_video_clustering_2026,
+@misc{cosmos_cookbook_dataset_outlier_detection_2026,
   title={Outlier Detection in Embedding Vector Trajectories},
   author={Khrapchenkov, Petr},
   organization={AI Robot Association (AIRoA)},
