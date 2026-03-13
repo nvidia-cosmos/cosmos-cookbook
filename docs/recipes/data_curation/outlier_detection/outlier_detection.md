@@ -63,7 +63,7 @@ uv run jupyter lab
 
 ### 1 - Load raw embedding trajectories
 
-We start by loading your data, or in this case, the included sample data, which represents embedding trajectories for individual video clips. See the [previous cookbook](../embedding_analysis/embedding_analysis.md) for a deeper explanation.
+We start by loading your data, or in this case, the included sample data, which represents embedding trajectories for individual video clips. See the [previous recipe](../embedding_analysis/embedding_analysis.md) for a deeper explanation.
 
 ```py
 import json
