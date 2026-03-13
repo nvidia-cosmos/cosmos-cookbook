@@ -13,7 +13,7 @@ Large volumes of video data contain critical information for understanding and o
 
 The [Video Search and Summarization Blueprint](https://build.nvidia.com/nvidia/video-search-and-summarization) (VSS) from NVIDIA is a reference architecture for combining vision language models, computer vision models and large language models to analyze and understand large volumes of video data. VSS is easily configured through various prompts to tune the model responses based on the target use case.
 
-![VSS UI Example](assets/warehouse_summary_example.png)
+<img src="assets/warehouse_summary_example.png" width="720" media-featured="true"/>
 
 VSS allows the user to upload video files or connect live streaming camera feeds to generate summaries, answer questions or send alerts when events of interest occur.
 

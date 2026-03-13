@@ -15,7 +15,7 @@
 
 <table>
   <tr>
-    <td align="center"><img src="./assets/IntBot-GTC.jpg" width="400"><br><em>IntBot at NVIDIA GTC</em></td>
+    <td align="center"><img src="./assets/IntBot-GTC.jpg" width="400" media-featured="true"><br><em>IntBot at NVIDIA GTC</em></td>
     <td align="center"><img src="./assets/IntBot-GTC-reception.jpg" width="400"><br><em>IntBot at NVIDIA booth reception</em></td>
   </tr>
 </table>
