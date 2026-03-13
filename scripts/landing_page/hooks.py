@@ -7,22 +7,31 @@ from html.parser import HTMLParser
 
 # Allowed recipe tags (key:value). Defined early so parse_tags is always available.
 ALLOWED_TAGS = frozenset({
+    # General (not visible on site)
     "general:partner-recipe",
     "general:cookoff-recipe",
     "general:ai-friendly",
+    # Domain (visible)
     "domain:robotics",
     "domain:autonomous-vehicles",
     "domain:smart-city",
     "domain:industrial",
     "domain:medical",
-    "technique:style-transfer",
-    "technique:simulation",
+    "domain:fieldwork",
+    "domain:cross-domain",
+    # Technique (visible)
+    "technique:data-augmentation",
+    "technique:data-generation",
     "technique:prediction",
     "technique:reasoning",
     "technique:post-training",
     "technique:pre-training",
-    "technique:data-curation",
+    "technique:data-curation-annotation",
     "technique:distillation",
+    # Legacy tags (kept for backward compatibility with existing recipes)
+    "technique:style-transfer",
+    "technique:simulation",
+    "technique:data-curation",
 })
 
 

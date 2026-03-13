@@ -299,7 +299,7 @@ From our original wrong-way driving scenario, we generated a complete matrix of 
 #### Complete Augmentation Grid
 
 <div style="max-width: 95%; margin: 0 auto;">
-<img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;">
+<img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;" media-featured="true">
 </div>
 
 The matrix showcases all 18 variations organized as follows:

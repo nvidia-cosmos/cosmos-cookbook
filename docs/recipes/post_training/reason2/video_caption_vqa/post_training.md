@@ -408,7 +408,7 @@ python plot_metric.py \
 
 **MCQ-based VQA Results:**
 
-<img src="assets/mcq_vqa_results.png" alt="MCQ-based VQA Results" width="800">
+<img src="assets/mcq_vqa_results.png" alt="MCQ-based VQA Results" width="800" media-featured="true"/>
 
 **Key Observations:**
 
