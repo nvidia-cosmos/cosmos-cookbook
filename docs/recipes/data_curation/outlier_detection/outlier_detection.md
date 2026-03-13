@@ -110,7 +110,7 @@ RANDOM_SEED = 1234
 
 ### 4 - Reduce dimensionality with PCA
 
-The trajectories provided are very high-dimensional vectors, which we reduce using PCA to the 3 dimensions specified in the prior configuration step. This is a divergence from the UMAP approach used in the [previous cookbook](../embedding_analysis/embedding_analysis.md). Both UMAP and PCA are valid approaches to this. In this case PCA is faster, deterministic, and provides sufficient quality for our purposes. Experimentation and comparison are left as an exercise to the reader.
+The trajectories provided are very high-dimensional vectors, which we reduce using PCA to the 3 dimensions specified in the prior configuration step. This is a divergence from the UMAP approach used in the [previous recipe](../embedding_analysis/embedding_analysis.md). Both UMAP and PCA are valid approaches to this. In this case PCA is faster, deterministic, and provides sufficient quality for our purposes. Experimentation and comparison are left as an exercise to the reader.
 
 ```py
 # ── Dimension reduction (PCA) ────────────────────────────────
