@@ -74,7 +74,7 @@ trajectories_raw = json.load(open("outlier_analysis_trajectories.json", "r"))
 
 ### 2 - Interpolate trajectories to a fixed length
 
-Depending on your data, the lengths of each trajectory may vary, so we can interpolate them to a common length, as we did in the [previous cookbook](../embedding_analysis/embedding_analysis.md).
+Depending on your data, the lengths of each trajectory may vary, so we can interpolate them to a common length, as we did in the [previous recipe](../embedding_analysis/embedding_analysis.md).
 
 ```py
 def subdivide_trajectory(trajectory: np.ndarray, n_points: int) -> np.ndarray:
