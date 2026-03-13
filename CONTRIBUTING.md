@@ -197,6 +197,41 @@ Use the appropriate template for your contribution:
 - [Post-Training Recipe Template](assets/templates/post_training_template.md) - Fine-tuning and domain adaptation
 - [Concept Template](assets/templates/concept_template.md) - Explanatory guides on fundamental topics
 
+### CLAUDE.md — AI Agent Specification File (Recommended)
+
+To make your recipe immediately understandable and runnable by AI coding agents (such as [Claude Code](https://claude.ai/code)), include a `CLAUDE.md` file in your recipe directory. When Claude Code opens your recipe folder, it reads this file first and uses it to understand how to set up, run, and extend your work without manual explanation.
+
+**This file is not rendered on the cookbook site** — it is purely a machine-readable specification for AI agents and contributors who use them.
+
+#### File Location
+
+Place the file at the root of your recipe directory alongside your main content file:
+
+```
+docs/recipes/[category]/[model-name]/[recipe-name]/
+├── [inference|post_training|data_curation|...].md  ← Human-readable guide (rendered on site)
+├── CLAUDE.md                                        ← AI agent specification (not rendered)
+├── setup.md
+└── assets/
+```
+
+#### CLAUDE.md Template
+
+Use the appropriate template as your starting point:
+
+- [Inference template](assets/templates/claude_md_inference_template.md)
+- [Post-training template](assets/templates/claude_md_post_training_template.md)
+
+#### Tips for a Useful CLAUDE.md
+
+- **Declare data accessibility honestly** — set `Access` to `Public`, `Gated`, or `Restricted`; public datasets are validated automatically, gated and restricted datasets pass CI but require a human reviewer to confirm they are obtainable
+- **Data Source must be a command**, not a prose description — the agent needs to run it, not read it; include the `Access`, `Size`, and `License` metadata fields so the agent can warn the user before attempting a download
+- **Entry points must work** — test them in a clean environment before submitting
+- **Compute Requirements must be honest** — if the recipe needs 8× H100s, say so; an agent will use this to decide whether to provision Brev compute or abort with a clear message
+- **Code Structure should name real functions** — vague step descriptions are not useful
+- **Gotchas are the most valuable section** — if something surprised you during development, document it
+- **Keep it short** — this file is context, not documentation; your main recipe file and `setup.md` cover the rest
+
 ### Updating Index Files (Optional)
 
 When adding new recipes or documentation pages, you may optionally update the following index files to make your content more discoverable:
@@ -212,24 +247,24 @@ When adding new recipes or documentation pages, you may optionally update the fo
    - Ensure the description matches the entry in `docs/index.md`
 
 3. **`docs/recipes/all_recipes.md`** - Recipe gallery page
-   - Add a new recipe card in the appropriate category section (Robotics, Autonomous Vehicles, or Vision AI)
+   - Add a new recipe card in the appropriate category section
    - Include the recipe title, link, media (image/video), and tag (Inference, Post-Training, Curation, or Workflow)
 
 #### Example Update
 
-For a new recipe at `docs/recipes/inference/transfer2_5/my-new-recipe/inference.md`:
+For a new recipe at `docs/recipes/[category]/[model-name]/[recipe-name]/[recipe-name].md`:
 
 ```markdown
 <!-- In docs/index.md under appropriate model section -->
-| **Inference** | Description of my new recipe | [My New Recipe](recipes/inference/transfer2_5/my-new-recipe/inference.md) |
+| **[Inference|Post-Training|Curation|Workflow]** | Description of your recipe | [Recipe Title](recipes/[category]/[model-name]/[recipe-name]/[recipe-name].md) |
 
 <!-- In docs/recipes/all_recipes.md under appropriate category -->
-<a class="recipe-card" href="./inference/transfer2_5/my-new-recipe/inference.md">
+<a class="recipe-card" href="./[category]/[model-name]/[recipe-name]/[recipe-name].md">
   <div class="recipe-media recipe-media--image" aria-hidden="true">
-    <img src="./inference/transfer2_5/my-new-recipe/assets/hero.png" alt="" loading="lazy" />
+    <img src="./[category]/[model-name]/[recipe-name]/assets/hero.png" alt="" loading="lazy" />
   </div>
-  <div class="recipe-title">My New Recipe Title</div>
-  <div class="recipe-tag recipe-tag--inference">Inference</div>
+  <div class="recipe-title">[Recipe Title]</div>
+  <div class="recipe-tag recipe-tag--[inference|post-training|curation|workflow]">[Tag]</div>
 </a>
 ```
 
