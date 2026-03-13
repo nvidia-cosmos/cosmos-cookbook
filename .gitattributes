@@ -5,3 +5,4 @@
 *.jpeg filter=lfs diff=lfs merge=lfs -text
 *.webp filter=lfs diff=lfs merge=lfs -text
 *.ipynb filter=lfs diff=lfs merge=lfs -text
+docs/recipes/data_curation/outlier_detection/assets/outlier_analysis_trajectories.json filter=lfs diff=lfs merge=lfs -text
