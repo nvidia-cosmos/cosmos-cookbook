@@ -601,6 +601,7 @@
       if (!yyyy || !mm || !dd) return 0;
       return yyyy * 10000 + mm * 100 + dd;
     }
+    var FEATURED_SLOT_6_URL = 'getting_started/prompt_guide/reason_guide.html';
     function getFeaturedRecipes() {
       var hasPartnerOrCookoff = function(r) {
         var tags = r.tags && Array.isArray(r.tags) ? r.tags : [];
@@ -611,16 +612,25 @@
       };
       var partnerOrCookoff = recipes.filter(hasPartnerOrCookoff);
       partnerOrCookoff.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
-      var featured = partnerOrCookoff.slice(0, 6);
-      if (featured.length < 6) {
+      var featured = partnerOrCookoff.slice(0, 5);
+      if (featured.length < 5) {
         var featuredUrls = {};
         featured.forEach(function(r) { featuredUrls[r.url] = true; });
+        featuredUrls[FEATURED_SLOT_6_URL] = true;
         var rest = recipes.filter(function(r) { return !featuredUrls[r.url]; });
         rest.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
-        while (featured.length < 6 && rest.length > 0) {
+        while (featured.length < 5 && rest.length > 0) {
           featured.push(rest.shift());
         }
       }
+      var slot6 = recipes.find(function(r) { return r.url === FEATURED_SLOT_6_URL; });
+      featured.push(slot6 || {
+        name: 'Prompt Guide Cosmos Reason 2',
+        url: FEATURED_SLOT_6_URL,
+        category: 'Getting Started',
+        workload: 'Prompt Guide',
+        thumbnail: null
+      });
       return featured;
     }
     function renderFeaturedRecipes() {
@@ -636,16 +646,25 @@
         var a = document.createElement('a');
         a.href = recipe.url;
         a.className = 'recipe-card';
-        var thumb = document.createElement('div');
-        thumb.className = 'recipe-thumbnail';
-        thumb.style.background = 'linear-gradient(135deg, #76b900 0%, #5f9300 100%)';
-        thumb.style.display = 'flex';
-        thumb.style.alignItems = 'center';
-        thumb.style.justifyContent = 'center';
-        thumb.style.color = 'white';
-        thumb.style.fontSize = '1.5rem';
-        thumb.style.fontWeight = '700';
-        thumb.textContent = (recipe.name || '').charAt(0).toUpperCase() || '?';
+        var thumb;
+        if (recipe.thumbnail) {
+          thumb = document.createElement('img');
+          thumb.className = 'recipe-thumbnail';
+          thumb.src = recipe.thumbnail;
+          thumb.alt = (recipe.name || 'Recipe').substring(0, 80);
+          thumb.loading = 'lazy';
+        } else {
+          thumb = document.createElement('div');
+          thumb.className = 'recipe-thumbnail';
+          thumb.style.background = 'linear-gradient(135deg, #76b900 0%, #5f9300 100%)';
+          thumb.style.display = 'flex';
+          thumb.style.alignItems = 'center';
+          thumb.style.justifyContent = 'center';
+          thumb.style.color = 'white';
+          thumb.style.fontSize = '1.5rem';
+          thumb.style.fontWeight = '700';
+          thumb.textContent = (recipe.name || '').charAt(0).toUpperCase() || '?';
+        }
         a.appendChild(thumb);
         var content = document.createElement('div');
         content.className = 'recipe-content';
