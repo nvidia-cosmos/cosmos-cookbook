@@ -21,6 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Mar 15 | [Outlier Detection in Embedding Vector Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) | Cosmos Curator |
 | Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
 | Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
 | Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
@@ -119,6 +120,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 | **Analysis** | Advanced video clustering using Time Series K-Means on embedding trajectories | [Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
+| **Analysis** | Outlier detection in video embedding trajectories via Time Series K-Means + Soft-DTW distance thresholding | [Outlier Detection in Embedding Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) |
 
 ### **End-to-End Workflows**
 
