@@ -393,6 +393,12 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Vision AI recipes">
+        <a class="recipe-card" href="./data_curation/outlier_detection/outlier_detection.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./data_curation/outlier_detection/assets/outlier_trajectories.png" alt="" loading="lazy" /></div>
+          <div class="recipe-title">Outlier Detection in Embedding Vector Trajectories</div>
+          <div class="recipe-tag recipe-tag--curation">Curation</div>
+        </a>
         <a class="recipe-card" href="./inference/reason2/worker_safety/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/worker_safety/assets/assets_1_worker_safety.png" alt="" loading="lazy" />
