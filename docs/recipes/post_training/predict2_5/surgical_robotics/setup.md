@@ -7,7 +7,7 @@ Complete all steps below before continuing with the [post-training tutorial](pos
 * NVIDIA GPUs with Ampere architecture (RTX 30 Series, A100) or newer
 * NVIDIA driver >=570.124.06 compatible with [CUDA 12.8.1](https://docs.nvidia.com/cuda/archive/12.8.1/cuda-toolkit-release-notes/index.html#cuda-toolkit-major-component-versions)
 * Linux x86-64
-* glibc>=2.35 (e.g Ubuntu >=22.04)
+* glibc >= 2.35 (e.g., Ubuntu >= 22.04)
 * Python 3.10
 
 ## Installation
@@ -25,9 +25,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 ```
 
-Install the package into a new environment:
+From the Cosmos-H-Surgical-Simulator repo cloned in [step 1.3](post_training.md#13-clone-the-cosmos-h-surgical-simulator-repository), install the package into a new environment:
 
 ```shell
+cd $COSMOS_CODE_PATH   # e.g. /path/to/Cosmos-H-Surgical-Simulator
 uv sync --extra=cu128
 source .venv/bin/activate
 ```
@@ -35,6 +36,7 @@ source .venv/bin/activate
 Or, install the package into the active environment (e.g. conda):
 
 ```shell
+cd $COSMOS_CODE_PATH
 uv sync --extra=cu128 --active --inexact
 ```
 

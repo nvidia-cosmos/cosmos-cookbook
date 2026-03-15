@@ -298,13 +298,15 @@ if [ "$LARGEST_PATH" != "/" ]; then
     echo "Created symlink: /root/.cache/pip -> $PIP_CACHE_DIR"
 
     # Also configure for the sudo-invoking user if different from root
-    SUDO_USER_HOME=$(getent passwd "${SUDO_USER:-}" | cut -d: -f6)
-    if [ -n "$SUDO_USER_HOME" ] && [ "$SUDO_USER_HOME" != "/root" ]; then
-        mkdir -p "$SUDO_USER_HOME/.cache"
-        rm -rf "$SUDO_USER_HOME/.cache/pip"
-        ln -sf "$PIP_CACHE_DIR" "$SUDO_USER_HOME/.cache/pip"
-        chown -h "${SUDO_USER}:${SUDO_USER}" "$SUDO_USER_HOME/.cache/pip"
-        echo "Created symlink: $SUDO_USER_HOME/.cache/pip -> $PIP_CACHE_DIR"
+    if [ -n "${SUDO_USER:-}" ]; then
+        SUDO_USER_HOME=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
+        if [ -n "$SUDO_USER_HOME" ] && [ "$SUDO_USER_HOME" != "/root" ]; then
+            mkdir -p "$SUDO_USER_HOME/.cache"
+            rm -rf "$SUDO_USER_HOME/.cache/pip"
+            ln -sf "$PIP_CACHE_DIR" "$SUDO_USER_HOME/.cache/pip"
+            chown -h "${SUDO_USER}:${SUDO_USER}" "$SUDO_USER_HOME/.cache/pip"
+            echo "Created symlink: $SUDO_USER_HOME/.cache/pip -> $PIP_CACHE_DIR"
+        fi
     fi
 fi
 

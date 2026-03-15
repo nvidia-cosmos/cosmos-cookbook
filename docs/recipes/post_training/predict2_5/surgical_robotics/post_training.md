@@ -329,7 +329,7 @@ Before starting, ensure you have completed:
 Download the pre-trained DCP checkpoint from HuggingFace:
 
 ```bash
-huggingface-cli download nvidia/Cosmos-H-Surgical-Simulator \
+hf download nvidia/Cosmos-H-Surgical-Simulator \
     --include "checkpoints/iter_000023000/model/*" \
     --local-dir /path/to/checkpoints
 
@@ -432,7 +432,7 @@ Set `COSMOS_CODE_PATH`, `CHECKPOINTS_DIR`, and `CHECKPOINT_ITER` for whichever c
 
 ```bash
 # Download only the model weights (skip optimizer/scheduler for inference)
-huggingface-cli download nvidia/Cosmos-H-Surgical-Simulator \
+hf download nvidia/Cosmos-H-Surgical-Simulator \
     --include "checkpoints/iter_000023000/model/*" \
     --local-dir /path/to/checkpoints
 

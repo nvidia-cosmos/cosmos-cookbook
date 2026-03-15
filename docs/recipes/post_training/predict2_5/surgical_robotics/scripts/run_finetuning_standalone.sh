@@ -114,7 +114,7 @@ if [[ -n "$COSMOS_CONTAINER_IMAGE" ]]; then
     DOCKER_ARGS+=( -v "$COSMOS_H_CKPT_PATH:$COSMOS_H_CKPT_PATH:ro" )
     DOCKER_ARGS+=( -e COSMOS_H_CKPT_PATH="$COSMOS_H_CKPT_PATH" )
   fi
-  # Mount HF cache so container can use host token/cache (e.g. from huggingface-cli login)
+  # Mount HF cache so container can use host token/cache (e.g. from hf auth login)
   if [[ -d "$HF_HOME_HOST" ]]; then
     DOCKER_ARGS+=( -v "$HF_HOME_HOST:/root/.cache/huggingface" -e HF_HOME=/root/.cache/huggingface )
   fi
