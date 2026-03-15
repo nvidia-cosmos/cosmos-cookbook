@@ -39,7 +39,7 @@ Because the Cosmos-H-Surgical-Simulator has already learned surgical visual appe
   - [Action Format](#25-action-format)
 - [Model Configuration](#3-model-configuration)
 - [Finetuning](#4-finetuning)
-- [Inference & Evaluation](#5-inference-evaluation)
+- [Inference & Evaluation](#5-inference--evaluation)
 - [Results](#6-results)
 - [Downloading Artifacts](#7-downloading-artifacts)
 - [Further Reading](#further-reading)

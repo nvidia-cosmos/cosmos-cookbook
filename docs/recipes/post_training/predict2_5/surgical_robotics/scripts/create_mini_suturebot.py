@@ -32,7 +32,9 @@ from pathlib import Path
 
 def discover_episodes(data_path: Path, tissue_filter: str | None):
     """Yield (tissue_dir, subtask_name, episode_name, episode_src_path)."""
-    tissue_dirs = sorted(d for d in data_path.iterdir() if d.is_dir() and d.name.startswith("tissue_"))
+    tissue_dirs = sorted(
+        d for d in data_path.iterdir() if d.is_dir() and d.name.startswith("tissue_")
+    )
     if tissue_filter:
         tissue_dirs = [d for d in tissue_dirs if d.name == tissue_filter]
     for tissue_dir in tissue_dirs:
@@ -62,7 +64,9 @@ def create_mini_dataset(
     # Collect episodes to copy: (tissue, subtask, episode_name, src_path), limit per subtask
     subtask_counts: dict[tuple[str, str], int] = {}
     to_copy: list[tuple[str, str, str, Path]] = []
-    for tissue_name, subtask_name, episode_name, episode_src in discover_episodes(source, tissue):
+    for tissue_name, subtask_name, episode_name, episode_src in discover_episodes(
+        source, tissue
+    ):
         key = (tissue_name, subtask_name)
         n = subtask_counts.get(key, 0)
         if n >= max_episodes_per_subtask:
@@ -89,7 +93,9 @@ def create_mini_dataset(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create mini SutureBot dataset and optionally run LeRobot conversion.")
+    parser = argparse.ArgumentParser(
+        description="Create mini SutureBot dataset and optionally run LeRobot conversion."
+    )
     parser.add_argument(
         "--source",
         type=Path,
@@ -136,7 +142,9 @@ def main():
     print(f"Copied {n} episodes.")
 
     if args.no_convert:
-        print("Skipping conversion (--no-convert). Run convert_suturebot_to_lerobot_v3.py manually.")
+        print(
+            "Skipping conversion (--no-convert). Run convert_suturebot_to_lerobot_v3.py manually."
+        )
         return 0
 
     script_dir = Path(__file__).resolve().parent
@@ -144,7 +152,9 @@ def main():
     if not convert_script.exists():
         raise SystemExit(f"Conversion script not found: {convert_script}")
 
-    print(f"Running: {convert_script.name} --data-path {args.output} --repo-id {args.repo_id}")
+    print(
+        f"Running: {convert_script.name} --data-path {args.output} --repo-id {args.repo_id}"
+    )
     rc = subprocess.run(
         [
             sys.executable,

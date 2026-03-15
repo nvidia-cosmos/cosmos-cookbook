@@ -262,8 +262,14 @@ def compute_rel_actions(actions):
 def read_images(image_dir: str, file_pattern: str) -> np.ndarray:
     """Reads images from a directory into a NumPy array."""
     images = []
-    ## count images in the dir
-    num_images = len([name for name in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, name))])
+    # count images in the dir
+    num_images = len(
+        [
+            name
+            for name in os.listdir(image_dir)
+            if os.path.isfile(os.path.join(image_dir, name))
+        ]
+    )
     for idx in range(num_images):
         filename = os.path.join(image_dir, file_pattern.format(idx))
         if not os.path.exists(filename):
@@ -301,7 +307,9 @@ def process_episode(dataset, episode_path, states_name, actions_name, subtask_pr
 
     for i in range(num_frames):
         frame = {
-            "observation.state": np.hstack([kinematics_data[n][i] for n in states_name]).astype(np.float32),
+            "observation.state": np.hstack(
+                [kinematics_data[n][i] for n in states_name]
+            ).astype(np.float32),
             "action": _build_action_6d(kinematics_data, i, actions_name),
             "instruction.text": subtask_prompt,
             "observation.meta.tool.psm1": "Large Needle Driver",
@@ -437,7 +445,9 @@ def _derive_annotation_entries(features: dict) -> dict | None:
     return annotation_entries or None
 
 
-def generate_modality_metadata(features: dict, embodiment: str, description: str = None) -> dict:
+def generate_modality_metadata(
+    features: dict, embodiment: str, description: str = None
+) -> dict:
     """
     Generate modality metadata from features dict.
 
@@ -460,7 +470,8 @@ def generate_modality_metadata(features: dict, embodiment: str, description: str
         "video": video_entries,
         "annotation": annotation_entries,
         "embodiment": embodiment,
-        "description": description or "Auto-generated modality metadata derived from dataset features.",
+        "description": description
+        or "Auto-generated modality metadata derived from dataset features.",
         "version": "v2.0",
     }
 
@@ -480,7 +491,9 @@ def _write_modality_metadata(dataset_path: Path, features: dict, robot_type: str
 
     try:
         modality_metadata = generate_modality_metadata(
-            features, embodiment=robot_type, description="DVRK surgical robot dataset with dual-arm PSM control"
+            features,
+            embodiment=robot_type,
+            description="DVRK surgical robot dataset with dual-arm PSM control",
         )
         modality_path = meta_dir / "modality.json"
         with modality_path.open("w", encoding="utf-8") as f:
@@ -529,7 +542,9 @@ def _compute_and_write_stats(
     parquet_files = sorted(dataset_path.glob("data/*/*.parquet"))
 
     if not parquet_files:
-        print(f"Warning: No parquet files found in {dataset_path / 'data'}, skipping stats computation")
+        print(
+            f"Warning: No parquet files found in {dataset_path / 'data'}, skipping stats computation"
+        )
         return
 
     # Compute delta_indices matching training pipeline (groot_configs.py)
@@ -611,13 +626,19 @@ def _compute_and_write_stats(
     # Print summary of action stats for verification
     action_stats = stats["action"]
     print("\nAction statistics summary (should be used for normalization):")
-    print(f"  Mean range: [{min(action_stats['mean']):.6f}, {max(action_stats['mean']):.6f}]")
-    print(f"  Std range:  [{min(action_stats['std']):.6f}, {max(action_stats['std']):.6f}]")
+    print(
+        f"  Mean range: [{min(action_stats['mean']):.6f}, {max(action_stats['mean']):.6f}]"
+    )
+    print(
+        f"  Std range:  [{min(action_stats['std']):.6f}, {max(action_stats['std']):.6f}]"
+    )
 
 
 def _discover_episodes(data_path: Path):
     episodes = []
-    tissue_dirs = sorted(d for d in data_path.iterdir() if d.is_dir() and d.name.startswith("tissue_"))
+    tissue_dirs = sorted(
+        d for d in data_path.iterdir() if d.is_dir() and d.name.startswith("tissue_")
+    )
     for tissue_dir in tissue_dirs:
         for subtask_name in sorted(os.listdir(tissue_dir)):
             subtask_dir = os.path.join(tissue_dir, subtask_name)
@@ -637,7 +658,9 @@ def _discover_episodes(data_path: Path):
     return episodes
 
 
-def convert_data_to_lerobot(data_path: Path, repo_id: str, *, push_to_hub: bool = False):
+def convert_data_to_lerobot(
+    data_path: Path, repo_id: str, *, push_to_hub: bool = False
+):
     """
     Converts a single Zarr store with episode boundaries to a LeRobotDataset.
 
@@ -658,8 +681,12 @@ def convert_data_to_lerobot(data_path: Path, repo_id: str, *, push_to_hub: bool 
     import lerobot.datasets.lerobot_dataset as _lerobot_ds_mod
     import lerobot.datasets.video_utils as _lerobot_vid_mod
 
-    _lerobot_vid_mod.encode_video_frames = functools.partial(_lerobot_vid_mod.encode_video_frames, vcodec="h264")
-    _lerobot_ds_mod.encode_video_frames = functools.partial(_lerobot_ds_mod.encode_video_frames, vcodec="h264")
+    _lerobot_vid_mod.encode_video_frames = functools.partial(
+        _lerobot_vid_mod.encode_video_frames, vcodec="h264"
+    )
+    _lerobot_ds_mod.encode_video_frames = functools.partial(
+        _lerobot_ds_mod.encode_video_frames, vcodec="h264"
+    )
 
     final_output_path = os.path.join(HF_LEROBOT_HOME, repo_id)
     print(f"Output path: {final_output_path}")
@@ -722,7 +749,9 @@ def convert_data_to_lerobot(data_path: Path, repo_id: str, *, push_to_hub: bool 
 
     for episode_dir, subtask_prompt in tqdm(episodes, desc="Processing episodes"):
         try:
-            dataset = process_episode(dataset, episode_dir, states_name, actions_name, subtask_prompt)
+            dataset = process_episode(
+                dataset, episode_dir, states_name, actions_name, subtask_prompt
+            )
             dataset.save_episode()
         except Exception as e:
             print(f"Error processing episode {episode_dir}: {e}")

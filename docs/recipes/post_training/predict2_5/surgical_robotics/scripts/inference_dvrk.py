@@ -47,8 +47,12 @@ import mediapy
 import numpy as np
 import pandas as pd
 import torch
-from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import LeRobotDataset
-from cosmos_predict2._src.predict2.action.inference.inference_pipeline import ActionVideo2WorldInference
+from cosmos_predict2._src.predict2.action.datasets.gr00t_dreams.data.dataset import (
+    LeRobotDataset,
+)
+from cosmos_predict2._src.predict2.action.inference.inference_pipeline import (
+    ActionVideo2WorldInference,
+)
 from loguru import logger
 
 # Constants matching training config in groot_configs.py for dVRK
@@ -59,17 +63,23 @@ CHUNK_SIZE = 12  # NUM_FRAMES - 1 (actions per window)
 
 def parse_arguments() -> argparse.Namespace:
     """Parses command-line arguments for the dVRK inference script."""
-    parser = argparse.ArgumentParser(description="Action conditioned Cosmos-Predict 2.5 inference script")
+    parser = argparse.ArgumentParser(
+        description="Action conditioned Cosmos-Predict 2.5 inference script"
+    )
 
     # Model arguments
-    parser.add_argument("--experiment", type=str, required=True, help="Experiment config name")
+    parser.add_argument(
+        "--experiment", type=str, required=True, help="Experiment config name"
+    )
     parser.add_argument(
         "--ckpt_path",
         type=str,
         required=True,
         help="Path to the checkpoint (.pt file)",
     )
-    parser.add_argument("--s3_cred", type=str, default="credentials/s3_checkpoint.secret")
+    parser.add_argument(
+        "--s3_cred", type=str, default="credentials/s3_checkpoint.secret"
+    )
 
     # Data arguments
     parser.add_argument(
@@ -93,11 +103,15 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     # Inference arguments
-    parser.add_argument("--guidance", type=float, default=7, help="Classifier-free guidance scale")
+    parser.add_argument(
+        "--guidance", type=float, default=7, help="Classifier-free guidance scale"
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
     # Output arguments
-    parser.add_argument("--save_root", type=str, default="results/dvrk_eval", help="Output directory")
+    parser.add_argument(
+        "--save_root", type=str, default="results/dvrk_eval", help="Output directory"
+    )
     parser.add_argument("--save_fps", type=int, default=10, help="FPS for saved videos")
     parser.add_argument(
         "--save_comparison",
@@ -186,7 +200,9 @@ def find_chunk_indices(
     if episode_id not in episode_map:
         return None
 
-    entries = episode_map[episode_id]  # [(dataset_idx, base_index), ...] sorted by base_index
+    entries = episode_map[
+        episode_id
+    ]  # [(dataset_idx, base_index), ...] sorted by base_index
     base_index_to_dataset_idx = {base_idx: ds_idx for ds_idx, base_idx in entries}
 
     # Must have base_index=0 to start autoregressive inference from beginning
@@ -216,7 +232,9 @@ def main():
         torch.cuda.manual_seed_all(args.seed)
 
     # Load dataset with transforms - ensures actions are processed identically to training
-    logger.info(f"Loading LeRobotDataset from {args.dataset_path} with split '{args.data_split}'")
+    logger.info(
+        f"Loading LeRobotDataset from {args.dataset_path} with split '{args.data_split}'"
+    )
 
     dataset = LeRobotDataset(
         num_frames=NUM_FRAMES,
@@ -236,7 +254,9 @@ def main():
 
     # Build mapping from episode_id to dataset indices
     episode_map = build_episode_index_map(dataset)
-    logger.info(f"Built index map for {len(episode_map)} episodes in '{args.data_split}' split")
+    logger.info(
+        f"Built index map for {len(episode_map)} episodes in '{args.data_split}' split"
+    )
 
     # Determine which episodes to evaluate
     if args.episode_ids:
@@ -313,7 +333,9 @@ def main():
             chunk_indices = find_chunk_indices(episode_map, episode_id)
 
             if chunk_indices is None:
-                logger.warning(f"Episode {episode_id} doesn't start at base_index=0 in this split, skipping")
+                logger.warning(
+                    f"Episode {episode_id} doesn't start at base_index=0 in this split, skipping"
+                )
                 continue
 
             if len(chunk_indices) == 0:
@@ -323,7 +345,11 @@ def main():
             logger.info(f"Episode {episode_id}: {len(chunk_indices)} chunks")
 
             # Load raw parquet for this episode once (used for action log Stage 1)
-            parquet_files = sorted(Path(args.dataset_path).glob(f"data/chunk-*/episode_{episode_id:06d}.parquet"))
+            parquet_files = sorted(
+                Path(args.dataset_path).glob(
+                    f"data/chunk-*/episode_{episode_id:06d}.parquet"
+                )
+            )
             df_episode = pd.read_parquet(parquet_files[0]) if parquet_files else None
 
             episode_action_log = []
@@ -337,7 +363,9 @@ def main():
 
                 # video shape: (C, T, H, W) -> need (T, H, W, C) for inference
                 video = data["video"].permute(1, 2, 3, 0).numpy()  # (T, H, W, C)
-                actions = data["action"].numpy()  # (chunk_size, action_dim) - already normalized
+                actions = data[
+                    "action"
+                ].numpy()  # (chunk_size, action_dim) - already normalized
 
                 # Save Stage 2 actions before padding
                 actions_20d = actions.copy()  # (12, 20) normalized relative actions
@@ -354,11 +382,15 @@ def main():
                 # Build action log entry for this chunk
                 # -----------------------------------------------------------------
                 _, base_index = inner_dataset._all_steps[dataset_idx]
-                frame_indices = [int(base_index) + t * TIMESTEP_INTERVAL for t in range(NUM_FRAMES)]
+                frame_indices = [
+                    int(base_index) + t * TIMESTEP_INTERVAL for t in range(NUM_FRAMES)
+                ]
 
                 raw_parquet_actions = None
                 if df_episode is not None and frame_indices[-1] < len(df_episode):
-                    raw_parquet_actions = np.vstack([np.array(df_episode["action"].iloc[i]) for i in frame_indices])
+                    raw_parquet_actions = np.vstack(
+                        [np.array(df_episode["action"].iloc[i]) for i in frame_indices]
+                    )
 
                 episode_action_log.append(
                     {
@@ -415,7 +447,9 @@ def main():
             predicted_video = np.concatenate(stitched_predicted, axis=0)
 
             # Save predicted video
-            pred_path = os.path.join(args.save_root, "predicted", f"episode_{episode_id:04d}.mp4")
+            pred_path = os.path.join(
+                args.save_root, "predicted", f"episode_{episode_id:04d}.mp4"
+            )
             mediapy.write_video(pred_path, predicted_video, fps=args.save_fps)
             logger.info(f"Saved predicted video to {pred_path}")
 
@@ -435,7 +469,9 @@ def main():
                 # Concatenate side by side (GT on left, predicted on right)
                 comparison = np.concatenate([gt_video, predicted_video_trimmed], axis=2)
 
-                comp_path = os.path.join(args.save_root, "comparison", f"episode_{episode_id:04d}.mp4")
+                comp_path = os.path.join(
+                    args.save_root, "comparison", f"episode_{episode_id:04d}.mp4"
+                )
                 mediapy.write_video(comp_path, comparison, fps=args.save_fps)
                 logger.info(f"Saved comparison video to {comp_path}")
 
