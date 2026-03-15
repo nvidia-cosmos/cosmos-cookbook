@@ -176,6 +176,9 @@ secrets.yaml
 .env.production
 .env.development
 
+# Recipe env files (contain API keys and machine-specific paths)
+**/env.sh
+
 # Streamlit
 .streamlit/
 
