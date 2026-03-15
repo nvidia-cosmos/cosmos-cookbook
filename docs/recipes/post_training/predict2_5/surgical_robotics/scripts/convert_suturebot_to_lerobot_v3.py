@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-A script to convert DVRK (da Vinci Research Kit) robotics data into the LeRobot format (v2.1).
+A script to convert DVRK (da Vinci Research Kit) robotics data into the LeRobot v3 format.
 
 This script processes DVRK surgical robot datasets organized in directory structures
 with CSV kinematics data and camera views. It extracts dual-arm PSM states, 6D-rotation
@@ -648,7 +648,7 @@ def _discover_episodes(data_path: Path):
             subtask_prompt = " ".join(subtask_name.split("_")[1:])
             is_recovery = subtask_prompt.endswith("recovery")
             if is_recovery:
-                subtask_prompt = subtask_prompt[:-9]
+                subtask_prompt = subtask_prompt[:-9].strip()
 
             for episode_name in sorted(os.listdir(subtask_dir)):
                 episode_dir = os.path.join(subtask_dir, episode_name)
@@ -738,7 +738,7 @@ def convert_data_to_lerobot(
         image_writer_threads=20,
         tolerance_s=1.0,
         batch_encoding_size=12,
-        video_backend="torchcodec",  # Uses AV1 codec
+        video_backend="torchcodec",  # Codec overridden to h264 above for compatibility
     )
     # measure time taken to complete the process
     start_time = time.time()

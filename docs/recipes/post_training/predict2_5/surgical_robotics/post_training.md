@@ -507,7 +507,7 @@ SAVE_ROOT=/path/to/results/dvrk_eval
 
 The script generates rollouts given ground-truth kinematic action trajectories and an initial frame from the dataset.
 
-> **Note on `--experiment`:** The inference command uses the `open_h-fixed` experiment config rather than the `suturebot` training config. This is intentional: the inference pipeline reads the experiment config only to set up the model architecture, while data loading is handled separately in `inference_dvrk.py` using `embodiment="suturebot"` and the dataset's own `stats.json`. Both configs share the same 2B architecture and 44D action space, so the `open_h-fixed` config is correct for inference regardless of which checkpoint you use.
+> **Note on `--experiment`:** The inference command uses the same `suturebot` experiment config (`cosmos_predict2p5_2B_action_conditioned_suturebot_13frame_4nodes_release_oss`) as training. The inference pipeline reads this config to set up the model architecture, while data loading is handled separately in `inference_dvrk.py` using `embodiment="suturebot"` and the dataset's own `stats.json`.
 
 **Using Docker (recommended):**
 
@@ -565,11 +565,15 @@ Output files are written to `$SAVE_ROOT`:
 
 ```text
 dvrk_eval/
-├── episode_0/
-│   ├── predicted_0.mp4   # generated video
-│   └── comparison_0.mp4  # side-by-side: ground truth (left) vs predicted (right)
-├── episode_1/
-└── episode_2/
+├── predicted/
+│   ├── episode_0000.mp4   # generated video
+│   ├── episode_0001.mp4
+│   └── episode_0002.mp4
+├── comparison/
+│   ├── episode_0000.mp4   # side-by-side: ground truth (left) vs predicted (right)
+│   ├── episode_0001.mp4
+│   └── episode_0002.mp4
+└── action_log.json        # logged action data per episode
 ```
 
 > **Base model vs fine-tuned:** Running inference with the pre-trained Cosmos-H checkpoint (without SutureBot fine-tuning) produces near-static output — the predicted frames barely change from the conditioning frame. This is expected: the pre-trained model uses Open-H action statistics, which are incompatible with the SutureBot normalization (see step 2.5). Fine-tuning on SutureBot data (step 4) is required to generate meaningful motion.

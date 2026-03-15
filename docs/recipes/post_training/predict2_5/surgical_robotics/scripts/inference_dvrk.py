@@ -130,7 +130,7 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_episode_index_map(dataset: LeRobotDataset) -> dict[int, list[int]]:
+def build_episode_index_map(dataset: LeRobotDataset) -> dict[int, list[tuple[int, int]]]:
     """
     Build a mapping from episode_id to list of dataset indices for that episode.
 
@@ -138,7 +138,7 @@ def build_episode_index_map(dataset: LeRobotDataset) -> dict[int, list[int]]:
         dataset: The LeRobotDataset instance
 
     Returns:
-        Dict mapping episode_id -> list of (dataset_idx, base_index) sorted by base_index
+        Dict mapping episode_id -> list of (dataset_idx, base_index) tuples sorted by base_index
     """
     # Access the underlying WrappedLeRobotSingleDataset
     # LeRobotDataset wraps one or more WrappedLeRobotSingleDataset

@@ -14,9 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run finetuning on a single machine without Slurm.
+# Run finetuning on a single machine.
 # Set env vars (see below), then: ./scripts/run_finetuning_standalone.sh
-# For multi-node Slurm, use run_finetuning.sh instead.
 #
 # You can run either inside a Docker container (recommended) or on the host.
 # For Docker: build the image from the Cosmos-H-Surgical-Simulator repo first (see steps 1.1–1.3),
@@ -37,6 +36,10 @@ COSMOS_H_CKPT_PATH="${COSMOS_H_CKPT_PATH:-}"
 COSMOS_CONTAINER_IMAGE="${COSMOS_CONTAINER_IMAGE:-}"
 # Number of GPUs to use (default: all visible).
 NGPUS="${NGPUS:-$(nvidia-smi -L 2>/dev/null | wc -l)}"
+if [ "${NGPUS:-0}" -lt 1 ] 2>/dev/null; then
+  echo "ERROR: No GPUs detected (NGPUS=${NGPUS}). Ensure nvidia-smi works or set NGPUS manually." >&2
+  exit 1
+fi
 MASTER_ADDR="${MASTER_ADDR:-127.0.0.1}"
 MASTER_PORT="${MASTER_PORT:-25001}"
 
