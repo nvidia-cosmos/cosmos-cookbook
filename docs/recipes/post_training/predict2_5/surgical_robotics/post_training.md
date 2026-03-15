@@ -39,7 +39,7 @@ Because the Cosmos-H-Surgical-Simulator has already learned surgical visual appe
   - [Action Format](#25-action-format)
 - [Model Configuration](#3-model-configuration)
 - [Finetuning](#4-finetuning)
-- [Inference & Evaluation](#5-inference-evaluation)
+- [Inference and Evaluation](#5-inference-and-evaluation)
 - [Results](#6-results)
 - [Downloading Artifacts](#7-downloading-artifacts)
 - [Further Reading](#further-reading)
@@ -411,7 +411,7 @@ For the **mini dataset** (3 episodes), the model converges quickly — suitable 
 
 To use a fine-tuned checkpoint for inference, convert the DCP to a `.pt` file (see step 5.1).
 
-## 5. Inference & Evaluation
+## 5. Inference and Evaluation
 
 This tutorial is grounded in the methodology of [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/), which validated the world model by comparing policy success rates in Cosmos simulation against real-world robot execution (Pearson r = 0.718, p < 0.001).
 
