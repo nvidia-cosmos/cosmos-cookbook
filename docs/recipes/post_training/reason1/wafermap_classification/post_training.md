@@ -1,4 +1,3 @@
-
 # Wafer Map Anomaly Classification with Cosmos Reason 1
 
 > **Authors:** [Anita Chiu](https://www.linkedin.com/in/yihsuanchiu/) • [Tim Lin](https://www.linkedin.com/in/ting-hung-lin-89a92a22/)
