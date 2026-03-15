@@ -130,7 +130,9 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_episode_index_map(dataset: LeRobotDataset) -> dict[int, list[tuple[int, int]]]:
+def build_episode_index_map(
+    dataset: LeRobotDataset,
+) -> dict[int, list[tuple[int, int]]]:
     """
     Build a mapping from episode_id to list of dataset indices for that episode.
 
