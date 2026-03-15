@@ -808,7 +808,7 @@ def convert_data_to_lerobot(
     }
     _write_modality_metadata(Path(final_output_path), dataset_features, "dvrk")
 
-    print(f"suturing processed successful, time taken: {time.time() - start_time}")
+    print(f"suturing processed successfully, time taken: {time.time() - start_time}")
 
 
 def main(

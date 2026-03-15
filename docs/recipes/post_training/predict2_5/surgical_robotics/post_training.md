@@ -19,8 +19,8 @@ Traditional surgical robot evaluation often requires expensive hardware and time
 
 ## Overview
 
-This tutorial guides you through post-training (finetuning) Cosmos-H-Surgical-Simulator, a pre-trained version
-of [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) on the [Open-H embodiment](https://github.com/open-h-embodiment/data-collection) surgical robotics dataset.
+This tutorial guides you through post-training (finetuning) [Cosmos-H-Surgical-Simulator](https://github.com/NVIDIA-Medtech/Cosmos-H-Surgical-Simulator),
+a version of [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) pre-trained on the [Open-H embodiment](https://github.com/open-h-embodiment/data-collection) surgical robotics datasets, on the downstream [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset.
 The resulting model functions as a learned simulator for policy evaluation and synthetic data generation, implicitly capturing both robot kinematics and task-relevant environment dynamics.
 
 The approach builds on [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) and uses the public [SutureBot](https://huggingface.co/datasets/jchen396/SutureBot) dataset,
@@ -39,7 +39,7 @@ Because the Cosmos-H-Surgical-Simulator has already learned surgical visual appe
   - [Action Format](#25-action-format)
 - [Model Configuration](#3-model-configuration)
 - [Finetuning](#4-finetuning)
-- [Inference & Evaluation](#5-inference--evaluation)
+- [Inference & Evaluation](#5-inference-evaluation)
 - [Results](#6-results)
 - [Downloading Artifacts](#7-downloading-artifacts)
 - [Further Reading](#further-reading)
@@ -122,7 +122,7 @@ The variables and why they matter:
 
 | Variable | Description |
 | --------- | ------------- |
-| `HF_HOME` | HuggingFace cache for model weights and LeRobot datasets. Needs ~100 GB. Authenticate first: `huggingface-cli login` |
+| `HF_HOME` | HuggingFace cache for model weights and LeRobot datasets. Needs ~100 GB. Authenticate first: `hf auth login` |
 | `IMAGINAIRE_OUTPUT_ROOT` | Root directory for training checkpoints (saved every 200 steps). Needs ~500 GB for a full run. |
 | `WANDB_API_KEY` | [Weights & Biases](https://wandb.ai) API key for experiment tracking. Get yours at wandb.ai/settings. Required to monitor training loss and convergence. |
 | `COSMOS_CONTAINER_IMAGE` | Docker image tag built in step 1.5 (default: `cosmos-predict2.5:local`). |
@@ -261,11 +261,11 @@ The finetuning is performed at 288x512 resolution (to match the Cosmos-H-Surgica
 
 If you are using the upstream [cosmos-predict2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) repository instead (v1.4.1), you must apply the following changes. The subsections below document them for reference.
 
-### 3.1 Register the 'dvrk' embodiment
+### 3.1 Register the 'suturebot' embodiment
 
 File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/data/embodiment_tags.py`
 
-Add a new `DVRK = "dvrk"` entry to the `EmbodimentTag` enum.
+Add a new `SUTUREBOT = "suturebot"` entry to the `EmbodimentTag` enum.
 
 ### 3.2 Configure the 2B model for SutureBot
 
@@ -277,13 +277,13 @@ Add a new `AC_CHUNK_SINGLE_VIEW_2B_SUTUREBOT_13FRAME_4NODES_OSS` config dict def
 
 File: `cosmos_predict2/_src/predict2/action/configs/action_conditioned/data.py`
 
-Register `suturebot_train` and `suturebot_val` datasets and dataloaders using the `LeRobotDataset` class with 13 frames, `embodiment="dvrk"`, and `max_pixels=1920*1080`.
+Register `suturebot_train` and `suturebot_val` datasets and dataloaders using the `LeRobotDataset` class with 13 frames, `embodiment="suturebot"`, and `max_pixels=1920*1080`.
 
-### 3.4 Add dVRK configuration (resolution, delta actions, normalization)
+### 3.4 Add SutureBot configuration (resolution, delta actions, normalization)
 
 File: `cosmos_predict2/_src/predict2/action/datasets/gr00t_dreams/groot_configs.py`
 
-Add `dvrk` embodiment config with timestep_interval=3, resolution 960x720, and switch normalization to `mean_std`. Add `RelativeActionTransform` to the transform pipeline.
+Add `suturebot` embodiment config with timestep_interval=3, resolution 960x720, and switch normalization to `mean_std`. Add `RelativeActionTransform` to the transform pipeline.
 
 ### 3.5–3.6 Bugfixes in the Cosmos OSS code
 

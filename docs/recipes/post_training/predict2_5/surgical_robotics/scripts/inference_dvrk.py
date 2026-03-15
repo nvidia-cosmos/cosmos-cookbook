@@ -78,7 +78,10 @@ def parse_arguments() -> argparse.Namespace:
         help="Path to the checkpoint (.pt file)",
     )
     parser.add_argument(
-        "--s3_cred", type=str, default="credentials/s3_checkpoint.secret"
+        "--s3_cred",
+        type=str,
+        default=None,
+        help="Path to S3 credentials file (only needed for S3 checkpoints)",
     )
 
     # Data arguments
