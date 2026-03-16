@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Data augmentation | domain:autonomous-vehicles, technique:style-transfer |
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Data augmentation | domain:autonomous-vehicles, technique:data-augmentation |
 
 This tutorial demonstrates how to use the Cosmos Transfer 1 model for Synthetic Data Generation (SDG) to augment data and improve the accuracy of Computer Vision (CV) or Vision-Language Model (VLM) algorithms downstream.
 

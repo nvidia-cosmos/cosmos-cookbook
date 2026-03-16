@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation | domain:autonomous-vehicles, technique:style-transfer |
+| [Cosmos Transfer 1](https://github.com/nvidia-cosmos/cosmos-transfer1) | Inference | Sim to Real data augmentation | domain:autonomous-vehicles, technique:data-augmentation |
 
 This tutorial demonstrates how to apply Cosmos Transfer to robotics navigation tasks to improve Sim2Real performance.
 

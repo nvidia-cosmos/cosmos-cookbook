@@ -201,10 +201,10 @@ For **Featured Recipes** (recipes with `general:partner-recipe` or `general:cook
 Allowed tags (use exactly as shown, comma-separated in the Tags cell):
 
 - **General:** `general:partner-recipe`, `general:cookoff-recipe`, `general:ai-friendly`
-- **Domain:** `domain:robotics`, `domain:autonomous-vehicles`, `domain:smart-city`, `domain:industrial`, `domain:medical`
-- **Technique:** `technique:style-transfer`, `technique:simulation`, `technique:prediction`, `technique:reasoning`, `technique:post-training`, `technique:pre-training`, `technique:data-curation`, `technique:distillation`
+- **Domain:** `domain:robotics`, `domain:autonomous-vehicles`, `domain:smart-city`, `domain:industrial`, `domain:medical`, `domain:fieldwork`, `domain:cross-domain`
+- **Technique:** `technique:data-augmentation`, `technique:data-generation`, `technique:prediction`, `technique:reasoning`, `technique:post-training`, `technique:pre-training`, `technique:data-curation-annotation`, `technique:distillation`
 
-Example: `general:ai-friendly, domain:industrial, technique:data-curation`
+Example: `general:ai-friendly, domain:industrial, technique:data-curation-annotation`
 
 ### Content Templates
 
