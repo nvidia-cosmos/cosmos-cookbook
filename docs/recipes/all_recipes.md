@@ -222,6 +222,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./inference/reason2/intbot_edge_vlm/inference.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./inference/reason2/intbot_edge_vlm/assets/intbot_gtc_2026.jpg" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Real-Time Vision-Language Models on Edge: Cosmos-Reason2 on Jetson Thor</div>
+          <div class="recipe-tag recipe-tag--inference">Inference</div>
+        </a>
         <a class="recipe-card" href="./end2end/gr00t-dreams/post-training.html">
           <div class="recipe-media recipe-media--video" aria-hidden="true">
             <video autoplay loop muted playsinline preload="none" tabindex="-1">
