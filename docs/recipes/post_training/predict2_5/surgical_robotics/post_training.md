@@ -668,3 +668,28 @@ rsync -avz --progress <instance-name>:/ephemeral/cache/huggingface/lerobot/sutur
 5. [SutureBot](https://suturebot.github.io/) — A Precision Framework & Benchmark for Autonomous End-to-End Suturing
 6. [Cosmos-Surg-dVRK](https://cosmos-surg-dvrk.github.io/) — World foundation model-based automated online evaluation of surgical robot policy learning
 7. [The da Vinci Research Kit](https://www.intuitive-foundation.org/dvrk/) — A community effort supporting research in telerobotic surgery
+
+---
+
+## Document Information
+
+**Publication Date:** March 15, 2026
+
+### Citation
+
+If you use this recipe or reference this work, please cite it as:
+
+```bibtex
+@misc{cosmos_cookbook_surgical_robotics_2026,
+  title={Post-Training Cosmos-H-Surgical-Simulator for Custom Surgical Robotics Dataset},
+  author={Zbinden, Lukas and Nelson, Nigel and Ofir, Maximilian},
+  year={2026},
+  month={March},
+  howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/surgical_robotics/post_training.html}},
+  note={NVIDIA Cosmos Cookbook}
+}
+```
+
+**Suggested text citation:**
+
+> Lukas Zbinden, Nigel Nelson & Maximilian Ofir (2026). Post-Training Cosmos-H-Surgical-Simulator for Custom Surgical Robotics Dataset. In *NVIDIA Cosmos Cookbook*. Accessible at <https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/post_training/predict2_5/surgical_robotics/post_training.html>
