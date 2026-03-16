@@ -242,6 +242,13 @@
           <div class="recipe-title">Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning</div>
           <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
         </a>
+        <a class="recipe-card" href="./post_training/predict2_5/surgical_robotics/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/predict2_5/surgical_robotics/assets/needle_throw_3x_compact.gif" alt="Cosmos-H-Surgical-Simulator" loading="lazy" />
+          </div>
+          <div class="recipe-title">Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./inference/reason2/intbot_showcase/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/intbot_showcase/assets/IntBot-GTC.jpg" alt="" loading="lazy" />

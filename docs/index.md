@@ -21,6 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Mar 15 | [Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics](recipes/post_training/predict2_5/surgical_robotics/post_training.md) | Cosmos Predict 2.5 |
 | Mar 15 | [Outlier Detection in Embedding Vector Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) | Cosmos Curator |
 | Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
 | Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
@@ -73,6 +74,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
 | **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 | **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
+| **Training** | Fine-tune Cosmos Predict 2.5 as an action-conditioned surgical simulator for policy evaluation | [Surgical Robotics Simulation](recipes/post_training/predict2_5/surgical_robotics/post_training.md) |
 
 > **Advanced Topics:** Refer to [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
