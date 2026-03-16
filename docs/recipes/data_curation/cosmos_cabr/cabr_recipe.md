@@ -127,7 +127,7 @@ File: `cosmos_curate/pipelines/video/utils/windowing_utils.py`
 
 The `split_video_into_windows()` function splits each clip into frame-based windows for captioning, filtering, and preview generation. Each window is re-encoded via ffmpeg. If your dataset has 10,000 clips averaging 3 windows each, that's 30,000 encoding operations — savings here multiply across the entire dataset.
 
-Modify the ffmpeg command inside the windowing function (around line 162):
+Define the Beamr FFmpeg path at the top of the file (or import it from your clip extraction stage), then modify the ffmpeg command inside the windowing function where the encode command is built:
 
 ```python
 cmd = [
@@ -203,7 +203,7 @@ def compress_with_cabr(
 
 File: `cosmos_curate/pipelines/av/writers/clip_writer_stage.py`
 
-In `_upload_clips()`, add compression before `write_bytes()`:
+Ensure `make_pipeline_temporary_dir` and `compress_with_cabr` are imported (or defined in this module). In `_upload_clips()`, add compression before `write_bytes()`:
 
 ```python
 def _upload_clips(self, video: AvVideo, encoder: str) -> int:
@@ -227,7 +227,7 @@ def _upload_clips(self, video: AvVideo, encoder: str) -> int:
 
 File: `cosmos_curate/pipelines/av/writers/cosmos_predict2_writer_stage.py`
 
-In `write_video_clip()`, compress before writing:
+Ensure `make_pipeline_temporary_dir` and `compress_with_cabr` are available in scope. In `write_video_clip()`, compress before writing:
 
 ```python
 def write_video_clip(clip, camera_view, s3_client_instance, dest_url, *, verbose=False):
@@ -267,27 +267,27 @@ In practice, this means:
 ## Resources
 
 1. [Beamr CABR](https://beamr.com/) — Product information and FFmpeg build requests
-2. [Cosmos Curator AV Pipeline Compression Analysis](TODO_LINK_TO_ANALYSIS) — Full validation methodology and per-video results
+2. [Cosmos Curator AV Pipeline Compression Analysis](assets/Beamr-Optimized-compression-for-Cosmos-Curate-AV-pipeline-23-Feb-2026.pdf) — Full validation methodology and per-video results
 3. ML-Safe AV Testing series: [Part 1](https://blog.beamr.com/2025/08/13/beamr-is-pushing-the-boundaries-of-av-data-efficiency-accelerated-by-nvidia/), [Part 2](https://blog.beamr.com/2025/12/18/ml-safe-av-video-data-processing-achieves-up-to-50-storage-reduction/), [Part 3](https://blog.beamr.com/2026/01/05/deep-dive-managing-the-petabyte-scale-av-video-data-bottlenecks/) — Object detection validation on NVIDIA's Physical AI dataset
 4. [Cosmos Curator](https://github.com/NVIDIA/Cosmos-Curator) — Source repository
 
 ---
 
-**Publication Date:** 2025
+**Publication Date:** 2026
 
 **Citation:**
 
 Suggested text citation:
 
-> Beamr (2025). Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR. In NVIDIA Cosmos Cookbook. Beamr.
+> Ozeryansky, M., & Shoval, O. (2026). Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR. In NVIDIA Cosmos Cookbook. Beamr.
 
 ```bibtex
-@misc{cosmos_cookbook_cabr_compression_2025,
+@misc{cosmos_cookbook_cabr_compression_2026,
     title={Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR},
-    author={Beamr},
+    author={Ozeryansky, Michael and Shoval, Oded},
     organization={Beamr},
-    year={2025},
-    howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/cabr-compression/data_curation/}},
+    year={2026},
+    howpublished={\url{https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/data_curation/cosmos_cabr/cabr_recipe.html}},
     note={NVIDIA Cosmos Cookbook}
 }
 ```
