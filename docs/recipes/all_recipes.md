@@ -309,6 +309,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Autonomous Vehicles recipes">
+        <a class="recipe-card" href="./data_curation/cosmos_cabr/cabr_recipe.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./data_curation/cosmos_cabr/assets/beamr.png" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Content-Adaptive Video Compression for Cosmos Curator</div>
+          <div class="recipe-tag recipe-tag--curation">Curation</div>
+        </a>
         <a class="recipe-card" href="./post_training/reason2/av_3d_grounding/post_training.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./post_training/reason2/av_3d_grounding/assets/training_images_overlay_overview.png" alt="" loading="lazy" />
