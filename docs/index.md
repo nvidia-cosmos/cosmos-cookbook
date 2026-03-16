@@ -21,12 +21,14 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
-| Mar 5 | [Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR](recipes/data_curation/cosmos_cabr/cabr_recipe.md) | Cosmos Curator |
+| Mar 15 | [Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR](recipes/data_curation/cosmos_cabr/cabr_recipe.md) | Cosmos Curator |
+| Mar 15 | [Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics](recipes/post_training/predict2_5/surgical_robotics/post_training.md) | Cosmos Predict 2.5 |
+| Mar 15 | [Outlier Detection in Embedding Vector Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) | Cosmos Curator |
 | Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
 | Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
 | Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
 | Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
-| Jan 30 | [Prompt Guide](core_concepts/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
+| Jan 30 | [Prompt Guide](getting_started/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
 | Jan 29 | [Video Search and Summarization with Cosmos Reason](recipes/inference/reason2/vss/inference.md) | Cosmos Reason 2 |
 | Jan 28 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md) | Cosmos Predict 2 |
 | Jan 27 | [Physical Plausibility Prediction with Cosmos Reason 2](recipes/post_training/reason2/physical-plausibility-check/post_training.md) | Cosmos Reason 2 |
@@ -73,6 +75,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
 | **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
 | **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
+| **Training** | Fine-tune Cosmos Predict 2.5 as an action-conditioned surgical simulator for policy evaluation | [Surgical Robotics Simulation](recipes/post_training/predict2_5/surgical_robotics/post_training.md) |
 
 > **Advanced Topics:** Refer to [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
 
@@ -99,7 +102,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 
 | **Workflow** | **Description**                                                           | **Link**                                                                                                |
 | ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](core_concepts/prompt_guide/reason_guide.md)                   |
+| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](getting_started/prompt_guide/reason_guide.md)                   |
 | **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
 | **Inference** | Zero-shot safety compliance and hazard detection in industrial warehouse environments | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) |
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md) |
@@ -121,6 +124,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Curation** | Content-Adaptive Video Compression for Cosmos Curator| [Beamr CABR + Cosmos Curator](recipes/data_curation/cosmos_cabr/cabr_recipe.md) |
 | **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
 | **Analysis** | Advanced video clustering using Time Series K-Means on embedding trajectories | [Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
+| **Analysis** | Outlier detection in video embedding trajectories via Time Series K-Means + Soft-DTW distance thresholding | [Outlier Detection in Embedding Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) |
 
 ### **End-to-End Workflows**
 
@@ -151,7 +155,7 @@ All models include pre-trained checkpoints and support custom training for domai
 
 The cookbook is organized around key concepts spanning (controlled) **inference** and **training** use cases:
 
-**1. [Prompt Guide](core_concepts/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
+**1. [Prompt Guide](getting_started/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
 
 **2. [Control Modalities](core_concepts/control_modalities/overview.md)** - Master precise control over video generation with Cosmos Transfer 2.5 using Edge, Depth, Segmentation, and Vis modalities. This covers structural preservation, semantic replacement, lighting consistency, and multi-control approaches for achieving high-fidelity, controllable video transformations.
 

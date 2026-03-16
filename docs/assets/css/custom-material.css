@@ -181,6 +181,39 @@
   font-weight: bold;
 }
 
+.nvidia-legal-bar {
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+  padding: 1.25rem 0;
+}
+
+.nvidia-legal {
+  font-size: 0.7rem;
+  text-align: center;
+  color: #999;
+}
+
+.nvidia-legal__links {
+  line-height: 1.8;
+}
+
+.nvidia-legal__links a {
+  color: #999;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.nvidia-legal__links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.nvidia-legal__copyright {
+  margin-top: 0.5rem;
+  color: #999;
+  font-size: 0.65rem;
+}
+
 /* Cloud Deployments sub-items: hide unless that page is active */
 .cloud-nav-subitem {
   display: none;

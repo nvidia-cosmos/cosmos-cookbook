@@ -4,6 +4,7 @@
 - [Predict for Traffic Anomaly Generation](./predict2/its-accident/post_training.md)
 - [Predict for Gr00t-Dreams](./predict2/gr00t-dreams/post-training.md)
 - [Predict for Sports Video Generation](./predict2_5/sports/post_training.md)
+- [Predict for Surgical Robotics Simulation](./predict2_5/surgical_robotics/post_training.md)
 - [Transfer Multiview for Autonomous Vehicles](./transfer2_5/av_world_scenario_maps/post_training.md)
 - [Reason for Physical Plausibility Check](./reason1/physical-plausibility-check/post_training.md)
 - [Reason 2 for Physical Plausibility Check](./reason2/physical-plausibility-check/post_training.md)
