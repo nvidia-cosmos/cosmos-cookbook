@@ -466,6 +466,17 @@
     let searchQuery = '';
     let isLoading = true;
 
+    // Escape for safe insertion into HTML (prevents XSS when using innerHTML)
+    function escapeHtml(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // Get filtered recipes (by Domain tag, same as sidebar; recipes with no tags appear under all domains)
     function getFilteredRecipes() {
       return recipes.filter(recipe => {
@@ -507,11 +518,16 @@
 
       pageRecipes.forEach(recipe => {
         const row = document.createElement('tr');
+        const url = escapeHtml(recipe.url);
+        const name = escapeHtml(recipe.name);
+        const workload = escapeHtml(recipe.workload);
+        const category = escapeHtml(recipe.category);
+        const date = escapeHtml(recipe.date);
         row.innerHTML = `
-          <td><a href="${recipe.url}">${recipe.name}</a></td>
-          <td>${recipe.workload}</td>
-          <td>${recipe.category}</td>
-          <td>${recipe.date}</td>
+          <td><a href="${url}">${name}</a></td>
+          <td>${workload}</td>
+          <td>${category}</td>
+          <td>${date}</td>
         `;
         tbody.appendChild(row);
       });
@@ -591,15 +607,22 @@
       renderRecipeTable();
     });
 
-    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column (MM-DD-YYYY)
+    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column
+    // Accepts numeric (MM-DD-YYYY or YYYY-MM-DD) or locale style (e.g. "Jan 1, 2026")
     function parseDateForSort(dateStr) {
       if (!dateStr || typeof dateStr !== 'string') return 0;
-      var parts = dateStr.trim().split(/[-/]/);
-      if (parts.length !== 3) return 0;
-      var mm = parseInt(parts[0], 10), dd = parseInt(parts[1], 10), yyyy = parseInt(parts[2], 10);
-      if (parts[0].length === 4) { yyyy = parseInt(parts[0], 10); mm = parseInt(parts[1], 10); dd = parseInt(parts[2], 10); }
-      if (!yyyy || !mm || !dd) return 0;
-      return yyyy * 10000 + mm * 100 + dd;
+      var s = dateStr.trim();
+      var parts = s.split(/[-/]/);
+      if (parts.length === 3) {
+        var mm = parseInt(parts[0], 10), dd = parseInt(parts[1], 10), yyyy = parseInt(parts[2], 10);
+        if (parts[0].length === 4) { yyyy = parseInt(parts[0], 10); mm = parseInt(parts[1], 10); dd = parseInt(parts[2], 10); }
+        if (yyyy && mm && dd) {
+          var d = new Date(yyyy, mm - 1, dd);
+          return isNaN(d.getTime()) ? 0 : d.getTime();
+        }
+      }
+      var parsed = Date.parse(s);
+      return (parsed !== undefined && !isNaN(parsed)) ? parsed : 0;
     }
     var FEATURED_SLOT_6_URL = 'getting_started/prompt_guide/reason_guide.html';
     function getFeaturedRecipes() {

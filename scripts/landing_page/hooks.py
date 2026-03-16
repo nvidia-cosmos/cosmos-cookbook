@@ -271,6 +271,13 @@ def extract_recipe_metadata(html_content, file_path):
     return metadata
 
 
+def _path_matches_word(path_str, word):
+    """True if path_str contains word as a whole word (path segment or bounded by / - _)."""
+    # Match word when preceded by start, /, - or _ and followed by end, /, - or _
+    pattern = r'(^|[/\-_])' + re.escape(word) + r'($|[/\-_])'
+    return bool(re.search(pattern, path_str))
+
+
 def categorize_recipe(metadata, file_path):
     """Get recipe category from metadata, with fallback to auto-detection."""
     path_str = str(file_path).lower()
@@ -281,19 +288,24 @@ def categorize_recipe(metadata, file_path):
     # If no category in metadata, use auto-detection (backwards compatibility)
     if not category:
         category = "Vision AI"  # default
-        if 'robot' in path_str or 'warehouse' in path_str or 'gr00t' in path_str or 'manipulation' in path_str:
+        if (
+            _path_matches_word(path_str, 'robot')
+            or _path_matches_word(path_str, 'warehouse')
+            or _path_matches_word(path_str, 'gr00t')
+            or _path_matches_word(path_str, 'manipulation')
+        ):
             category = "Robotics"
-        elif 'av' in path_str or 'autonomous' in path_str or 'vehicle' in path_str or 'traffic' in path_str or 'its' in path_str or 'carla' in path_str:
-            category = "Autonomous Vehicles"
-        
-        # Check use case field too
-        use_case = metadata.get('use case', '').lower()
-        if 'robot' in use_case or 'manipulation' in use_case or 'warehouse' in use_case:
-            category = "Robotics"
-        elif 'autonomous' in use_case or 'vehicle' in use_case or 'traffic' in use_case or 'av' in use_case:
+        elif (
+            _path_matches_word(path_str, 'av')
+            or _path_matches_word(path_str, 'autonomous')
+            or _path_matches_word(path_str, 'vehicle')
+            or _path_matches_word(path_str, 'traffic')
+            or _path_matches_word(path_str, 'its')
+            or _path_matches_word(path_str, 'carla')
+        ):
             category = "Autonomous Vehicles"
     
-    # Get workload directly from metadata
+    # Get workload from metadata
     workload = metadata.get('workload', 'Inference').strip()
     
     return category, workload
