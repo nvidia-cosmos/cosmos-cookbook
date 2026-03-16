@@ -21,6 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Mar 16 | [Cosmos-Reason2 on Jetson Thor for Edge VLM Perception](recipes/inference/reason2/intbot_edge_vlm/inference.md) | Cosmos Reason 2 |
 | Mar 15 | [Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR](recipes/data_curation/cosmos_cabr/cabr_recipe.md) | Cosmos Curator |
 | Mar 15 | [Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics](recipes/post_training/predict2_5/surgical_robotics/post_training.md) | Cosmos Predict 2.5 |
 | Mar 15 | [Outlier Detection in Embedding Vector Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) | Cosmos Curator |
@@ -102,6 +103,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
 | **Inference** | Zero-shot safety compliance and hazard detection in industrial warehouse environments | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) |
 | **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md) |
+| **Inference** | Real-time perception on Jetson Thor for edge-deployed social robots  | [Cosmos-Reason2 on Jetson Thor (Edge VLM)](recipes/inference/reason2/intbot_edge_vlm/inference.md) |
 | **Training** | 3D vehicle grounding in autonomous driving with Cosmos Reason 1 & 2 | [3D AV Grounding (Reason 1 & 2)](recipes/post_training/reason2/av_3d_grounding/post_training.md) |
 | **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
 | **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
