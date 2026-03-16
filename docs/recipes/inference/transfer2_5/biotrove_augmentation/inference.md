@@ -14,7 +14,7 @@ It shows how to convert static images into realistic agricultural scenarios usin
 
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Domain transfer for scarce biological datasets | domain:medical, technique:style-transfer |
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Domain transfer for scarce biological datasets | domain:medical, technique:data-augmentation |
 
 ---
 

@@ -11,7 +11,7 @@
 | **Model** | **Workload** | **Use Case** | **Tags** |
 |-----------|--------------|--------------|----------|
 | [Cosmos-Predict2-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2) | Post-training | Vision-based robotic manipulation and model-based planning | domain:robotics, technique:post-training, general:partner-recipe |
-| [Cosmos-Predict2.5-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Vision-based robotic manipulation and model-based planning | |
+| [Cosmos-Predict2.5-2B-Video2World](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Vision-based robotic manipulation and model-based planning | domain:robotics, technique:post-training, general:partner-recipe|
 
 <img src="assets/cosmos_policy_figure1.jpeg" width="720" media-featured="true"/>
 
