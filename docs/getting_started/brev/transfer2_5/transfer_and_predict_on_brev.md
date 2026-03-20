@@ -23,49 +23,49 @@ In this section, we'll walk through building a Launchable for Transfer2.5. Setti
 
 1. Find the **Launchable** section of the Brev website.
 
-   ![Launchables Menu](images/brev01-launchable-menu.png)
+    ![Launchables Menu](images/brev01-launchable-menu.png)
 
 2. Click the **Create Launchable** button.
 
-   ![Create Launchable Button](images/brev02-create-launchable-button.png)
+    ![Create Launchable Button](images/brev02-create-launchable-button.png)
 
 3. Enter the Cosmos Transfer URL: [https://github.com/nvidia-cosmos/cosmos-transfer2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
-   ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
+    ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
 
 4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example, we use the [sample script](#sample-setup-script) from later in this guide, which sets up a Python virtual environment with all dependencies.
 
-   ![Add setup script](images/brev04-create-launchable-step2.png)
+    ![Add setup script](images/brev04-create-launchable-step2.png)
 
 5. If you don't need Jupyter, remove it. You can open other ports on Brev if you plan to set up a custom server.
 
-   ![Add ports](images/brev05-create-launchable-step3.png)
+    ![Add ports](images/brev05-create-launchable-step3.png)
 
-   > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
+    > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
 
 6. Choose the desired level of compute. The screenshot below shows filtering on 8+ GPUs to run the Transfer 2.5 AV Multiview model.
 
-   ![Choose compute](images/brev06-create-launchable-step4.png)
+    ![Choose compute](images/brev06-create-launchable-step4.png)
 
 7. Name your Launchable and configure access.
 
-   ![Name and configure access](images/brev07-create-launchable-step5.png)
+    ![Name and configure access](images/brev07-create-launchable-step5.png)
 
-   You're ready to deploy! Notice the **View All Options** link, which allows you to change the compute.
+    You're ready to deploy! Notice the **View All Options** link, which allows you to change the compute.
 
-   ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
+    ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
 
 8. After deploying, visit the instance page to find helpful examples of how to connect to the instance. Note the **Delete** button, which allows you to delete your instance when you're done. This can also be done with the `brev delete` CLI command. Instances that support pause and resume can be stopped from this page.
 
-   ![Instance page](images/brev09-instance-page.png)
+    ![Instance page](images/brev09-instance-page.png)
 
 9. Connect to the instance. Activate the virtual environment and log in to HuggingFace to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
 
-   ```bash
-   cd ~/cosmos-transfer2.5
-   source .venv/bin/activate
-   hf auth login
-   ```
+    ```bash
+    cd ~/cosmos-transfer2.5
+    source .venv/bin/activate
+    hf auth login
+    ```
 
 ### Sample setup script
 
