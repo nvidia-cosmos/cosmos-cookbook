@@ -8,14 +8,14 @@
 NVIDIA Brev is an excellent platform for experimenting with Cosmos. Follow these steps to get started:
 
 1. Create an account at [https://brev.nvidia.com](https://brev.nvidia.com).
-2. Install the CLI as shown in [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html).
-3. Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) to get a feel for the platform. The Brev documentation is also linked from the Brev page.
+2. Install the CLI as shown in the [Brev CLI reference](https://docs.nvidia.com/brev/cli/cli-overview).
+3. Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/getting-started/quickstart) to get a feel for the platform. The Brev documentation is also linked from the Brev page.
 
 While lower spec GPUs can work for some workflows, GPUs with 80GB of VRAM are recommended for Cosmos. Also note that the Transfer 2.5 AV Multiview model requires instances with 8 or more GPUs.
 
 ## The cheat code: Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/concepts/launchables) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 In this section, we'll walk through building a Launchable for Transfer2.5. Setting up Predict2.5 is nearly identical to the below steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. You can also set up both models at once.
 

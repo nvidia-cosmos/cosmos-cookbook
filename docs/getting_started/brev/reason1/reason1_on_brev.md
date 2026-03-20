@@ -17,13 +17,13 @@ This guide walks you through setting up NVIDIA Cosmos Reason 1 on a [Brev](https
 ## Prerequisites
 
 - [Sign up](https://login.brev.nvidia.com/signin) for a Brev account.
-- Install the Brev CLI as described in the [Brev CLI documentation](https://docs.nvidia.com/brev/latest/brev-cli.html).
-- Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) to get a feel for the platform.
+- Install the Brev CLI as described in the [Brev CLI reference](https://docs.nvidia.com/brev/cli/cli-overview).
+- Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/getting-started/quickstart) to get a feel for the platform.
 - A Hugging Face account with access to [Cosmos-Reason1-7B](https://huggingface.co/nvidia/Cosmos-Reason1-7B).
 
 ## The cheat code: Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/concepts/launchables) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 > **Note**: Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below as Brev changes over time.
 
@@ -152,7 +152,7 @@ scp -r ubuntu@<your-instance-ip>:~/cosmos-reason1/examples/post_training_hf/outp
 - [Cosmos Reason 1 GitHub Repository](https://github.com/nvidia-cosmos/cosmos-reason1)
 - [Cosmos Reason 1 Model on Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason1-7B)
 - [Cosmos Reason 1 Paper](https://arxiv.org/abs/2503.15558)
-- [Brev Documentation](https://docs.nvidia.com/brev/latest/about-brev.html)
+- [Brev Documentation](https://docs.nvidia.com/brev/)
 - [Cosmos Cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
 
 ## Support
