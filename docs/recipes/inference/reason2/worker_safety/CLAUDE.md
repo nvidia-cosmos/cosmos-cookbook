@@ -23,7 +23,7 @@ huggingface-cli download nvidia/Cosmos-Reason2-2B --repo-type model --local-dir 
 
 ## Compute Requirements
 
-1x NVIDIA GPU with 40GB+ VRAM (tested on RTX PRO 4500 Blackwell 48GB / A100 80GB), CUDA 13.0
+1x NVIDIA GPU with 40GB+ VRAM (tested on A100 80GB / H100 80GB), CUDA 12.8+ (driver >= 555)
 
 ## Execution
 
@@ -68,11 +68,11 @@ uvx hf auth login
 
 Enter your HF token. Token must have access to `nvidia/Cosmos-Reason2-2B` (accept the NVIDIA Open Model License at huggingface.co first).
 
-### Step 5 — Create Python environment (CUDA 13.0)
+### Step 5 — Create Python environment (CUDA 12.8)
 
 ```bash
 cd $HOME/cosmos-reason2
-uv sync --extra cu130
+uv sync --extra cu128
 source .venv/bin/activate
 python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
 ```
