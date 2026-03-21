@@ -60,13 +60,15 @@ cd $HOME/cosmos-reason2
 git lfs pull
 ```
 
-### Step 4 — HuggingFace authentication (interactive — requires HF token)
+### Step 4 — HuggingFace authentication
 
 ```bash
-uvx hf auth login
+export HF_TOKEN=hf_...          # paste your token here
+huggingface-cli login --token "$HF_TOKEN"
 ```
 
-Enter your HF token. Token must have access to `nvidia/Cosmos-Reason2-2B` (accept the NVIDIA Open Model License at huggingface.co first).
+Token must have access to `nvidia/Cosmos-Reason2-2B` (accept the NVIDIA Open Model License at huggingface.co first).
+For interactive login: `uvx hf auth login`
 
 ### Step 5 — Create Python environment (CUDA 12.8)
 
