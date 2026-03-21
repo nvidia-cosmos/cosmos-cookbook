@@ -1,0 +1,95 @@
+# Brev Launchable — IntBot Showcase with Cosmos Reason 2
+#
+# One-click GPU environment for:
+#   Egocentric social and physical reasoning using Cosmos-Reason2-8B
+#   Benchmarked against Qwen3-VL-8B-Instruct
+#
+# Hardware: 1x H100-80GB (required — 8B model needs 80 GB VRAM)
+# Driver:   >= 555 (CUDA 12.8 support required)
+# Runtime:  ~25-35 min setup on first launch (16 GB model download from HuggingFace)
+
+name: cosmos-reason2-intbot-showcase
+description: >
+  Egocentric social and physical reasoning for humanoid robots using Cosmos-Reason2-8B.
+  Evaluates gesture recognition, object trajectory, and social context understanding
+  against Qwen3-VL-8B-Instruct baseline.
+
+instance:
+  gpu: "H100-80GB"
+  gpu_count: 1
+  disk_gb: 150    # 8B model weights (~16GB) + cosmos-reason2 + cosmos-cookbook
+
+base_image: "nvcr.io/nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04"
+
+setup: |
+  #!/bin/bash
+  set -e
+
+  # System dependencies
+  apt-get update -q
+  apt-get install -y -q curl ffmpeg git git-lfs python3-pip
+  git lfs install
+
+  # Install uv
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  source $HOME/.local/bin/env
+
+  # Clone cosmos-reason2
+  git clone https://github.com/nvidia-cosmos/cosmos-reason2.git /workspace/cosmos-reason2
+  cd /workspace/cosmos-reason2
+  git lfs pull
+
+  # Clone cosmos-cookbook (recipe assets)
+  git clone https://github.com/nv-asotelo/cosmos-cookbook.git /workspace/cosmos-cookbook
+  cd /workspace/cosmos-cookbook
+  git checkout recipe/cosmos-reason2-deploy-overlay
+
+  # Create Python environment (CUDA 12.8)
+  cd /workspace/cosmos-reason2
+  uv sync --extra cu128
+  source .venv/bin/activate
+
+  # Install JupyterLab
+  pip install -U jupyterlab ipykernel
+  python -m ipykernel install --user --name cosmos-reason2 \
+    --display-name "Python (cosmos-reason2)"
+
+  echo ""
+  echo "=========================================="
+  echo "Setup complete."
+  echo ""
+  echo "Next: authenticate with HuggingFace to download the model:"
+  echo "  huggingface-cli login"
+  echo ""
+  echo "Then run the demo:"
+  echo "  bash /workspace/cosmos-cookbook/deploy/reason2/intbot_showcase/demo.sh"
+  echo "=========================================="
+
+ports:
+  - 8888   # JupyterLab
+
+launch: |
+  cd /workspace/cosmos-reason2
+  source .venv/bin/activate
+  jupyter lab \
+    --ip=0.0.0.0 \
+    --port=8888 \
+    --no-browser \
+    --allow-root \
+    --NotebookApp.token='' \
+    --NotebookApp.password=''
+
+notes: |
+  Before running the demo:
+
+  1. Open a terminal in JupyterLab and authenticate with HuggingFace:
+       huggingface-cli login
+     (Requires NVIDIA Open Model License accepted at huggingface.co/nvidia/Cosmos-Reason2-8B)
+
+  2. Run the demo script:
+       bash /workspace/cosmos-cookbook/deploy/reason2/intbot_showcase/demo.sh
+
+  Output: Per-test inference results comparing Cosmos-Reason2-8B vs Qwen3-VL-8B-Instruct
+  on egocentric gesture, trajectory, and social context tasks.
+
+  Recipe: docs/recipes/inference/reason2/intbot_showcase/inference.md
