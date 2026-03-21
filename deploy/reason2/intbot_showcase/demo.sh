@@ -137,7 +137,7 @@ TESTS = [
     },
     {
         "id": "shared-attention",
-        "image": "Test4-shared-attention.jpeg",
+        "image": "Test4-Two-Person-Handshake.jpeg",
         "prompt": (
             "The camera view is my view as a robot. "
             "Are these two people talking to each other, or are they looking at me? "
