@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| Cosmos Transfer2.5 | Post-training | Spatially-conditioned multiview AV video generation with world scenario map control | domain:autonomous-vehicles, technique:post-training |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| Cosmos Transfer2.5 | Post-training | Spatially-conditioned multiview AV video generation with world scenario map control | domain:autonomous-vehicles, technique:post-training | 12-22-2025 |
 
 Generating realistic multi-camera autonomous vehicle videos requires precise spatial control to ensure consistency across viewpoints and adherence to road geometry. While Cosmos Predict 2.5 Multiview can generate plausible multiview videos from text prompts, it lacks the ability to control specific spatial layouts, lane configurations, and object placements needed for AV simulation and testing scenarios.​
 

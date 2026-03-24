@@ -3,9 +3,9 @@
 > **Authors:** [Aidan Ladenburg](https://www.linkedin.com/in/aidanladenburg/) • [Adityan Jothi](https://www.linkedin.com/in/adityan-jothi-23a229105)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning | domain:smart-city, technique:data-generation |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5), [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1), CARLA Simulator | End-to-End | Photorealistic synthetic data generation for traffic scenarios with VLM fine-tuning | domain:smart-city, technique:data-generation | 11-26-2025 |
 
 > **Prerequisites**: This workflow requires specific API keys, system requirements, and workflow inputs. See the [Prerequisites](#prerequisites) section below before starting.
 

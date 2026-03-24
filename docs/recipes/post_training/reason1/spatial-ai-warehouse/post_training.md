@@ -3,9 +3,9 @@
 > **Authors:** [Xiaolong Li](https://www.linkedin.com/in/xiaolong-li19/) • [Chintan Shah](https://www.linkedin.com/in/chintan-shah-7b7a2811/) • [Tomasz Kornuta](https://www.linkedin.com/in/tkornuta/)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Spatial AI for warehouse environments | domain:industrial, technique:post-training |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Spatial AI for warehouse environments | domain:industrial, technique:post-training | 10-09-2025 |
 
 ## Overview
 

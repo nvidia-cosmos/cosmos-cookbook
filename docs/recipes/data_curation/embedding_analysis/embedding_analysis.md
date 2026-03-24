@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
 |-----------|--------------|--------------|----------|----------|
-| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Video clustering by Time Series K-Means on embedding vector trajectories | domain:industrial, technique:data-curation-annotation | |
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Video clustering by Time Series K-Means on embedding vector trajectories | domain:industrial, technique:data-curation-annotation | 01-06-2026 |
 
 ## Overview
 

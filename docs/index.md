@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD037 MD038 --><!-- Embedded CSS `* {` triggers MD037; JS template literals in <script> trigger MD038 / crash markdownlint-cli -->
+
   <style>
     * {
       margin: 0;
@@ -389,8 +391,23 @@
       background: #76b900;
       color: white;
     }
+
+    /* Dark mode: All Recipes search bar */
+    [data-md-color-scheme="dark"] .search-input {
+      background: #1a1a1a;
+      color: #e8e8e8;
+      border-color: #444;
+    }
+
+    [data-md-color-scheme="dark"] .search-input::placeholder {
+      color: #a0a0a0;
+    }
+
+    [data-md-color-scheme="dark"] .search-input:focus {
+      border-color: #76b900;
+    }
   </style>
-  
+
   <div class="landing-page-wrapper">
   <!-- Hero Section -->
   <div class="hero">
@@ -401,7 +418,7 @@
   <!-- Featured Recipes Section (loaded dynamically: partner/cookoff tags, 6 most recent by date) -->
   <div class="container">
     <div class="section-header">Featured Recipes</div>
-    
+
     <div class="featured-recipes" id="featuredRecipesContainer">
       <!-- Populated by JavaScript from recipes.json -->
       <div class="featured-recipes-loading" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Loading featured recipes…</div>
@@ -410,7 +427,7 @@
     <!-- All Recipes Section -->
     <div class="all-recipes-section">
       <div class="section-header">All Recipes</div>
-      
+
       <div class="filter-controls">
         <button class="filter-btn active" data-domain="all">All</button>
         <button class="filter-btn" data-domain="domain:robotics">Robotics</button>
@@ -493,7 +510,7 @@
     // Render recipe table
     function renderRecipeTable() {
       const tbody = document.getElementById('recipeTableBody');
-      
+
       // Show loading state
       if (isLoading) {
         tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #999;">Loading recipes...</td></tr>';
@@ -504,7 +521,7 @@
       const filteredRecipes = getFilteredRecipes();
       const totalItems = filteredRecipes.length;
       const totalPages = Math.ceil(totalItems / itemsPerPage);
-      
+
       // Adjust current page if necessary
       if (currentPage > totalPages) {
         currentPage = Math.max(1, totalPages);
@@ -533,7 +550,7 @@
       });
 
       // Update pagination info
-      document.getElementById('paginationInfo').textContent = 
+      document.getElementById('paginationInfo').textContent =
         `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
 
       // Update page select

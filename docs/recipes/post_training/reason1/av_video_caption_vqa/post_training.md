@@ -4,9 +4,9 @@
 [DeLesley Hutchins](https://www.linkedin.com/in/delesley-hutchins-ba48532b) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/) • [Amol Fasale](https://www.linkedin.com/in/amolfasale/) (**NVIDIA**) •
 [Joseph Wang](https://www.linkedin.com/in/josephwangphd/) (**Uber**)
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training | 10-13-2025 |
 
 ## Overview
 
