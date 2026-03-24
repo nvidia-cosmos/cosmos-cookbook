@@ -12,9 +12,9 @@ It shows how to prompt a Video Language Model (VLM) to ignore environmental nois
 Main notebook: [Worker Safety notebook](worker_safety.ipynb)
 Setup guide: [Setup and system requirements](setup.md)
 
-| **Model** | **Workload** | **Use Case** | **Tags** |
-|-----------|--------------|--------------|----------|
-| [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Zero-shot safety compliance and hazard detection | domain:industrial, technique:reasoning |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [**Cosmos Reason 2**](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Zero-shot safety compliance and hazard detection | domain:industrial, technique:reasoning | 02-04-2026 |
 
 <video src="assets/overload_forklift.webm" controls width="720"></video>
 

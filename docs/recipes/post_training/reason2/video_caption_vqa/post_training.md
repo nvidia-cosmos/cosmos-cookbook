@@ -8,7 +8,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
 |-----------|--------------|--------------|----------|----------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training, general:partner-recipe | |
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training, general:partner-recipe | 01-05-2026 |
 
 ## Overview
 

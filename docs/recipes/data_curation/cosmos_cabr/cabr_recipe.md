@@ -7,9 +7,9 @@
 
 This recipe shows how to replace Cosmos Curator's default CPU-based, fixed-bitrate video encoder with Beamr CABR (Content-Adaptive Bitrate) — a GPU-accelerated encoding solution that analyzes content complexity to deliver the minimum bitrate needed at any target quality level. The result: significantly smaller files, faster GPU-accelerated encoding, and validated invariance across Curator's downstream stages.
 
-| Tool | Workload | Use Case |
-|------|----------|----------|
-| Beamr CABR + Cosmos Curator | Data Curation | Content-adaptive video compression for curation pipelines |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| Beamr CABR + [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Content-adaptive video compression for curation pipelines | technique:data-curation-annotation | 03-16-2026 |
 
 ## Prerequisites
 
