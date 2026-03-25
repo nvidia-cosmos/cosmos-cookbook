@@ -116,7 +116,7 @@
       line-height: 1.3;
     }
 
-    /* All Recipes Section */
+    /* Content filter table section */
     .all-recipes-section {
       margin-top: 1.5rem;
     }
@@ -145,36 +145,6 @@
       color: white;
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(118, 185, 0, 0.3);
-    }
-
-    .filter-controls {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .filter-btn {
-      padding: 0.4rem 1rem;
-      background: white;
-      border: 2px solid #76b900;
-      color: #76b900;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: inherit;
-      pointer-events: auto;
-      position: relative;
-    }
-
-    .filter-btn:hover,
-    .filter-btn.active {
-      background: #76b900;
-      color: white;
     }
 
     /* Search Bar */
@@ -210,6 +180,8 @@
       align-items: center;
       margin-bottom: 0.5rem;
       padding: 0 0.25rem;
+      position: relative;
+      z-index: 3;
     }
 
     .pagination-info {
@@ -221,6 +193,9 @@
       display: flex;
       gap: 0.5rem;
       align-items: center;
+      position: relative;
+      z-index: 3;
+      pointer-events: auto;
     }
 
     .page-select {
@@ -340,14 +315,6 @@
         grid-template-columns: 1fr;
       }
 
-      .filter-controls {
-        flex-direction: column;
-      }
-
-      .filter-btn {
-        width: 100%;
-      }
-
       .recipe-table {
         font-size: 0.75rem;
       }
@@ -392,7 +359,7 @@
       color: white;
     }
 
-    /* Dark mode: All Recipes search bar */
+    /* Dark mode: Content Filter search bar */
     [data-md-color-scheme="dark"] .search-input {
       background: #1a1a1a;
       color: #e8e8e8;
@@ -424,35 +391,26 @@
       <div class="featured-recipes-loading" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Loading featured recipes…</div>
     </div>
 
-    <!-- All Recipes Section -->
+    <!-- Content Filter: rows follow left sidebar Content Type / Domain / Technique -->
     <div class="all-recipes-section">
-      <div class="section-header">All Recipes</div>
-
-      <div class="filter-controls">
-        <button class="filter-btn active" data-domain="all">All</button>
-        <button class="filter-btn" data-domain="domain:robotics">Robotics</button>
-        <button class="filter-btn" data-domain="domain:autonomous-vehicles">Autonomous Vehicles</button>
-        <button class="filter-btn" data-domain="domain:smart-city">Smart City</button>
-        <button class="filter-btn" data-domain="domain:industrial">Industrial</button>
-        <button class="filter-btn" data-domain="domain:medical">Medical</button>
-      </div>
+      <div class="section-header">Content Filter</div>
 
       <div class="search-container">
-        <input type="text" class="search-input" placeholder="🔍 Search for recipes, concepts, and prompts" id="searchInput">
+        <input type="text" class="search-input" placeholder="🔍 Search for recipes, concepts, and prompts" id="landing-all-recipes-search" autocomplete="off">
       </div>
 
       <div class="pagination-controls">
         <div class="pagination-info">
-          <span id="paginationInfo">1 - 15 of 282 items</span>
+          <span id="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
         </div>
         <div class="pagination-buttons">
-          <button class="pagination-btn" id="firstPage">|&lt;</button>
-          <button class="pagination-btn" id="prevPage">&lt;</button>
-          <select class="page-select" id="pageSelect">
+          <button type="button" class="pagination-btn" id="landing-all-recipes-first" data-pagination="first" aria-label="First page">|&lt;</button>
+          <button type="button" class="pagination-btn" id="landing-all-recipes-prev" data-pagination="prev" aria-label="Previous page">&lt;</button>
+          <select class="page-select" id="landing-all-recipes-page-select" aria-label="Page">
             <option value="1">1</option>
           </select>
-          <button class="pagination-btn" id="nextPage">&gt;</button>
-          <button class="pagination-btn" id="lastPage">&gt;|</button>
+          <button type="button" class="pagination-btn" id="landing-all-recipes-next" data-pagination="next" aria-label="Next page">&gt;</button>
+          <button type="button" class="pagination-btn" id="landing-all-recipes-last" data-pagination="last" aria-label="Last page">&gt;|</button>
         </div>
       </div>
 
@@ -465,7 +423,7 @@
             <th>Date</th>
           </tr>
         </thead>
-        <tbody id="recipeTableBody">
+        <tbody id="landing-all-recipes-tbody">
           <!-- Recipes will be populated by JavaScript -->
         </tbody>
       </table>
@@ -473,15 +431,34 @@
   </div>
 
   <script>
-    // Recipe data - loaded dynamically from recipes.json
+    // Recipe data - loaded dynamically from recipes.json; nav pages from nav_pages.json (same as sidebar)
     let recipes = [];
+    let navPagesData = null;
 
     // State
     let currentPage = 1;
     let itemsPerPage = 15;
-    let currentDomain = 'all';
     let searchQuery = '';
     let isLoading = true;
+
+    /** Featured slot 6 / Prompt Guide: listed under Get Started in the content filter, not under Recipes. */
+    var FEATURED_SLOT_6_URL = 'getting_started/prompt_guide/reason_guide.html';
+
+    (function applyLandingQueryParamsFromUrl() {
+      try {
+        const params = new URLSearchParams(window.location.search || '');
+        const content = params.get('content');
+        if (content === 'getting_started' || content === 'recipes' || content === 'core_concepts') {
+          localStorage.setItem('navFilter', content);
+        }
+        if (params.has('domain')) {
+          localStorage.setItem('navDomainFilter', params.get('domain') || 'all');
+        }
+        if (params.has('technique')) {
+          localStorage.setItem('navTechniqueFilter', params.get('technique') || 'all');
+        }
+      } catch (e) {}
+    })();
 
     // Escape for safe insertion into HTML (prevents XSS when using innerHTML)
     function escapeHtml(str) {
@@ -494,138 +471,35 @@
         .replace(/'/g, '&#39;');
     }
 
-    // Get filtered recipes (by Domain tag, same as sidebar; recipes with no tags appear under all domains)
-    function getFilteredRecipes() {
-      return recipes.filter(recipe => {
-        const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
-        const matchesDomain = currentDomain === 'all' || tags.length === 0 || tags.indexOf(currentDomain) !== -1;
-        const matchesSearch = searchQuery === '' ||
-          recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (recipe.type && recipe.type.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (recipe.category && recipe.category.toLowerCase().includes(searchQuery.toLowerCase()));
-        return matchesDomain && matchesSearch;
-      });
+    function getContentType() {
+      return localStorage.getItem('navFilter') || 'recipes';
     }
 
-    // Render recipe table
-    function renderRecipeTable() {
-      const tbody = document.getElementById('recipeTableBody');
-
-      // Show loading state
-      if (isLoading) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #999;">Loading recipes...</td></tr>';
-        document.getElementById('paginationInfo').textContent = 'Loading...';
-        return;
+    /** Apply Domain / Technique filters to recipe list (same rules as former sidebar list). */
+    function filterRecipesBySidebarTags(list) {
+      let pages = list.slice();
+      const domainTag = localStorage.getItem('navDomainFilter') || 'all';
+      const techniqueTag = localStorage.getItem('navTechniqueFilter') || 'all';
+      if (domainTag && domainTag !== 'all') {
+        pages = pages.filter(function (p) {
+          const tags = p.tags;
+          if (!tags || !Array.isArray(tags)) return true;
+          if (tags.length === 0) return true;
+          return tags.indexOf(domainTag) !== -1;
+        });
       }
-
-      const filteredRecipes = getFilteredRecipes();
-      const totalItems = filteredRecipes.length;
-      const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-      // Adjust current page if necessary
-      if (currentPage > totalPages) {
-        currentPage = Math.max(1, totalPages);
+      if (techniqueTag && techniqueTag !== 'all') {
+        pages = pages.filter(function (p) {
+          const tags = p.tags;
+          if (!tags || !Array.isArray(tags)) return true;
+          if (tags.length === 0) return true;
+          return tags.indexOf(techniqueTag) !== -1;
+        });
       }
-
-      const startIdx = (currentPage - 1) * itemsPerPage;
-      const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
-      const pageRecipes = filteredRecipes.slice(startIdx, endIdx);
-
-      tbody.innerHTML = '';
-
-      pageRecipes.forEach(recipe => {
-        const row = document.createElement('tr');
-        const url = escapeHtml(recipe.url);
-        const name = escapeHtml(recipe.name);
-        const workload = escapeHtml(recipe.workload);
-        const category = escapeHtml(recipe.category);
-        const date = escapeHtml(recipe.date);
-        row.innerHTML = `
-          <td><a href="${url}">${name}</a></td>
-          <td>${workload}</td>
-          <td>${category}</td>
-          <td>${date}</td>
-        `;
-        tbody.appendChild(row);
-      });
-
-      // Update pagination info
-      document.getElementById('paginationInfo').textContent =
-        `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
-
-      // Update page select
-      const pageSelect = document.getElementById('pageSelect');
-      pageSelect.innerHTML = '';
-      for (let i = 1; i <= totalPages; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        if (i === currentPage) option.selected = true;
-        pageSelect.appendChild(option);
-      }
-
-      // Update button states
-      document.getElementById('firstPage').disabled = currentPage === 1;
-      document.getElementById('prevPage').disabled = currentPage === 1;
-      document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
-      document.getElementById('lastPage').disabled = currentPage === totalPages || totalPages === 0;
+      return pages;
     }
 
-    // Domain filter buttons (match sidebar Domain options) — use delegation so every button stays clickable
-    const filterControls = document.querySelector('.all-recipes-section .filter-controls');
-    if (filterControls) {
-      filterControls.addEventListener('click', (e) => {
-        const btn = e.target.closest('.filter-btn');
-        if (!btn) return;
-        document.querySelectorAll('.all-recipes-section .filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentDomain = btn.getAttribute('data-domain') || 'all';
-        currentPage = 1;
-        renderRecipeTable();
-      });
-    }
-
-    // Search input
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      searchQuery = e.target.value;
-      currentPage = 1;
-      renderRecipeTable();
-    });
-
-    // Pagination buttons
-    document.getElementById('firstPage').addEventListener('click', () => {
-      currentPage = 1;
-      renderRecipeTable();
-    });
-
-    document.getElementById('prevPage').addEventListener('click', () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderRecipeTable();
-      }
-    });
-
-    document.getElementById('nextPage').addEventListener('click', () => {
-      const totalPages = Math.ceil(getFilteredRecipes().length / itemsPerPage);
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderRecipeTable();
-      }
-    });
-
-    document.getElementById('lastPage').addEventListener('click', () => {
-      const totalPages = Math.ceil(getFilteredRecipes().length / itemsPerPage);
-      currentPage = totalPages;
-      renderRecipeTable();
-    });
-
-    document.getElementById('pageSelect').addEventListener('change', (e) => {
-      currentPage = parseInt(e.target.value);
-      renderRecipeTable();
-    });
-
-    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column
-    // Accepts numeric (MM-DD-YYYY or YYYY-MM-DD) or locale style (e.g. "Jan 1, 2026")
+    /** Parse recipe Date column for sorting (MM-DD-YYYY, YYYY-MM-DD, or locale). */
     function parseDateForSort(dateStr) {
       if (!dateStr || typeof dateStr !== 'string') return 0;
       var s = dateStr.trim();
@@ -641,7 +515,214 @@
       var parsed = Date.parse(s);
       return (parsed !== undefined && !isNaN(parsed)) ? parsed : 0;
     }
-    var FEATURED_SLOT_6_URL = 'getting_started/prompt_guide/reason_guide.html';
+
+    /** Rows for the Content Filter table: driven by left sidebar Content Type / Domain / Technique. */
+    function getFilteredRows() {
+      const q = searchQuery.toLowerCase();
+      const contentType = getContentType();
+
+      function matchesSearchRecipe(recipe) {
+        return searchQuery === '' ||
+          (recipe.name && recipe.name.toLowerCase().includes(q)) ||
+          (recipe.type && recipe.type.toLowerCase().includes(q)) ||
+          (recipe.category && recipe.category.toLowerCase().includes(q));
+      }
+
+      function matchesSearchNavPage(page) {
+        const title = (page.title || '').toLowerCase();
+        const url = (page.url || '').toLowerCase();
+        return searchQuery === '' || title.includes(q) || url.includes(q);
+      }
+
+      if (contentType === 'recipes') {
+        const searched = recipes
+          .filter(matchesSearchRecipe)
+          .filter(function (r) { return r.url !== FEATURED_SLOT_6_URL; });
+        const filtered = filterRecipesBySidebarTags(searched);
+        filtered.sort(function (a, b) {
+          return parseDateForSort(b.date) - parseDateForSort(a.date);
+        });
+        return filtered;
+      }
+
+      if (!navPagesData || typeof navPagesData !== 'object') return [];
+
+      if (contentType === 'getting_started') {
+        const pages = Array.isArray(navPagesData.getting_started) ? navPagesData.getting_started : [];
+        return pages.filter(matchesSearchNavPage);
+      }
+
+      if (contentType === 'core_concepts') {
+        const pages = Array.isArray(navPagesData.core_concepts) ? navPagesData.core_concepts : [];
+        return pages.filter(matchesSearchNavPage);
+      }
+
+      return [];
+    }
+
+    /** Get Started / Concepts: two-column table; Recipes: four columns. */
+    function isNavOnlyContentType() {
+      const t = getContentType();
+      return t === 'getting_started' || t === 'core_concepts';
+    }
+
+    function tableColspan() {
+      return isNavOnlyContentType() ? 2 : 4;
+    }
+
+    function syncTableHeader() {
+      const headRow = document.querySelector('.all-recipes-section .recipe-table thead tr');
+      if (!headRow) return;
+      if (isNavOnlyContentType()) {
+        headRow.innerHTML = '<th>Recipe Name</th><th>Category</th>';
+      } else {
+        headRow.innerHTML = '<th>Recipe Name</th><th>Workload</th><th>Category</th><th>Date</th>';
+      }
+    }
+
+    // Render recipe table
+    function renderRecipeTable() {
+      const tbody = document.getElementById('landing-all-recipes-tbody');
+      if (!tbody) return;
+
+      syncTableHeader();
+
+      // Show loading state
+      if (isLoading) {
+        tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Loading recipes...</td></tr>';
+        const pi = document.getElementById('landing-all-recipes-pagination-info');
+        if (pi) pi.textContent = 'Loading...';
+        return;
+      }
+
+      const filteredRows = getFilteredRows();
+      const totalItems = filteredRows.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+      // Adjust current page if necessary
+      if (currentPage > totalPages) {
+        currentPage = Math.max(1, totalPages);
+      }
+
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
+      const pageSlice = filteredRows.slice(startIdx, endIdx);
+      const contentType = getContentType();
+
+      tbody.innerHTML = '';
+
+      pageSlice.forEach((rowItem) => {
+        const tr = document.createElement('tr');
+        if (contentType === 'recipes') {
+          const recipe = rowItem;
+          const url = escapeHtml(recipe.url);
+          const name = escapeHtml(recipe.name);
+          const workload = escapeHtml(recipe.workload);
+          const category = escapeHtml(recipe.category);
+          const date = escapeHtml(recipe.date);
+          tr.innerHTML = `
+          <td><a href="${url}">${name}</a></td>
+          <td>${workload}</td>
+          <td>${category}</td>
+          <td>${date}</td>
+        `;
+        } else {
+          const page = rowItem;
+          const url = escapeHtml(page.url);
+          const title = escapeHtml(page.title);
+          const sectionLabel = contentType === 'getting_started' ? 'Getting Started' : 'Core Concepts';
+          tr.innerHTML = `
+          <td><a href="${url}">${title}</a></td>
+          <td>${sectionLabel}</td>
+        `;
+        }
+        tbody.appendChild(tr);
+      });
+
+      // Update pagination info
+      const pi = document.getElementById('landing-all-recipes-pagination-info');
+      if (pi) {
+        pi.textContent = totalItems === 0
+          ? '0 items'
+          : `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
+      }
+
+      // Update page select
+      const pageSelect = document.getElementById('landing-all-recipes-page-select');
+      if (pageSelect) {
+        pageSelect.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+          const option = document.createElement('option');
+          option.value = String(i);
+          option.textContent = String(i);
+          if (i === currentPage) option.selected = true;
+          pageSelect.appendChild(option);
+        }
+      }
+
+      // Update button states
+      const setDisabled = (id, dis) => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = dis;
+      };
+      setDisabled('landing-all-recipes-first', currentPage === 1 || totalPages === 0);
+      setDisabled('landing-all-recipes-prev', currentPage === 1 || totalPages === 0);
+      setDisabled('landing-all-recipes-next', currentPage === totalPages || totalPages === 0);
+      setDisabled('landing-all-recipes-last', currentPage === totalPages || totalPages === 0);
+    }
+
+    window.addEventListener('cosmos-content-filter-changed', () => {
+      currentPage = 1;
+      renderRecipeTable();
+    });
+
+    function wireAllRecipesControls() {
+      const section = document.querySelector('.all-recipes-section');
+      if (!section) return;
+
+      const searchEl = document.getElementById('landing-all-recipes-search');
+      if (searchEl) {
+        searchEl.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          currentPage = 1;
+          renderRecipeTable();
+        });
+      }
+
+      // Delegation: works even if theme reorders nodes; avoids duplicate-ID issues
+      section.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pagination-btn[data-pagination]');
+        if (!btn || !section.contains(btn)) return;
+        const action = btn.getAttribute('data-pagination');
+        const totalPages = Math.ceil(getFilteredRows().length / itemsPerPage);
+        if (action === 'first') {
+          currentPage = 1;
+        } else if (action === 'prev' && currentPage > 1) {
+          currentPage--;
+        } else if (action === 'next' && currentPage < totalPages) {
+          currentPage++;
+        } else if (action === 'last') {
+          currentPage = totalPages > 0 ? totalPages : 1;
+        }
+        renderRecipeTable();
+      });
+
+      section.addEventListener('change', (e) => {
+        if (e.target && e.target.id === 'landing-all-recipes-page-select') {
+          const n = parseInt(e.target.value, 10);
+          currentPage = Number.isFinite(n) && n > 0 ? n : 1;
+          renderRecipeTable();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', wireAllRecipesControls);
+    } else {
+      wireAllRecipesControls();
+    }
+
+    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column
     function getFeaturedRecipes() {
       var hasPartnerOrCookoff = function(r) {
         var tags = r.tags && Array.isArray(r.tags) ? r.tags : [];
@@ -721,29 +802,40 @@
       });
     }
 
-    // Load recipes from JSON and initialize
+    // Load recipes.json and nav_pages.json (aligns with sidebar filters)
     async function loadRecipes() {
       try {
-        const response = await fetch('recipes.json');
-        if (!response.ok) {
-          throw new Error(`Failed to load recipes: ${response.status}`);
+        const [recipesRes, navRes] = await Promise.all([
+          fetch('recipes.json'),
+          fetch('nav_pages.json'),
+        ]);
+        if (!recipesRes.ok) {
+          throw new Error(`Failed to load recipes: ${recipesRes.status}`);
         }
-        recipes = await response.json();
+        recipes = await recipesRes.json();
+        if (navRes.ok) {
+          navPagesData = await navRes.json();
+        } else {
+          navPagesData = { getting_started: [], recipes: [], core_concepts: [] };
+        }
         isLoading = false;
         renderRecipeTable();
         renderFeaturedRecipes();
       } catch (error) {
         console.error('Error loading recipes:', error);
         isLoading = false;
+        navPagesData = navPagesData || { getting_started: [], recipes: [], core_concepts: [] };
         renderFeaturedRecipes();
-        // Show error message in table
-        const tbody = document.getElementById('recipeTableBody');
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #999;">Failed to load recipes. Please try refreshing the page.</td></tr>';
-        document.getElementById('paginationInfo').textContent = '0 items';
+        const tbody = document.getElementById('landing-all-recipes-tbody');
+        if (tbody) {
+          syncTableHeader();
+          tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Failed to load recipes. Please try refreshing the page.</td></tr>';
+        }
+        const pi = document.getElementById('landing-all-recipes-pagination-info');
+        if (pi) pi.textContent = '0 items';
       }
     }
 
-    // Initial load
     loadRecipes();
   </script>
   </div><!-- End landing-page-wrapper -->

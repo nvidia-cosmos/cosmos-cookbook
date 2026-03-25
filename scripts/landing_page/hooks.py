@@ -499,6 +499,8 @@ def on_post_build(config):
         print("\n=== Building nav_pages.json ===")
         nav_pages["getting_started"] = scan_section_pages(site_dir, "getting_started")
         nav_pages["core_concepts"] = scan_section_pages(site_dir, "core_concepts")
+        # Prompt Guide is under getting_started in the content filter; keep it in recipes.json for Featured only.
+        prompt_guide_reason_url = "getting_started/prompt_guide/reason_guide.html"
         nav_pages["recipes"] = [
             {
                 "title": r["name"],
@@ -507,6 +509,7 @@ def on_post_build(config):
                 "tags": r.get("tags") if isinstance(r.get("tags"), list) else [],
             }
             for r in recipes
+            if r.get("url") != prompt_guide_reason_url
         ]
     except Exception as e:
         print(f"\n⚠ Build step error (writing partial nav_pages.json): {e}")
