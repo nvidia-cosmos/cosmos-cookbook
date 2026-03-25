@@ -47,9 +47,24 @@ function OptanonWrapper() {
 <script type="text/javascript">_satellite.pageBottom();</script>
 {% set _nav_depth = (page.url.count('/') + 1) if page.url else 0 %}
 <script>window.NAV_PAGES_JSON_REL = "{{ ('../' * _nav_depth) }}nav_pages.json";</script>
-{% set _url_after_protocol = config.site_url.split('://')[1] if config.site_url and '://' in config.site_url else '' %}
-{% set _first_path_segment = _url_after_protocol.split('/')[1] if _url_after_protocol and _url_after_protocol.split('/')|length > 1 else '' %}
-<script>window.MKDOCS_BASE_PATH = "{{ '/' + _first_path_segment if _first_path_segment else '' }}";</script>
+{# Full path after hostname (e.g. /cosmos/cookbook), not only the first segment — avoids /cosmos vs /cosmos/cookbook on internal mirrors. #}
+{% set _su = (config.site_url or '') | trim %}
+{% if _su and '://' in _su %}
+{% set _parts_proto = _su.split('://') %}
+{% set _host_path = _parts_proto[1] if (_parts_proto | length) > 1 else _su %}
+{% set _hp = _host_path.split('/', 1) %}
+{% if _hp | length > 1 %}
+{% set _mk_base = '/' + _hp[1] %}
+{% else %}
+{% set _mk_base = '' %}
+{% endif %}
+{% else %}
+{% set _mk_base = '' %}
+{% endif %}
+<script>window.MKDOCS_BASE_PATH = "{{ _mk_base.rstrip('/') }}";</script>
+{% if _su %}
+<script>window.COSMOS_LANDING_HREF = "{{ _su.rstrip('/') }}/";</script>
+{% endif %}
 
 <!-- Custom Navigation Filter: sidebar list is generated from nav_pages.json (like index.md filtered list) -->
 <script>
@@ -63,6 +78,9 @@ function OptanonWrapper() {
       return segments.length ? '../'.repeat(segments.length) : '';
     }
     function getRootIndexHref() {
+      if (typeof window.COSMOS_LANDING_HREF === 'string' && window.COSMOS_LANDING_HREF.length > 0) {
+        return window.COSMOS_LANDING_HREF;
+      }
       var basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
       if (basePath) {
         return basePath.replace(/\/$/, '') + '/index.html';
@@ -75,7 +93,23 @@ function OptanonWrapper() {
       var depth = segments.length;
       return (depth ? '../'.repeat(depth) : './') + 'index.html';
     }
+    /** Path comparable across /foo/, /foo/index.html, and COSMOS_LANDING_HREF (works when MKDOCS_BASE_PATH is unset on CI). */
+    function normalizePathForHome(path) {
+      var p = String(path || '/');
+      p = p.replace(/\/index\.html?$/i, '');
+      p = p.replace(/\/+$/, '');
+      return p === '' ? '/' : p;
+    }
+
     function isLandingPage() {
+      if (typeof window.COSMOS_LANDING_HREF === 'string' && window.COSMOS_LANDING_HREF.length > 0) {
+        try {
+          var landing = new URL(window.COSMOS_LANDING_HREF);
+          var cur = normalizePathForHome(window.location.pathname || '/');
+          var land = normalizePathForHome(landing.pathname || '/');
+          if (cur === land) return true;
+        } catch (e) {}
+      }
       var p = window.location.pathname || '';
       var base = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && p.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
       var rel = base ? p.slice(base.length) : p;
