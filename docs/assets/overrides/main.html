@@ -57,6 +57,193 @@ function OptanonWrapper() {
     const navList = document.querySelector('.md-nav--primary > .md-nav__list') || document.querySelector('.md-nav--primary .md-nav__list');
     if (!navList) return;
 
+    function getBaseToRoot() {
+      const pathname = (window.location.pathname || '/').replace(/^\//, '').replace(/\/$/, '');
+      const segments = pathname ? pathname.split('/').filter(Boolean) : [];
+      return segments.length ? '../'.repeat(segments.length) : '';
+    }
+    function getRootIndexHref() {
+      var basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      if (basePath) {
+        return basePath.replace(/\/$/, '') + '/index.html';
+      }
+      var pathname = (window.location.pathname || '/').replace(/\/$/, '');
+      var segments = pathname.replace(/^\//, '').split('/').filter(Boolean);
+      if (segments.length && segments[segments.length - 1].indexOf('.') !== -1) {
+        segments = segments.slice(0, -1);
+      }
+      var depth = segments.length;
+      return (depth ? '../'.repeat(depth) : './') + 'index.html';
+    }
+    function isLandingPage() {
+      var p = window.location.pathname || '';
+      var base = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && p.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      var rel = base ? p.slice(base.length) : p;
+      rel = rel.replace(/^\//, '').replace(/\/$/, '');
+      return rel === '' || rel === 'index.html';
+    }
+
+    function applyLandingQueryParamsFromUrl() {
+      if (!isLandingPage()) return;
+      try {
+        var params = new URLSearchParams(window.location.search || '');
+        var content = params.get('content');
+        if (content === 'getting_started' || content === 'recipes' || content === 'core_concepts') {
+          localStorage.setItem('navFilter', content);
+        }
+        if (params.has('domain')) {
+          localStorage.setItem('navDomainFilter', params.get('domain') || 'all');
+        }
+        if (params.has('technique')) {
+          localStorage.setItem('navTechniqueFilter', params.get('technique') || 'all');
+        }
+      } catch (e) {}
+    }
+    applyLandingQueryParamsFromUrl();
+
+    var CONTENT_TYPE_LABELS = { getting_started: 'Get Started', recipes: 'Recipes', core_concepts: 'Concepts' };
+    var DOMAIN_LABEL_MAP = {
+      all: 'All',
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous Vehicles',
+      'domain:smart-city': 'Smart City',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical'
+    };
+    var TECHNIQUE_LABEL_MAP = {
+      all: 'All',
+      'technique:data-augmentation': 'Data Augmentation',
+      'technique:data-generation': 'Data Generation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-Training',
+      'technique:pre-training': 'Pre-Training',
+      'technique:data-curation-annotation': 'Data Curation & Annotation',
+      'technique:distillation': 'Distillation'
+    };
+
+    function getSiteRelativePath() {
+      var p = window.location.pathname || '';
+      var base = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && p.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      var rel = base ? p.slice(base.length) : p;
+      return rel.replace(/^\//, '').replace(/\/$/, '');
+    }
+
+    function findRecipeNavEntry(navData, relPath) {
+      if (!navData || !Array.isArray(navData.recipes)) return null;
+      var dec = decodeURIComponent(relPath);
+      for (var i = 0; i < navData.recipes.length; i++) {
+        var r = navData.recipes[i];
+        if (!r || !r.url) continue;
+        if (r.url === relPath || r.url === dec) return r;
+      }
+      return null;
+    }
+
+    function pickDomainTechniqueFromTags(tags) {
+      var domain = 'all';
+      var technique = 'all';
+      var domainLabel = 'All';
+      var techniqueLabel = 'All';
+      if (!tags || !Array.isArray(tags)) {
+        return { domain: domain, technique: technique, domainLabel: domainLabel, techniqueLabel: techniqueLabel };
+      }
+      tags.forEach(function(t) {
+        if (!t || typeof t !== 'string') return;
+        if (domain === 'all' && t.indexOf('domain:') === 0) {
+          domain = t;
+          domainLabel = DOMAIN_LABEL_MAP[t] || t.replace(/^domain:/, '').replace(/-/g, ' ');
+        }
+        if (technique === 'all' && t.indexOf('technique:') === 0) {
+          technique = t;
+          techniqueLabel = TECHNIQUE_LABEL_MAP[t] || t.replace(/^technique:/, '').replace(/-/g, ' ');
+        }
+      });
+      return { domain: domain, technique: technique, domainLabel: domainLabel, techniqueLabel: techniqueLabel };
+    }
+
+    function getSectionFromPath() {
+      var path = window.location.pathname || '';
+      if (path.indexOf('/recipes/') !== -1 || /\/recipes\/?$/.test(path)) return 'recipes';
+      if (path.indexOf('getting_started') !== -1 || path.indexOf('get_started') !== -1) return 'getting_started';
+      if (path.indexOf('core_concepts') !== -1) return 'core_concepts';
+      return null;
+    }
+
+    function buildHomeHrefWithParams(content, domain, technique) {
+      var u = new URL(getRootIndexHref(), window.location.href);
+      u.searchParams.set('content', content);
+      u.searchParams.set('domain', domain || 'all');
+      u.searchParams.set('technique', technique || 'all');
+      return u.pathname + u.search;
+    }
+
+    function derivePageFilters(navData) {
+      var section = getSectionFromPath();
+      var contentType = section || (localStorage.getItem('navFilter') || 'getting_started');
+      if (contentType !== 'getting_started' && contentType !== 'recipes' && contentType !== 'core_concepts') {
+        contentType = 'getting_started';
+      }
+      var domain = 'all';
+      var technique = 'all';
+      var domainLabel = 'All';
+      var techniqueLabel = 'All';
+      if (section === 'recipes') {
+        var rel = getSiteRelativePath();
+        var entry = findRecipeNavEntry(navData, rel);
+        if (entry && entry.tags && entry.tags.length) {
+          var picked = pickDomainTechniqueFromTags(entry.tags);
+          domain = picked.domain;
+          technique = picked.technique;
+          domainLabel = picked.domainLabel;
+          techniqueLabel = picked.techniqueLabel;
+        }
+      }
+      return {
+        contentType: contentType,
+        contentLabel: CONTENT_TYPE_LABELS[contentType] || contentType,
+        domain: domain,
+        technique: technique,
+        domainLabel: domainLabel,
+        techniqueLabel: techniqueLabel
+      };
+    }
+
+    function escapeHtmlAttr(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+
+    function escapeHtmlText(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function renderCompactFilterSection(sectionEl, navData) {
+      var d = derivePageFilters(navData);
+      var hrefContent = d.contentType === 'recipes'
+        ? buildHomeHrefWithParams('recipes', d.domain, d.technique)
+        : buildHomeHrefWithParams(d.contentType, 'all', 'all');
+      var hrefDomain = buildHomeHrefWithParams('recipes', d.domain, 'all');
+      var hrefTechnique = buildHomeHrefWithParams('recipes', 'all', d.technique);
+      sectionEl.innerHTML =
+        '<nav class="md-nav" aria-label="Page filters">' +
+        '<ul class="cosmos-compact-filters md-nav__list">' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Content Type:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefContent) + '">' + escapeHtmlText(d.contentLabel) + '</a>' +
+        '</li>' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Domain:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefDomain) + '">' + escapeHtmlText(d.domainLabel) + '</a>' +
+        '</li>' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Technique:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefTechnique) + '">' + escapeHtmlText(d.techniqueLabel) + '</a>' +
+        '</li>' +
+        '</ul></nav>';
+    }
+
     // Hide MkDocs nav items that belong to Getting Started, Recipes, or Concepts (we replace them with a data-driven list)
     const navItems = Array.from(navList.children).filter(item => item.classList.contains('md-nav__item'));
     navItems.forEach(item => {
@@ -88,11 +275,16 @@ function OptanonWrapper() {
       }
     });
 
-    // Build filter section with Content Type buttons and container for dynamic list
+    // Build filter section: full controls on landing; compact summary + links elsewhere
     const filterSection = document.createElement('li');
-    filterSection.className = 'md-nav__item md-nav__item--section';
+    filterSection.className = 'md-nav__item md-nav__item--section' + (isLandingPage() ? '' : ' md-nav__item--compact-filters');
     filterSection.style.cssText = 'border-top: 1px solid var(--md-default-fg-color--lightest); margin-top: 1rem; padding-top: 0.5rem;';
-    filterSection.innerHTML = `
+    if (!isLandingPage()) {
+      filterSection.innerHTML =
+        '<nav class="md-nav" aria-label="Page filters"><ul class="md-nav__list"><li class="md-nav__item">' +
+        '<span class="md-nav__link cosmos-compact-filters-placeholder">Loading…</span></li></ul></nav>';
+    } else {
+      filterSection.innerHTML = `
       <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none;">
         <span class="md-ellipsis">Content Type</span>
       </label>
@@ -221,9 +413,9 @@ function OptanonWrapper() {
             </li>
           </ul>
         </div>
-        <ul id="dynamic-nav-list" class="md-nav__list"></ul>
       </nav>
     `;
+    }
 
     // Insert filter section before Glossary
     const navItemsArray = Array.from(navList.children);
@@ -247,65 +439,56 @@ function OptanonWrapper() {
       glossaryItem.style.paddingTop = '0.5rem';
     }
 
+    (function insertHomeNavItem() {
+      var homeLi = document.createElement('li');
+      homeLi.className = 'md-nav__item md-nav__item--home';
+      var homeLink = document.createElement('a');
+      homeLink.className = 'md-nav__link md-nav__link--home' + (isLandingPage() ? ' md-nav__link--active' : '');
+      homeLink.href = getRootIndexHref();
+      var iconWrap = document.createElement('span');
+      iconWrap.className = 'md-nav__home-icon';
+      iconWrap.setAttribute('aria-hidden', 'true');
+      iconWrap.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.25em" height="1.25em" fill="currentColor" focusable="false"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>';
+      var textSpan = document.createElement('span');
+      textSpan.className = 'md-ellipsis';
+      textSpan.textContent = 'Home';
+      homeLink.appendChild(iconWrap);
+      homeLink.appendChild(textSpan);
+      homeLi.appendChild(homeLink);
+      navList.insertBefore(homeLi, navList.firstChild);
+      Array.prototype.forEach.call(navList.querySelectorAll('.md-nav__item'), function(item) {
+        if (item.classList.contains('md-nav__item--home')) return;
+        var a = item.querySelector(':scope > a.md-nav__link[href]');
+        if (!a) return;
+        var t = (a.textContent || '').trim().replace(/\s+/g, ' ').toLowerCase();
+        var href = (a.getAttribute('href') || '').split('#')[0];
+        var rootIndex = href === 'index.html' || href === './' || href === '.' || href.endsWith('/index.html') || /^(\.\.\/)+index\.html$/.test(href);
+        if (t === 'home' && rootIndex) {
+          item.style.display = 'none';
+        }
+      });
+    })();
+
     let navData = null;
     let currentContentFilter = 'getting_started';
-    // Path from current page to site root (for links and for resolving nav_pages.json).
-    function getBaseToRoot() {
-      const pathname = (window.location.pathname || '/').replace(/^\//, '').replace(/\/$/, '');
-      const segments = pathname ? pathname.split('/').filter(Boolean) : [];
-      return segments.length ? '../'.repeat(segments.length) : '';
-    }
     function getNavJsonUrl() {
       var rel = (typeof window.NAV_PAGES_JSON_REL === 'string' && window.NAV_PAGES_JSON_REL) ? window.NAV_PAGES_JSON_REL : (getBaseToRoot() + 'nav_pages.json');
       return new URL(rel, window.location.href).href;
     }
 
+    function dispatchContentFilterChange(sectionKey) {
+      var key = sectionKey || currentContentFilter || 'getting_started';
+      window.dispatchEvent(new CustomEvent('cosmos-content-filter-changed', {
+        detail: {
+          contentType: key,
+          domain: localStorage.getItem('navDomainFilter') || 'all',
+          technique: localStorage.getItem('navTechniqueFilter') || 'all'
+        }
+      }));
+    }
+
     function renderNavList(sectionKey) {
-      const container = document.getElementById('dynamic-nav-list');
-      if (!container || !navData) return;
-      var pages = Array.isArray(navData[sectionKey]) ? navData[sectionKey] : [];
-      // Filter by domain and technique for Recipes when a specific value is selected. "All" = no filter.
-      if (sectionKey === 'recipes' && typeof pages[0] === 'object') {
-        var domainTag = localStorage.getItem('navDomainFilter') || 'all';
-        if (domainTag && domainTag !== 'all') {
-          pages = pages.filter(function(p) {
-            var tags = p.tags;
-            if (!tags || !Array.isArray(tags)) return true;
-            if (tags.length === 0) return true;
-            return tags.indexOf(domainTag) !== -1;
-          });
-        }
-        var techniqueTag = localStorage.getItem('navTechniqueFilter') || 'all';
-        if (techniqueTag && techniqueTag !== 'all') {
-          pages = pages.filter(function(p) {
-            var tags = p.tags;
-            if (!tags || !Array.isArray(tags)) return true;
-            if (tags.length === 0) return true;
-            return tags.indexOf(techniqueTag) !== -1;
-          });
-        }
-      }
-      const basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
-      const linkPrefix = basePath ? basePath + (basePath.endsWith('/') ? '' : '/') : getBaseToRoot();
-      const currentPath = (window.location.pathname || '').replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
-      container.innerHTML = '';
-      pages.forEach(function(page) {
-        const li = document.createElement('li');
-        li.className = 'md-nav__item';
-        const a = document.createElement('a');
-        a.className = 'md-nav__link';
-        a.href = linkPrefix + page.url;
-        const span = document.createElement('span');
-        span.className = 'md-ellipsis';
-        span.textContent = page.title;
-        a.appendChild(span);
-        const pagePath = new URL(linkPrefix + page.url, window.location.href).pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') || '/';
-        if (currentPath === pagePath || (pagePath && currentPath.endsWith(pagePath))) {
-          a.classList.add('md-nav__link--active');
-        }
-        li.appendChild(a);
-        container.appendChild(li);
-      });
+      dispatchContentFilterChange(sectionKey);
     }
 
     function setFilterActive(filterType) {
@@ -349,55 +532,52 @@ function OptanonWrapper() {
       renderNavList(filterType);
     }
 
-    function getSectionFromPath() {
-      const path = window.location.pathname || '';
-      if (path.includes('getting_started') || path.includes('get_started')) return 'getting_started';
-      if (path.includes('/recipes/') || path.includes('/recipes')) return 'recipes';
-      if (path.includes('core_concepts')) return 'core_concepts';
-      return null;
+    if (isLandingPage()) {
+      document.querySelectorAll('.content-filter').forEach(function(filter) {
+        filter.addEventListener('click', function(e) {
+          e.preventDefault();
+          applyFilter(this.getAttribute('data-filter'));
+        });
+      });
+      document.querySelectorAll('.domain-filter').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var domainTag = this.getAttribute('data-domain');
+          setDomainActive(domainTag);
+          renderNavList(currentContentFilter);
+        });
+      });
+      document.querySelectorAll('.technique-filter').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var techniqueTag = this.getAttribute('data-technique');
+          setTechniqueActive(techniqueTag);
+          renderNavList(currentContentFilter);
+        });
+      });
     }
-
-    document.querySelectorAll('.content-filter').forEach(function(filter) {
-      filter.addEventListener('click', function(e) {
-        e.preventDefault();
-        applyFilter(this.getAttribute('data-filter'));
-      });
-    });
-    document.querySelectorAll('.domain-filter').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var domainTag = this.getAttribute('data-domain');
-        setDomainActive(domainTag);
-        renderNavList(currentContentFilter);
-      });
-    });
-    document.querySelectorAll('.technique-filter').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var techniqueTag = this.getAttribute('data-technique');
-        setTechniqueActive(techniqueTag);
-        renderNavList(currentContentFilter);
-      });
-    });
 
     function loadNavAndApply() {
       const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
       applyFilter(initialFilter);
     }
+
+    function onNavDataReady(data) {
+      navData = data || { getting_started: [], recipes: [], core_concepts: [] };
+      if (isLandingPage()) {
+        applyLandingQueryParamsFromUrl();
+        loadNavAndApply();
+      } else {
+        renderCompactFilterSection(filterSection, navData);
+      }
+    }
     if (typeof window.__NAV_PAGES__ === 'object' && window.__NAV_PAGES__ != null) {
-      navData = window.__NAV_PAGES__;
-      loadNavAndApply();
+      onNavDataReady(window.__NAV_PAGES__);
     } else {
       fetch(getNavJsonUrl())
         .then(function(r) { return r.ok ? r.json() : null; })
-        .then(function(data) {
-          navData = data || { getting_started: [], recipes: [], core_concepts: [] };
-          loadNavAndApply();
-        })
-        .catch(function() {
-          navData = { getting_started: [], recipes: [], core_concepts: [] };
-          loadNavAndApply();
-        });
+        .then(function(data) { onNavDataReady(data); })
+        .catch(function() { onNavDataReady(null); });
     }
   });
 </script>
@@ -588,6 +768,51 @@ function OptanonWrapper() {
   }
   [data-md-color-scheme="slate"] .recipe-tag {
     background: rgba(255, 255, 255, 0.1);
+  }
+  .md-nav__item--home {
+    margin-top: 0.65rem;
+  }
+  .md-nav__item--home .md-nav__link--home {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 1.12em;
+    font-weight: 600;
+  }
+  .md-nav__item--home .md-nav__home-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    opacity: 0.92;
+    line-height: 0;
+  }
+  .md-nav__item--home .md-nav__home-icon svg {
+    display: block;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters {
+    list-style: none;
+    padding: 0.15rem 0 0;
+    margin: 0;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__row {
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+    font-size: 0.7rem;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__row:last-child {
+    margin-bottom: 0;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__label {
+    color: var(--md-default-fg-color--light);
+    margin-right: 0.2rem;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__link {
+    display: inline;
+    padding: 0;
+    font-weight: 600;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters-placeholder {
+    font-size: 0.7rem;
+    color: var(--md-default-fg-color--light);
   }
 </style>
 {% endblock %}

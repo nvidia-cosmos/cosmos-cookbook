@@ -4,7 +4,7 @@
 
 | **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
 |-----------|--------------|--------------|----------|----------|
-| [Cosmos-Reason2-2B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Edge-deployed VLM perception for social robots | | 03-16-2026 |
+| [Cosmos-Reason2-2B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Edge-deployed VLM perception for social robots | domain:robotics, technique:reasoning | 03-16-2026 |
 
 ## Introduction
 
