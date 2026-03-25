@@ -391,10 +391,8 @@
       <div class="featured-recipes-loading" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Loading featured recipes…</div>
     </div>
 
-    <!-- Content Filter: rows follow left sidebar Content Type / Domain / Technique -->
+    <!-- Main table: rows follow left sidebar Content Type / Domain / Technique -->
     <div class="all-recipes-section">
-      <div class="section-header">Content Filter</div>
-
       <div class="search-container">
         <input type="text" class="search-input" placeholder="🔍 Search for recipes, concepts, and prompts" id="landing-all-recipes-search" autocomplete="off">
       </div>
