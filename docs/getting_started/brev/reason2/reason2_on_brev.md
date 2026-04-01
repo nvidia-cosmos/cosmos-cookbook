@@ -17,13 +17,13 @@ This guide walks you through setting up NVIDIA [Cosmos Reason 2](https://hugging
 ## Prerequisites
 
 - A Brev account ([sign up here](https://brev.dev))
-- Install the CLI as shown in [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html)
-- See the quickstart to get a feel for the platform: [https://docs.nvidia.com/brev/latest/quick-start.html](https://docs.nvidia.com/brev/latest/quick-start.html). The handy Brev docs are linked from the Brev page too.
+- Install the CLI as shown in the [Brev CLI reference](https://docs.nvidia.com/brev/cli/cli-overview).
+- See the [Brev Quickstart](https://docs.nvidia.com/brev/getting-started/quickstart) to get a feel for the platform. The handy Brev docs are linked from the Brev page too.
 - A Hugging Face account with access to [Cosmos Reason 2](https://huggingface.co/nvidia/Cosmos-Reason2-8B)
 
 ## The cheat code: Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/concepts/launchables) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 > **Note:** Cosmos and Brev are evolving. You may encounter minor UI and other differences in the steps below over time.
 

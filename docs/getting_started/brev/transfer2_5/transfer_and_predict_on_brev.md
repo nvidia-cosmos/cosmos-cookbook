@@ -8,14 +8,14 @@
 NVIDIA Brev is an excellent platform for experimenting with Cosmos. Follow these steps to get started:
 
 1. Create an account at [https://brev.nvidia.com](https://brev.nvidia.com).
-2. Install the CLI as shown in [https://docs.nvidia.com/brev/latest/brev-cli.html](https://docs.nvidia.com/brev/latest/brev-cli.html).
-3. Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/latest/quick-start.html) to get a feel for the platform. The Brev documentation is also linked from the Brev page.
+2. Install the CLI as shown in the [Brev CLI reference](https://docs.nvidia.com/brev/cli/cli-overview).
+3. Refer to the [Brev Quickstart](https://docs.nvidia.com/brev/getting-started/quickstart) to get a feel for the platform. The Brev documentation is also linked from the Brev page.
 
 While lower spec GPUs can work for some workflows, GPUs with 80GB of VRAM are recommended for Cosmos. Also note that the Transfer 2.5 AV Multiview model requires instances with 8 or more GPUs.
 
 ## The cheat code: Launchables
 
-[Launchables](https://docs.nvidia.com/brev/latest/launchables.html) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
+[Launchables](https://docs.nvidia.com/brev/concepts/launchables) are an easy way to bundle a hardware and software environment into an easily shareable link. Once you've dialed in your Cosmos setup, a Launchable is the most convenient way to save time and share your configuration with others.
 
 In this section, we'll walk through building a Launchable for Transfer2.5. Setting up Predict2.5 is nearly identical to the below steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. You can also set up both models at once.
 
@@ -23,56 +23,58 @@ In this section, we'll walk through building a Launchable for Transfer2.5. Setti
 
 1. Find the **Launchable** section of the Brev website.
 
-   ![Launchables Menu](images/brev01-launchable-menu.png)
+    ![Launchables Menu](images/brev01-launchable-menu.png)
 
 2. Click the **Create Launchable** button.
 
-   ![Create Launchable Button](images/brev02-create-launchable-button.png)
+    ![Create Launchable Button](images/brev02-create-launchable-button.png)
 
 3. Enter the Cosmos Transfer URL: [https://github.com/nvidia-cosmos/cosmos-transfer2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
 
-   ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
+    ![Cosmos Transfer URL](images/brev03-create-launchable-step1.png)
 
-4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example, we use the [sample script](#sample-setup-script) from later in this guide, which builds the Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container.
+4. Add a setup script. Brev will run it after cloning the repo. This script should follow the setup instructions from the [Cosmos Transfer2.5 repo](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md). In this example, we use the [sample script](#sample-setup-script) from later in this guide, which sets up a Python virtual environment with all dependencies.
 
-   ![Add setup script](images/brev04-create-launchable-step2.png)
+    ![Add setup script](images/brev04-create-launchable-step2.png)
 
 5. If you don't need Jupyter, remove it. You can open other ports on Brev if you plan to set up a custom server.
 
-   ![Add ports](images/brev05-create-launchable-step3.png)
+    ![Add ports](images/brev05-create-launchable-step3.png)
 
-   > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
+    > Setting up Predict2.5 is nearly identical to the above steps. Refer to the [Predict2.5 setup guide](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/docs/setup.md) and adjust the setup script accordingly. Want to setup both at once? Nothing's stopping you. The world is your oyster.
 
 6. Choose the desired level of compute. The screenshot below shows filtering on 8+ GPUs to run the Transfer 2.5 AV Multiview model.
 
-   ![Choose compute](images/brev06-create-launchable-step4.png)
+    ![Choose compute](images/brev06-create-launchable-step4.png)
 
 7. Name your Launchable and configure access.
 
-   ![Name and configure access](images/brev07-create-launchable-step5.png)
+    ![Name and configure access](images/brev07-create-launchable-step5.png)
 
-   You're ready to deploy! Notice the **View All Options** link, which allows you to change the compute.
+    You're ready to deploy! Notice the **View All Options** link, which allows you to change the compute.
 
-   ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
+    ![Ready to deploy](images/brev08-launchable-ready-to-deploy.png)
 
 8. After deploying, visit the instance page to find helpful examples of how to connect to the instance. Note the **Delete** button, which allows you to delete your instance when you're done. This can also be done with the `brev delete` CLI command. Instances that support pause and resume can be stopped from this page.
 
-   ![Instance page](images/brev09-instance-page.png)
+    ![Instance page](images/brev09-instance-page.png)
 
-9. Connect to the instance. This example runs the generated `run_transfer2.5_docker.sh` script to start the container. Once the prompt appears, run `hf auth login` to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
+9. Connect to the instance. Activate the virtual environment and log in to HuggingFace to enable checkpoint downloads. Transfer2.5 won't work without the checkpoints.
 
-   ![Docker prompt](images/brev10-docker-prompt.png)
-
-   > The Docker entrypoint pulls dependencies, and since share the Python virtual environment (venv) folder is shared with the container, subsequent runs will already have the deps installed.
+    ```bash
+    cd ~/cosmos-transfer2.5
+    source .venv/bin/activate
+    hf auth login
+    ```
 
 ### Sample setup script
 
-The sample setup script below builds a Transfer2.5 Docker image and creates another script in the home folder of your Brev environment to launch the container. Once inside the container, run the `hf auth login` command to enable checkpoint downloads. Refer to the [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) section for more info.
+The sample setup script below sets up a Python virtual environment with all Transfer2.5 dependencies. It automatically detects the CUDA version, moves large data to the biggest available disk, and installs the CUDA toolkit if needed. After setup, run `hf auth login` to enable checkpoint downloads. Refer to the [Transfer2.5 Downloading Checkpoints](https://github.com/nvidia-cosmos/cosmos-transfer2.5/blob/main/docs/setup.md#downloading-checkpoints) section for more info.
 
 ```bash
 #!/bin/bash
 
-# Detect the ultimate Brev user. We will run the script as them.
+# Detect the non-root user that Brev creates
 if id "nvidia" &>/dev/null; then
   RUN_USER="nvidia"
 elif id "shadeform" &>/dev/null; then
@@ -83,40 +85,131 @@ else
   RUN_USER="root"
 fi
 
-sudo -u $RUN_USER bash -lc '
-# Install required packages
-sudo apt-get update && sudo apt-get install -y git-lfs bc
+sudo -u "$RUN_USER" bash -l <<'SETUP_EOF'
+# Install required system packages
+sudo apt-get update && sudo apt-get install -y git-lfs bc curl ffmpeg libx11-dev tree wget
 
-# Move into $HOME/cosmos-transfer2.5
-cd $HOME/cosmos-transfer2.5
+REPO_NAME="cosmos-transfer2.5"
+REPO_HOME="$HOME/$REPO_NAME"
 
-# Initialize git-lfs and pull LFS files to ensure complete clone
+# ---------------------------------------------------------------------------
+# Disk space management: find the biggest writable disk.
+# $HOME is not guaranteed to have enough space on all Brev instance types.
+# ---------------------------------------------------------------------------
+BIG_MOUNT=$(
+  { find / -maxdepth 1 -mindepth 1 -type d -writable \
+      -not -name tmp -not -name proc -not -name sys \
+      -not -name dev -not -name run 2>/dev/null; echo "$HOME"; } | \
+  while IFS= read -r d; do
+    size=$(df -x tmpfs -x devtmpfs -x squashfs --output=size "$d" 2>/dev/null | tail -1 | tr -d ' ')
+    [ -n "$size" ] && echo "$size $d"
+  done | sort -rn | head -1 | awk '{print $2}'
+)
+
+if [ -z "$BIG_MOUNT" ]; then
+  echo "Warning: no writable large mount found, falling back to HOME."
+  BIG_MOUNT="$HOME"
+fi
+
+# Compare filesystems: only move if the repo is on a smaller disk
+REPO_FS=$(df --output=target "$REPO_HOME" | tail -1 | tr -d ' ')
+BIG_FS=$(df --output=target "$BIG_MOUNT" | tail -1 | tr -d ' ')
+
+echo "Best writable dir:  $BIG_MOUNT (filesystem: $BIG_FS)"
+echo "Repo filesystem:    $REPO_FS"
+
+if [ "$REPO_FS" != "$BIG_FS" ]; then
+  STORE="$BIG_MOUNT/$(id -un)"
+  REPO_DST="$STORE/$REPO_NAME"
+  echo "Moving repo to big disk: $REPO_DST"
+
+  # Move entire repo to the big disk, symlink from HOME for convenience
+  mkdir -p "$STORE"
+  mv "$REPO_HOME" "$REPO_DST"
+  ln -sfn "$REPO_DST" "$REPO_HOME"
+
+  # Redirect HuggingFace cache (model weights) to the big disk
+  HF_CACHE="$STORE/huggingface"
+  mkdir -p "$HF_CACHE" "$HOME/.cache"
+  rm -rf "$HOME/.cache/huggingface"
+  ln -sfn "$HF_CACHE" "$HOME/.cache/huggingface"
+
+  echo "Repo:              $REPO_DST (symlinked from ~/$REPO_NAME)"
+  echo "HuggingFace cache: $HF_CACHE (symlinked from ~/.cache/huggingface)"
+else
+  echo "Repo is already on the largest disk. No relocation needed."
+fi
+
+# ---------------------------------------------------------------------------
+# git-lfs: pull any LFS objects from the repo Brev already cloned for us
+# ---------------------------------------------------------------------------
+cd "$REPO_HOME"
 git lfs install
 git lfs pull
 
-# Build the Cosmos Transfer 2.5 docker image
-docker build --ulimit nofile=131071:131071 -f Dockerfile . -t transfer2.5
+# ---------------------------------------------------------------------------
+# Install uv (fast Python package/project manager)
+# ---------------------------------------------------------------------------
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source "$HOME/.local/bin/env"
 
-# Create folders to share HuggingFace files and .venv with the container
-HF_HOME=$HOME/.cache/huggingface
-VENV_DIR=$HOME/.venv_transfer2.5
-mkdir -p $HF_HOME
-mkdir -p $VENV_DIR
+# ---------------------------------------------------------------------------
+# Install HuggingFace CLI (used to authenticate and download checkpoints)
+# ---------------------------------------------------------------------------
+uv tool install -U huggingface_hub
 
-# Find out number of GPUs and CPUs
+# ---------------------------------------------------------------------------
+# Auto-detect CUDA version and select the matching extras
+# ---------------------------------------------------------------------------
+CUDA_VER=$(nvidia-smi | grep -oP 'CUDA Version: \K[0-9]+\.[0-9]+' | head -1)
+CUDA_MAJOR=$(echo "$CUDA_VER" | cut -d. -f1)
+if [ "${CUDA_MAJOR:-12}" -ge 13 ] 2>/dev/null; then
+  CUDA_EXTRA="cu130"
+else
+  CUDA_EXTRA="cu128"
+fi
+echo "Using CUDA extra: $CUDA_EXTRA"
+
+# ---------------------------------------------------------------------------
+# Install the CUDA toolkit if the system doesn't already have one.
+# Some providers ship only the GPU driver without the full toolkit, which
+# causes runtime failures (libcudart.so, libnvrtc.so, etc. not found).
+# ---------------------------------------------------------------------------
+if ! ldconfig -p | grep -q libcudart.so; then
+  CUDA_PKG_VER=$(echo "$CUDA_VER" | tr '.' '-')
+  echo "System CUDA toolkit not found. Installing cuda-toolkit-${CUDA_PKG_VER}..."
+  sudo apt-get install -y "cuda-toolkit-${CUDA_PKG_VER}"
+else
+  echo "System CUDA toolkit already installed."
+fi
+
+# ---------------------------------------------------------------------------
+# Set OMP_NUM_THREADS: distribute CPU cores evenly across GPU worker processes.
+# Without this, torchrun defaults to 1 thread per process, leaving cores idle.
+# ---------------------------------------------------------------------------
 NUM_GPUS=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
 NUM_CPUS=$(nproc)
+OMP_NUM_THREADS=$(( NUM_CPUS / NUM_GPUS ))
+echo "export NUM_GPUS=$NUM_GPUS" >> "$HOME/.bashrc"
+echo "export OMP_NUM_THREADS=$OMP_NUM_THREADS" >> "$HOME/.bashrc"
+echo "Set OMP_NUM_THREADS=$OMP_NUM_THREADS ($NUM_CPUS CPUs / $NUM_GPUS GPUs)"
 
-# Set OMP_NUM_THREADS to FLOOR(NUM_CPUS/NUM_GPUS)
-OMP_NUM_THREADS=$(echo "scale=0; $NUM_CPUS/$NUM_GPUS" | bc)
+# ---------------------------------------------------------------------------
+# Create the Python virtual environment and install all dependencies.
+# ---------------------------------------------------------------------------
+uv python install
+uv sync --extra="$CUDA_EXTRA"
 
-# Create script to run the container
-VOL="-v $HF_HOME:/root/.cache/huggingface -v $HOME/cosmos-transfer2.5:/workspace -v $VENV_DIR:/workspace/.venv"
-ENV="-e HF_HOME=/root/.cache/huggingface -e OMP_NUM_THREADS=$OMP_NUM_THREADS -e NUM_GPUS=$NUM_GPUS"
-RUN_CMD="docker run -it --rm --ipc=host --name transfer2.5 $VOL $ENV transfer2.5"
-echo "$RUN_CMD" > $HOME/run_transfer2.5_docker.sh
-chmod +x $HOME/run_transfer2.5_docker.sh
-'
+echo ""
+echo "================================================================"
+echo "Setup complete!"
+echo ""
+echo "To get started:"
+echo "  1. cd ~/$REPO_NAME"
+echo "  2. source .venv/bin/activate"
+echo "  3. hf auth login   # Required for model checkpoint downloads"
+echo "================================================================"
+SETUP_EOF
 ```
 
 ## Notes and Tips
@@ -124,7 +217,7 @@ chmod +x $HOME/run_transfer2.5_docker.sh
 - We recommend using GPUs with 80GB+ of VRAM.
 - We recommend using instances with a 2 or more terabytes of storage. With less than 2 terabytes, you might run out of space.
 - Don't forget to shutdown (i.e. delete) your instances when you're done.
-- As of November 2025, most instances suitable for Transfer 2.5 and Predict 2.5 do not support the pause and resume (start/stop) feature.
+- As of March 2026, most instances suitable for Transfer 2.5 and Predict 2.5 do not support the pause and resume (start/stop) feature.
 - Note the Brev deployment time estimate when evaluating instance types (e.g. "Ready in 7minutes").
 - Deployment can fail on occasion, and the driver version might not be what you expect when trying a new provider. For these reasons, set aside 3x your estimated ready time and you will be happy 😀
 - Your favorite cloud provider might not always be available.
