@@ -3,9 +3,9 @@
 > **Authors:** [Hao Wang](https://www.linkedin.com/in/pkuwanghao/) • NVIDIA Cosmos Curator Team
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate) | Data Curation | Video data curation for Predict 2 post-training | domain:industrial, technique:data-curation-annotation | 10-29-2025 |
 
 ## Overview
 

@@ -6,9 +6,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Wafer Map Anomaly Classification |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | Wafer Map Anomaly Classification | domain:industrial, technique:post-training | 12-12-2025 |
 
 In the heart of every modern electronic device lies a silicon chip, the product of a manufacturing process so intricate that even a microscopic defect can mean the difference between success and failure. As semiconductor devices become more complex, reliably detecting and classifying defects has become a critical bottleneck for the industry.
 

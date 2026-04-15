@@ -45,4 +45,808 @@ function OptanonWrapper() {
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">_satellite.pageBottom();</script>
+{% set _nav_depth = (page.url.count('/') + 1) if page.url else 0 %}
+<script>window.NAV_PAGES_JSON_REL = "{{ ('../' * _nav_depth) }}nav_pages.json";</script>
+{# Full path after hostname (e.g. /cosmos/cookbook), not only the first segment — avoids /cosmos vs /cosmos/cookbook on internal mirrors. #}
+{% set _su = (config.site_url or '') | trim %}
+{% if _su and '://' in _su %}
+{% set _parts_proto = _su.split('://') %}
+{% set _host_path = _parts_proto[1] if (_parts_proto | length) > 1 else _su %}
+{% set _hp = _host_path.split('/', 1) %}
+{% if _hp | length > 1 %}
+{% set _mk_base = '/' + _hp[1] %}
+{% else %}
+{% set _mk_base = '' %}
+{% endif %}
+{% else %}
+{% set _mk_base = '' %}
+{% endif %}
+<script>window.MKDOCS_BASE_PATH = "{{ _mk_base.rstrip('/') }}";</script>
+{% if _su %}
+<script>window.COSMOS_LANDING_HREF = "{{ _su.rstrip('/') }}/";</script>
+{% endif %}
+
+<!-- Custom Navigation Filter: sidebar list is generated from nav_pages.json (like index.md filtered list) -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const navList = document.querySelector('.md-nav--primary > .md-nav__list') || document.querySelector('.md-nav--primary .md-nav__list');
+    if (!navList) return;
+
+    function getBaseToRoot() {
+      const pathname = (window.location.pathname || '/').replace(/^\//, '').replace(/\/$/, '');
+      const segments = pathname ? pathname.split('/').filter(Boolean) : [];
+      return segments.length ? '../'.repeat(segments.length) : '';
+    }
+    function getRootIndexHref() {
+      if (typeof window.COSMOS_LANDING_HREF === 'string' && window.COSMOS_LANDING_HREF.length > 0) {
+        return window.COSMOS_LANDING_HREF;
+      }
+      var basePath = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && window.location.pathname.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      if (basePath) {
+        return basePath.replace(/\/$/, '') + '/index.html';
+      }
+      var pathname = (window.location.pathname || '/').replace(/\/$/, '');
+      var segments = pathname.replace(/^\//, '').split('/').filter(Boolean);
+      if (segments.length && segments[segments.length - 1].indexOf('.') !== -1) {
+        segments = segments.slice(0, -1);
+      }
+      var depth = segments.length;
+      return (depth ? '../'.repeat(depth) : './') + 'index.html';
+    }
+    /** Path comparable across /foo/, /foo/index.html, and COSMOS_LANDING_HREF (works when MKDOCS_BASE_PATH is unset on CI). */
+    function normalizePathForHome(path) {
+      var p = String(path || '/');
+      p = p.replace(/\/index\.html?$/i, '');
+      p = p.replace(/\/+$/, '');
+      return p === '' ? '/' : p;
+    }
+
+    function isLandingPage() {
+      if (typeof window.COSMOS_LANDING_HREF === 'string' && window.COSMOS_LANDING_HREF.length > 0) {
+        try {
+          var landing = new URL(window.COSMOS_LANDING_HREF);
+          var cur = normalizePathForHome(window.location.pathname || '/');
+          var land = normalizePathForHome(landing.pathname || '/');
+          if (cur === land) return true;
+        } catch (e) {}
+      }
+      var p = window.location.pathname || '';
+      var base = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && p.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      var rel = base ? p.slice(base.length) : p;
+      rel = rel.replace(/^\//, '').replace(/\/$/, '');
+      return rel === '' || rel === 'index.html';
+    }
+
+    function applyLandingQueryParamsFromUrl() {
+      if (!isLandingPage()) return;
+      try {
+        var params = new URLSearchParams(window.location.search || '');
+        var content = params.get('content');
+        if (content === 'getting_started' || content === 'recipes' || content === 'core_concepts') {
+          localStorage.setItem('navFilter', content);
+        }
+        if (params.has('domain')) {
+          localStorage.setItem('navDomainFilter', params.get('domain') || 'all');
+        }
+        if (params.has('technique')) {
+          localStorage.setItem('navTechniqueFilter', params.get('technique') || 'all');
+        }
+      } catch (e) {}
+    }
+    applyLandingQueryParamsFromUrl();
+
+    var CONTENT_TYPE_LABELS = { getting_started: 'Get Started', recipes: 'Recipes', core_concepts: 'Concepts' };
+    var DOMAIN_LABEL_MAP = {
+      all: 'All',
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous Vehicles',
+      'domain:smart-city': 'Smart City',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical'
+    };
+    var TECHNIQUE_LABEL_MAP = {
+      all: 'All',
+      'technique:data-augmentation': 'Data Augmentation',
+      'technique:data-generation': 'Data Generation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-Training',
+      'technique:pre-training': 'Pre-Training',
+      'technique:data-curation-annotation': 'Data Curation & Annotation',
+      'technique:distillation': 'Distillation'
+    };
+
+    function getSiteRelativePath() {
+      var p = window.location.pathname || '';
+      var base = (typeof window.MKDOCS_BASE_PATH === 'string' && window.MKDOCS_BASE_PATH && p.indexOf(window.MKDOCS_BASE_PATH) === 0) ? window.MKDOCS_BASE_PATH : '';
+      var rel = base ? p.slice(base.length) : p;
+      return rel.replace(/^\//, '').replace(/\/$/, '');
+    }
+
+    function findRecipeNavEntry(navData, relPath) {
+      if (!navData || !Array.isArray(navData.recipes)) return null;
+      var dec = decodeURIComponent(relPath);
+      for (var i = 0; i < navData.recipes.length; i++) {
+        var r = navData.recipes[i];
+        if (!r || !r.url) continue;
+        if (r.url === relPath || r.url === dec) return r;
+      }
+      return null;
+    }
+
+    function pickDomainTechniqueFromTags(tags) {
+      var domain = 'all';
+      var technique = 'all';
+      var domainLabel = 'All';
+      var techniqueLabel = 'All';
+      if (!tags || !Array.isArray(tags)) {
+        return { domain: domain, technique: technique, domainLabel: domainLabel, techniqueLabel: techniqueLabel };
+      }
+      tags.forEach(function(t) {
+        if (!t || typeof t !== 'string') return;
+        if (domain === 'all' && t.indexOf('domain:') === 0) {
+          domain = t;
+          domainLabel = DOMAIN_LABEL_MAP[t] || t.replace(/^domain:/, '').replace(/-/g, ' ');
+        }
+        if (technique === 'all' && t.indexOf('technique:') === 0) {
+          technique = t;
+          techniqueLabel = TECHNIQUE_LABEL_MAP[t] || t.replace(/^technique:/, '').replace(/-/g, ' ');
+        }
+      });
+      return { domain: domain, technique: technique, domainLabel: domainLabel, techniqueLabel: techniqueLabel };
+    }
+
+    function getSectionFromPath() {
+      var path = window.location.pathname || '';
+      if (path.indexOf('/recipes/') !== -1 || /\/recipes\/?$/.test(path)) return 'recipes';
+      if (path.indexOf('getting_started') !== -1 || path.indexOf('get_started') !== -1) return 'getting_started';
+      if (path.indexOf('core_concepts') !== -1) return 'core_concepts';
+      return null;
+    }
+
+    function buildHomeHrefWithParams(content, domain, technique) {
+      var u = new URL(getRootIndexHref(), window.location.href);
+      u.searchParams.set('content', content);
+      u.searchParams.set('domain', domain || 'all');
+      u.searchParams.set('technique', technique || 'all');
+      return u.pathname + u.search;
+    }
+
+    function derivePageFilters(navData) {
+      var section = getSectionFromPath();
+      var contentType = section || (localStorage.getItem('navFilter') || 'getting_started');
+      if (contentType !== 'getting_started' && contentType !== 'recipes' && contentType !== 'core_concepts') {
+        contentType = 'getting_started';
+      }
+      var domain = 'all';
+      var technique = 'all';
+      var domainLabel = 'All';
+      var techniqueLabel = 'All';
+      if (section === 'recipes') {
+        var rel = getSiteRelativePath();
+        var entry = findRecipeNavEntry(navData, rel);
+        if (entry && entry.tags && entry.tags.length) {
+          var picked = pickDomainTechniqueFromTags(entry.tags);
+          domain = picked.domain;
+          technique = picked.technique;
+          domainLabel = picked.domainLabel;
+          techniqueLabel = picked.techniqueLabel;
+        }
+      }
+      return {
+        contentType: contentType,
+        contentLabel: CONTENT_TYPE_LABELS[contentType] || contentType,
+        domain: domain,
+        technique: technique,
+        domainLabel: domainLabel,
+        techniqueLabel: techniqueLabel
+      };
+    }
+
+    function escapeHtmlAttr(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+
+    function escapeHtmlText(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function renderCompactFilterSection(sectionEl, navData) {
+      var d = derivePageFilters(navData);
+      var hrefContent = d.contentType === 'recipes'
+        ? buildHomeHrefWithParams('recipes', d.domain, d.technique)
+        : buildHomeHrefWithParams(d.contentType, 'all', 'all');
+      var hrefDomain = buildHomeHrefWithParams('recipes', d.domain, 'all');
+      var hrefTechnique = buildHomeHrefWithParams('recipes', 'all', d.technique);
+      sectionEl.innerHTML =
+        '<nav class="md-nav" aria-label="Page filters">' +
+        '<ul class="cosmos-compact-filters md-nav__list">' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Content Type:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefContent) + '">' + escapeHtmlText(d.contentLabel) + '</a>' +
+        '</li>' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Domain:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefDomain) + '">' + escapeHtmlText(d.domainLabel) + '</a>' +
+        '</li>' +
+        '<li class="md-nav__item cosmos-compact-filters__row">' +
+        '<span class="cosmos-compact-filters__label">Technique:</span> ' +
+        '<a class="md-nav__link cosmos-compact-filters__link" href="' + escapeHtmlAttr(hrefTechnique) + '">' + escapeHtmlText(d.techniqueLabel) + '</a>' +
+        '</li>' +
+        '</ul></nav>';
+    }
+
+    // Hide MkDocs nav items that belong to Getting Started, Recipes, or Concepts (we replace them with a data-driven list)
+    const navItems = Array.from(navList.children).filter(item => item.classList.contains('md-nav__item'));
+    navItems.forEach(item => {
+      const directLink = item.querySelector(':scope > a.md-nav__link[href]');
+      if (directLink) {
+        const href = directLink.getAttribute('href');
+        const linkText = (directLink.textContent || '').trim().toLowerCase();
+        if (href === 'recipes/' || href === 'recipes/index.html' || (href && href.match(/^recipes\/?$/) && linkText.includes('recipe'))) {
+          item.style.display = 'none';
+        } else if (href === 'core_concepts/' || href === 'core_concepts/index.html' || (href && href.match(/^core_concepts\/?$/) && linkText.includes('concept'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('recipes/') || href.includes('/recipes/'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('core_concepts/') || href.includes('/core_concepts/'))) {
+          item.style.display = 'none';
+        } else if (href && (href.startsWith('getting_started/') || href.includes('/getting_started/'))) {
+          item.style.display = 'none';
+        }
+      }
+      if (item.classList.contains('md-nav__item--nested')) {
+        const nestedLinks = item.querySelectorAll('nav a[href]');
+        const allHrefs = Array.from(nestedLinks).map(a => a.getAttribute('href'));
+        const allGettingStarted = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('getting_started/') || h.includes('/getting_started/')));
+        const allRecipes = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('recipes/') || h.includes('/recipes/')));
+        const allConcepts = allHrefs.length > 0 && allHrefs.every(h => h && (h.startsWith('core_concepts/') || h.includes('/core_concepts/')));
+        if (allGettingStarted || allRecipes || allConcepts) {
+          item.style.display = 'none';
+        }
+      }
+    });
+
+    // Build filter section: full controls on landing; compact summary + links elsewhere
+    const filterSection = document.createElement('li');
+    filterSection.className = 'md-nav__item md-nav__item--section' + (isLandingPage() ? '' : ' md-nav__item--compact-filters');
+    filterSection.style.cssText = 'border-top: 1px solid var(--md-default-fg-color--lightest); margin-top: 1rem; padding-top: 0.5rem;';
+    if (!isLandingPage()) {
+      filterSection.innerHTML =
+        '<nav class="md-nav" aria-label="Page filters"><ul class="md-nav__list"><li class="md-nav__item">' +
+        '<span class="md-nav__link cosmos-compact-filters-placeholder">Loading…</span></li></ul></nav>';
+    } else {
+      filterSection.innerHTML = `
+      <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none;">
+        <span class="md-ellipsis">Content Type</span>
+      </label>
+      <nav class="md-nav" aria-label="Filter">
+        <ul class="md-nav__list">
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="getting_started">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Get Started</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="recipes">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Recipes</span>
+            </a>
+          </li>
+          <li class="md-nav__item">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="core_concepts">
+              <span class="filter-checkbox" aria-hidden="true"></span>
+              <span class="md-ellipsis">Concepts</span>
+            </a>
+          </li>
+        </ul>
+        <div id="domain-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Domain</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter active" data-domain="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:robotics">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Robotics</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:autonomous-vehicles">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Autonomous Vehicles</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:smart-city">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Smart City</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:industrial">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Industrial</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link domain-filter" data-domain="domain:medical">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Medical</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="technique-filter-block" style="display: none;">
+          <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
+            <span class="md-ellipsis">Technique</span>
+          </label>
+          <ul class="md-nav__list">
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter active" data-technique="all">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">All</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:data-augmentation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Data Augmentation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+             <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:data-generation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Data Generation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:prediction">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Prediction</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:reasoning">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Reasoning</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:post-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Post-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:pre-training">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Pre-Training</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:data-curation-annotation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Data Curation & Annotation</span>
+              </a>
+            </li>
+            <li class="md-nav__item">
+              <a href="javascript:void(0)" class="md-nav__link technique-filter" data-technique="technique:distillation">
+                <span class="filter-checkbox" aria-hidden="true"></span>
+                <span class="md-ellipsis">Distillation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    `;
+    }
+
+    // Insert filter section before Glossary
+    const navItemsArray = Array.from(navList.children);
+    let insertIndex = navItemsArray.length;
+    for (let i = 0; i < navItemsArray.length; i++) {
+      if (navItemsArray[i].querySelector('a[href*="glossary"]')) {
+        insertIndex = i;
+        break;
+      }
+    }
+    if (insertIndex < navItemsArray.length) {
+      navList.insertBefore(filterSection, navItemsArray[insertIndex]);
+    } else {
+      navList.appendChild(filterSection);
+    }
+
+    const glossaryItem = Array.from(navList.children).find(item => item.querySelector('a[href*="glossary"]'));
+    if (glossaryItem) {
+      glossaryItem.style.borderTop = '1px solid var(--md-default-fg-color--lightest)';
+      glossaryItem.style.marginTop = '1rem';
+      glossaryItem.style.paddingTop = '0.5rem';
+    }
+
+    (function insertHomeNavItem() {
+      var homeLi = document.createElement('li');
+      homeLi.className = 'md-nav__item md-nav__item--home';
+      var homeLink = document.createElement('a');
+      homeLink.className = 'md-nav__link md-nav__link--home' + (isLandingPage() ? ' md-nav__link--active' : '');
+      homeLink.href = getRootIndexHref();
+      var iconWrap = document.createElement('span');
+      iconWrap.className = 'md-nav__home-icon';
+      iconWrap.setAttribute('aria-hidden', 'true');
+      iconWrap.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.25em" height="1.25em" fill="currentColor" focusable="false"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>';
+      var textSpan = document.createElement('span');
+      textSpan.className = 'md-ellipsis';
+      textSpan.textContent = 'Home';
+      homeLink.appendChild(iconWrap);
+      homeLink.appendChild(textSpan);
+      homeLi.appendChild(homeLink);
+      navList.insertBefore(homeLi, navList.firstChild);
+      Array.prototype.forEach.call(navList.querySelectorAll('.md-nav__item'), function(item) {
+        if (item.classList.contains('md-nav__item--home')) return;
+        var a = item.querySelector(':scope > a.md-nav__link[href]');
+        if (!a) return;
+        var t = (a.textContent || '').trim().replace(/\s+/g, ' ').toLowerCase();
+        var href = (a.getAttribute('href') || '').split('#')[0];
+        var rootIndex = href === 'index.html' || href === './' || href === '.' || href.endsWith('/index.html') || /^(\.\.\/)+index\.html$/.test(href);
+        if (t === 'home' && rootIndex) {
+          item.style.display = 'none';
+        }
+      });
+    })();
+
+    let navData = null;
+    let currentContentFilter = 'getting_started';
+    function getNavJsonUrl() {
+      var rel = (typeof window.NAV_PAGES_JSON_REL === 'string' && window.NAV_PAGES_JSON_REL) ? window.NAV_PAGES_JSON_REL : (getBaseToRoot() + 'nav_pages.json');
+      return new URL(rel, window.location.href).href;
+    }
+
+    function dispatchContentFilterChange(sectionKey) {
+      var key = sectionKey || currentContentFilter || 'getting_started';
+      window.dispatchEvent(new CustomEvent('cosmos-content-filter-changed', {
+        detail: {
+          contentType: key,
+          domain: localStorage.getItem('navDomainFilter') || 'all',
+          technique: localStorage.getItem('navTechniqueFilter') || 'all'
+        }
+      }));
+    }
+
+    function renderNavList(sectionKey) {
+      dispatchContentFilterChange(sectionKey);
+    }
+
+    function setFilterActive(filterType) {
+      document.querySelectorAll('.content-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.content-filter[data-filter="' + filterType + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navFilter', filterType);
+    }
+
+    function setDomainActive(domainTag) {
+      document.querySelectorAll('.domain-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.domain-filter[data-domain="' + domainTag + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navDomainFilter', domainTag);
+    }
+
+    function setTechniqueActive(techniqueTag) {
+      document.querySelectorAll('.technique-filter').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      var active = document.querySelector('.technique-filter[data-technique="' + techniqueTag + '"]');
+      if (active) active.classList.add('active');
+      localStorage.setItem('navTechniqueFilter', techniqueTag);
+    }
+
+    function applyFilter(filterType) {
+      currentContentFilter = filterType;
+      setFilterActive(filterType);
+      var domainBlock = document.getElementById('domain-filter-block');
+      var techniqueBlock = document.getElementById('technique-filter-block');
+      if (domainBlock) domainBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (techniqueBlock) techniqueBlock.style.display = filterType === 'recipes' ? '' : 'none';
+      if (filterType === 'recipes') {
+        setDomainActive(localStorage.getItem('navDomainFilter') || 'all');
+        setTechniqueActive(localStorage.getItem('navTechniqueFilter') || 'all');
+      }
+      renderNavList(filterType);
+    }
+
+    if (isLandingPage()) {
+      document.querySelectorAll('.content-filter').forEach(function(filter) {
+        filter.addEventListener('click', function(e) {
+          e.preventDefault();
+          applyFilter(this.getAttribute('data-filter'));
+        });
+      });
+      document.querySelectorAll('.domain-filter').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var domainTag = this.getAttribute('data-domain');
+          setDomainActive(domainTag);
+          renderNavList(currentContentFilter);
+        });
+      });
+      document.querySelectorAll('.technique-filter').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var techniqueTag = this.getAttribute('data-technique');
+          setTechniqueActive(techniqueTag);
+          renderNavList(currentContentFilter);
+        });
+      });
+    }
+
+    function loadNavAndApply() {
+      const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
+      applyFilter(initialFilter);
+    }
+
+    function onNavDataReady(data) {
+      navData = data || { getting_started: [], recipes: [], core_concepts: [] };
+      if (isLandingPage()) {
+        applyLandingQueryParamsFromUrl();
+        loadNavAndApply();
+      } else {
+        renderCompactFilterSection(filterSection, navData);
+      }
+    }
+    if (typeof window.__NAV_PAGES__ === 'object' && window.__NAV_PAGES__ != null) {
+      onNavDataReady(window.__NAV_PAGES__);
+    } else {
+      fetch(getNavJsonUrl())
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) { onNavDataReady(data); })
+        .catch(function() { onNavDataReady(null); });
+    }
+  });
+</script>
+
+<!-- Recipe tags: key:value tags grouped by General / Domain / Technique, badges at top -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.indexOf('/recipes/') === -1) return;
+    var main = document.querySelector('.md-content__inner') || document.querySelector('.md-main__inner') || document.querySelector('main');
+    if (!main) return;
+    var table = main.querySelector('table');
+    if (!table) return;
+    var headerRow = table.querySelector('thead tr');
+    var bodyRow = table.querySelector('tbody tr');
+    if (!headerRow || !bodyRow) return;
+    var headers = headerRow.querySelectorAll('th');
+    var tagsColIndex = -1;
+    for (var i = 0; i < headers.length; i++) {
+      if (headers[i].textContent.replace(/\s+/g, ' ').toLowerCase().indexOf('tags') !== -1) {
+        tagsColIndex = i;
+        break;
+      }
+    }
+    if (tagsColIndex === -1) return;
+    var cell = bodyRow.querySelectorAll('td')[tagsColIndex];
+    if (!cell) return;
+    var raw = (cell.textContent || '').trim().toLowerCase();
+    if (!raw) return;
+    var tags = raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (tags.length === 0) return;
+    var groupLabel = { general: 'General', domain: 'Domain', technique: 'Technique' };
+    var tagToLabel = {
+      'general:partner-recipe': 'Partner recipe',
+      'general:cookoff-recipe': 'Cookoff recipe',
+      'general:ai-friendly': 'AI-friendly',
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous vehicles',
+      'domain:smart-city': 'Smart city',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical',
+      'technique:data-augmentation': 'Data augmentation',
+     'technique:data-generation': 'Data generation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-training',
+      'technique:pre-training': 'Pre-training',
+      'technique:data-curation-annotation': 'Data curation & annotation',
+      'technique:distillation': 'Distillation'
+    };
+    var order = ['general', 'domain', 'technique'];
+    var byGroup = { general: [], domain: [], technique: [] };
+    tags.forEach(function(tag) {
+      var key = tag.indexOf(':') !== -1 ? tag.split(':')[0] : '';
+      if (byGroup[key]) byGroup[key].push(tag);
+    });
+    function makeTagSpan(tag) {
+      var s = document.createElement('span');
+      s.className = 'recipe-tag';
+      s.textContent = tagToLabel[tag] || tag;
+      s.setAttribute('title', tag);
+      return s;
+    }
+    function makeGroupDiv(key) {
+      var groupTags = byGroup[key];
+      if (!groupTags || groupTags.length === 0) return null;
+      var wrap = document.createElement('div');
+      wrap.className = 'recipe-tag-group';
+      var label = document.createElement('span');
+      label.className = 'recipe-tag-group-label';
+      label.textContent = groupLabel[key] + ':';
+      wrap.appendChild(label);
+      var list = document.createElement('span');
+      list.className = 'recipe-tag-list';
+      groupTags.forEach(function(tag) { list.appendChild(makeTagSpan(tag)); });
+      wrap.appendChild(list);
+      return wrap;
+    }
+    var bar = document.createElement('div');
+    bar.className = 'recipe-tags-bar';
+    order.forEach(function(key) {
+      if (key === 'general') return;
+      var g = makeGroupDiv(key);
+      if (g) bar.appendChild(g);
+    });
+    table.parentNode.insertBefore(bar, table);
+    cell.innerHTML = '';
+    order.forEach(function(key) {
+      if (key === 'general') return;
+      (byGroup[key] || []).forEach(function(tag) { cell.appendChild(makeTagSpan(tag)); });
+    });
+  });
+</script>
+
+<style>
+  .filter-checkbox {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .content-filter.active .filter-checkbox::after,
+  .category-filter.active .filter-checkbox::after,
+  .domain-filter.active .filter-checkbox::after,
+  .technique-filter.active .filter-checkbox::after {
+    content: "✓";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7em;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .content-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  .content-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  .content-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+  .category-filter,
+  .domain-filter,
+  .technique-filter {
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+  .category-filter:hover,
+  .domain-filter:hover,
+  .technique-filter:hover {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+  }
+  .category-filter.active,
+  .domain-filter.active,
+  .technique-filter.active {
+    background-color: var(--md-accent-fg-color--transparent) !important;
+    color: var(--md-accent-fg-color) !important;
+    font-weight: 700;
+  }
+  .recipe-tags-bar {
+    margin-bottom: 1rem;
+  }
+  .recipe-tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .recipe-tag-group:last-child {
+    margin-bottom: 0;
+  }
+  .recipe-tag-group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--md-default-fg-color--light);
+    margin-right: 0.25rem;
+  }
+  .recipe-tag-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .recipe-tag {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 4px;
+    background: var(--md-default-fg-color--lightest);
+    color: var(--md-default-fg-color);
+  }
+  [data-md-color-scheme="default"] .recipe-tag {
+    background: rgba(0, 0, 0, 0.06);
+  }
+  [data-md-color-scheme="slate"] .recipe-tag {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .md-nav__item--home {
+    margin-top: 0.65rem;
+  }
+  .md-nav__item--home .md-nav__link--home {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 1.12em;
+    font-weight: 600;
+  }
+  .md-nav__item--home .md-nav__home-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    opacity: 0.92;
+    line-height: 0;
+  }
+  .md-nav__item--home .md-nav__home-icon svg {
+    display: block;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters {
+    list-style: none;
+    padding: 0.15rem 0 0;
+    margin: 0;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__row {
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+    font-size: 0.7rem;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__row:last-child {
+    margin-bottom: 0;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__label {
+    color: var(--md-default-fg-color--light);
+    margin-right: 0.2rem;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters__link {
+    display: inline;
+    padding: 0;
+    font-weight: 600;
+  }
+  .md-nav__item--compact-filters .cosmos-compact-filters-placeholder {
+    font-size: 0.7rem;
+    color: var(--md-default-fg-color--light);
+  }
+</style>
 {% endblock %}

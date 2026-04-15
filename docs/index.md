@@ -1,184 +1,928 @@
-# Cosmos Cookbook
+<!-- markdownlint-disable MD037 MD038 --><!-- Embedded CSS `* {` triggers MD037; JS template literals in <script> trigger MD038 / crash markdownlint-cli -->
 
-<div style="width: 100%; max-width: 969px; margin: 2rem 0; display: block;">
-  <video autoplay loop muted playsinline style="width: 100%; max-width: 969px; height: auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: block;">
-    <source src="assets/images/homepage_video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-## Overview
+    body {
+      font-family: var(--md-text-font, "NVIDIA Sans", -apple-system, sans-serif);
+      background-color: var(--md-default-bg-color, #ffffff);
+      color: var(--md-default-fg-color, #333333);
+      line-height: 1.6;
+    }
 
-**[NVIDIA Cosmos™](https://www.nvidia.com/en-us/ai/cosmos/)** is a platform of state-of-the-art generative world foundation models (WFMs), guardrails, and an accelerated data processing and curation pipeline. This cookbook serves as a practical guide to the Cosmos open models--offering step-by-step workflows, technical recipes, and concrete examples for building, adapting, and deploying WFMs. It helps developers reproduce successful Cosmos model deployments and customize them for their specific domains.
+    /* Extend content area to the right for more horizontal space */
+    .landing-page-wrapper {
+      --landing-right-bleed: clamp(2rem, 12vw, 18rem);
+      width: calc(100% + var(--landing-right-bleed));
+      margin-right: calc(-1 * var(--landing-right-bleed));
+      padding-right: 0.5rem;
+    }
 
-The Cosmos ecosystem supports the complete Physical AI development lifecycle--from inference using pre-trained models to custom post-training for domain adaptation. Inside, you'll find the following:
+    /* Header Section */
+    .hero {
+      background: linear-gradient(135deg, #76b900 0%, #5f9300 100%);
+      color: white;
+      text-align: center;
+      padding: 1rem 0.75rem;
+    }
 
-- Quick-start inference examples to get up and running fast.
-- Advanced post-training workflows for domain-specific fine-tuning.
-- Proven recipes for scalable, production-ready deployments.
+    .hero h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
 
-## Latest Updates
+    .hero p {
+      font-size: 0.9rem;
+      font-weight: 400;
+      opacity: 0.95;
+    }
 
-| **Date** | **Recipe** | **Model** |
-|----------|------------|-----------|
-| Mar 16 | [Cosmos-Reason2 on Jetson Thor for Edge VLM Perception](recipes/inference/reason2/intbot_edge_vlm/inference.md) | Cosmos Reason 2 |
-| Mar 15 | [Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR](recipes/data_curation/cosmos_cabr/cabr_recipe.md) | Cosmos Curator |
-| Mar 15 | [Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics](recipes/post_training/predict2_5/surgical_robotics/post_training.md) | Cosmos Predict 2.5 |
-| Mar 15 | [Outlier Detection in Embedding Vector Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) | Cosmos Curator |
-| Mar 3 | [GR00T-Dreams: Synthetic Trajectory Generation for Robot Learning](recipes/end2end/gr00t-dreams/post-training.md) | Cosmos Predict 2.5, Reason 2 |
-| Feb 18 | [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](recipes/post_training/predict2/cosmos_policy/post_training.md)<br><small>Upgraded to Predict 2.5</small> | Cosmos Predict 2.5 |
-| Feb 18 | [3D AV Grounding Post-Training with Cosmos Reason 1 & 2](recipes/post_training/reason2/av_3d_grounding/post_training.md) | Cosmos Reason 1 & 2 |
-| Feb 4 | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) | Cosmos Reason 2 |
-| Jan 30 | [Prompt Guide](getting_started/prompt_guide/reason_guide.md) | Cosmos Reason 2 |
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 0.75rem;
+    }
 
-## Upcoming Activities
+    /* Section Headers */
+    .section-header {
+      background: linear-gradient(135deg, #76b900 0%, #5f9300 100%);
+      color: white;
+      padding: 0.5rem 0.75rem;
+      margin: 1rem 0 0.75rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+    }
 
-### NVIDIA GTC 2026
+    /* Featured Recipes: two rows of three */
+    .featured-recipes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
 
-Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
+    .recipe-card {
+      border: 2px solid #e0e0e0;
+      padding: 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      overflow: hidden;
+    }
 
-### NVIDIA Cosmos Cookoff
+    .recipe-card:hover {
+      border-color: #76b900;
+      box-shadow: 0 4px 12px rgba(118, 185, 0, 0.2);
+      transform: translateY(-2px);
+    }
 
-Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
+    .recipe-thumbnail {
+      width: 100%;
+      height: 120px;
+      min-height: 120px;
+      max-height: 120px;
+      object-fit: cover;
+      object-position: center;
+      background: #f5f5f5;
+      display: block;
+      flex-shrink: 0;
+    }
 
-Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
+    .recipe-content {
+      padding: 0.6rem;
+    }
 
-**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
+    .recipe-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #76b900;
+      min-height: 2.2rem;
+      line-height: 1.3;
+    }
 
-Sponsored by Nebius and Milestone.
+    .recipe-description {
+      font-size: 0.8rem;
+      color: var(--md-default-fg-color--light, #666666);
+      line-height: 1.3;
+    }
 
-## Open Source Community Platform
+    /* Content filter table section */
+    .all-recipes-section {
+      margin-top: 1.5rem;
+    }
 
-The Cosmos Cookbook is an open-source resource where NVIDIA and the broader Physical AI community share practical workflows, proven techniques, and domain-specific adaptations.
+    .docs-link-container {
+      text-align: center;
+      margin: 1.5rem 0 1rem 0;
+    }
 
-**📂 Repository:** [https://github.com/nvidia-cosmos/cosmos-cookbook](https://github.com/nvidia-cosmos/cosmos-cookbook)
+    .docs-link-btn {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      background: white;
+      border: 2px solid #76b900;
+      color: #76b900;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      cursor: pointer;
+    }
 
-We welcome contributions—from new examples and workflow improvements to bug fixes and documentation updates. Together, we can evolve best practices and accelerate the adoption of Cosmos models across domains.
+    .docs-link-btn:hover {
+      background: #76b900;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(118, 185, 0, 0.3);
+    }
 
-**📊 Physical AI Datasets:** Access curated datasets for autonomous vehicles, intelligent transportation systems, robotics, smart spaces, and warehouse environments on the [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face.
+    /* Search Bar */
+    .search-container {
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-## Case Study Recipes
+    .search-input {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.85rem;
+      border: 2px solid #e0e0e0;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
 
-The Cosmos Cookbook includes comprehensive use cases demonstrating real-world applications across the Cosmos platform.
+    .search-input:focus {
+      outline: none;
+      border-color: #76b900;
+    }
 
-### [**Cosmos Predict**](https://github.com/nvidia-cosmos/cosmos-predict2.5)
+    .search-input::placeholder {
+      color: #999999;
+    }
 
-#### Future state prediction and generation
+    /* Pagination Controls */
+    .pagination-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding: 0 0.25rem;
+      position: relative;
+      z-index: 3;
+    }
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **Inference** | Text2Image synthetic data generation for intelligent transportation systems | [ITS Synthetic Data Generation](recipes/inference/predict2/inference-its/inference.md) |
-| **Training** | Fine-tuning Cosmos Predict 2 for robotic manipulation through latent frame injection for visuomotor control | [Cosmos Policy](recipes/post_training/predict2/cosmos_policy/post_training.md) |
-| **Training** | Traffic anomaly generation with improved realism and prompt alignment | [Traffic Anomaly Generation](recipes/post_training/predict2/its-accident/post_training.md) |
-| **Training** | Synthetic trajectory data generation for humanoid robot learning | [GR00T-Dreams](recipes/post_training/predict2/gr00t-dreams/post-training.md) |
-| **Training** | LoRA post-training for sports video generation with improved player dynamics and rule coherence | [Sports Video Generation](recipes/post_training/predict2_5/sports/post_training.md) |
-| **Training** | Fine-tune Cosmos Predict 2.5 as an action-conditioned surgical simulator for policy evaluation | [Surgical Robotics Simulation](recipes/post_training/predict2_5/surgical_robotics/post_training.md) |
+    .pagination-controls--bottom {
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
 
-> **Advanced Topics:** Refer to [Distilling Cosmos Predict 2.5](core_concepts/distillation/distilling_predict2.5.md) to learn how to distill the model into a 4-step student using DMD2.
+    .pagination-info {
+      font-size: 0.8rem;
+      color: var(--md-default-fg-color--light, #666666);
+    }
 
-### [**Cosmos Transfer**](https://github.com/nvidia-cosmos/cosmos-transfer2.5)
+    .pagination-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      position: relative;
+      z-index: 3;
+      pointer-events: auto;
+    }
 
-#### Multi-control video generation and augmentation
+    .page-select {
+      padding: 0.5rem;
+      border: 1px solid #e0e0e0;
+      font-family: inherit;
+    }
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **Guide** | Master precise control over video generation using Edge, Depth, Segmentation, and Vis modalities for structural preservation and semantic replacement | [Control Modalities Guide](core_concepts/control_modalities/overview.md) |
-| **Inference** | Style-guided video generation using image references with edge/depth/segmentation control | [Style-Guided Generation](recipes/inference/transfer2_5/inference-image-prompt/inference.md) |
-| **Inference** | CARLA simulator-to-real augmentation for traffic anomaly scenarios | [CARLA Sim2Real](recipes/inference/transfer2_5/inference-carla-sdg-augmentation/inference.md) |
-| **Inference** | Multi-control video editing for background replacement, lighting, and object transformation | [Real-World Video Manipulation](recipes/inference/transfer2_5/inference-real-augmentation/inference.md) |
-| **Inference** | Domain transfer pipeline for scarce biological datasets using edge-based control and FiftyOne | [BioTrove Moths Augmentation](recipes/inference/transfer2_5/biotrove_augmentation/inference.md) |
-| **Inference** | Weather augmentation pipeline for simulation data using multi-modal controls | [Weather Augmentation](recipes/inference/transfer1/inference-its-weather-augmentation/inference.md) |
-| **Inference** | CG-to-real conversion for multi-view warehouse environments | [Warehouse Simulation](recipes/inference/transfer1/inference-warehouse-mv/inference.md) |
-| **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
-| **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
-| **Training** | ControlNet post-training for spatially-conditioned multiview AV video generation with world scenario maps | [Multiview AV Generation](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
+    .pagination-btn {
+      padding: 0.5rem 0.75rem;
+      background: white;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
+    .pagination-btn:hover:not(:disabled) {
+      background: #76b900;
+      color: white;
+      border-color: #76b900;
+    }
 
-#### Vision-language reasoning and quality control
+    .pagination-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
 
-| **Workflow** | **Description**                                                           | **Link**                                                                                                |
-| ------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Guide** | Comprehensive prompting guide for Cosmos Reason 2 covering message structure, sampling parameters, and domain-specific patterns | [Cosmos Reason 2 Prompt Guide](getting_started/prompt_guide/reason_guide.md)                   |
-| **Inference** | GPU-accelerated video analysis pipeline for large-scale video summarization, Q&A, and live stream alerts | [Video Search and Summarization](recipes/inference/reason2/vss/inference.md)                   |
-| **Inference** | Zero-shot safety compliance and hazard detection in industrial warehouse environments | [Worker Safety in a Classical Warehouse](recipes/inference/reason2/worker_safety/inference.md) |
-| **Inference** | Egocentric social and physical reasoning for social robotics             | [Egocentric Social Reasoning](recipes/inference/reason2/intbot_showcase/inference.md) |
-| **Inference** | Real-time perception on Jetson Thor for edge-deployed social robots  | [Cosmos-Reason2 on Jetson Thor (Edge VLM)](recipes/inference/reason2/intbot_edge_vlm/inference.md) |
-| **Training** | 3D vehicle grounding in autonomous driving with Cosmos Reason 1 & 2 | [3D AV Grounding (Reason 1 & 2)](recipes/post_training/reason2/av_3d_grounding/post_training.md) |
-| **Training** | Post-training Cosmos Reason 2 for AV video captioning and VQA with production data | [AV Video Caption VQA (Reason 2)](recipes/post_training/reason2/video_caption_vqa/post_training.md)     |
-| **Training** | Post-training Cosmos Reason 2 for intelligent transportation scene understanding with WTS data | [Intelligent Transportation (Reason 2)](recipes/post_training/reason2/intelligent-transportation/post_training.md) |
-| **Training** | Physical plausibility prediction for video quality assessment with Cosmos Reason 2 | [Physical Plausibility (Reason 2)](recipes/post_training/reason2/physical-plausibility-check/post_training.md) |
-| **Training** | Physical plausibility check for video quality assessment                  | [Physical Plausibility (Reason 1)](recipes/post_training/reason1/physical-plausibility-check/post_training.md)             |
-| **Training** | Spatial AI understanding for warehouse environments                       | [Spatial AI Warehouse](recipes/post_training/reason1/spatial-ai-warehouse/post_training.md)             |
-| **Training** | Intelligent transportation scene understanding and analysis               | [Intelligent Transportation (Reason 1)](recipes/post_training/reason1/intelligent-transportation/post_training.md) |
-| **Training** | AV video captioning and visual question answering for autonomous vehicles | [AV Video Caption VQA (Reason 1)](recipes/post_training/reason1/av_video_caption_vqa/post_training.md)  |
-| **Training** | Temporal localization for MimicGen robot learning data generation         | [Temporal Localization](recipes/post_training/reason1/temporal_localization/post_training.md)           |
-| **Training** | Wafer map anomaly classification with supervised fine-tuning on WM-811k  | [Wafer Map Classification](recipes/post_training/reason1/wafermap_classification/post_training.md)      |
+    /* Recipe Table */
+    .recipe-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      background: white;
+      font-size: 0.85rem;
+    }
 
-### [**Cosmos Curator**](https://github.com/nvidia-cosmos/cosmos-curate)
+    .recipe-table thead {
+      background: #f5f5f5;
+    }
 
-| **Workflow** | **Description**                                      | **Link**                                                                        |
-| ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
-| **Curation** | Content-Adaptive Video Compression for Cosmos Curator| [Beamr CABR + Cosmos Curator](recipes/data_curation/cosmos_cabr/cabr_recipe.md) |
-| **Curation** | Curate video data for Cosmos Predict 2 post-training | [Predict 2 Data Curation](recipes/data_curation/predict2_data/data_curation.md) |
-| **Analysis** | Advanced video clustering using Time Series K-Means on embedding trajectories | [Video Clustering with Time Series K-Means](recipes/data_curation/embedding_analysis/embedding_analysis.md) |
-| **Analysis** | Outlier detection in video embedding trajectories via Time Series K-Means + Soft-DTW distance thresholding | [Outlier Detection in Embedding Trajectories](recipes/data_curation/outlier_detection/outlier_detection.md) |
+    .recipe-table th {
+      text-align: left;
+      padding: 0.5rem 0.6rem;
+      font-weight: 600;
+      border-bottom: 2px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
 
-### **End-to-End Workflows**
+    .recipe-table td {
+      padding: 0.5rem 0.6rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
 
-| **Workflow** | **Description** | **Link** |
-|--------------|-----------------|----------|
-| **GR00T-Dreams** | End-to-end pipeline for synthetic robot trajectory generation: post-train Cosmos Predict 2.5 on GR1 data, generate trajectories, and use Cosmos Reason 2 as a video critic for rejection sampling | [GR00T-Dreams](recipes/end2end/gr00t-dreams/post-training.md) |
-| **SDG Pipeline** | Complete synthetic data generation pipeline for traffic scenarios using CARLA, Cosmos Transfer 2.5, and Cosmos Reason 1 | [Smart City SDG](recipes/end2end/smart_city_sdg/workflow_e2e.md) |
+    .recipe-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
 
-## Cosmos Models for Physical AI
+    .recipe-table tbody tr:hover {
+      background: #f9f9f9;
+    }
 
-The Cosmos family of open models consists of five core repositories, each targeting specific capabilities in the AI development workflow:
+    .recipe-table a {
+      color: #76b900;
+      text-decoration: none;
+      font-weight: 600;
+    }
 
-**[Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)** - A GPU-accelerated video curation pipeline built on Ray. Supports multi-model analysis, content filtering, annotation, and deduplication for both inference and training data preparation.
+    .recipe-table a:hover {
+      text-decoration: underline;
+    }
 
-**[Cosmos Predict](https://github.com/nvidia-cosmos/cosmos-predict2.5)** - A diffusion transformer for future state prediction. Provides text-to-image and video-to-world generation capabilities, with specialized variants for robotics and simulation. Supports custom training for domain-specific prediction tasks.
+    .recipe-tag {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 3px;
+      background: #e0e0e0;
+      color: #333;
+    }
 
-**[Cosmos Transfer](https://github.com/nvidia-cosmos/cosmos-transfer2.5)** - A multi-control video generation system with ControlNet and MultiControlNet conditioning (including depth, segmentation, LiDAR, and HDMap). Includes 4K upscaling capabilities and supports training for custom control modalities and domain adaptation.
+    .recipe-tag--inference {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
 
-**[Cosmos Reason](https://github.com/nvidia-cosmos/cosmos-reason1)** - A 7B vision-language model for physically grounded reasoning. Handles spatial/temporal understanding and chain-of-thought tasks, with fine-tuning support for embodied AI applications and domain-specific reasoning.
+    .recipe-tag--post-training {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
 
-**[Cosmos RL](https://github.com/nvidia-cosmos/cosmos-rl)** - A distributed training framework supporting both supervised fine-tuning (SFT) and reinforcement learning approaches. Features elastic policy rollout, FP8/FP4 precision support, and optimization for large-scale VLM and LLM training.
+    .recipe-tag--curation {
+      background: #fff3e0;
+      color: #f57c00;
+    }
 
-All models include pre-trained checkpoints and support custom training for domain-specific adaptation. The diagram below illustrates component interactions across inference and training workflows.
+    .recipe-tag--workload {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
 
-![Cosmos Overview](assets/images/cosmos_overview.png)
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.2rem;
+      }
 
-## ML/Gen AI Concepts
+      .hero p {
+        font-size: 0.85rem;
+      }
 
-The cookbook is organized around key concepts spanning (controlled) **inference** and **training** use cases:
+      .hero {
+        padding: 0.75rem 0.5rem;
+      }
 
-**1. [Prompt Guide](getting_started/prompt_guide/overview.md)** - Learn effective prompting strategies for Cosmos models. This covers message structure, media ordering, sampling parameters, and domain-specific patterns to help you get the best results from Cosmos Reason and other vision-language models.
+      .featured-recipes {
+        grid-template-columns: 1fr;
+      }
 
-**2. [Control Modalities](core_concepts/control_modalities/overview.md)** - Master precise control over video generation with Cosmos Transfer 2.5 using Edge, Depth, Segmentation, and Vis modalities. This covers structural preservation, semantic replacement, lighting consistency, and multi-control approaches for achieving high-fidelity, controllable video transformations.
+      .recipe-table {
+        font-size: 0.75rem;
+      }
 
-**3. [Data Curation](core_concepts/data_curation/overview.md)** - Use Cosmos Curator to prepare your datasets with modular, scalable processing pipelines. This includes splitting, captioning, filtering, deduplication, task-specific sampling, and cloud-native or local execution.
+      .recipe-table th,
+      .recipe-table td {
+        padding: 0.4rem;
+      }
+    }
 
-**4. [Model Post-Training](core_concepts/post_training/overview.md)** - Fine-tune foundation models using your curated data. This covers domain adaptation for Predict (2 and 2.5), Transfer (1 and 2.5), and Reason 1, setup for supervised fine-tuning, LoRA, or reinforcement learning, and use of Cosmos RL for large-scale distributed rollout.
+    /* Dark mode support */
+    [data-md-color-scheme="dark"] body {
+      background-color: var(--md-default-bg-color, #1a1a1a);
+      color: var(--md-default-fg-color, #ffffff);
+    }
 
-**5. [Evaluation and Quality Control](core_concepts/evaluation/overview.md)** - Ensure your post-trained models are aligned and robust through metrics, visualization, and qualitative inspection. Leverage Cosmos Reason 1 as a quality filter (e.g. for synthetic data rejection sampling).
+    [data-md-color-scheme="dark"] .recipe-card {
+      border-color: #333;
+      background: #1a1a1a;
+    }
 
-**6. [Model Distillation](core_concepts/distillation/overview.md)** - Compress large foundation models into smaller, efficient variants while preserving performance. This includes knowledge distillation techniques for Cosmos models, teacher-student training setups, and deployment optimization for edge devices and resource-constrained environments.
+    [data-md-color-scheme="dark"] .recipe-table {
+      background: #1a1a1a;
+    }
 
-## Gallery
+    [data-md-color-scheme="dark"] .recipe-table thead {
+      background: #2a2a2a;
+    }
 
-Visual examples of Cosmos Transfer results across Physical AI domains:
+    [data-md-color-scheme="dark"] .recipe-table tbody tr:hover {
+      background: #2a2a2a;
+    }
 
-- **[Robotics Domain Adaptation](gallery/robotics_inference.md)** - Sim-to-real transfer for robotic manipulation with varied materials, lighting, and environments.
-- **[Autonomous Vehicle Domain Adaptation](gallery/av_inference.md)** - Multi-control video generation for driving scenes across different weather, lighting, and time-of-day conditions.
+    [data-md-color-scheme="dark"] .docs-link-btn {
+      background: #1a1a1a;
+      border-color: #76b900;
+      color: #76b900;
+    }
 
-## Quick Start Paths
+    [data-md-color-scheme="dark"] .docs-link-btn:hover {
+      background: #76b900;
+      color: white;
+    }
 
-This cookbook provides flexible entry points for both **inference** and **training** workflows. Each section contains runnable scripts, technical recipes, and complete examples.
+    /* Dark mode: Content Filter search bar */
+    [data-md-color-scheme="dark"] .search-input {
+      background: #1a1a1a;
+      color: #e8e8e8;
+      border-color: #444;
+    }
 
-- **Inference workflows:** [Getting Started](getting_started/setup.md) for setup and immediate model deployment
-- **Cloud deployments:** [Cloud platforms](getting_started/cloud_platform.md) for ready-to-launch cloud instances on Nebius, Brev, and more to come
-- **Physical AI datasets:** [NVIDIA Physical AI Collection](https://huggingface.co/collections/nvidia/physical-ai) on Hugging Face for curated datasets across domains
-- **Data processing:** [Data Processing & Analysis](core_concepts/data_curation/overview.md) for content analysis workflows
-- **Training workflows:** [Model Training & Fine-tuning](core_concepts/post_training/overview.md) for domain adaptation
-- **Case study recipes:** [Case Study Recipes](#case-study-recipes) organized by application area
+    [data-md-color-scheme="dark"] .search-input::placeholder {
+      color: #a0a0a0;
+    }
+
+    [data-md-color-scheme="dark"] .search-input:focus {
+      border-color: #76b900;
+    }
+  </style>
+
+  <div class="landing-page-wrapper">
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>NVIDIA Cosmos Cookbook</h1>
+    <p>A practical guide with recipes to build, fine-tune, and deploy physical-AI</p>
+  </div>
+
+  <!-- Featured Recipes Section (loaded dynamically: partner/cookoff tags, 6 most recent by date) -->
+  <div class="container">
+    <div class="section-header">Featured Recipes</div>
+
+    <div class="featured-recipes" id="featuredRecipesContainer">
+      <!-- Populated by JavaScript from recipes.json -->
+      <div class="featured-recipes-loading" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Loading featured recipes…</div>
+    </div>
+
+    <!-- Main table: rows follow left sidebar Content Type / Domain / Technique -->
+    <div class="all-recipes-section">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="🔍 Search for recipes, concepts, and prompts" id="landing-all-recipes-search" autocomplete="off">
+      </div>
+
+      <div class="pagination-controls">
+        <div class="pagination-info">
+          <span class="landing-all-recipes-pagination-info" id="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
+        </div>
+        <div class="pagination-buttons">
+          <button type="button" class="pagination-btn" data-pagination="first" aria-label="First page">|&lt;</button>
+          <button type="button" class="pagination-btn" data-pagination="prev" aria-label="Previous page">&lt;</button>
+          <select class="page-select landing-all-recipes-page-select" id="landing-all-recipes-page-select" aria-label="Page">
+            <option value="1">1</option>
+          </select>
+          <button type="button" class="pagination-btn" data-pagination="next" aria-label="Next page">&gt;</button>
+          <button type="button" class="pagination-btn" data-pagination="last" aria-label="Last page">&gt;|</button>
+        </div>
+      </div>
+
+      <table class="recipe-table">
+        <thead>
+          <tr>
+            <th>Recipe Name</th>
+            <th>Domain</th>
+            <th>Technique</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="landing-all-recipes-tbody">
+          <!-- Recipes will be populated by JavaScript -->
+        </tbody>
+      </table>
+
+      <div class="pagination-controls pagination-controls--bottom">
+        <div class="pagination-info">
+          <span class="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
+        </div>
+        <div class="pagination-buttons">
+          <button type="button" class="pagination-btn" data-pagination="first" aria-label="First page">|&lt;</button>
+          <button type="button" class="pagination-btn" data-pagination="prev" aria-label="Previous page">&lt;</button>
+          <select class="page-select landing-all-recipes-page-select" aria-label="Page">
+            <option value="1">1</option>
+          </select>
+          <button type="button" class="pagination-btn" data-pagination="next" aria-label="Next page">&gt;</button>
+          <button type="button" class="pagination-btn" data-pagination="last" aria-label="Last page">&gt;|</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Recipe data - loaded dynamically from recipes.json; nav pages from nav_pages.json (same as sidebar)
+    let recipes = [];
+    let navPagesData = null;
+
+    // State
+    let currentPage = 1;
+    let itemsPerPage = 15;
+    let searchQuery = '';
+    let isLoading = true;
+
+    /** Featured slot 6 / Prompt Guide: listed under Get Started in the content filter, not under Recipes. */
+    var FEATURED_SLOT_6_URL = 'getting_started/prompt_guide/reason_guide.html';
+
+    (function applyLandingQueryParamsFromUrl() {
+      try {
+        const params = new URLSearchParams(window.location.search || '');
+        const content = params.get('content');
+        if (content === 'getting_started' || content === 'recipes' || content === 'core_concepts') {
+          localStorage.setItem('navFilter', content);
+        }
+        if (params.has('domain')) {
+          localStorage.setItem('navDomainFilter', params.get('domain') || 'all');
+        }
+        if (params.has('technique')) {
+          localStorage.setItem('navTechniqueFilter', params.get('technique') || 'all');
+        }
+      } catch (e) {}
+    })();
+
+    // Escape for safe insertion into HTML (prevents XSS when using innerHTML)
+    function escapeHtml(str) {
+      if (str == null || typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getContentType() {
+      return localStorage.getItem('navFilter') || 'recipes';
+    }
+
+    /** Human-readable labels for domain:* / technique:* tags (aligned with sidebar filters). */
+    var DOMAIN_LABEL_MAP = {
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous Vehicles',
+      'domain:smart-city': 'Smart City',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical',
+      'domain:fieldwork': 'Fieldwork',
+      'domain:cross-domain': 'Cross-domain'
+    };
+    var TECHNIQUE_LABEL_MAP = {
+      'technique:data-augmentation': 'Data Augmentation',
+      'technique:data-generation': 'Data Generation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-Training',
+      'technique:pre-training': 'Pre-Training',
+      'technique:data-curation-annotation': 'Data Curation & Annotation',
+      'technique:distillation': 'Distillation',
+      'technique:style-transfer': 'Style transfer',
+      'technique:simulation': 'Simulation',
+      'technique:data-curation': 'Data curation'
+    };
+
+    function getRecipeDomainDisplay(recipe) {
+      const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
+      for (let i = 0; i < tags.length; i++) {
+        const t = tags[i];
+        if (t && typeof t === 'string' && t.indexOf('domain:') === 0) {
+          if (DOMAIN_LABEL_MAP[t]) return DOMAIN_LABEL_MAP[t];
+          return t.replace(/^domain:/, '').replace(/-/g, ' ');
+        }
+      }
+      return '—';
+    }
+
+    function getRecipeTechniqueDisplay(recipe) {
+      const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
+      for (let i = 0; i < tags.length; i++) {
+        const t = tags[i];
+        if (t && typeof t === 'string' && t.indexOf('technique:') === 0) {
+          if (TECHNIQUE_LABEL_MAP[t]) return TECHNIQUE_LABEL_MAP[t];
+          return t.replace(/^technique:/, '').replace(/-/g, ' ');
+        }
+      }
+      return '—';
+    }
+
+    /** Apply Domain / Technique filters to recipe list (same rules as former sidebar list). */
+    function filterRecipesBySidebarTags(list) {
+      let pages = list.slice();
+      const domainTag = localStorage.getItem('navDomainFilter') || 'all';
+      const techniqueTag = localStorage.getItem('navTechniqueFilter') || 'all';
+      if (domainTag && domainTag !== 'all') {
+        pages = pages.filter(function (p) {
+          const tags = p.tags;
+          if (!tags || !Array.isArray(tags)) return true;
+          if (tags.length === 0) return true;
+          return tags.indexOf(domainTag) !== -1;
+        });
+      }
+      if (techniqueTag && techniqueTag !== 'all') {
+        pages = pages.filter(function (p) {
+          const tags = p.tags;
+          if (!tags || !Array.isArray(tags)) return true;
+          if (tags.length === 0) return true;
+          return tags.indexOf(techniqueTag) !== -1;
+        });
+      }
+      return pages;
+    }
+
+    /** Parse recipe Date column for sorting (MM-DD-YYYY, YYYY-MM-DD, or locale). */
+    function parseDateForSort(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return 0;
+      var s = dateStr.trim();
+      var parts = s.split(/[-/]/);
+      if (parts.length === 3) {
+        var mm = parseInt(parts[0], 10), dd = parseInt(parts[1], 10), yyyy = parseInt(parts[2], 10);
+        if (parts[0].length === 4) { yyyy = parseInt(parts[0], 10); mm = parseInt(parts[1], 10); dd = parseInt(parts[2], 10); }
+        if (yyyy && mm && dd) {
+          var d = new Date(yyyy, mm - 1, dd);
+          return isNaN(d.getTime()) ? 0 : d.getTime();
+        }
+      }
+      var parsed = Date.parse(s);
+      return (parsed !== undefined && !isNaN(parsed)) ? parsed : 0;
+    }
+
+    /** Newest dated recipes first; recipes with no parseable date last; tie-break by name. */
+    function compareRecipesNewestFirst(a, b) {
+      const ta = parseDateForSort(a.date);
+      const tb = parseDateForSort(b.date);
+      const aMissing = ta === 0;
+      const bMissing = tb === 0;
+      if (aMissing && bMissing) {
+        return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+      }
+      if (aMissing) return 1;
+      if (bMissing) return -1;
+      const diff = tb - ta;
+      if (diff !== 0) return diff;
+      return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+    }
+
+    /** Rows for the Content Filter table: driven by left sidebar Content Type / Domain / Technique. */
+    function getFilteredRows() {
+      const q = searchQuery.toLowerCase();
+      const contentType = getContentType();
+
+      function matchesSearchRecipe(recipe) {
+        if (searchQuery === '') return true;
+        const dom = getRecipeDomainDisplay(recipe).toLowerCase();
+        const tech = getRecipeTechniqueDisplay(recipe).toLowerCase();
+        return (recipe.name && recipe.name.toLowerCase().includes(q)) ||
+          (recipe.type && recipe.type.toLowerCase().includes(q)) ||
+          (recipe.category && recipe.category.toLowerCase().includes(q)) ||
+          (recipe.workload && recipe.workload.toLowerCase().includes(q)) ||
+          (dom !== '—' && dom.includes(q)) ||
+          (tech !== '—' && tech.includes(q));
+      }
+
+      function matchesSearchNavPage(page) {
+        const title = (page.title || '').toLowerCase();
+        const url = (page.url || '').toLowerCase();
+        return searchQuery === '' || title.includes(q) || url.includes(q);
+      }
+
+      if (contentType === 'recipes') {
+        const searched = recipes
+          .filter(matchesSearchRecipe)
+          .filter(function (r) { return r.url !== FEATURED_SLOT_6_URL; });
+        const filtered = filterRecipesBySidebarTags(searched);
+        filtered.sort(compareRecipesNewestFirst);
+        return filtered;
+      }
+
+      if (!navPagesData || typeof navPagesData !== 'object') return [];
+
+      if (contentType === 'getting_started') {
+        const pages = Array.isArray(navPagesData.getting_started) ? navPagesData.getting_started : [];
+        return pages.filter(matchesSearchNavPage);
+      }
+
+      if (contentType === 'core_concepts') {
+        const pages = Array.isArray(navPagesData.core_concepts) ? navPagesData.core_concepts : [];
+        return pages.filter(matchesSearchNavPage);
+      }
+
+      return [];
+    }
+
+    /** Get Started / Concepts: two-column table; Recipes: four columns. */
+    function isNavOnlyContentType() {
+      const t = getContentType();
+      return t === 'getting_started' || t === 'core_concepts';
+    }
+
+    function tableColspan() {
+      return isNavOnlyContentType() ? 2 : 4;
+    }
+
+    function syncTableHeader() {
+      const headRow = document.querySelector('.all-recipes-section .recipe-table thead tr');
+      if (!headRow) return;
+      if (isNavOnlyContentType()) {
+        headRow.innerHTML = '<th>Recipe Name</th><th>Category</th>';
+      } else {
+        headRow.innerHTML = '<th>Recipe Name</th><th>Domain</th><th>Technique</th><th>Date</th>';
+      }
+    }
+
+    // Render recipe table
+    function renderRecipeTable() {
+      const tbody = document.getElementById('landing-all-recipes-tbody');
+      if (!tbody) return;
+
+      syncTableHeader();
+
+      // Show loading state
+      if (isLoading) {
+        tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Loading recipes...</td></tr>';
+        document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+          el.textContent = 'Loading...';
+        });
+        return;
+      }
+
+      const filteredRows = getFilteredRows();
+      const totalItems = filteredRows.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+      // Adjust current page if necessary
+      if (currentPage > totalPages) {
+        currentPage = Math.max(1, totalPages);
+      }
+
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
+      const pageSlice = filteredRows.slice(startIdx, endIdx);
+      const contentType = getContentType();
+
+      tbody.innerHTML = '';
+
+      pageSlice.forEach((rowItem) => {
+        const tr = document.createElement('tr');
+        if (contentType === 'recipes') {
+          const recipe = rowItem;
+          const url = escapeHtml(recipe.url);
+          const name = escapeHtml(recipe.name);
+          const domainCol = escapeHtml(getRecipeDomainDisplay(recipe));
+          const techniqueCol = escapeHtml(getRecipeTechniqueDisplay(recipe));
+          const date = escapeHtml(recipe.date);
+          tr.innerHTML = `
+          <td><a href="${url}">${name}</a></td>
+          <td>${domainCol}</td>
+          <td>${techniqueCol}</td>
+          <td>${date}</td>
+        `;
+        } else {
+          const page = rowItem;
+          const url = escapeHtml(page.url);
+          const title = escapeHtml(page.title);
+          const sectionLabel = contentType === 'getting_started' ? 'Getting Started' : 'Core Concepts';
+          tr.innerHTML = `
+          <td><a href="${url}">${title}</a></td>
+          <td>${sectionLabel}</td>
+        `;
+        }
+        tbody.appendChild(tr);
+      });
+
+      // Update pagination info (top + bottom)
+      const infoText = totalItems === 0
+        ? '0 items'
+        : `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
+      document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+        el.textContent = infoText;
+      });
+
+      // Update page selects (top + bottom)
+      document.querySelectorAll('.all-recipes-section select.landing-all-recipes-page-select').forEach(function (pageSelect) {
+        pageSelect.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+          const option = document.createElement('option');
+          option.value = String(i);
+          option.textContent = String(i);
+          if (i === currentPage) option.selected = true;
+          pageSelect.appendChild(option);
+        }
+      });
+
+      // Update button states (top + bottom)
+      const sectionEl = document.querySelector('.all-recipes-section');
+      if (sectionEl) {
+        const disFirstPrev = currentPage === 1 || totalPages === 0;
+        const disNextLast = currentPage === totalPages || totalPages === 0;
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="first"]').forEach(function (b) { b.disabled = disFirstPrev; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="prev"]').forEach(function (b) { b.disabled = disFirstPrev; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="next"]').forEach(function (b) { b.disabled = disNextLast; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="last"]').forEach(function (b) { b.disabled = disNextLast; });
+      }
+    }
+
+    window.addEventListener('cosmos-content-filter-changed', () => {
+      currentPage = 1;
+      renderRecipeTable();
+    });
+
+    function wireAllRecipesControls() {
+      const section = document.querySelector('.all-recipes-section');
+      if (!section) return;
+
+      const searchEl = document.getElementById('landing-all-recipes-search');
+      if (searchEl) {
+        searchEl.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          currentPage = 1;
+          renderRecipeTable();
+        });
+      }
+
+      // Delegation: works even if theme reorders nodes; avoids duplicate-ID issues
+      section.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pagination-btn[data-pagination]');
+        if (!btn || !section.contains(btn)) return;
+        const action = btn.getAttribute('data-pagination');
+        const totalPages = Math.ceil(getFilteredRows().length / itemsPerPage);
+        if (action === 'first') {
+          currentPage = 1;
+        } else if (action === 'prev' && currentPage > 1) {
+          currentPage--;
+        } else if (action === 'next' && currentPage < totalPages) {
+          currentPage++;
+        } else if (action === 'last') {
+          currentPage = totalPages > 0 ? totalPages : 1;
+        }
+        renderRecipeTable();
+      });
+
+      section.addEventListener('change', (e) => {
+        if (e.target && e.target.classList && e.target.classList.contains('landing-all-recipes-page-select')) {
+          const n = parseInt(e.target.value, 10);
+          currentPage = Number.isFinite(n) && n > 0 ? n : 1;
+          renderRecipeTable();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', wireAllRecipesControls);
+    } else {
+      wireAllRecipesControls();
+    }
+
+    // Featured: recipes with partner or cookoff tag, 6 most recent by Date column
+    function getFeaturedRecipes() {
+      var hasPartnerOrCookoff = function(r) {
+        var tags = r.tags && Array.isArray(r.tags) ? r.tags : [];
+        return tags.some(function(t) {
+          var x = (t || '').toLowerCase();
+          return x === 'general:partner-recipe' || x === 'general:cookoff-recipe';
+        });
+      };
+      var partnerOrCookoff = recipes.filter(hasPartnerOrCookoff);
+      partnerOrCookoff.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
+      var featured = partnerOrCookoff.slice(0, 5);
+      if (featured.length < 5) {
+        var featuredUrls = {};
+        featured.forEach(function(r) { featuredUrls[r.url] = true; });
+        featuredUrls[FEATURED_SLOT_6_URL] = true;
+        var rest = recipes.filter(function(r) { return !featuredUrls[r.url]; });
+        rest.sort(function(a, b) { return parseDateForSort(b.date) - parseDateForSort(a.date); });
+        while (featured.length < 5 && rest.length > 0) {
+          featured.push(rest.shift());
+        }
+      }
+      var slot6 = recipes.find(function(r) { return r.url === FEATURED_SLOT_6_URL; });
+      featured.push(slot6 || {
+        name: 'Prompt Guide Cosmos Reason 2',
+        url: FEATURED_SLOT_6_URL,
+        category: 'Getting Started',
+        workload: 'Prompt Guide',
+        thumbnail: null
+      });
+      return featured;
+    }
+    function renderFeaturedRecipes() {
+      var container = document.getElementById('featuredRecipesContainer');
+      if (!container) return;
+      var featured = getFeaturedRecipes();
+      container.innerHTML = '';
+      if (featured.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">No featured recipes at this time.</div>';
+        return;
+      }
+      featured.forEach(function(recipe) {
+        var a = document.createElement('a');
+        a.href = recipe.url;
+        a.className = 'recipe-card';
+        var thumb;
+        if (recipe.thumbnail) {
+          thumb = document.createElement('img');
+          thumb.className = 'recipe-thumbnail';
+          thumb.src = recipe.thumbnail;
+          thumb.alt = (recipe.name || 'Recipe').substring(0, 80);
+          thumb.loading = 'lazy';
+        } else {
+          thumb = document.createElement('div');
+          thumb.className = 'recipe-thumbnail';
+          thumb.style.background = 'linear-gradient(135deg, #76b900 0%, #5f9300 100%)';
+          thumb.style.display = 'flex';
+          thumb.style.alignItems = 'center';
+          thumb.style.justifyContent = 'center';
+          thumb.style.color = 'white';
+          thumb.style.fontSize = '1.5rem';
+          thumb.style.fontWeight = '700';
+          thumb.textContent = (recipe.name || '').charAt(0).toUpperCase() || '?';
+        }
+        a.appendChild(thumb);
+        var content = document.createElement('div');
+        content.className = 'recipe-content';
+        var title = document.createElement('div');
+        title.className = 'recipe-title';
+        title.textContent = recipe.name || 'Recipe';
+        content.appendChild(title);
+        var desc = document.createElement('div');
+        desc.className = 'recipe-description';
+        desc.textContent = [recipe.category, recipe.workload].filter(Boolean).join(', ') || 'Recipe';
+        content.appendChild(desc);
+        a.appendChild(content);
+        container.appendChild(a);
+      });
+    }
+
+    // Load recipes.json and nav_pages.json (aligns with sidebar filters)
+    async function loadRecipes() {
+      try {
+        const [recipesRes, navRes] = await Promise.all([
+          fetch('recipes.json'),
+          fetch('nav_pages.json'),
+        ]);
+        if (!recipesRes.ok) {
+          throw new Error(`Failed to load recipes: ${recipesRes.status}`);
+        }
+        recipes = await recipesRes.json();
+        if (navRes.ok) {
+          navPagesData = await navRes.json();
+        } else {
+          navPagesData = { getting_started: [], recipes: [], core_concepts: [] };
+        }
+        isLoading = false;
+        renderRecipeTable();
+        renderFeaturedRecipes();
+      } catch (error) {
+        console.error('Error loading recipes:', error);
+        isLoading = false;
+        navPagesData = navPagesData || { getting_started: [], recipes: [], core_concepts: [] };
+        renderFeaturedRecipes();
+        const tbody = document.getElementById('landing-all-recipes-tbody');
+        if (tbody) {
+          syncTableHeader();
+          tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Failed to load recipes. Please try refreshing the page.</td></tr>';
+        }
+        document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+          el.textContent = '0 items';
+        });
+      }
+    }
+
+    loadRecipes();
+  </script>
+  </div><!-- End landing-page-wrapper -->

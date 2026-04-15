@@ -3,9 +3,9 @@
 > **Authors:** [Petr Khrapchenkov](https://jp.linkedin.com/in/petr-khrapchenkov)
 > **Organization:** [AI Robot Association (AIRoA)](https://www.airoa.org/)
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Outlier detection in video embedding trajectories via Time Series K-Means + Soft-DTW distance thresholding |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Curator](https://github.com/nvidia-cosmos/cosmos-curate)  | Data Curation | Outlier detection in video embedding trajectories via Time Series K-Means + Soft-DTW distance thresholding | technique:data-curation-annotation | 03-13-2026 |
 
 ## Overview
 
