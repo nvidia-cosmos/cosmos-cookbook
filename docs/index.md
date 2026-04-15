@@ -184,6 +184,11 @@
       z-index: 3;
     }
 
+    .pagination-controls--bottom {
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+
     .pagination-info {
       font-size: 0.8rem;
       color: var(--md-default-fg-color--light, #666666);
@@ -399,16 +404,16 @@
 
       <div class="pagination-controls">
         <div class="pagination-info">
-          <span id="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
+          <span class="landing-all-recipes-pagination-info" id="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
         </div>
         <div class="pagination-buttons">
-          <button type="button" class="pagination-btn" id="landing-all-recipes-first" data-pagination="first" aria-label="First page">|&lt;</button>
-          <button type="button" class="pagination-btn" id="landing-all-recipes-prev" data-pagination="prev" aria-label="Previous page">&lt;</button>
-          <select class="page-select" id="landing-all-recipes-page-select" aria-label="Page">
+          <button type="button" class="pagination-btn" data-pagination="first" aria-label="First page">|&lt;</button>
+          <button type="button" class="pagination-btn" data-pagination="prev" aria-label="Previous page">&lt;</button>
+          <select class="page-select landing-all-recipes-page-select" id="landing-all-recipes-page-select" aria-label="Page">
             <option value="1">1</option>
           </select>
-          <button type="button" class="pagination-btn" id="landing-all-recipes-next" data-pagination="next" aria-label="Next page">&gt;</button>
-          <button type="button" class="pagination-btn" id="landing-all-recipes-last" data-pagination="last" aria-label="Last page">&gt;|</button>
+          <button type="button" class="pagination-btn" data-pagination="next" aria-label="Next page">&gt;</button>
+          <button type="button" class="pagination-btn" data-pagination="last" aria-label="Last page">&gt;|</button>
         </div>
       </div>
 
@@ -416,8 +421,8 @@
         <thead>
           <tr>
             <th>Recipe Name</th>
-            <th>Workload</th>
-            <th>Category</th>
+            <th>Domain</th>
+            <th>Technique</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -425,6 +430,21 @@
           <!-- Recipes will be populated by JavaScript -->
         </tbody>
       </table>
+
+      <div class="pagination-controls pagination-controls--bottom">
+        <div class="pagination-info">
+          <span class="landing-all-recipes-pagination-info">1 - 15 of 282 items</span>
+        </div>
+        <div class="pagination-buttons">
+          <button type="button" class="pagination-btn" data-pagination="first" aria-label="First page">|&lt;</button>
+          <button type="button" class="pagination-btn" data-pagination="prev" aria-label="Previous page">&lt;</button>
+          <select class="page-select landing-all-recipes-page-select" aria-label="Page">
+            <option value="1">1</option>
+          </select>
+          <button type="button" class="pagination-btn" data-pagination="next" aria-label="Next page">&gt;</button>
+          <button type="button" class="pagination-btn" data-pagination="last" aria-label="Last page">&gt;|</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -473,6 +493,54 @@
       return localStorage.getItem('navFilter') || 'recipes';
     }
 
+    /** Human-readable labels for domain:* / technique:* tags (aligned with sidebar filters). */
+    var DOMAIN_LABEL_MAP = {
+      'domain:robotics': 'Robotics',
+      'domain:autonomous-vehicles': 'Autonomous Vehicles',
+      'domain:smart-city': 'Smart City',
+      'domain:industrial': 'Industrial',
+      'domain:medical': 'Medical',
+      'domain:fieldwork': 'Fieldwork',
+      'domain:cross-domain': 'Cross-domain'
+    };
+    var TECHNIQUE_LABEL_MAP = {
+      'technique:data-augmentation': 'Data Augmentation',
+      'technique:data-generation': 'Data Generation',
+      'technique:prediction': 'Prediction',
+      'technique:reasoning': 'Reasoning',
+      'technique:post-training': 'Post-Training',
+      'technique:pre-training': 'Pre-Training',
+      'technique:data-curation-annotation': 'Data Curation & Annotation',
+      'technique:distillation': 'Distillation',
+      'technique:style-transfer': 'Style transfer',
+      'technique:simulation': 'Simulation',
+      'technique:data-curation': 'Data curation'
+    };
+
+    function getRecipeDomainDisplay(recipe) {
+      const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
+      for (let i = 0; i < tags.length; i++) {
+        const t = tags[i];
+        if (t && typeof t === 'string' && t.indexOf('domain:') === 0) {
+          if (DOMAIN_LABEL_MAP[t]) return DOMAIN_LABEL_MAP[t];
+          return t.replace(/^domain:/, '').replace(/-/g, ' ');
+        }
+      }
+      return '—';
+    }
+
+    function getRecipeTechniqueDisplay(recipe) {
+      const tags = recipe.tags && Array.isArray(recipe.tags) ? recipe.tags : [];
+      for (let i = 0; i < tags.length; i++) {
+        const t = tags[i];
+        if (t && typeof t === 'string' && t.indexOf('technique:') === 0) {
+          if (TECHNIQUE_LABEL_MAP[t]) return TECHNIQUE_LABEL_MAP[t];
+          return t.replace(/^technique:/, '').replace(/-/g, ' ');
+        }
+      }
+      return '—';
+    }
+
     /** Apply Domain / Technique filters to recipe list (same rules as former sidebar list). */
     function filterRecipesBySidebarTags(list) {
       let pages = list.slice();
@@ -514,16 +582,37 @@
       return (parsed !== undefined && !isNaN(parsed)) ? parsed : 0;
     }
 
+    /** Newest dated recipes first; recipes with no parseable date last; tie-break by name. */
+    function compareRecipesNewestFirst(a, b) {
+      const ta = parseDateForSort(a.date);
+      const tb = parseDateForSort(b.date);
+      const aMissing = ta === 0;
+      const bMissing = tb === 0;
+      if (aMissing && bMissing) {
+        return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+      }
+      if (aMissing) return 1;
+      if (bMissing) return -1;
+      const diff = tb - ta;
+      if (diff !== 0) return diff;
+      return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+    }
+
     /** Rows for the Content Filter table: driven by left sidebar Content Type / Domain / Technique. */
     function getFilteredRows() {
       const q = searchQuery.toLowerCase();
       const contentType = getContentType();
 
       function matchesSearchRecipe(recipe) {
-        return searchQuery === '' ||
-          (recipe.name && recipe.name.toLowerCase().includes(q)) ||
+        if (searchQuery === '') return true;
+        const dom = getRecipeDomainDisplay(recipe).toLowerCase();
+        const tech = getRecipeTechniqueDisplay(recipe).toLowerCase();
+        return (recipe.name && recipe.name.toLowerCase().includes(q)) ||
           (recipe.type && recipe.type.toLowerCase().includes(q)) ||
-          (recipe.category && recipe.category.toLowerCase().includes(q));
+          (recipe.category && recipe.category.toLowerCase().includes(q)) ||
+          (recipe.workload && recipe.workload.toLowerCase().includes(q)) ||
+          (dom !== '—' && dom.includes(q)) ||
+          (tech !== '—' && tech.includes(q));
       }
 
       function matchesSearchNavPage(page) {
@@ -537,9 +626,7 @@
           .filter(matchesSearchRecipe)
           .filter(function (r) { return r.url !== FEATURED_SLOT_6_URL; });
         const filtered = filterRecipesBySidebarTags(searched);
-        filtered.sort(function (a, b) {
-          return parseDateForSort(b.date) - parseDateForSort(a.date);
-        });
+        filtered.sort(compareRecipesNewestFirst);
         return filtered;
       }
 
@@ -574,7 +661,7 @@
       if (isNavOnlyContentType()) {
         headRow.innerHTML = '<th>Recipe Name</th><th>Category</th>';
       } else {
-        headRow.innerHTML = '<th>Recipe Name</th><th>Workload</th><th>Category</th><th>Date</th>';
+        headRow.innerHTML = '<th>Recipe Name</th><th>Domain</th><th>Technique</th><th>Date</th>';
       }
     }
 
@@ -588,8 +675,9 @@
       // Show loading state
       if (isLoading) {
         tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Loading recipes...</td></tr>';
-        const pi = document.getElementById('landing-all-recipes-pagination-info');
-        if (pi) pi.textContent = 'Loading...';
+        document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+          el.textContent = 'Loading...';
+        });
         return;
       }
 
@@ -615,13 +703,13 @@
           const recipe = rowItem;
           const url = escapeHtml(recipe.url);
           const name = escapeHtml(recipe.name);
-          const workload = escapeHtml(recipe.workload);
-          const category = escapeHtml(recipe.category);
+          const domainCol = escapeHtml(getRecipeDomainDisplay(recipe));
+          const techniqueCol = escapeHtml(getRecipeTechniqueDisplay(recipe));
           const date = escapeHtml(recipe.date);
           tr.innerHTML = `
           <td><a href="${url}">${name}</a></td>
-          <td>${workload}</td>
-          <td>${category}</td>
+          <td>${domainCol}</td>
+          <td>${techniqueCol}</td>
           <td>${date}</td>
         `;
         } else {
@@ -637,17 +725,16 @@
         tbody.appendChild(tr);
       });
 
-      // Update pagination info
-      const pi = document.getElementById('landing-all-recipes-pagination-info');
-      if (pi) {
-        pi.textContent = totalItems === 0
-          ? '0 items'
-          : `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
-      }
+      // Update pagination info (top + bottom)
+      const infoText = totalItems === 0
+        ? '0 items'
+        : `${startIdx + 1} - ${endIdx} of ${totalItems} items`;
+      document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+        el.textContent = infoText;
+      });
 
-      // Update page select
-      const pageSelect = document.getElementById('landing-all-recipes-page-select');
-      if (pageSelect) {
+      // Update page selects (top + bottom)
+      document.querySelectorAll('.all-recipes-section select.landing-all-recipes-page-select').forEach(function (pageSelect) {
         pageSelect.innerHTML = '';
         for (let i = 1; i <= totalPages; i++) {
           const option = document.createElement('option');
@@ -656,17 +743,18 @@
           if (i === currentPage) option.selected = true;
           pageSelect.appendChild(option);
         }
-      }
+      });
 
-      // Update button states
-      const setDisabled = (id, dis) => {
-        const el = document.getElementById(id);
-        if (el) el.disabled = dis;
-      };
-      setDisabled('landing-all-recipes-first', currentPage === 1 || totalPages === 0);
-      setDisabled('landing-all-recipes-prev', currentPage === 1 || totalPages === 0);
-      setDisabled('landing-all-recipes-next', currentPage === totalPages || totalPages === 0);
-      setDisabled('landing-all-recipes-last', currentPage === totalPages || totalPages === 0);
+      // Update button states (top + bottom)
+      const sectionEl = document.querySelector('.all-recipes-section');
+      if (sectionEl) {
+        const disFirstPrev = currentPage === 1 || totalPages === 0;
+        const disNextLast = currentPage === totalPages || totalPages === 0;
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="first"]').forEach(function (b) { b.disabled = disFirstPrev; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="prev"]').forEach(function (b) { b.disabled = disFirstPrev; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="next"]').forEach(function (b) { b.disabled = disNextLast; });
+        sectionEl.querySelectorAll('.pagination-btn[data-pagination="last"]').forEach(function (b) { b.disabled = disNextLast; });
+      }
     }
 
     window.addEventListener('cosmos-content-filter-changed', () => {
@@ -706,7 +794,7 @@
       });
 
       section.addEventListener('change', (e) => {
-        if (e.target && e.target.id === 'landing-all-recipes-page-select') {
+        if (e.target && e.target.classList && e.target.classList.contains('landing-all-recipes-page-select')) {
           const n = parseInt(e.target.value, 10);
           currentPage = Number.isFinite(n) && n > 0 ? n : 1;
           renderRecipeTable();
@@ -829,8 +917,9 @@
           syncTableHeader();
           tbody.innerHTML = '<tr><td colspan="' + tableColspan() + '" style="text-align: center; padding: 2rem; color: #999;">Failed to load recipes. Please try refreshing the page.</td></tr>';
         }
-        const pi = document.getElementById('landing-all-recipes-pagination-info');
-        if (pi) pi.textContent = '0 items';
+        document.querySelectorAll('.all-recipes-section .landing-all-recipes-pagination-info').forEach(function (el) {
+          el.textContent = '0 items';
+        });
       }
     }
 

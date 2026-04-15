@@ -475,6 +475,31 @@ def scan_section_pages(site_dir, section_path):
     return pages
 
 
+# Root-level pages to include in the landing "Get Started" content filter (not under getting_started/).
+_GETTING_STARTED_EXTRA_ROOT_HTML = (
+    "glossary.html",
+    "faq.html",
+    "contributing_doc.html",
+)
+
+
+def append_extra_getting_started_root_pages(site_dir, pages_list):
+    """Add site-root pages to getting_started for nav_pages.json / landing table."""
+    site_path = Path(site_dir)
+    for rel in _GETTING_STARTED_EXTRA_ROOT_HTML:
+        html_path = site_path / rel
+        if not html_path.is_file():
+            continue
+        try:
+            content = html_path.read_text(encoding="utf-8")
+            title = extract_h1_title(content)
+            if not title:
+                title = html_path.stem.replace("_", " ").replace("-", " ").title()
+            pages_list.append({"title": title, "url": rel})
+        except Exception:
+            continue
+
+
 def on_post_build(config):
     """Generate recipes.json and nav_pages.json after build. Always write nav_pages.json so the sidebar can load."""
     site_dir = config["site_dir"]
@@ -498,6 +523,7 @@ def on_post_build(config):
         # Build nav_pages for sidebar
         print("\n=== Building nav_pages.json ===")
         nav_pages["getting_started"] = scan_section_pages(site_dir, "getting_started")
+        append_extra_getting_started_root_pages(site_dir, nav_pages["getting_started"])
         nav_pages["core_concepts"] = scan_section_pages(site_dir, "core_concepts")
         # Prompt Guide is under getting_started in the content filter; keep it in recipes.json for Featured only.
         prompt_guide_reason_url = "getting_started/prompt_guide/reason_guide.html"
