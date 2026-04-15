@@ -1,4 +1,4 @@
-# Sim2Real for Agriculture via Cosmos Transfer Post-Training
+# Generate Photorealistic agricultural images for robot perception training
 
 > **Authors:** *[Author Name](https://www.linkedin.com/) • [Author Name](https://www.linkedin.com/)*  
 > **Organization:** [Aigen](https://www.aigen.io/)
