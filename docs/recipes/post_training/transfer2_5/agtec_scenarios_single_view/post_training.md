@@ -11,8 +11,7 @@
 |-----------|--------------|--------------|
 | Cosmos Transfer 2.5 | Post-training + Inference | Generating photorealistic synthetic agricultural imagery for robot perception training |
 
-> **TODO for authors:** Add a hero image/gif/video showing the pipeline in action.
-![3D Render](assets/image3drender.webp) ![Deep Control](assets/deepcontrol.webp) ![Diseased](assets/Diseased.webp)
+![Soybean Transfer](assets/cosmos-soybean.gif)
 
 Training robust perception models for agricultural robotics requires diverse, high-quality labeled data spanning crops, growth stages, weather conditions, and disease states. Agriculture presents a particularly challenging long-tail distribution problem — the number of variations across plant species, environmental conditions, and field states is enormous, and real-world data collection is slow, seasonal, and expensive.
 
@@ -64,13 +63,14 @@ Post-training Cosmos Transfer on fleet-captured agricultural video closes this d
 
 ## Zero-Shot Evaluation
 
-> **TODO for authors:** Add before/after visual comparisons showing base Cosmos Transfer 2.5 outputs on agricultural inputs prior to post-training. Required by all cookbook recipes to establish baseline.
->
-> Suggested evaluation criteria:
-> - Leaf morphology accuracy (species-appropriate shapes)
-> - Soil texture realism
-> - Shadow consistency with plant geometry
-> - Weed diversity and natural placement
+The base Cosmos Transfer 2.5 checkpoint does not perform well on agricultural data. Model outputs fail to adhere to control signals and are unable to produce photrealistic visual features, such as leaf shape and color, lighting, and scene textures. 
+
+<table style="border: none; border-collapse: collapse;">
+<tr style="border: none;">
+<td style="border: none; text-align: center;"><img src="assets/image3drender.webp" alt="3D Render Input" /><br><em>3D Render</em></td>
+<td style="border: none; text-align: center;"><img src="assets/Baselinesim2real.webp" alt="Base Cosmos Output" /><br><em>Depth Control Signal</em></td>
+</tr>
+</table>
 
 ---
 
@@ -91,14 +91,8 @@ The training data for this recipe consists of fleet-captured video clips (RGB + 
 | Crops | Soybean, cotton, tomato |
 | Depth | Synchronized per-frame from fleet cameras |
 
-> **TODO for authors:** Add input images.
+![Example clip](assets/aigen_robot_cotton.mp4)
 
-<table style="border: none; border-collapse: collapse;">
-<tr style="border: none;">
-<td style="border: none; text-align: center;"><img src="assets/image3drender.webp" alt="3D Render" /><br><em>3D Render</em></td>
-<td style="border: none; text-align: center;"><img src="assets/deepcontrol.webp" alt="Depth Control Signal" /><br><em>Depth Control Signal</em></td>
-</tr>
-</table>
 
 ### Depth Map Extraction
 
@@ -129,8 +123,6 @@ depth_u8 = cv2.normalize(depth_np, None, 0, 255, cv2.NORM_MINMAX).astype("uint8"
 
 ### Dataset Schema
 
-To make this recipe easier to reproduce and adapt, define each training or inference sample using a consistent schema. Even if the source data remains private, documenting the schema allows others to build compatible datasets and reuse the pipeline.
-
 #### Required sample components
 
 | Field | Type | Required | Description |
@@ -138,50 +130,16 @@ To make this recipe easier to reproduce and adapt, define each training or infer
 | `sample_id` | string | Yes | Unique identifier shared across RGB video, depth video, and caption JSON |
 | `video_path` | string | Yes | Path to the RGB clip used as the primary visual input |
 | `depth_path` | string | Yes | Path to the depth-control clip aligned frame-by-frame with the RGB clip |
-| `prompt` | string | Yes | Positive text prompt used during training or inference |
-| `negative_prompt` | string | Yes | Negative prompt used to suppress common artifacts |
 | `crop_type` | string | Recommended | Crop class, for example `soybean`, `cotton`, or `tomato` |
-| `lighting` | string | Recommended | Scene lighting descriptor, for example `bright_direct_sunlight` or `overcast` |
 | `field_state` | string | Recommended | Field condition descriptor, such as weed density, canopy stage, or soil exposure |
-| `camera_view` | string | Recommended | Camera angle or mounting context, for example `angled_row_view` or `front_bumper` |
+| `camera_view` | string | Recommended | Camera angle or mounting context, for example `angled_row_view` or `front_nav` |
 | `weather` | string | Optional | Weather metadata if available from field logs |
-| `split` | string | Recommended | Dataset split: `train`, `val`, or `test` |
-
-#### Example metadata record
-
-```json
-{
-  "sample_id": "clip_001",
-  "video_path": "videos/clip_001.mp4",
-  "depth_path": "control_depth/clip_001.mp4",
-  "caption_path": "captions/clip_001.json",
-  "prompt": "A field view of soybean plants growing in rows under bright direct sunlight. Dense weed growth visible between crop rows. An angled view showing green oval-shaped leaves on slender stems in dry brown soil, with strong sunlight and clear shadows.",
-  "negative_prompt": "blurry, overexposed, motion blur, synthetic render",
-  "crop_type": "soybean",
-  "lighting": "bright_direct_sunlight",
-  "field_state": "dense_weeds_between_rows",
-  "camera_view": "angled_row_view",
-  "weather": "clear",
-  "split": "train"
-}
-```
-
-> **TODO for authors:** did you modify the default "negative_prompt"? Is this json file similar to your experiments?
 
 
 #### Recommended manifest
 
-In addition to the folder structure below, consider including a top-level manifest such as`dataset_root/metadata.jsonl` with one JSON object per clip. This makes it easier to validate the dataset, generate captions programmatically, and subset by crop type, lighting, or field condition.
+In addition to the folder structure below, consider including a top-level manifest such as`dataset_root/clip_index.json` with one JSON object per clip. This makes it easier to validate the dataset, generate captions programmatically, and subset by crop type or field condition.
 
-```
-dataset_root/
-├── metadata.jsonl        # One JSON record per sample
-├── videos/
-├── control_depth/
-└── captions/
-```
-
-> **TODO for authors:** Is this correct? Confirm which metadata fields Aigen can reliably export from the fleet pipeline. At minimum, please document the fields you already use to generate prompts or organize experiments.
 
 Organize clips into the directory structure expected by the Cosmos Transfer training pipeline:
 
@@ -190,7 +148,7 @@ dataset_root/
 ├── videos/             # 480p, 10 FPS, clips trimmed to ×93 frames
 │   ├── clip_001.mp4
 │   └── clip_002.mp4
-├── control_depth/      # Per-clip depth video, same dims and frame count
+├── depth/      # Per-clip depth video, same dims and frame count
 │   ├── clip_001.mp4
 │   └── clip_002.mp4
 └── captions/           # One JSON per clip
@@ -198,9 +156,8 @@ dataset_root/
     └── clip_002.json
 ```
 
-**Latent frames:** The number of latent frames is reduced to 16 (from the default) because agricultural scenes exhibit low temporal variability — crops and soil don't move significantly frame to frame, so fewer latent frames are sufficient to capture the relevant dynamics.
+**Latent frames:** The number of latent frames (model config parameter `state_t`) is reduced to 16 (from the default 24) because agricultural scenes exhibit low temporal variability — crops and soil don't move significantly frame to frame, so fewer latent frames are sufficient to capture the relevant dynamics. Accordingly, `num_frames` is set to 61 to match.
 
-> **TODO for authors:** Clarify whether "16 latent frames" refers to a model config parameter or the physical clip length. If the clip must still be ×93 physical frames, note this explicitly to avoid reader confusion.
 
 ### Caption Generation
 
@@ -209,7 +166,7 @@ Captions are generated using a template populated with metadata from the data ca
 ```python
 # Caption template
 CAPTION_TEMPLATE = (
-    "A field view of {crop_type} plants growing in rows under {lighting} conditions. "
+    "{camera_angle} view from an agricultural robot in a {crop} field. "
     "{field_state}. "
     "{vlm_description}"
 )
@@ -226,9 +183,8 @@ caption = {
 }
 ```
 
-**VLM backend:** Gemini 1.5 Flash is used for natural language description generation. 
+**VLM backend:** Gemini 2.5 Flash is used for natural language description generation. 
 
-> **TODO for authors:** Please confirm the captioning process used in your case.
 
 ---
 
@@ -251,25 +207,27 @@ The explanation is rooted in outdoor agricultural lighting conditions:
 
 ### Experiment Configuration
 
-> **TODO for authors:** Add the Python config file snippet. Key fields to include:
-
 ```python
-# cosmos_transfer2/_src/transfer2/configs/vid2vid_transfer/experiments/agriculture_sim2real.py
-# TODO: authors to provide actual config — template below
 
 experiment = dict(
-    data=dict(
-        train_dataset=dict(
-            data_path="/path/to/dataset_root/",
+    dataloader_train=dict(
+        dataset=dict(
             control_type="depth",          # depth control for outdoor scenes
-            # latent_frames=16,            # TODO: confirm parameter name
+            resolution="480p",
+            num_video_frames=61
         )
     ),
-    training=dict(
+    model=dict(
+      config=dict(
+        resolution="480p",
+        state_t=16
+      )
+    ),
+    trainer=dict(
         max_iter=4000,
         save_iter=500,
-        learning_rate=1e-5,               # TODO: confirm value used
     ),
+    # Use defaults for other fields and/or set as appropriate
 )
 ```
 
@@ -283,21 +241,20 @@ experiment = dict(
 | Latent frames | 16 | Agricultural scenes have low temporal variability |
 | Depth guidance scale | 0.8 (inference) | Strong structural adherence with room for surface detail |
 
-> **Training insight:** Loss curves plateau early, but continued training improves generation quality in ways more visible in output samples than in the loss metric. Recommend visual inspection of generated outputs at checkpoints rather than stopping at loss plateau.
+> **Training insight:** Training for longer improves generation quality in ways more visible in output samples than in the loss metric. Recommend visual inspection of generated outputs at checkpoints rather than stopping at loss plateau.
 
 ### Launch Training
 
-> **TODO for authors:** Add the `torchrun` command used. Template:
-
 ```bash
-export EXP=agriculture_sim2real
 export NUM_GPUS=8
+export DATA_DIR=/path/to/dataset
 
 IMAGINAIRE_OUTPUT_ROOT=/large/storage \
 torchrun --nproc_per_node=$NUM_GPUS --master_port=12341 \
   -m scripts.train \
-  --config=cosmos_transfer2/_src/transfer2/configs/vid2vid_transfer/config.py \
-  -- experiment=${EXP} job.wandb_mode=disabled
+  --config=cosmos_transfer2/singleview_config.py \
+  -- experiment=transfer2_singleview_posttrain_depth_aigen
+  dataloader_train.dataset.dataset_dir=$DATA_DIR 'dataloader_train.sampler.dataset=${dataloader_train.dataset}'
 ```
 
 ### Convert Checkpoint
@@ -323,9 +280,8 @@ At inference time, construct prompts describing the target scene: crop type, gro
 
 **Depth distribution matching:** Inference-time depth maps must use the same normalization as training. Mismatched normalization degrades output quality — apply the same preprocessing pipeline.
 
-> **Note on single-image input:** If you want to transform a single image rather than a video clip, you can loop the image into a video of the appropriate length for inference. However, note that this is an inference-only workaround — results will be lower quality than video-to-video generation because the model receives no temporal motion information. **Never use looped still images as training data**, as this degrades post-training quality. 
+> **Note on single-image input:** If you want to transform a single image rather than a video clip, you can loop the image into a video of the appropriate length for inference. However, note that this is an inference-only workaround — results will be lower quality than video-to-video generation because the model receives no temporal motion information. 
 
-> **TODO for authors:** Confirm the experience with still images vs. videos.
 
 ```bash
 # Inference with post-trained checkpoint
@@ -335,96 +291,9 @@ python examples/inference.py \
   -o outputs/validation/
 ```
 
-### Minimal Quickstart (Inference Only)
+### Minimal Quickstart 
 
-For readers who want to evaluate the recipe without running post-training, provide a lightweight
-inference path using existing Cosmos Transfer weights plus a single RGB image or short clip and a
-matching depth control input. This should be the fastest path to a first result.
-
-#### What users need
-
-- Access to **Cosmos Transfer 2.5 model weights**
-- Access to the **inference pipeline** from the Cosmos Transfer repository
-- One RGB image or short RGB clip from an agricultural scene
-- A matching depth map or depth clip generated with fleet depth or a monocular depth model
-
-> **TODO for authors:** Replace the placeholders below with the exact internal or public instructions your team uses to obtain the required model weights and set up the inference environment.
-
-#### Suggested quickstart flow
-
-1. Install the Cosmos Transfer inference environment and verify that the base model weights areavailable locally.
-2. Start with **one agricultural RGB image** and estimate depth using the same normalization convention used elsewhere in this recipe.
-3. Convert the single image and depth map into short looping videos if the inference pipeline expects video inputs.
-4. Run inference with a domain-specific prompt.
-5. Export the result as MP4 and optionally convert a short segment to GIF for the recipe page.
-
-#### Minimal directory layout
-
-```
-quickstart/
-├── inputs/
-│   ├── rgb/frame_001.png
-│   └── depth/frame_001.png
-├── working/
-│   ├── rgb_loop.mp4
-│   └── depth_loop.mp4
-├── prompts/
-│   └── agriculture_quickstart.json
-└── outputs/
-```
-
-#### Example quickstart params file
-
-```json
-{
-  "prompt": "An angled view of soybean plants growing in rows on a farm field on a bright sunny day. Green oval-shaped soybean leaves on slender stems in dry brown soil, with strong sunlight and clear shadows. Scattered weeds between the rows.",
-  "negative_prompt": "blurry, overexposed, motion blur, synthetic render",
-  "control_type": "depth",
-  "input_video": "quickstart/working/rgb_loop.mp4",
-  "control_video": "quickstart/working/depth_loop.mp4",
-  "guidance_scale": 0.8
-}
-```
-
-#### Example workflow
-
-```bash
-# 1) Confirm weights are available locally
-# TODO for authors: replace with the exact path or download/setup step
-export COSMOS_TRANSFER_WEIGHTS=/path/to/cosmos-transfer-2.5-weights
-
-# 2) Generate a depth map for a single agricultural image
-python tools/run_depth_estimation.py \
-  --input quickstart/inputs/rgb/frame_001.png \
-  --output quickstart/inputs/depth/frame_001.png
-
-# 3) Loop the RGB and depth image into short MP4 clips for inference
-python tools/make_loop_video.py \
-  --input quickstart/inputs/rgb/frame_001.png \
-  --output quickstart/working/rgb_loop.mp4 \
-  --frames 93 --fps 10
-
-python tools/make_loop_video.py \
-  --input quickstart/inputs/depth/frame_001.png \
-  --output quickstart/working/depth_loop.mp4 \
-  --frames 93 --fps 10
-
-# 4) Run inference with the base or post-trained checkpoint
-python examples/inference.py \
-  --params_file quickstart/prompts/agriculture_quickstart.json \
-  --checkpoint_path ${COSMOS_TRANSFER_WEIGHTS}/checkpoint_ema_bfloat16.pt \
-  -o quickstart/outputs/
-```
-
-#### Why this matters
-
-A small inference-only entry point helps readers validate three things before investing in full post-training: 
-
-- whether their agricultural prompts are expressive enough
-- whether their depth normalization is compatible with the pipeline
-- whether the generated visuals are promising enough to justify a larger training run
-
-> **TODO for authors:** If you have an internal helper notebook or a single-command demo, link it here. A notebook or one-click script would make this recipe significantly easier to adopt.
+Download sample dataset from Hugging Face [here](https://huggingface.co/datasets/usmank13/aigen-cotton-s)
 
 ### Example Prompts
 
@@ -442,7 +311,6 @@ A small inference-only entry point helps readers validate three things before in
 
 ![Diseased soybeans](assets/Diseased.webp)
 
-> **TODO for authors:** Did you use negative propmts?
 
 ---
 
