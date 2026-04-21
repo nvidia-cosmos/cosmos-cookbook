@@ -6,6 +6,7 @@
 - [Predict for Sports Video Generation](./predict2_5/sports/post_training.md)
 - [Predict for Surgical Robotics Simulation](./predict2_5/surgical_robotics/post_training.md)
 - [Transfer Multiview for Autonomous Vehicles](./transfer2_5/av_world_scenario_maps/post_training.md)
+- [Transfer for Agriculture Sim2Real](./transfer2_5/agtec_scenarios_single_view/post_training.md)
 - [Reason for Physical Plausibility Check](./reason1/physical-plausibility-check/post_training.md)
 - [Reason 2 for Physical Plausibility Check](./reason2/physical-plausibility-check/post_training.md)
 - [Reason for Visual Q&A in ITS](./reason1/intelligent-transportation/post_training.md)

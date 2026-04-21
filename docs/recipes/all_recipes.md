@@ -222,6 +222,13 @@
     </div>
     <div class="recipe-category-body">
       <div class="recipe-track" data-page-size="6" aria-label="Robotics recipes">
+        <a class="recipe-card" href="./post_training/transfer2_5/agtec_scenarios_single_view/post_training.html">
+          <div class="recipe-media recipe-media--image" aria-hidden="true">
+            <img src="./post_training/transfer2_5/agtec_scenarios_single_view/assets/cosmos-soybean.gif" alt="" loading="lazy" />
+          </div>
+          <div class="recipe-title">Generate Photorealistic Agricultural Images for Robot Perception Training</div>
+          <div class="recipe-tag recipe-tag--post-training">Post-Training</div>
+        </a>
         <a class="recipe-card" href="./inference/reason2/intbot_edge_vlm/inference.html">
           <div class="recipe-media recipe-media--image" aria-hidden="true">
             <img src="./inference/reason2/intbot_edge_vlm/assets/intbot_gtc_2026.jpg" alt="" loading="lazy" />

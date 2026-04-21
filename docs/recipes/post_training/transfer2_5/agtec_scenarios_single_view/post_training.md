@@ -1,9 +1,7 @@
 # Generate Photorealistic agricultural images for robot perception training
 
-> **Authors:** *[Author Name](https://www.linkedin.com/) • [Author Name](https://www.linkedin.com/)*  
+> **Authors:** *[Usman Khan](https://www.linkedin.com/in/ukhan13/) • [Yuri Brigance](https://www.linkedin.com/in/ybrigance/)*  
 > **Organization:** [Aigen](https://www.aigen.io/)
-
-> **⚠️ DRAFT — Under Review**  
 
 ## Overview
 
@@ -91,7 +89,10 @@ The training data for this recipe consists of fleet-captured video clips (RGB + 
 | Crops | Soybean, cotton, tomato |
 | Depth | Synchronized per-frame from fleet cameras |
 
-![Example clip](assets/aigen_robot_cotton.mp4)
+<video autoplay loop muted playsinline style="width: 100%; max-width: 720px;">
+  <source src="assets/aigen_robot_cotton.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 
 ### Depth Map Extraction
