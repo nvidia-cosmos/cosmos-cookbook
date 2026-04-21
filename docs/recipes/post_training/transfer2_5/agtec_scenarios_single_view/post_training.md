@@ -1,6 +1,6 @@
 # Generate Photorealistic agricultural images for robot perception training
 
-> **Authors:** *[Usman Khan](https://www.linkedin.com/in/ukhan13/) • [Yuri Brigance](https://www.linkedin.com/in/ybrigance/)*  
+> **Authors:** *[Usman Khan](https://www.linkedin.com/in/ukhan13/) • [Yuri Brigance](https://www.linkedin.com/in/ybrigance/)*
 > **Organization:** [Aigen](https://www.aigen.io/)
 
 ## Overview
@@ -24,9 +24,11 @@ Cosmos Transfer is well suited to this domain because it enforces spatiotemporal
 Follow the [Setup guide](https://nvidia-cosmos.github.io/cosmos-cookbook/tbd.html) for general environment setup instructions, including installing dependencies.
 
 **Hardware:**
+
 - 8× A100 GPUs (e.g., AWS `p4de.24xlarge`)
 
 **Software Dependencies:**
+
 - [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) model weights and training framework
 - Depth estimation pipeline (synchronized RGB+D from fleet cameras, or an off-the-shelf monocular depth model such as [DepthAnything V2](https://github.com/DepthAnything/Depth-Anything-V2))
 
@@ -61,7 +63,7 @@ Post-training Cosmos Transfer on fleet-captured agricultural video closes this d
 
 ## Zero-Shot Evaluation
 
-The base Cosmos Transfer 2.5 checkpoint does not perform well on agricultural data. Model outputs fail to adhere to control signals and are unable to produce photrealistic visual features, such as leaf shape and color, lighting, and scene textures. 
+The base Cosmos Transfer 2.5 checkpoint does not perform well on agricultural data. Model outputs fail to adhere to control signals and are unable to produce photrealistic visual features, such as leaf shape and color, lighting, and scene textures.
 
 <table style="border: none; border-collapse: collapse;">
 <tr style="border: none;">
@@ -93,7 +95,6 @@ The training data for this recipe consists of fleet-captured video clips (RGB + 
   <source src="assets/aigen_robot_cotton.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
-
 
 ### Depth Map Extraction
 
@@ -136,11 +137,9 @@ depth_u8 = cv2.normalize(depth_np, None, 0, 255, cv2.NORM_MINMAX).astype("uint8"
 | `camera_view` | string | Recommended | Camera angle or mounting context, for example `angled_row_view` or `front_nav` |
 | `weather` | string | Optional | Weather metadata if available from field logs |
 
-
 #### Recommended manifest
 
 In addition to the folder structure below, consider including a top-level manifest such as`dataset_root/clip_index.json` with one JSON object per clip. This makes it easier to validate the dataset, generate captions programmatically, and subset by crop type or field condition.
-
 
 Organize clips into the directory structure expected by the Cosmos Transfer training pipeline:
 
@@ -158,7 +157,6 @@ dataset_root/
 ```
 
 **Latent frames:** The number of latent frames (model config parameter `state_t`) is reduced to 16 (from the default 24) because agricultural scenes exhibit low temporal variability — crops and soil don't move significantly frame to frame, so fewer latent frames are sufficient to capture the relevant dynamics. Accordingly, `num_frames` is set to 61 to match.
-
 
 ### Caption Generation
 
@@ -184,8 +182,7 @@ caption = {
 }
 ```
 
-**VLM backend:** Gemini 2.5 Flash is used for natural language description generation. 
-
+**VLM backend:** Gemini 2.5 Flash is used for natural language description generation.
 
 ---
 
@@ -281,8 +278,7 @@ At inference time, construct prompts describing the target scene: crop type, gro
 
 **Depth distribution matching:** Inference-time depth maps must use the same normalization as training. Mismatched normalization degrades output quality — apply the same preprocessing pipeline.
 
-> **Note on single-image input:** If you want to transform a single image rather than a video clip, you can loop the image into a video of the appropriate length for inference. However, note that this is an inference-only workaround — results will be lower quality than video-to-video generation because the model receives no temporal motion information. 
-
+> **Note on single-image input:** If you want to transform a single image rather than a video clip, you can loop the image into a video of the appropriate length for inference. However, note that this is an inference-only workaround — results will be lower quality than video-to-video generation because the model receives no temporal motion information.
 
 ```bash
 # Inference with post-trained checkpoint
@@ -292,13 +288,14 @@ python examples/inference.py \
   -o outputs/validation/
 ```
 
-### Minimal Quickstart 
+### Minimal Quickstart
 
 Download sample dataset from Hugging Face [here](https://huggingface.co/datasets/usmank13/aigen-cotton-s)
 
 ### Example Prompts
 
 **Healthy soybean rows, bright sunlight:**
+
 ```
 "An angled view of soybean plants growing in rows on a farm field on a bright sunny day. Green oval-shaped soybean leaves on slender stems in dry brown soil, with strong sunlight and clear shadows. Scattered weeds between the rows."
 ```
@@ -306,12 +303,12 @@ Download sample dataset from Hugging Face [here](https://huggingface.co/datasets
 ![Healthy soybean rows, bright sunlight](assets/healthly-bright.webp)
 
 **Diseased soybeans — yellowing and wilting:**
+
 ```
 "An angled view of large soybean plants growing in a row on a farm, with scattered weeds. The crop shows signs of disease with yellowing leaves, brown spots, and wilting foliage."
 ```
 
 ![Diseased soybeans](assets/Diseased.webp)
-
 
 ---
 
