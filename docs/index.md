@@ -21,6 +21,7 @@ The Cosmos ecosystem supports the complete Physical AI development lifecycle--fr
 
 | **Date** | **Recipe** | **Model** |
 |----------|------------|-----------|
+| Apr 21 | [Generate Photorealistic Agricultural Images for Robot Perception Training](recipes/post_training/transfer2_5/agtec_scenarios_single_view/post_training.md) | Cosmos Transfer 2.5 |
 | Mar 16 | [Cosmos-Reason2 on Jetson Thor for Edge VLM Perception](recipes/inference/reason2/intbot_edge_vlm/inference.md) | Cosmos Reason 2 |
 | Mar 15 | [Content-Adaptive Video Compression for Cosmos Curator with Beamr CABR](recipes/data_curation/cosmos_cabr/cabr_recipe.md) | Cosmos Curator |
 | Mar 15 | [Post-Training Cosmos-H-Surgical-Simulator for Surgical Robotics](recipes/post_training/predict2_5/surgical_robotics/post_training.md) | Cosmos Predict 2.5 |
@@ -92,6 +93,7 @@ The Cosmos Cookbook includes comprehensive use cases demonstrating real-world ap
 | **Inference** | Sim2Real data augmentation for robotics navigation tasks | [X-Mobility Navigation](recipes/inference/transfer1/inference-x-mobility/inference.md) |
 | **Inference** | Synthetic manipulation motion generation for humanoid robots | [GR00T-Mimic](recipes/inference/transfer1/gr00t-mimic/inference.md) |
 | **Training** | ControlNet post-training for spatially-conditioned multiview AV video generation with world scenario maps | [Multiview AV Generation](recipes/post_training/transfer2_5/av_world_scenario_maps/post_training.md) |
+| **Training** | Post-train Cosmos Transfer (depth-conditioned) on agricultural fleet video for photorealistic synthetic imagery | [Agriculture Sim2Real](recipes/post_training/transfer2_5/agtec_scenarios_single_view/post_training.md) |
 
 ### [**Cosmos Reason**](https://github.com/nvidia-cosmos/cosmos-reason1)
 

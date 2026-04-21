@@ -276,7 +276,7 @@ For a new recipe at `docs/recipes/[category]/[model-name]/[recipe-name]/[recipe-
 
 **Code Review** - All submissions require review (typically within one week). Respond to feedback promptly and keep discussions professional.
 
-Access to third-party tools - Cosmos recipes are a springboard to help educate and demonstrate how best to use the Cosmos models, libraries, and blueprints. If access to a third-party tool is required for the recipe, credits or access to a free tier should be included to let developers use these recipes without paying for another service. 
+Access to third-party tools - Cosmos recipes are a springboard to help educate and demonstrate how best to use the Cosmos models, libraries, and blueprints. If access to a third-party tool is required for the recipe, credits or access to a free tier should be included to let developers use these recipes without paying for another service.
 Contributions are reviewed on a best-effort basis - we can't provide guarantees around when or if content contributions will be reviewed or merged.
 
 ## Developer Certificate of Origin (Optional)
