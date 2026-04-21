@@ -24,22 +24,6 @@ A comprehensive guide for working with the **NVIDIA Cosmos ecosystem**—a suite
 | Feb 4 | [Worker Safety in a Classical Warehouse](https://nvidia-cosmos.github.io/cosmos-cookbook/recipes/inference/reason2/worker_safety/inference.html) | Cosmos Reason 2 | Zero-shot industrial safety compliance and hazard detection in classical warehouse environments using context-aware prompt engineering |
 | Jan 30 | [Prompt Guide](https://nvidia-cosmos.github.io/cosmos-cookbook/core_concepts/prompt_guide/reason_guide.html) | Cosmos Reason 2 | Inference Prompt Guide |
 
-## Upcoming Activities
-
-### NVIDIA GTC 2026
-
-Register for [NVIDIA GTC](https://www.nvidia.com/gtc/) happening **March 16–19, 2026**, and add the [Cosmos sessions](https://www.nvidia.com/gtc/session-catalog/?sessions=S81667,CWES81669,DLIT81644,DLIT81698,S81836,S81488,S81834,DLIT81774,CWES81733,CWES81568) to your calendar. Don't miss the must-see keynote from CEO Jensen Huang at SAP Center on Monday, March 16 at 11:00 a.m. PT.
-
-### NVIDIA Cosmos Cookoff
-
-Introducing the **[NVIDIA Cosmos Cookoff](https://luma.com/nvidia-cosmos-cookoff)** — a virtual, four-week physical AI challenge running **January 29 – February 26** for robotics, AV, and vision AI builders.
-
-Build with NVIDIA Cosmos Reason and Cosmos Cookbook recipes—from egocentric robot reasoning to physical plausibility checks and traffic-aware models for a chance to win **$5,000**, an **NVIDIA DGX Spark**, and more!
-
-**[Register Now →](https://luma.com/nvidia-cosmos-cookoff)**
-
-Sponsored by Nebius and Milestone.
-
 ## Prerequisites
 
 | Use Case | Linux (Ubuntu) | macOS | Windows |
