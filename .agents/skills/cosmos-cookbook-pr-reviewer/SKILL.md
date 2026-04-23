@@ -35,11 +35,11 @@ Cosmos Cookbook is a practical documentation site for NVIDIA Cosmos models. PRs 
 4. Review the rendered documentation path when layout, navigation, images, notebooks, or markdown structure changed.
 5. Run available validation when feasible:
 
-```bash
-just lint
-just test
-uv run mkdocs build --strict
-```
+   ```bash
+   just lint
+   just test
+   uv run mkdocs build --strict
+   ```
 
 6. For code examples, test the smallest meaningful path or state why full execution was not feasible.
 7. Write review output with findings first, ordered by severity.
