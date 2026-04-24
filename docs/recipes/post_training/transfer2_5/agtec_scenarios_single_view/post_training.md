@@ -68,7 +68,7 @@ The base Cosmos Transfer 2.5 checkpoint does not perform well on agricultural da
 <table style="border: none; border-collapse: collapse;">
 <tr style="border: none;">
 <td style="border: none; text-align: center;"><img src="assets/image3drender.webp" alt="3D Render Input" /><br><em>3D Render</em></td>
-<td style="border: none; text-align: center;"><img src="assets/Baselinesim2real.webp" alt="Base Cosmos Output" /><br><em>Depth Control Signal</em></td>
+<td style="border: none; text-align: center;"><img src="assets/BaseCosmosTransfer25Checkpoint.webp" alt="Base Cosmos Output" /><br><em>Base Cosmos Transfer Output</em></td>
 </tr>
 </table>
 
