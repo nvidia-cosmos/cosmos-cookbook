@@ -21,6 +21,17 @@ import shutil
 from html.parser import HTMLParser
 from pathlib import Path
 
+try:
+    from mkdocs.plugins import event_priority
+except ImportError:  # pragma: no cover
+
+    def event_priority(_priority):
+        def _decorator(fn):
+            return fn
+
+        return _decorator
+
+
 # Allowed recipe tags (key:value). Defined early so parse_tags is always available.
 ALLOWED_TAGS = frozenset(
     {
@@ -483,6 +494,62 @@ _GETTING_STARTED_EXTRA_ROOT_HTML = (
 )
 
 
+def merge_search_index_text_by_location(site_dir):
+    """
+    Build one searchable string per page from the MkDocs search plugin index.
+
+    MkDocs emits multiple docs per page (per heading fragment); we merge them
+    so the landing search can match body text like the theme search bar.
+    """
+    path = Path(site_dir) / "search" / "search_index.json"
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+    buckets: dict[str, list[str]] = {}
+    for doc in data.get("docs", []):
+        if not isinstance(doc, dict):
+            continue
+        loc = doc.get("location")
+        if not loc or not isinstance(loc, str):
+            continue
+        base = loc.split("#", 1)[0].strip()
+        if not base:
+            continue
+        title = doc.get("title") or ""
+        text = doc.get("text") or ""
+        if not isinstance(title, str):
+            title = str(title)
+        if not isinstance(text, str):
+            text = str(text)
+        parts = []
+        if title.strip():
+            parts.append(title.strip())
+        if text.strip():
+            parts.append(text.strip())
+        if not parts:
+            continue
+        buckets.setdefault(base, []).append("\n".join(parts))
+    return {k: "\n".join(v) for k, v in buckets.items()}
+
+
+def attach_search_text_from_index(pages, search_by_loc):
+    """Add search_text to each {title, url} dict when the MkDocs index has that URL."""
+    if not pages or not search_by_loc:
+        return
+    for p in pages:
+        if not isinstance(p, dict):
+            continue
+        url = p.get("url")
+        if not url or not isinstance(url, str):
+            continue
+        blob = search_by_loc.get(url)
+        if blob:
+            p["search_text"] = blob
+
+
 def append_extra_getting_started_root_pages(site_dir, pages_list):
     """Add site-root pages to getting_started for nav_pages.json / landing table."""
     site_path = Path(site_dir)
@@ -500,6 +567,7 @@ def append_extra_getting_started_root_pages(site_dir, pages_list):
             continue
 
 
+@event_priority(-100)
 def on_post_build(config):
     """Generate recipes.json and nav_pages.json after build. Always write nav_pages.json so the sidebar can load."""
     site_dir = config["site_dir"]
@@ -508,9 +576,25 @@ def on_post_build(config):
     print("\n=== Custom Build Steps ===")
 
     try:
+        search_by_loc = merge_search_index_text_by_location(site_dir)
+        if search_by_loc:
+            print(
+                f"\n=== MkDocs search index: {len(search_by_loc)} page location(s) for landing search ==="
+            )
+        else:
+            print(
+                "\n=== MkDocs search index not found or empty (landing search uses metadata only) ==="
+            )
+
         # Scan recipes and generate recipes.json
         print("\n=== Scanning for recipes ===")
         recipes = scan_recipes(site_dir)
+
+        for r in recipes:
+            if isinstance(r, dict):
+                url = r.get("url")
+                if url and isinstance(url, str) and url in search_by_loc:
+                    r["search_text"] = search_by_loc[url]
 
         if recipes:
             recipes_json_path = Path(site_dir) / "recipes.json"
@@ -524,7 +608,9 @@ def on_post_build(config):
         print("\n=== Building nav_pages.json ===")
         nav_pages["getting_started"] = scan_section_pages(site_dir, "getting_started")
         append_extra_getting_started_root_pages(site_dir, nav_pages["getting_started"])
+        attach_search_text_from_index(nav_pages["getting_started"], search_by_loc)
         nav_pages["core_concepts"] = scan_section_pages(site_dir, "core_concepts")
+        attach_search_text_from_index(nav_pages["core_concepts"], search_by_loc)
         # Prompt Guide is under getting_started in the content filter; keep it in recipes.json for Featured only.
         prompt_guide_reason_url = "getting_started/prompt_guide/reason_guide.html"
         nav_pages["recipes"] = [

@@ -399,7 +399,7 @@
     <!-- Main table: rows follow left sidebar Content Type / Domain / Technique -->
     <div class="all-recipes-section">
       <div class="search-container">
-        <input type="text" class="search-input" placeholder="🔍 Search for recipes, concepts, and prompts" id="landing-all-recipes-search" autocomplete="off">
+        <input type="text" class="search-input" placeholder="🔍 Search titles, tags, and page body" id="landing-all-recipes-search" autocomplete="off">
       </div>
 
       <div class="pagination-controls">
@@ -583,6 +583,24 @@
     }
 
     /** Newest dated recipes first; recipes with no parseable date last; tie-break by name. */
+    /** Precompute lowercase body text from MkDocs search index (see hooks.py). */
+    function attachLandingSearchTextLower() {
+      if (Array.isArray(recipes)) {
+        recipes.forEach(function (r) {
+          r._searchTextLower = (r.search_text || '').toLowerCase();
+        });
+      }
+      if (navPagesData && typeof navPagesData === 'object') {
+        ['getting_started', 'core_concepts'].forEach(function (section) {
+          var arr = navPagesData[section];
+          if (!Array.isArray(arr)) return;
+          arr.forEach(function (p) {
+            p._searchTextLower = (p.search_text || '').toLowerCase();
+          });
+        });
+      }
+    }
+
     function compareRecipesNewestFirst(a, b) {
       const ta = parseDateForSort(a.date);
       const tb = parseDateForSort(b.date);
@@ -607,18 +625,21 @@
         if (searchQuery === '') return true;
         const dom = getRecipeDomainDisplay(recipe).toLowerCase();
         const tech = getRecipeTechniqueDisplay(recipe).toLowerCase();
+        const blob = recipe._searchTextLower || '';
         return (recipe.name && recipe.name.toLowerCase().includes(q)) ||
           (recipe.type && recipe.type.toLowerCase().includes(q)) ||
           (recipe.category && recipe.category.toLowerCase().includes(q)) ||
           (recipe.workload && recipe.workload.toLowerCase().includes(q)) ||
           (dom !== '—' && dom.includes(q)) ||
-          (tech !== '—' && tech.includes(q));
+          (tech !== '—' && tech.includes(q)) ||
+          (blob && blob.includes(q));
       }
 
       function matchesSearchNavPage(page) {
         const title = (page.title || '').toLowerCase();
         const url = (page.url || '').toLowerCase();
-        return searchQuery === '' || title.includes(q) || url.includes(q);
+        const blob = page._searchTextLower || '';
+        return searchQuery === '' || title.includes(q) || url.includes(q) || (blob && blob.includes(q));
       }
 
       if (contentType === 'recipes') {
@@ -904,6 +925,7 @@
         } else {
           navPagesData = { getting_started: [], recipes: [], core_concepts: [] };
         }
+        attachLandingSearchTextLower();
         isLoading = false;
         renderRecipeTable();
         renderFeaturedRecipes();

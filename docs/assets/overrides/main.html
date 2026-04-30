@@ -214,9 +214,9 @@ function OptanonWrapper() {
 
     function derivePageFilters(navData) {
       var section = getSectionFromPath();
-      var contentType = section || (localStorage.getItem('navFilter') || 'getting_started');
+      var contentType = section || (localStorage.getItem('navFilter') || 'recipes');
       if (contentType !== 'getting_started' && contentType !== 'recipes' && contentType !== 'core_concepts') {
-        contentType = 'getting_started';
+        contentType = 'recipes';
       }
       var domain = 'all';
       var technique = 'all';
@@ -325,13 +325,13 @@ function OptanonWrapper() {
       <nav class="md-nav" aria-label="Filter">
         <ul class="md-nav__list">
           <li class="md-nav__item">
-            <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="getting_started">
+            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="getting_started">
               <span class="filter-checkbox" aria-hidden="true"></span>
               <span class="md-ellipsis">Get Started</span>
             </a>
           </li>
           <li class="md-nav__item">
-            <a href="javascript:void(0)" class="md-nav__link content-filter" data-filter="recipes">
+            <a href="javascript:void(0)" class="md-nav__link content-filter active" data-filter="recipes">
               <span class="filter-checkbox" aria-hidden="true"></span>
               <span class="md-ellipsis">Recipes</span>
             </a>
@@ -343,7 +343,7 @@ function OptanonWrapper() {
             </a>
           </li>
         </ul>
-        <div id="domain-filter-block" style="display: none;">
+        <div id="domain-filter-block">
           <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
             <span class="md-ellipsis">Domain</span>
           </label>
@@ -386,7 +386,7 @@ function OptanonWrapper() {
             </li>
           </ul>
         </div>
-        <div id="technique-filter-block" style="display: none;">
+        <div id="technique-filter-block">
           <label class="md-nav__link" style="font-weight: 600; cursor: default; pointer-events: none; padding-left: 0.6rem;">
             <span class="md-ellipsis">Technique</span>
           </label>
@@ -504,14 +504,14 @@ function OptanonWrapper() {
     })();
 
     let navData = null;
-    let currentContentFilter = 'getting_started';
+    let currentContentFilter = 'recipes';
     function getNavJsonUrl() {
       var rel = (typeof window.NAV_PAGES_JSON_REL === 'string' && window.NAV_PAGES_JSON_REL) ? window.NAV_PAGES_JSON_REL : (getBaseToRoot() + 'nav_pages.json');
       return new URL(rel, window.location.href).href;
     }
 
     function dispatchContentFilterChange(sectionKey) {
-      var key = sectionKey || currentContentFilter || 'getting_started';
+      var key = sectionKey || currentContentFilter || 'recipes';
       window.dispatchEvent(new CustomEvent('cosmos-content-filter-changed', {
         detail: {
           contentType: key,
@@ -592,7 +592,7 @@ function OptanonWrapper() {
     }
 
     function loadNavAndApply() {
-      const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'getting_started';
+      const initialFilter = getSectionFromPath() || localStorage.getItem('navFilter') || 'recipes';
       applyFilter(initialFilter);
     }
 
