@@ -193,15 +193,15 @@ docs/recipes/
 
 For **Featured Recipes** (recipes with `general:partner-recipe` or `general:cookoff-recipe`), the landing page uses a thumbnail image (or video poster) from the recipe body. You can control which one is used:
 
-- **Explicit marker:** Add `media-featured="true"` and/or `class="media-featured"` to the HTML of the image or video you want (use the class as well if your build strips custom attributes). In Markdown you’ll need raw HTML, e.g.  
-  `<img src="assets/hero.png" alt="Overview" class="media-featured" media-featured="true">`  
+- **Explicit marker:** Add `media-featured="true"` and/or `class="media-featured"` to the HTML of the image or video you want (use the class as well if your build strips custom attributes). In Markdown you’ll need raw HTML, e.g.
+  `<img src="assets/hero.png" alt="Overview" class="media-featured" media-featured="true">`
   For video: `<video poster="assets/thumb.jpg" class="media-featured" media-featured="true" ...>...</video>` (the `poster` image is used as the thumbnail).
 - **Fallback:** If no element is marked, the **first image** in the recipe is used. If there is no image, a placeholder with the recipe initial is shown.
 
 Allowed tags (use exactly as shown, comma-separated in the Tags cell):
 
 - **General:** `general:partner-recipe`, `general:cookoff-recipe`, `general:ai-friendly`
-- **Domain:** `domain:robotics`, `domain:autonomous-vehicles`, `domain:smart-city`, `domain:industrial`, `domain:medical`, `domain:fieldwork`, `domain:cross-domain`
+- **Domain:** `domain:robotics`, `domain:autonomous-vehicles`, `domain:smart-city`, `domain:industrial`, `domain:medical`
 - **Technique:** `technique:data-augmentation`, `technique:data-generation`, `technique:prediction`, `technique:reasoning`, `technique:post-training`, `technique:pre-training`, `technique:data-curation-annotation`, `technique:distillation`
 
 Example: `general:ai-friendly, domain:industrial, technique:data-curation-annotation`

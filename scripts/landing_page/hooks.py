@@ -45,8 +45,6 @@ ALLOWED_TAGS = frozenset(
         "domain:smart-city",
         "domain:industrial",
         "domain:medical",
-        "domain:fieldwork",
-        "domain:cross-domain",
         # Technique (visible)
         "technique:data-augmentation",
         "technique:data-generation",

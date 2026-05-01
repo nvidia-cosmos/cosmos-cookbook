@@ -1,9 +1,9 @@
-<!-- markdownlint-disable MD037 MD038 --><!-- Embedded CSS `* {` triggers MD037; JS template literals in <script> trigger MD038 / crash markdownlint-cli -->
+<!-- markdownlint-disable MD037 MD038 --><!-- Selectors with `*` may trigger MD037; JS template literals in <script> trigger MD038 / crash markdownlint-cli -->
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
+    .landing-page-wrapper,
+    .landing-page-wrapper *::before,
+    .landing-page-wrapper *::after {
       box-sizing: border-box;
     }
 
@@ -16,6 +16,8 @@
 
     /* Extend content area to the right for more horizontal space */
     .landing-page-wrapper {
+      margin: 0;
+      padding: 0;
       --landing-right-bleed: clamp(2rem, 12vw, 18rem);
       width: calc(100% + var(--landing-right-bleed));
       margin-right: calc(-1 * var(--landing-right-bleed));
@@ -330,51 +332,61 @@
       }
     }
 
-    /* Dark mode support */
+    /* Dark mode (Material uses scheme slug "slate"; "dark" kept for older forks) */
+    [data-md-color-scheme="slate"] body,
     [data-md-color-scheme="dark"] body {
       background-color: var(--md-default-bg-color, #1a1a1a);
       color: var(--md-default-fg-color, #ffffff);
     }
 
+    [data-md-color-scheme="slate"] .recipe-card,
     [data-md-color-scheme="dark"] .recipe-card {
       border-color: #333;
       background: #1a1a1a;
     }
 
+    [data-md-color-scheme="slate"] .recipe-table,
     [data-md-color-scheme="dark"] .recipe-table {
       background: #1a1a1a;
     }
 
+    [data-md-color-scheme="slate"] .recipe-table thead,
     [data-md-color-scheme="dark"] .recipe-table thead {
       background: #2a2a2a;
     }
 
+    [data-md-color-scheme="slate"] .recipe-table tbody tr:hover,
     [data-md-color-scheme="dark"] .recipe-table tbody tr:hover {
       background: #2a2a2a;
     }
 
+    [data-md-color-scheme="slate"] .docs-link-btn,
     [data-md-color-scheme="dark"] .docs-link-btn {
       background: #1a1a1a;
       border-color: #76b900;
       color: #76b900;
     }
 
+    [data-md-color-scheme="slate"] .docs-link-btn:hover,
     [data-md-color-scheme="dark"] .docs-link-btn:hover {
       background: #76b900;
       color: white;
     }
 
     /* Dark mode: Content Filter search bar */
+    [data-md-color-scheme="slate"] .search-input,
     [data-md-color-scheme="dark"] .search-input {
       background: #1a1a1a;
       color: #e8e8e8;
       border-color: #444;
     }
 
+    [data-md-color-scheme="slate"] .search-input::placeholder,
     [data-md-color-scheme="dark"] .search-input::placeholder {
       color: #a0a0a0;
     }
 
+    [data-md-color-scheme="slate"] .search-input:focus,
     [data-md-color-scheme="dark"] .search-input:focus {
       border-color: #76b900;
     }
@@ -499,9 +511,7 @@
       'domain:autonomous-vehicles': 'Autonomous Vehicles',
       'domain:smart-city': 'Smart City',
       'domain:industrial': 'Industrial',
-      'domain:medical': 'Medical',
-      'domain:fieldwork': 'Fieldwork',
-      'domain:cross-domain': 'Cross-domain'
+      'domain:medical': 'Medical'
     };
     var TECHNIQUE_LABEL_MAP = {
       'technique:data-augmentation': 'Data Augmentation',
@@ -680,7 +690,7 @@
       const headRow = document.querySelector('.all-recipes-section .recipe-table thead tr');
       if (!headRow) return;
       if (isNavOnlyContentType()) {
-        headRow.innerHTML = '<th>Recipe Name</th><th>Category</th>';
+        headRow.innerHTML = '<th>Name</th><th>Category</th>';
       } else {
         headRow.innerHTML = '<th>Recipe Name</th><th>Domain</th><th>Technique</th><th>Date</th>';
       }
