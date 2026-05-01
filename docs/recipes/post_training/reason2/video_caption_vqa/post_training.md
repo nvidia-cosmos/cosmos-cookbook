@@ -6,9 +6,9 @@
 >
 > \* Equal contribution
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | AV video captioning and visual question answering | domain:autonomous-vehicles, technique:post-training, general:partner-recipe | 01-05-2026 |
 
 ## Overview
 
@@ -408,7 +408,7 @@ python plot_metric.py \
 
 **MCQ-based VQA Results:**
 
-<img src="assets/mcq_vqa_results.png" alt="MCQ-based VQA Results" width="800">
+<img src="assets/mcq_vqa_results.png" alt="MCQ-based VQA Results" width="800" media-featured="true"/>
 
 **Key Observations:**
 

@@ -22,6 +22,7 @@ plugins:
         'core_concepts/prompt_guide/reason_guide.md': 'getting_started/prompt_guide/reason_guide.md'
   - exclude-unused-files:
       enabled_on_serve: true
+      file_names_to_never_remove: ["favicon", "nav_pages.json", "recipes.json"]
 markdown_extensions:
   # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
   - pymdownx.highlight:
@@ -80,9 +81,12 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:
   github_url: https://github.com/nvidia-cosmos/cosmos-cookbook
+  generator: false  # hide "Made with Material for MkDocs" in footer
 copyright: |
   &copy; Copyright 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 use_directory_urls: false
 validation:
   omitted_files: ignore
   unrecognized_links: ignore
+hooks:
+  - scripts/landing_page/hooks.py

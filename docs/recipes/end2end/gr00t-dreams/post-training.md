@@ -3,10 +3,11 @@
 > **Author:** [Rucha Apte](https://www.linkedin.com/in/ruchaa-apte/), [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/), [Saurav Nanda](https://www.linkedin.com/in/sauravnanda/)
 > **Organization:** NVIDIA
 
-| **Model**                                                                | **Workload**             | **Use Case**                                   |
-| ------------------------------------------------------------------------ | ------------------------ | ---------------------------------------------- |
-| [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training, Inference | Synthetic Trajectory Generation                |
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2)       | Inference                | Reasoning and filtering synthetic trajectories |
+| **Model**                                                                | **Workload**             | **Use Case**                                   | **Tags** | **Date** |
+| ------------------------------------------------------------------------ | ------------------------ | ---------------------------------------------- | -------- | -------- |
+| [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training, Inference | Synthetic Trajectory Generation                | domain:robotics, technique:post-training | 03-01-2026 |
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2)       | Inference                | Reasoning and filtering synthetic trajectories | domain:robotics, technique:reasoning | 03-01-2026 |
+
 
 This guide walks you through post-training the Cosmos Predict 2.5 model on the [PhysicalAI-Robotics-GR00T-GR1](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1) open dataset to generate synthetic robot trajectories for robot learning applications. After post-training, we'll use the fine-tuned model to generate trajectory predictions on the [PhysicalAI-Robotics-GR00T-Eval](https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Eval) dataset. Finally, Cosmos Reason 2 is leveraged to evaluate these generated trajectories by assessing their physical plausibility, helping to quantify and filter for valid, realistic, and successful robot motions.
 The process includes the steps outlined below:

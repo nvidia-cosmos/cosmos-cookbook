@@ -3,9 +3,9 @@
 > **Authors:** [Ryan Ji](https://www.linkedin.com/in/ryan-ji-a73300206/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Sim to Real data augmentation |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Transfer 2.5](https://github.com/nvidia-cosmos/cosmos-transfer2.5) | Inference | Sim to Real data augmentation | domain:autonomous-vehicles, technique:data-generation, general:partner-recipe | 10-09-2025 |
 
 This tutorial demonstrates how to use the Cosmos Transfer 2.5 model to augment synthetic data from simulations, converting limited simulator outputs into photorealistic datasets while reducing the manual effort needed to scale diversity.
 
@@ -299,7 +299,7 @@ From our original wrong-way driving scenario, we generated a complete matrix of 
 #### Complete Augmentation Grid
 
 <div style="max-width: 95%; margin: 0 auto;">
-<img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;">
+<img src="./assets/augmentation_matrix_grid.gif" alt="Augmentation Matrix" style="width: 100%; height: auto; display: block;" media-featured="true">
 </div>
 
 The matrix showcases all 18 variations organized as follows:

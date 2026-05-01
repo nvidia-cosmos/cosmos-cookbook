@@ -3,10 +3,10 @@
 > **Authors:** [Amol Fasale](https://www.linkedin.com/in/amolfasale/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-| --- | --- | --- |
-| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | 3D vehicle grounding in autonomous driving scenarios |
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | 3D vehicle grounding in autonomous driving scenarios |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 1](https://github.com/nvidia-cosmos/cosmos-reason1) | Post-training | 3D vehicle grounding in autonomous driving scenarios | domain:autonomous-vehicles, technique:post-training | 02-18-2026 |
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | 3D vehicle grounding in autonomous driving scenarios | domain:autonomous-vehicles, technique:post-training | 02-18-2026 |
 
 ## Overview
 

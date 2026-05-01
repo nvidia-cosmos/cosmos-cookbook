@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| Cosmos [Model] | Post-training | [Brief description] |
+| **Model**      | **Workload**  | **Use Case**        | **Tags**                 | **Date**    |
+|----------------|---------------|---------------------|--------------------------|-------------|
+| Cosmos [Model] | Post-training | [Brief description] | [Tags](#recipe-tags)     | Jan 1, 2026 |
 
 [Introduce your company/organization, project, and application domain. Describe the specific challenge or pain point you're addressing, why post-training is needed for your use case, and your approach (e.g., LoRA, full fine-tuning, RL).]
 

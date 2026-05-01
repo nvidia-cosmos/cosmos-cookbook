@@ -5,15 +5,15 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 2 8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 2 8B](https://huggingface.co/nvidia/Cosmos-Reason2-8B)| Inference | Large scale video search and summarization. | domain:smart-city, technique:reasoning, general:cookoff-recipe | 01-29-2026 |
 
 Large volumes of video data contain critical information for understanding and optimizing operations in warehouses, factories, retail stores, cities and more. Both archived video files and live streaming camera feeds require time-consuming manual review to extract valuable insights from the videos.
 
 The [Video Search and Summarization Blueprint](https://build.nvidia.com/nvidia/video-search-and-summarization) (VSS) from NVIDIA is a reference architecture for combining vision language models, computer vision models and large language models to analyze and understand large volumes of video data. VSS is easily configured through various prompts to tune the model responses based on the target use case.
 
-![VSS UI Example](assets/warehouse_summary_example.png)
+<img src="assets/warehouse_summary_example.png" width="720" media-featured="true"/>
 
 VSS allows the user to upload video files or connect live streaming camera feeds to generate summaries, answer questions or send alerts when events of interest occur.
 

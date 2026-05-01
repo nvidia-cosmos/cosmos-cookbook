@@ -3,9 +3,9 @@
 > **Authors:** [Tingyu Zhang](https://www.linkedin.com/in/tingyu-zhang-b3357314a) • [Sharon Yang](http://linkedin.com/in/sharonxueyangintel)
 > **Organization:** [IntBot Inc.](https://www.intbot.ai/)
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos-Reason2-8B](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Egocentric social and physical reasoning for robotics | domain:robotics, technique:reasoning, general:partner-recipe, general:cookoff-recipe | 02-14-2026 |
 
 - [Setup and System Requirements](https://github.com/nvidia-cosmos/cosmos-reason2#setup)
 
@@ -15,7 +15,7 @@
 
 <table>
   <tr>
-    <td align="center"><img src="./assets/IntBot-GTC.jpg" width="400"><br><em>IntBot at NVIDIA GTC</em></td>
+    <td align="center"><img src="./assets/IntBot-GTC.jpg" width="400" media-featured="true"><br><em>IntBot at NVIDIA GTC</em></td>
     <td align="center"><img src="./assets/IntBot-GTC-reception.jpg" width="400"><br><em>IntBot at NVIDIA booth reception</em></td>
   </tr>
 </table>

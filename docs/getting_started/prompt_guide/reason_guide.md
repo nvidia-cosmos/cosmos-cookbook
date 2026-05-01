@@ -5,7 +5,7 @@
 
 | **Model** | **Workload** | **Use Case** |
 |-----------|--------------|--------------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Prompt Guide|
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Inference | Prompt Guide | 
 
 ## Overview
 
@@ -479,7 +479,7 @@ We now support point coordinates on images and videos. The pixel coordinate is n
 
 #### Media Input
 
-<img src="assets/trajectory_clean.png" alt="Load" width="720" />
+<img src="assets/trajectory_clean.png" alt="Load" width="720" media-featured="true"/>
 
 #### User Prompt
 

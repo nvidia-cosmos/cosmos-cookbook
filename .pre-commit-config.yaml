@@ -1,3 +1,5 @@
+default_language_version:
+  node: 20.18.1
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -11,7 +13,7 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint
         args: ['--fix']

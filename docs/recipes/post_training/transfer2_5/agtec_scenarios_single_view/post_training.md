@@ -5,9 +5,9 @@
 
 ## Overview
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| Cosmos Transfer 2.5 | Post-training + Inference | Generating photorealistic synthetic agricultural imagery for robot perception training |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| Cosmos Transfer 2.5 | Post-training + Inference | Generating photorealistic synthetic agricultural imagery for robot perception training | domain:robotics, technique:post-training | 04-21-2026 |
 
 ![Soybean Transfer](assets/cosmos-soybean.gif)
 
