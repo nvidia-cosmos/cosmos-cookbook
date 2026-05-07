@@ -635,6 +635,17 @@ def _uses_file_url(model_id):
     """True for any model that uses file:// video URL to vLLM (vs base64 JPEG frames)."""
     return _is_nemotron(model_id) or _is_qwen3vl(model_id)
 
+def _is_cosmos_reason_nim(model_id):
+    """True when running a Cosmos Reason NIM container that natively decodes video
+    server-side (NIM_MEDIA_IO_KWARGS controls fps/sampling). When True, video must be
+    sent as a single video_url content item — extracting frames client-side and sending
+    them as image_url entries collapses motion into stills (the 5-image NIM cap then
+    wrecks 30 s+ clips by leaving ~6 s gaps between samples)."""
+    if INFERENCE_BACKEND != "nim_local":
+        return False
+    mid = (model_id or _SERVER_MODEL_ID or "").lower()
+    return "cosmos-reason" in mid
+
 def _expected_quant(model_id):
     """Infer expected quantization from model path/ID name."""
     mid = model_id.lower()
@@ -1080,8 +1091,15 @@ def _run_vllm_inference(video_path, prompt, system, fps, max_tokens, model_id, t
 
     # Step 3: prepare media content
     # Images: single image_url (file:// for Nemotron/Qwen, base64 for CR2/C3).
-    # Videos: Nemotron/Qwen3-VL use file:// video_url; CR2/C3 use base64 JPEG frames.
+    # Videos:
+    #   - Nemotron/Qwen3-VL → file:// video_url (vLLM server-side decode)
+    #   - Cosmos Reason NIM → base64 data: video_url (NIM server-side decode @ 4 fps + EVS)
+    #   - Cosmos OSS (HF/vLLM) → base64 JPEG frames (no native video pipeline in OSS path)
     _nem = _uses_file_url(model_id) or _uses_file_url(_SERVER_MODEL_ID or "")
+    _cosmos_nim_video = (
+        not is_image
+        and (_is_cosmos_reason_nim(model_id) or _is_cosmos_reason_nim(_SERVER_MODEL_ID or ""))
+    )
     if is_image:
         if _nem:
             content = [
@@ -1121,9 +1139,32 @@ def _run_vllm_inference(video_path, prompt, system, fps, max_tokens, model_id, t
             {"type": "text", "text": prompt},
         ]
         print(f"[vllm/nemotron] video_url: file://{_nem_path}", flush=True)
+    elif _cosmos_nim_video:
+        # Cosmos Reason NIMs natively decode video server-side at NIM_MEDIA_IO_KWARGS
+        # (e.g. fps=4 for cosmos-reason2-8b) with EVS engaged. Send as one video_url
+        # content item; sending extracted frames as image_url[] would hit the
+        # NIM_MAX_IMAGES_PER_PROMPT=5 cap and destroy motion on clips >~10 s.
+        # Use a base64 data: URL so we don't depend on container mounts or
+        # --allowed-local-media-path config (which the cosmos NIM doesn't expose).
+        try:
+            with open(video_path, "rb") as _vf:
+                _vid_b64 = base64.b64encode(_vf.read()).decode()
+        except Exception as _vid_err:
+            msg = f"[NIM ERROR] Could not read video for base64 encoding: {_vid_err}"
+            print(msg, flush=True)
+            _log_run(model_id, total_s=_elapsed(), status="video-read-error", display_label=display_label)
+            yield msg, _status_html(["ok", "ok", "wait", "wait", "wait"],
+                                    {"elapsed_s": _elapsed(), "backend": _be_label}, steps=steps), _table_html()
+            return
+        content = [
+            {"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{_vid_b64}"}},
+            {"type": "text", "text": prompt},
+        ]
+        _vid_mb = len(_vid_b64) * 3 / 4 / (1024 * 1024)
+        print(f"[nim_local/cosmos] video_url: data:video/mp4;base64 ({_vid_mb:.1f} MB) — server-side decode", flush=True)
     else:
-        # NIM container hard-caps at 5 images/prompt; vLLM has no such cap.
-        _max_frames = 5 if INFERENCE_BACKEND == "nim_local" else 8
+        # OSS path (HF/vLLM-OSS) for Cosmos Reason: extract frames client-side.
+        _max_frames = 8
         print(f"[vllm] Extracting frames fps={fps} max={_max_frames}", flush=True)
         frames_b64 = _extract_frames_b64(video_path, fps=fps, max_frames=_max_frames)
         if not frames_b64:
@@ -1441,8 +1482,9 @@ def run_inference(video_path, user_prompt, system_prompt, fps, max_pixels, max_n
                            {"elapsed_s": _elapsed()}), gr.update()
 
     # NIM local Docker is served by `_run_vllm_inference` via the OpenAI-compatible
-    # client at VLLM_BASE_URL. The NIM container enforces a 5-image-per-prompt cap;
-    # frame clamping is applied below at extraction time when INFERENCE_BACKEND=nim_local.
+    # client at VLLM_BASE_URL. Cosmos Reason NIMs decode video natively (one video_url
+    # content item, base64 data URL — see _is_cosmos_reason_nim dispatch below);
+    # the legacy NIM_MAX_IMAGES_PER_PROMPT=5 cap only applies if you send images.
 
     if _is_nim(model_id):
         yield from _run_nim_inference(
