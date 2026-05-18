@@ -122,6 +122,8 @@ def process_video(client, video_path, model_name, max_tokens, user_prompt):
     )
     latency = time.time() - t0
 
+    if not resp.choices or resp.choices[0].message is None:
+        raise ValueError("LLM returned empty or filtered response")
     return resp.choices[0].message.content, latency
 
 
