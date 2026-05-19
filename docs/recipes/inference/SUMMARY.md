@@ -13,3 +13,4 @@
 - [Video Search and Summarization with Cosmos Reason](./reason2/vss/inference.md)
 - [Reason for Worker Safety in a Classical Warehouse](./reason2/worker_safety/inference.md)
 - [Cosmos-Reason2 on Jetson Thor for Edge VLM Perception](./reason2/intbot_edge_vlm/inference.md)
+- [Video Quality Evaluation Pipeline](./video_quality_eval/overview.md)
