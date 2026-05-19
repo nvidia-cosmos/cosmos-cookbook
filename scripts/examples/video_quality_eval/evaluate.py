@@ -153,7 +153,9 @@ def _import_perceptual():
 
         return lpips, ssim_fn, psnr_fn
     except ImportError as e:
-        print(f"[perceptual] Missing dependency: {e}. Install with: pip install lpips scikit-image")
+        print(
+            f"[perceptual] Missing dependency: {e}. Install with: pip install lpips scikit-image"
+        )
         return None, None, None
 
 
@@ -188,8 +190,8 @@ def compute_perceptual_layer(
 
     # SSIM / PSNR (both higher is better, SSIM already in [0,1])
     ssim_vals, psnr_vals = [], []
-    pred_u8 = ((pred_frames).astype(np.float32))
-    ref_u8 = ((ref_frames).astype(np.float32))
+    pred_u8 = (pred_frames).astype(np.float32)
+    ref_u8 = (ref_frames).astype(np.float32)
     for p, r in zip(pred_u8, ref_u8):
         ssim_vals.append(ssim_fn(p, r, channel_axis=2, data_range=255))
         psnr_vals.append(psnr_fn(r, p, data_range=255))
@@ -224,7 +226,9 @@ def _import_clip():
 
         return clip
     except ImportError:
-        print("[semantic] Missing dependency: clip. Install with: pip install git+https://github.com/openai/CLIP.git")
+        print(
+            "[semantic] Missing dependency: clip. Install with: pip install git+https://github.com/openai/CLIP.git"
+        )
         return None
 
 
@@ -289,7 +293,9 @@ def load_reason_model(checkpoint_path: str, device: torch.device):
         import qwen_vl_utils  # noqa: F401
         from transformers import AutoModelForVision2Seq, AutoProcessor
     except ImportError as e:
-        print(f"[vlm] Missing dependency: {e}. Install with: pip install mediapy qwen-vl-utils transformers")
+        print(
+            f"[vlm] Missing dependency: {e}. Install with: pip install mediapy qwen-vl-utils transformers"
+        )
         return None, None
 
     processor = AutoProcessor.from_pretrained(checkpoint_path)
@@ -383,7 +389,9 @@ def _score_one_query(video_path: str, query: str, model, processor) -> float:
         ]
     ]
 
-    text = processor.apply_chat_template(messages[0], tokenize=False, add_generation_prompt=True)
+    text = processor.apply_chat_template(
+        messages[0], tokenize=False, add_generation_prompt=True
+    )
     image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(
         messages, return_video_kwargs=True
     )
@@ -394,13 +402,18 @@ def _score_one_query(video_path: str, query: str, model, processor) -> float:
         return_tensors="pt",
         **(video_kwargs or {}),
     )
-    inputs = {k: v.to(model.device) if isinstance(v, torch.Tensor) else v for k, v in inputs.items()}
+    inputs = {
+        k: v.to(model.device) if isinstance(v, torch.Tensor) else v
+        for k, v in inputs.items()
+    }
 
     with torch.no_grad():
         logits = model(**inputs).logits[0, -1, :]
         yes_id = processor.tokenizer.encode("Yes", add_special_tokens=False)[0]
         no_id = processor.tokenizer.encode("No", add_special_tokens=False)[0]
-        no_score = torch.softmax(torch.tensor([logits[yes_id], logits[no_id]]), dim=0)[1].item()
+        no_score = torch.softmax(torch.tensor([logits[yes_id], logits[no_id]]), dim=0)[
+            1
+        ].item()
 
     return float(no_score)
 
@@ -538,7 +551,9 @@ def run_evaluation(args) -> list[VideoResult]:
             if ref_path.exists():
                 ref_map[v.stem] = ref_path
         if not ref_map:
-            print(f"[perceptual] Warning: --ref_dir supplied but no matching filenames found in {ref_dir}")
+            print(
+                f"[perceptual] Warning: --ref_dir supplied but no matching filenames found in {ref_dir}"
+            )
 
     # --- Load perceptual models ---
     lpips_model = ssim_fn = psnr_fn = None
@@ -586,8 +601,12 @@ def run_evaluation(args) -> list[VideoResult]:
         if lpips_model is not None and stem in ref_map:
             try:
                 layer_results["perceptual"] = compute_perceptual_layer(
-                    str(pred_path), str(ref_map[stem]),
-                    lpips_model, ssim_fn, psnr_fn, device,
+                    str(pred_path),
+                    str(ref_map[stem]),
+                    lpips_model,
+                    ssim_fn,
+                    psnr_fn,
+                    device,
                 )
             except Exception as e:
                 print(f"  [perceptual] Error on {stem}: {e}")
@@ -596,8 +615,12 @@ def run_evaluation(args) -> list[VideoResult]:
         if clip_model is not None and prompts.get(stem):
             try:
                 layer_results["semantic"] = compute_semantic_layer(
-                    str(pred_path), prompts[stem],
-                    clip_lib, clip_model, clip_preprocess, device,
+                    str(pred_path),
+                    prompts[stem],
+                    clip_lib,
+                    clip_model,
+                    clip_preprocess,
+                    device,
                 )
             except Exception as e:
                 print(f"  [semantic] Error on {stem}: {e}")
@@ -605,7 +628,9 @@ def run_evaluation(args) -> list[VideoResult]:
         # Layer 3 — VLM
         if reason_model is not None:
             try:
-                layer_results["vlm"] = compute_vlm_layer(str(pred_path), reason_model, reason_processor)
+                layer_results["vlm"] = compute_vlm_layer(
+                    str(pred_path), reason_model, reason_processor
+                )
             except Exception as e:
                 print(f"  [vlm] Error on {stem}: {e}")
 
@@ -641,7 +666,9 @@ def build_report(results: list[VideoResult], args) -> dict:
     reject_count = sum(1 for r in results if r.verdict == REJECT_LABEL)
 
     def layer_mean(layer: str) -> Optional[float]:
-        scores = [getattr(r, layer).score for r in results if getattr(r, layer) is not None]
+        scores = [
+            getattr(r, layer).score for r in results if getattr(r, layer) is not None
+        ]
         return float(np.mean(scores)) if scores else None
 
     report = {
@@ -651,7 +678,9 @@ def build_report(results: list[VideoResult], args) -> dict:
             "borderline": borderline_count,
             "reject": reject_count,
             "pass_rate": pass_count / total if total else 0.0,
-            "mean_aggregate_score": float(np.mean([r.aggregate_score for r in results])),
+            "mean_aggregate_score": float(
+                np.mean([r.aggregate_score for r in results])
+            ),
             "mean_perceptual_score": layer_mean("perceptual"),
             "mean_semantic_score": layer_mean("semantic"),
             "mean_vlm_score": layer_mean("vlm"),
@@ -710,16 +739,59 @@ def parse_args():
         description="Multi-layer video quality evaluation for Cosmos-generated videos.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--pred_dir", required=True, help="Directory of generated .mp4 videos to evaluate")
-    parser.add_argument("--ref_dir", default=None, help="Directory of reference .mp4 videos (enables Layer 1 — perceptual metrics)")
-    parser.add_argument("--prompts", default=None, help="Text prompts file (enables Layer 2 — CLIP alignment). Plain text (one per line) or JSON/JSONL mapping stem→prompt")
-    parser.add_argument("--reason_ckpt", default=None, help="Path to Cosmos-Reason1-7B-Reward checkpoint (enables Layer 3 — VLM judge)")
-    parser.add_argument("--output", default="quality_report.json", help="Output JSON report path")
-    parser.add_argument("--threshold_pass", type=float, default=0.65, help="Aggregate score ≥ this → PASS")
-    parser.add_argument("--threshold_reject", type=float, default=0.35, help="Aggregate score < this → REJECT")
-    parser.add_argument("--weight_perceptual", type=float, default=DEFAULT_WEIGHTS["perceptual"], help="Weight for Layer 1 (perceptual)")
-    parser.add_argument("--weight_semantic", type=float, default=DEFAULT_WEIGHTS["semantic"], help="Weight for Layer 2 (semantic)")
-    parser.add_argument("--weight_vlm", type=float, default=DEFAULT_WEIGHTS["vlm"], help="Weight for Layer 3 (VLM)")
+    parser.add_argument(
+        "--pred_dir",
+        required=True,
+        help="Directory of generated .mp4 videos to evaluate",
+    )
+    parser.add_argument(
+        "--ref_dir",
+        default=None,
+        help="Directory of reference .mp4 videos (enables Layer 1 — perceptual metrics)",
+    )
+    parser.add_argument(
+        "--prompts",
+        default=None,
+        help="Text prompts file (enables Layer 2 — CLIP alignment). Plain text (one per line) or JSON/JSONL mapping stem→prompt",
+    )
+    parser.add_argument(
+        "--reason_ckpt",
+        default=None,
+        help="Path to Cosmos-Reason1-7B-Reward checkpoint (enables Layer 3 — VLM judge)",
+    )
+    parser.add_argument(
+        "--output", default="quality_report.json", help="Output JSON report path"
+    )
+    parser.add_argument(
+        "--threshold_pass",
+        type=float,
+        default=0.65,
+        help="Aggregate score ≥ this → PASS",
+    )
+    parser.add_argument(
+        "--threshold_reject",
+        type=float,
+        default=0.35,
+        help="Aggregate score < this → REJECT",
+    )
+    parser.add_argument(
+        "--weight_perceptual",
+        type=float,
+        default=DEFAULT_WEIGHTS["perceptual"],
+        help="Weight for Layer 1 (perceptual)",
+    )
+    parser.add_argument(
+        "--weight_semantic",
+        type=float,
+        default=DEFAULT_WEIGHTS["semantic"],
+        help="Weight for Layer 2 (semantic)",
+    )
+    parser.add_argument(
+        "--weight_vlm",
+        type=float,
+        default=DEFAULT_WEIGHTS["vlm"],
+        help="Weight for Layer 3 (VLM)",
+    )
     return parser.parse_args()
 
 
