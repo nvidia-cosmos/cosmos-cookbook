@@ -1,0 +1,24 @@
+# Core video I/O
+decord>=0.6.0
+
+# Layer 1 — Perceptual metrics
+lpips>=0.1.4
+scikit-image>=0.21.0
+
+# Layer 2 — Semantic alignment
+# Install CLIP from source (no PyPI release):
+#   pip install git+https://github.com/openai/CLIP.git
+# or the community mirror:
+#   pip install openai-clip
+
+# Layer 3 — Cosmos Reason 1 VLM judge
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.40.0
+mediapy>=1.1.0
+qwen-vl-utils>=0.0.8
+
+# General
+numpy>=1.24.0
+Pillow>=10.0.0
+tqdm>=4.65.0
