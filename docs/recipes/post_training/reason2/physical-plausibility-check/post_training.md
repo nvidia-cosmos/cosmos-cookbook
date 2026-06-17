@@ -3,9 +3,9 @@
 > **Authors:** [Shun Zhang](https://www.linkedin.com/in/shun-zhang-1b154437/) • [Zekun Hao](https://www.linkedin.com/in/zekunhao/) • [Jingyi Jin](https://www.linkedin.com/in/jingyi-jin/)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Physical plausibility prediction |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Reason 2](https://github.com/nvidia-cosmos/cosmos-reason2) | Post-training | Physical plausibility prediction | domain:industrial, technique:post-training | 01-27-2026 |
 
 > **Note**: For experiments using Cosmos Reason 1, please refer to the [Physical Plausibility Prediction with Cosmos Reason 1](../../reason1/physical-plausibility-check/post_training.md) recipe.
 

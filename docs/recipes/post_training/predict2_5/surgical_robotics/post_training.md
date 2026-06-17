@@ -3,9 +3,9 @@
 > **Authors:** [Lukas Zbinden](https://github.com/lukaszbinden) · [Nigel Nelson](https://github.com/NigelNelson) · [Maximilian Ofir](https://github.com/maximilianofir)
 > **Organization:** NVIDIA
 
-| **Model** | **Workload** | **Use Case** |
-|-----------|--------------|--------------|
-| [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Surgical Robotics Simulation |
+| **Model** | **Workload** | **Use Case** | **Tags** | **Date** |
+|-----------|--------------|--------------|----------|----------|
+| [Cosmos Predict 2.5](https://github.com/nvidia-cosmos/cosmos-predict2.5) | Post-training | Surgical Robotics Simulation | domain:medical, technique:post-training | 03-15-2026 |
 
 ## Motivation
 

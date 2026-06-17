@@ -1,3 +1,6 @@
 INHERIT: mkdocs.yml
+# Must match how the site is mounted so sidebar Home / filter links and MKDOCS_BASE_PATH resolve (path is /cosmos/cookbook, not /cosmos-cookbook).
+site_url: https://sw-docs-dgx-station.nvidia.com/cosmos/cookbook/
 extra:
   cookie_test_mode: true
+  local_dev: true
