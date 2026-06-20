@@ -347,6 +347,8 @@ def run_test(
             extra_body=extra_body if extra_body else None,
         )
 
+        if not response.choices or response.choices[0].message is None:
+            raise ValueError("LLM returned empty or filtered response")
         result = response.choices[0].message.content
 
         print(f"\n{'-' * 70}")

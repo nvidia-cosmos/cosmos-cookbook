@@ -91,6 +91,8 @@ class OpenAIModel:
                 print(f"Retrying... count = {retry_count}.")
                 time.sleep(10)
 
+        if not response.choices or response.choices[0].message is None:
+            raise ValueError("LLM returned empty or filtered response")
         response_text = response.choices[0].message.content
         return response_text
 
